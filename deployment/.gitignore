@@ -1,0 +1,5 @@
+*.retry
+/environment/local/registry
+/environment/development/registry
+/environment/qa/registry
+/environment/production/registry

@@ -1,0 +1,14 @@
+{
+  "version": "0.1.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach Node 9229 WS",
+      "port": 9229,
+      "restart": true,
+      "stopOnEntry": true,
+      "protocol": "inspector"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  registry:
+    image: registry:2
+    ports:
+      - 5000:5000
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./registry:/var/lib/registry
+  database:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=appcket
+      - POSTGRES_ROOT_PASSWORD=Ch@ng3To@StrongP@ssw0rd
+      - POSTGRES_USER=appcketuser
+      - POSTGRES_PASSWORD=Ch@ng3To@StrongP@ssw0rd
+    ports:
+      - 5432:5432
+    volumes:
+      - appcket-database:/var/lib/postgresql/data:Z
+      - ./:/tmp
+volumes:
+    appcket-database:
+      external: true

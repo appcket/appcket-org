@@ -1,0 +1,44 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { ReactKeycloakProvider } from '@react-keycloak/web';
+import { HelmetProvider } from 'react-helmet-async';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+import keycloak from './keycloak';
+import App from './App';
+import Loading from './components/Loading';
+import reportWebVitals from './reportWebVitals';
+
+const keycloakInitOptions = {
+  onLoad: 'login-required',
+  enableLogging: true,
+};
+
+const queryClient = new QueryClient();
+
+ReactDOM.render(
+  <React.StrictMode>
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      LoadingComponent={Loading()}
+      initOptions={keycloakInitOptions}
+    >
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </HelmetProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ReactKeycloakProvider>
+  </React.StrictMode>,
+  document.getElementById('root'),
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

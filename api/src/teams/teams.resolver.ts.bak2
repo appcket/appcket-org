@@ -1,0 +1,29 @@
+import { UseGuards } from '@nestjs/common';
+import { Args, Query, Resolver } from '@nestjs/graphql';
+import { QueryService, InjectQueryService } from '@nestjs-query/core';
+import { ConnectionType, CRUDResolver } from '@nestjs-query/query-graphql';
+
+import { resources } from 'src/common/enums/resources.enum';
+import { Organization } from 'src/common/enums/permissions.enum';
+import { PermissionsGuard } from 'src/common/guards/permissions.guard';
+import { Permissions } from 'src/common/decorators/permissions.decorator';
+import { TeamDto } from 'src/teams/team.dto';
+import { TeamEntity } from 'src/teams/team.entity';
+import { TeamConnection, TeamQuery } from 'src/teams/team-query.types';
+
+@Resolver(() => TeamDto)
+export class TeamsResolver extends CRUDResolver(TeamDto) {
+  constructor(@InjectQueryService(TeamEntity) readonly service: QueryService<TeamEntity>) {
+    super(service);
+  }
+
+  @Query(() => TeamConnection)
+  // keycloak authorization service for obtaining permissions must have the permission(s) sent as Resource#Scope_ID format: https://www.keycloak.org/docs/latest/authorization_services/#_service_obtaining_permissions
+  // TODO: ability to pass multiple permissions and have keycloak evaluate and make a decision
+  @Permissions(`${resources.Organization}#${Organization.create}`)
+  @UseGuards(PermissionsGuard)
+  async teams(@Args() query: TeamQuery): Promise<ConnectionType<TeamDto>> {
+    // return 'List of teams that this user can view';
+    return await this.queryMany({});
+  }
+}

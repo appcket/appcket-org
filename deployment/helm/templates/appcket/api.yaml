@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.api.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+  - port: 443
+    targetPort: 3000
+    protocol: TCP
+    name: https-{{ .Values.api.name }}
+  - port: 9229
+    targetPort: 9229
+    protocol: TCP
+    name: http-{{ .Values.api.name }}-debug
+  selector:
+    app: {{ .Values.api.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.api.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.api.name }}
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.api.name }}
+        version: v1
+    spec:
+      containers:
+      - name: {{ .Values.api.name }}
+        image: "{{ .Values.image.repository }}/{{ .Values.api.image }}:{{ .Values.api.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if eq .Values.env "local" }}
+        command: ["/bin/bash"]
+        {{- end }}
+        # - command: ["yarn"]
+        #   args: ["start"]
+        env:
+        - name: HOST
+          value: {{ .Values.api.name }}
+        - name: NODE_ENV
+          value: {{ .Values.env }}
+        - name: PORT
+          value: "3000"
+        - name: DB_ADDR
+          value: {{ .Values.database.address }}
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.database.secretName }}
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.database.secretName }}
+              key: password
+        - name: KEYCLOAK_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.api.keycloakClientSecretName }}
+              key: clientsecret
+        - name: KEYCLOAK_CLIENT_SECRET
+          value: {{ .Values.api.keycloakClientSecretName }}
+        - name: KEYCLOAK_CLIENT_PUBLIC_KEY
+          value: {{ .Values.api.keycloakClientPublicKey }}
+        - name: KEYCLOAK_REALM
+          value: appcket
+        - name: APP_URL
+          value: https://{{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+        - name: ACCOUNTS_URL
+          value: https://{{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+        stdin: true
+        tty: true
+        workingDir: /src
+        ports:
+        {{- if eq .Values.env "local" }}
+        volumeMounts:
+          - mountPath: /src
+            name: src-volume
+            readOnly: false
+        {{- end }}
+      {{- if eq .Values.env "local" }}
+      volumes:
+      - hostPath:
+          path: /run/desktop/mnt/host/wsl/docker-desktop-bind-mounts/Ubuntu/dev/appcket/api
+        name: src-volume
+      {{- end }}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Values.api.name }}
+spec:
+  hosts:
+  - {{ .Values.api.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+  gateways:
+  - appcket-gateway
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      - {{ .Values.api.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+    route:
+    - destination:
+        host: {{ .Values.api.name }}.{{ .Values.namespace }}.svc.cluster.local
+        port:
+          number: 443

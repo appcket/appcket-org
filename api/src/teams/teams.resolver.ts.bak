@@ -1,0 +1,19 @@
+import { UseGuards } from '@nestjs/common';
+import { Query, Resolver } from '@nestjs/graphql';
+
+import { resources } from 'src/common/enums/resources.enum';
+import { Organization } from 'src/common/enums/permissions.enum';
+import { PermissionsGuard } from 'src/common/guards/permissions.guard';
+import { Permissions } from 'src/common/decorators/permissions.decorator';
+
+@Resolver()
+export class TeamsResolver {
+  @Query(() => String)
+  // keycloak authorization service for obtaining permissions must have the permission(s) sent as Resource#Scope_ID format: https://www.keycloak.org/docs/latest/authorization_services/#_service_obtaining_permissions
+  // TODO: ability to pass multiple permissions and have keycloak evaluate and make a decision
+  @Permissions(`${resources.Organization}#${Organization.create}`)
+  @UseGuards(PermissionsGuard)
+  async teams(): Promise<string> {
+    return await Promise.resolve('List of teams that this user can view');
+  }
+}

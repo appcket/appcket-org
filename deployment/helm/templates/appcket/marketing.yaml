@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.marketing.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+  - port: 443
+    targetPort: 3000
+    protocol: TCP
+    name: https-{{ .Values.marketing.name }}
+  selector:
+    app: {{ .Values.marketing.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.marketing.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.marketing.name }}
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.marketing.name }}
+        version: v1
+    spec:
+      containers:
+      - name: {{ .Values.marketing.name }}
+        image: "{{ .Values.image.repository }}/{{ .Values.marketing.image }}:{{ .Values.marketing.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        # command: ["/bin/bash"]
+        env:
+        - name: NODE_ENV
+          value: {{ .Values.env }}
+        - name: PORT
+          value: "3000"
+        stdin: true
+        tty: true
+        workingDir: /src
+        volumeMounts:
+          - mountPath: /src
+            name: src-volume
+            readOnly: false
+      volumes:
+      - hostPath:
+          path: /run/desktop/mnt/host/wsl/docker-desktop-bind-mounts/Ubuntu/dev/appcket/marketing
+        name: src-volume
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Values.marketing.name }}
+spec:
+  hosts:
+  - appcket.{{ .Values.tld }}
+  gateways:
+  - appcket-gateway
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      - {{ .Values.domain }}.{{ .Values.tld }}
+    route:
+    - destination:
+        host: {{ .Values.marketing.name }}.{{ .Values.namespace }}.svc.cluster.local
+        port:
+          number: 443
