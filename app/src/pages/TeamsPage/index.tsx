@@ -6,10 +6,14 @@ import { useQuery } from 'react-query';
 import { GraphQLClient, gql } from 'graphql-request';
 import { get } from 'lodash';
 
-import { TeamNode } from 'src/common/types/team.type';
+import { Team } from 'src/common/types/team.type';
 import Page from 'src/components/Page';
 
-const endpoint = get(process.env, 'REACT_APP_API_URL', 'https://api.appcket.com');
+const endpoint = get(
+  process.env,
+  'REACT_APP_API_URL',
+  'https://api.appcket.org'
+);
 
 const TeamsPage = () => {
   const { keycloak } = useKeycloak();
@@ -20,29 +24,18 @@ const TeamsPage = () => {
   });
 
   function useTeams() {
-    return useQuery('teams', async () => {
+    return useQuery('searchTeams', async () => {
       const data = await graphQLClient.request(
         gql`
           {
-            teams {
-              pageInfo {
-                hasNextPage
-                hasPreviousPage
-                startCursor
-                endCursor
-              }
-              edges {
-                node {
-                  team_id
-                  name
-                  created_at
-                  effective_at
-                }
-                cursor
-              }
+            searchTeams(searchString: "") {
+              team_id
+              name
+              created_at
+              effective_at
             }
           }
-        `,
+        `
       );
 
       return data;
@@ -60,9 +53,9 @@ const TeamsPage = () => {
   } else {
     teamsComponent = (
       <ul>
-        {data.teams.edges.map((teamNode: TeamNode) => {
-          return <li key={teamNode.node.team_id}>{teamNode.node.name}</li>;
-        })}
+        {data.searchTeams.map((teamNode: Team) => (
+          <li key={teamNode.team_id}>{teamNode.name}</li>
+        ))}
       </ul>
     );
   }

@@ -80,7 +80,7 @@ spec:
   hosts:
   - {{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
   gateways:
-  - appcket-gateway
+  - {{ .Values.namespace }}-gateway
   tls:
   - match:
     - port: 443

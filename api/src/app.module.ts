@@ -1,15 +1,15 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Keycloak from 'keycloak-connect';
 import * as session from 'express-session';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TeamsModule } from './teams/teams.module';
 import { configuration } from 'src/config';
 import { CommonModule } from 'src/common/common.module';
+import { TeamModule } from './team/team.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -19,7 +19,8 @@ import { CommonModule } from 'src/common/common.module';
       load: [configuration],
     }),
     GraphQLModule.forRoot({
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      buildSchemaOptions: { dateScalarMode: 'timestamp' },
       context: ({ req }) => {
         return {
           user: {
@@ -33,24 +34,7 @@ import { CommonModule } from 'src/common/common.module';
       installSubscriptionHandlers: true,
       path: '/',
     }),
-    TeamsModule,
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('database.host'),
-        port: +configService.get<number>('database.port'),
-        username: configService.get<string>('database.username'),
-        password: configService.get<string>('database.password'),
-        database: configService.get<string>('database.database'),
-        // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        autoLoadEntities: true,
-        logging: true,
-        synchronize: false,
-        schema: configService.get<string>('database.schema'),
-      }),
-      inject: [ConfigService],
-    }),
+    TeamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -60,7 +44,10 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     const memoryStore = new session.MemoryStore();
     // initialize keycloak using configuration service
-    const keycloak = new Keycloak({ store: memoryStore }, this.configService.get('keycloak'));
+    const keycloak = new Keycloak(
+      { store: memoryStore },
+      this.configService.get('keycloak')
+    );
 
     consumer
       // @ts-ignore

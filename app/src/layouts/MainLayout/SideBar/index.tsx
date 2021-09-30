@@ -12,7 +12,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { HomeIcon, InfoCircleIcon, UsersIcon } from 'react-line-awesome';
+import { RiHome4Fill, RiInformationFill, RiTeamFill } from 'react-icons/ri';
 import NavItem from './NavItem';
 
 const user = {
@@ -24,17 +24,17 @@ const user = {
 const items = [
   {
     href: '/',
-    icon: HomeIcon,
+    icon: RiHome4Fill,
     title: 'Home',
   },
   {
     href: '/teams',
-    icon: UsersIcon,
+    icon: RiTeamFill,
     title: 'Teams',
   },
   {
     href: '/about',
-    icon: InfoCircleIcon,
+    icon: RiInformationFill,
     title: 'About',
   },
 ];

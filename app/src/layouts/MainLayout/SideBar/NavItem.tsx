@@ -51,7 +51,6 @@ const NavItem = ({ className, href, icon: Icon, title, ...rest }: Props) => {
   return (
     <ListItem className={clsx(classes.item, className)} disableGutters {...rest}>
       <Button
-        activeClassName={classes.active}
         className={classes.button}
         component={NavLink}
         to={href}

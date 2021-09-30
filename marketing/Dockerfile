@@ -1,4 +1,4 @@
-FROM node:15 as node
+FROM node:16 as node
 
 ARG env=production
 ENV NODE_ENV=$env
@@ -20,8 +20,5 @@ COPY --from=node /src/certs/tls.crt /etc/nginx/certs/tls.crt
 COPY --from=node /src/certs/tls.key /etc/nginx/certs/tls.key
 
 COPY --from=node /src/public/ /usr/share/nginx/html
-COPY --from=node /src/.cache/ /usr/share/nginx/html
-
-EXPOSE 443
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

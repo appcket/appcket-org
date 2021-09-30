@@ -4,14 +4,6 @@ const tokenEndpointUrl = `${authServerUrl}/realms/${realm}/protocol/openid-conne
 
 export const config = {
   appUrl: process.env.APP_URL,
-  database: {
-    host: process.env.DB_ADDR,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    port: 5432,
-    database: 'appcket',
-    schema: 'appcket',
-  },
   keycloak: {
     realm,
     'bearer-only': true,

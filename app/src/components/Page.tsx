@@ -7,16 +7,14 @@ type Props = {
   title: string;
 };
 
-const Page = forwardRef<HTMLDivElement, Props>(({ children, title = '', ...rest }: Props, ref) => {
-  return (
-    <div ref={ref} {...rest}>
-      <Helmet>
-        <title>Appcket - {title}</title>
-      </Helmet>
-      {children}
-    </div>
-  );
-});
+const Page = forwardRef<HTMLDivElement, Props>(({ children, title = '', ...rest }: Props, ref) => (
+  <div ref={ref} {...rest}>
+    <Helmet>
+      <title>Appcket - {title}</title>
+    </Helmet>
+    {children}
+  </div>
+));
 
 Page.propTypes = {
   children: PropTypes.node.isRequired,

@@ -21,13 +21,13 @@ api:
   tag: v0.0.1
   image: appcket_nodejs
   keycloakClientSecretName: api-keycloak-client-secret
-  keycloakClientPublicKey: MIIBI...YourKeycloakClientPublicKey
+  keycloakClientPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmzaUqgEvtzH2veC1L2q36zfG6h/Lz4uKPZusGJfq8HRfIXi6IAlR45Jc+jSYhrkIeqqE/WlZDtETihC1vZzaTR/Q8xbXaQMPrLHtr/1utBCsKie+gtUzlE0doDKh875f8A9su9SUpi3jbCcXJCGYskQ0tEV9mRB+Dyftqsphjs6cwNBcbb+w0oQkci62AOOp5e9qlNB2V1SsX2PDnN0UDTXwoyQKfopYbuqafbsHO7n3RS1UEN8vqXfQSrRPDbmzH+kOCVMB1BM8cpEi+0GhXrr+M2mqdNJnLnhcPspU41JiG7gmptFg98qkpBMBbaAE6Mqrb6JsLX2snhZe41mTXQIDAQAB
 
 app:
   name: app
   subdomain: app
   tag: v0.0.1
-  image: appcket_app
+  image: appcket_nodejs
 
 database:
   address: 172.17.0.1

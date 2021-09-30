@@ -3,3 +3,6 @@
 /environment/development/registry
 /environment/qa/registry
 /environment/production/registry
+
+**.crt
+**.key

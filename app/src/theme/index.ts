@@ -1,9 +1,9 @@
-import { createMuiTheme, colors } from '@material-ui/core';
+import { createTheme, colors } from '@material-ui/core';
 
 const primary = '#03071D';
 const secondary = '#E14A1B';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     background: {
       default: colors.common.white,

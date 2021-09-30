@@ -4,7 +4,3 @@ export type Team = {
   created_at: Date;
   effective_at: Date;
 };
-
-export type TeamNode = {
-  node: Team;
-};

@@ -4,7 +4,7 @@
 
 namespace: appcket
 domain: appcket
-tld: localhost
+tld: com
 env: production
 
 accounts:

@@ -1,0 +1,31 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ .Values.domain }}-gateway
+  namespace: {{ .Values.domain }}
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    tls:
+      httpsRedirect: true # sends 301 redirect for http requests
+    hosts:
+    - {{ .Values.domain }}.{{ .Values.tld }}
+    - {{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+    - {{ .Values.api.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+    - {{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: PASSTHROUGH
+    hosts:
+    - {{ .Values.domain }}.{{ .Values.tld }}
+    - {{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+    - {{ .Values.api.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+    - {{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}

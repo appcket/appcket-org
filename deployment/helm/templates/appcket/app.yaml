@@ -32,6 +32,9 @@ spec:
       - name: {{ .Values.app.name }}
         image: "{{ .Values.image.repository }}/{{ .Values.app.image }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if eq .Values.env "local" }}
+        command: ["/bin/sh"]
+        {{- end }}
         # command: ["/bin/bash"]
         # command: ["yarn","start"]
         env:
@@ -67,7 +70,7 @@ spec:
   hosts:
   - {{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
   gateways:
-  - appcket-gateway
+  - {{ .Values.namespace }}-gateway
   tls:
   - match:
     - port: 443

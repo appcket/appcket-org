@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Team {
+  team_id: String!
+  name: String!
+  organization_id: String!
+  created_at: DateTime!
+  effective_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  teamById(id: String!): Team
+  searchTeams(orderBy: TeamOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Team!]!
+}
+
+input TeamOrderByUpdatedAtInput {
+  effective_at: SortOrder!
+}
+
+enum SortOrder {
+  asc
+  desc
+}

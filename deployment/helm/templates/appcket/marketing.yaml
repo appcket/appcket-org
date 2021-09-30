@@ -56,9 +56,9 @@ metadata:
   name: {{ .Values.marketing.name }}
 spec:
   hosts:
-  - appcket.{{ .Values.tld }}
+  - {{ .Values.domain }}.{{ .Values.tld }}
   gateways:
-  - appcket-gateway
+  - {{ .Values.namespace }}-gateway
   tls:
   - match:
     - port: 443
