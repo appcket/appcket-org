@@ -10,8 +10,8 @@ import {
   Hidden,
   List,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { RiHome4Fill, RiInformationFill, RiTeamFill } from 'react-icons/ri';
 import NavItem from './NavItem';
 
@@ -75,7 +75,12 @@ const SideBar = ({ onSideBarClose, openSideBar }: Props) => {
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
-        <Avatar className={classes.avatar} component={Link} src={user.avatar} to="/profile" />
+        <Avatar
+          className={classes.avatar}
+          component={Link}
+          src={user.avatar}
+          to="/profile"
+        />
         <Typography className="" color="textPrimary" variant="h5">
           {user.name}
         </Typography>
@@ -113,8 +118,13 @@ const SideBar = ({ onSideBarClose, openSideBar }: Props) => {
           {content}
         </Drawer>
       </Hidden>
-      <Hidden mdDown>
-        <Drawer anchor="left" classes={{ paper: classes.desktopDrawer }} open variant="persistent">
+      <Hidden lgDown>
+        <Drawer
+          anchor="left"
+          classes={{ paper: classes.desktopDrawer }}
+          open
+          variant="persistent"
+        >
           {content}
         </Drawer>
       </Hidden>

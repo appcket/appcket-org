@@ -1,6 +1,6 @@
 import React from 'react';
-import { Container } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Container } from '@mui/material';
+import Typography from '@mui/material/Typography';
 
 import Page from 'src/components/Page';
 

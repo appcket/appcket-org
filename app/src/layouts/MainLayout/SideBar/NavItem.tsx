@@ -2,7 +2,9 @@ import React, { ElementType } from 'react';
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Button, ListItem, makeStyles } from '@material-ui/core';
+import { Button, ListItem } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -49,12 +51,12 @@ const NavItem = ({ className, href, icon: Icon, title, ...rest }: Props) => {
   const classes = useStyles();
 
   return (
-    <ListItem className={clsx(classes.item, className)} disableGutters {...rest}>
-      <Button
-        className={classes.button}
-        component={NavLink}
-        to={href}
-      >
+    <ListItem
+      className={clsx(classes.item, className)}
+      disableGutters
+      {...rest}
+    >
+      <Button className={classes.button} component={NavLink} to={href}>
         {Icon && <Icon className={classes.icon} size="20" />}
         <span className={classes.title}>{title}</span>
       </Button>

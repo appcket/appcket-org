@@ -1,6 +1,9 @@
 import React from 'react';
-import { Container } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Container } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import { useKeycloak } from '@react-keycloak/web';
 import { useQuery } from 'react-query';
 import { GraphQLClient, gql } from 'graphql-request';
@@ -52,11 +55,13 @@ const TeamsPage = () => {
     teamsComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
     teamsComponent = (
-      <ul>
+      <List>
         {data.searchTeams.map((teamNode: Team) => (
-          <li key={teamNode.team_id}>{teamNode.name}</li>
+          <ListItem disablePadding key={teamNode.team_id}>
+            <ListItemText primary={teamNode.name} />
+          </ListItem>
         ))}
-      </ul>
+      </List>
     );
   }
 

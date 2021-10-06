@@ -1,9 +1,9 @@
-import { createTheme, colors } from '@material-ui/core';
+import { createTheme, colors, adaptV4Theme } from '@mui/material';
 
 const primary = '#03071D';
 const secondary = '#E14A1B';
 
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
   palette: {
     background: {
       default: colors.common.white,
@@ -20,6 +20,6 @@ const theme = createTheme({
       secondary: colors.blueGrey[600],
     },
   },
-});
+}));
 
 export default theme;
