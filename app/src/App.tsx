@@ -3,7 +3,7 @@ import { useRoutes } from 'react-router-dom';
 import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
 
 import GlobalStyles from 'src/components/GlobalStyles';
-import theme from 'src/theme';
+import theme from 'src/common/theme';
 import routes from 'src/routes';
 
 declare module '@mui/styles/defaultTheme' {

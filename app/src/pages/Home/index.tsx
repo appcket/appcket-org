@@ -15,4 +15,4 @@ const Home = () => (
   </Page>
 );
 
-export { Home };
+export default Home;

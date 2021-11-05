@@ -23,4 +23,4 @@ const About = () => (
   </Page>
 );
 
-export { About };
+export default About;

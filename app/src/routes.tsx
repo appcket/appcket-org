@@ -1,12 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { MainLayout } from 'src/components/layouts/MainLayout';
-import { Home } from 'src/pages/Home';
-import { Teams } from 'src/pages/Teams';
-import { Team } from 'src/pages/Teams/Team';
-import { About } from 'src/pages/About';
-import { NotFound } from 'src/pages/NotFound';
+import MainLayout from 'src/components/layouts/MainLayout';
+import Home from 'src/pages/Home';
+import Teams from 'src/pages/Teams';
+import Team from 'src/pages/Teams/Team';
+import About from 'src/pages/About';
+import NotFound from 'src/pages/NotFound';
 
 const routes = [
   {

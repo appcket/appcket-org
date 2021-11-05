@@ -16,4 +16,4 @@ const NotFound = () => (
   </Page>
 );
 
-export { NotFound };
+export default NotFound;

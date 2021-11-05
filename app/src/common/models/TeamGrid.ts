@@ -1,5 +1,5 @@
-import { Team } from './Team';
+import Team from './Team';
 
-export interface TeamGrid extends Team {
+export default interface TeamGrid extends Team {
   id: string;
 }

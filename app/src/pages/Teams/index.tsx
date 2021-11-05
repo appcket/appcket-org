@@ -8,7 +8,7 @@ import { get } from 'lodash';
 import { NavLink } from 'react-router-dom';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 
-import { TeamGrid } from 'src/common/models/TeamGrid';
+import TeamGrid from 'src/common/models/TeamGrid';
 import Page from 'src/components/Page';
 
 const endpoint = get(process.env, 'REACT_APP_API_URL', 'https://api.appcket.org');
@@ -96,4 +96,4 @@ const Teams = () => {
   );
 };
 
-export { Teams };
+export default Teams;
