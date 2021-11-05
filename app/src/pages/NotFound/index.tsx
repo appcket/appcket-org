@@ -4,7 +4,7 @@ import { Container } from '@mui/material';
 
 import Page from 'src/components/Page';
 
-const NotFoundPage = () => (
+const NotFound = () => (
   <Page title="404 Error Not Found">
     <Container maxWidth="lg">
       <h1>Not Found</h1>
@@ -16,4 +16,4 @@ const NotFoundPage = () => (
   </Page>
 );
 
-export default NotFoundPage;
+export { NotFound };

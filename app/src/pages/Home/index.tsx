@@ -4,15 +4,15 @@ import Typography from '@mui/material/Typography';
 
 import Page from 'src/components/Page';
 
-const HomePage = () => (
+const Home = () => (
   <Page title="Home">
     <Container maxWidth="lg">
       <h1>Home</h1>
       <Typography paragraph>
-        Edit your homepage contents in src/pages/HomePage/index.tsx.
+        Edit your homepage contents in src/pages/Home/index.tsx.
       </Typography>
     </Container>
   </Page>
 );
 
-export default HomePage;
+export { Home };

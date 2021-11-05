@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 
 import Page from 'src/components/Page';
 
-const AboutPage = () => (
+const About = () => (
   <Page title="About">
     <Container maxWidth="lg">
       <h1>About</h1>
@@ -23,4 +23,4 @@ const AboutPage = () => (
   </Page>
 );
 
-export default AboutPage;
+export { About };
