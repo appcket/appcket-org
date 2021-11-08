@@ -6,7 +6,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
-import keycloak from './keycloak';
+import keycloak from 'src/common/keycloak';
 import App from './App';
 import Loading from './components/Loading';
 import reportWebVitals from './reportWebVitals';
@@ -35,7 +35,7 @@ ReactDOM.render(
       </QueryClientProvider>
     </ReactKeycloakProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

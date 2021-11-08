@@ -1,45 +1,15 @@
 import React from 'react';
 import { Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useKeycloak } from '@react-keycloak/web';
-import { useQuery } from 'react-query';
-import { GraphQLClient, gql } from 'graphql-request';
-import { get } from 'lodash';
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 import Page from 'src/components/Page';
-
-const endpoint = get(process.env, 'REACT_APP_API_URL', 'https://api.appcket.org');
+import { useTeamById } from 'src/common/api/team';
 
 const Team = () => {
   let params = useParams();
-  const { keycloak } = useKeycloak();
-  const graphQLClient = new GraphQLClient(endpoint, {
-    headers: {
-      authorization: `Bearer ${keycloak.token}`,
-    },
-  });
 
-  function useTeamById() {
-    return useQuery('teamById', async () => {
-      let data = await graphQLClient.request(
-        gql`
-          {
-            teamById(id: "${params.teamId}") {
-              team_id
-              name
-              created_at
-              effective_at
-            }
-          }
-        `,
-      );
-
-      return data.teamById;
-    });
-  }
-
-  const { status, data, error } = useTeamById();
+  const { status, data, error } = useTeamById(params.teamId!);
 
   let teamComponent;
 
