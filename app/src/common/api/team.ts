@@ -8,7 +8,7 @@ import TeamGrid from 'src/common/models/TeamGrid';
 import Team from 'src/common/models/Team';
 
 export const useSearchTeams = (searchString: string): UseQueryResult<TeamGrid[]> => {
-  const processData = async (data: SearchTeamsQueryResponse) => {
+  const processData = async (data: SearchTeamsQueryResponse): Promise<Team[]> => {
     return data.searchTeams;
   };
 
@@ -29,7 +29,7 @@ export const useSearchTeams = (searchString: string): UseQueryResult<TeamGrid[]>
 };
 
 export const useTeamById = (teamId: string): UseQueryResult<Team> => {
-  const processData = async (data: TeamByIdQueryResponse) => {
+  const processData = async (data: TeamByIdQueryResponse): Promise<Team> => {
     return data.teamById;
   };
 
