@@ -1,10 +1,13 @@
 import { gql } from 'graphql-request';
+import { UseQueryResult } from 'react-query';
 
 import { useApiQuery } from 'src/common/api';
 import SearchTeamsQueryResponse from 'src/common/models/responses/SearchTeamsQueryResponse';
 import TeamByIdQueryResponse from 'src/common/models/responses/TeamByIdQueryResponse';
+import TeamGrid from 'src/common/models/TeamGrid';
+import Team from 'src/common/models/Team';
 
-export const useSearchTeams = (searchString: string) => {
+export const useSearchTeams = (searchString: string): UseQueryResult<TeamGrid[]> => {
   const processData = async (data: SearchTeamsQueryResponse) => {
     return data.searchTeams;
   };
@@ -25,7 +28,7 @@ export const useSearchTeams = (searchString: string) => {
   );
 };
 
-export const useTeamById = (teamId: string) => {
+export const useTeamById = (teamId: string): UseQueryResult<Team> => {
   const processData = async (data: TeamByIdQueryResponse) => {
     return data.teamById;
   };

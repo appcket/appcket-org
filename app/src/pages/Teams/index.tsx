@@ -35,11 +35,11 @@ const Teams = () => {
     );
   } else {
     // convert api data to mui grid-compatible data
-    data.forEach((team: TeamGrid) => {
+    data?.forEach((team: TeamGrid) => {
       team.id = team.team_id;
     });
 
-    const rows: GridRowsProp = data;
+    const rows: GridRowsProp = data!;
 
     teamsComponent = (
       <div style={{ height: 300, width: '100%' }}>
