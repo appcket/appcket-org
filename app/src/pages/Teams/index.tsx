@@ -23,7 +23,7 @@ const Teams = () => {
         return <NavLink to={`/teams/${cellValues.row.team_id}`}>{cellValues.row.name}</NavLink>;
       },
     },
-    { field: 'effective_at', headerName: 'Updated', width: 150, type: 'dateTime' },
+    { field: 'updated_at', headerName: 'Updated', width: 150, type: 'dateTime' },
   ];
 
   if (status === 'loading') {

@@ -8,19 +8,20 @@ import TeamGrid from 'src/common/models/TeamGrid';
 import Team from 'src/common/models/Team';
 
 export const useSearchTeams = (searchString: string): UseQueryResult<TeamGrid[]> => {
+  const queryName = 'searchTeams';
   const processData = async (data: SearchTeamsQueryResponse): Promise<Team[]> => {
     return data.searchTeams;
   };
 
   return useApiQuery(
-    'searchTeams',
+    queryName,
     gql`
       {
-        searchTeams(searchString: "${searchString}") {
+        ${queryName}(searchString: "${searchString}") {
           team_id
           name
           created_at
-          effective_at
+          updated_at
         }
       }
     `,
@@ -29,19 +30,20 @@ export const useSearchTeams = (searchString: string): UseQueryResult<TeamGrid[]>
 };
 
 export const useTeamById = (teamId: string): UseQueryResult<Team> => {
+  const queryName = 'teamById';
   const processData = async (data: TeamByIdQueryResponse): Promise<Team> => {
     return data.teamById;
   };
 
   return useApiQuery(
-    'teamById',
+    queryName,
     gql`
       {
-        teamById(id: "${teamId}") {
+        ${queryName}(id: "${teamId}") {
           team_id
           name
           created_at
-          effective_at
+          updated_at
         }
       }
     `,

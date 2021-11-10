@@ -16,5 +16,5 @@ export class Team {
   created_at: Date;
 
   @Field((type) => GraphQLISODateTime)
-  effective_at: Date;
+  updated_at: Date;
 }

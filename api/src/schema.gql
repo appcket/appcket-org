@@ -7,7 +7,7 @@ type Team {
   name: String!
   organization_id: String!
   created_at: DateTime!
-  effective_at: DateTime!
+  updated_at: DateTime!
 }
 
 """
@@ -21,7 +21,7 @@ type Query {
 }
 
 input TeamOrderByUpdatedAtInput {
-  effective_at: SortOrder!
+  updated_at: SortOrder!
 }
 
 enum SortOrder {

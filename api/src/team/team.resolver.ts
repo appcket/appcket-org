@@ -27,7 +27,7 @@ export class TeamCreateInput {
 @InputType()
 class TeamOrderByUpdatedAtInput {
   @Field((type) => SortOrder)
-  effective_at: SortOrder;
+  updated_at: SortOrder;
 }
 
 enum SortOrder {
