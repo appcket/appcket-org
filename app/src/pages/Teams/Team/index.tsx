@@ -15,11 +15,8 @@ const Team = () => {
 
   if (status === 'loading') {
     teamComponent = <Typography paragraph>Loading...</Typography>;
-  } else if (status === 'error') {
-    teamComponent = (
-      // @ts-ignore
-      <Typography paragraph>Error: {error.response.error}</Typography>
-    );
+  } else if (status === 'error' && error instanceof Error) {
+    teamComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
     teamComponent = (
       <div>

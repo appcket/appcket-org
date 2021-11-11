@@ -28,11 +28,8 @@ const Teams = () => {
 
   if (status === 'loading') {
     teamsComponent = <Typography paragraph>Loading...</Typography>;
-  } else if (status === 'error') {
-    teamsComponent = (
-      // @ts-ignore
-      <Typography paragraph>Error: {error.response.error}</Typography>
-    );
+  } else if (status === 'error' && error instanceof Error) {
+    teamsComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
     // convert api data to mui grid-compatible data
     data?.forEach((team: TeamGrid) => {
