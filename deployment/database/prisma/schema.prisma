@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model organization {
+  organization_id   String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String              @db.VarChar(30)
+  created_at        DateTime            @default(now()) @db.Timestamptz(0)
+  deleted_at        DateTime?           @db.Timestamptz(0)
+  updated_at        DateTime            @default(now()) @db.Timestamptz(0)
+  created_by        String?             @db.Uuid
+  updated_by        String?             @db.Uuid
+  deleted_by        String?             @db.Uuid
+  organization_user organization_user[]
+  team              team[]
+}
+
+model organization_user {
+  organization_user_id String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organization_id      String       @db.Uuid
+  user_id              String       @db.Uuid
+  created_at           DateTime     @default(now()) @db.Timestamptz(0)
+  updated_at           DateTime     @default(now()) @db.Timestamptz(0)
+  deleted_at           DateTime?    @db.Timestamptz(0)
+  created_by           String?      @db.Uuid
+  updated_by           String?      @db.Uuid
+  deleted_by           String?      @db.Uuid
+  organization         organization @relation(fields: [organization_id], references: [organization_id])
+
+  @@index([organization_user_id], name: "organization_user_id_idx")
+}
+
+model task {
+  task_id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                String            @db.VarChar(100)
+  description         String?
+  assigned_to         String?           @db.Uuid
+  created_at          DateTime          @default(now()) @db.Timestamptz(0)
+  updated_at          DateTime          @default(now()) @db.Timestamptz(0)
+  deleted_at          DateTime?         @db.Timestamptz(0)
+  created_by          String?           @db.Uuid
+  updated_by          String?           @db.Uuid
+  deleted_by          String?           @db.Uuid
+  task_status_type_id String?           @db.Uuid
+  task_status_type    task_status_type? @relation(fields: [task_status_type_id], references: [task_status_type_id])
+}
+
+model task_status_type {
+  task_status_type_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                String?   @db.VarChar(30)
+  created_at          DateTime  @default(now()) @db.Timestamptz(0)
+  updated_at          DateTime  @default(now()) @db.Timestamptz(0)
+  deleted_at          DateTime? @db.Timestamptz(0)
+  created_by          String?   @db.Uuid
+  updated_by          String?   @db.Uuid
+  deleted_by          String?   @db.Uuid
+  task                task[]
+}
+
+model team {
+  team_id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String       @db.VarChar(50)
+  organization_id String       @db.Uuid
+  created_at      DateTime     @default(now()) @db.Timestamptz(0)
+  updated_at      DateTime     @default(now()) @db.Timestamptz(0)
+  deleted_at      DateTime?    @db.Timestamptz(0)
+  created_by      String?      @db.Uuid
+  updated_by      String?      @db.Uuid
+  deleted_by      String?      @db.Uuid
+  organization    organization @relation(fields: [organization_id], references: [organization_id])
+  team_user       team_user[]
+}
+
+model team_user {
+  team_user_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  team_id      String    @db.Uuid
+  user_id      String    @db.Uuid
+  created_at   DateTime  @default(now()) @db.Timestamptz(0)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(0)
+  deleted_at   DateTime? @db.Timestamptz(0)
+  created_by   String?   @db.Uuid
+  updated_by   String?   @db.Uuid
+  deleted_by   String?   @db.Uuid
+  team         team      @relation(fields: [team_id], references: [team_id])
+}
