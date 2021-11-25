@@ -14,7 +14,7 @@ services:
     environment:
       - POSTGRES_DB=appcket
       - POSTGRES_ROOT_PASSWORD=Ch@ng3To@StrongP@ssw0rd
-      - POSTGRES_USER=appcketuser
+      - POSTGRES_USER=dbuser
       - POSTGRES_PASSWORD=Ch@ng3To@StrongP@ssw0rd
     ports:
       - 5432:5432
