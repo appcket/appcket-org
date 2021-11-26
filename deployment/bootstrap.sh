@@ -62,6 +62,8 @@ cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost-key.pem ../marketing/certs/tls.
 # Rename env files
 mv ../deployment/database/dot.env.local ../deployment/database/.env.local
 mv ../api/dot.env ../api/.env
+mv ../app/dot.env.local ../app/.env.local
+mv ../app/dot.env.production ../app/.env.production
 
 # Docker setup
 echo '---------------------'
@@ -75,12 +77,17 @@ docker-compose -f ./environment/local/docker-compose.yml -p ${PROJECT_MACHINE_NA
 echo '---------------------'
 echo 'Building and pushing images...'
 
+chmod +x ./environment/local/start.sh
 chmod +x ./build.sh
 ./build.sh -e local
 
 # Set up for using k8s for local development
 echo '---------------------'
 echo 'Setting up K8s for local development...'
+
+# Delete any previous configmaps named coredns
+# TODO: multiple projects able to run on same host at a time
+kubectl delete configmap coredns -n kube-system
 
 kubectl create namespace ${PROJECT_MACHINE_NAME}
 
