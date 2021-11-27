@@ -2,7 +2,13 @@ import React from 'react';
 import { Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { NavLink } from 'react-router-dom';
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridRowsProp,
+  GridColDef,
+  GridValueFormatterParams,
+  GridCellValue,
+} from '@mui/x-data-grid';
 
 import Page from 'src/components/Page';
 import TeamGrid from 'src/common/models/TeamGrid';
@@ -23,7 +29,24 @@ const Teams = () => {
         return <NavLink to={`/teams/${cellValues.row.team_id}`}>{cellValues.row.name}</NavLink>;
       },
     },
-    { field: 'updated_at', headerName: 'Updated', width: 150, type: 'dateTime' },
+    {
+      field: 'updated_at',
+      headerName: 'Updated',
+      width: 250,
+      type: 'dateTime',
+      valueGetter: ({ value }) =>
+        value &&
+        new Intl.DateTimeFormat('en-US', {
+          weekday: 'short',
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        }).format(new Date(value)),
+    },
   ];
 
   if (status === 'loading') {

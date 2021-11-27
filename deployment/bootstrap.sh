@@ -3,7 +3,7 @@
 # This script should be run against a fresh clone of the appcket-org repository.
 # It will setup everything for local development (docker-compose, building images, Kubernetes secrets and volumes, Helm charts)
 
-# PROJECT_MACHINE_NAME will also be used in creating the database
+# PROJECT_MACHINE_NAME will also be used in creating the database and as the domain name
 PROJECT_MACHINE_NAME='appcket'
 PROJECT_HUMAN_NAME='Appcket'
 DATABASE_PASSWORD='Ch@ng3To@StrongP@ssw0rd'
