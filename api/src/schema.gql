@@ -15,9 +15,18 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type User {
+  userId: String!
+  username: String!
+  email: String!
+  firstName: String!
+  jobTitle: String!
+}
+
 type Query {
   teamById(id: String!): Team
   searchTeams(orderBy: TeamOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Team!]!
+  userInfo: User!
 }
 
 input TeamOrderByUpdatedAtInput {

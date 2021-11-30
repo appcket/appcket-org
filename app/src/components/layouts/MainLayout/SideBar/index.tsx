@@ -1,25 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {
-  Avatar,
-  Box,
-  colors,
-  Divider,
-  Drawer,
-  Hidden,
-  List,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, colors, Divider, Drawer, Hidden, List, Typography } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { RiHome4Fill, RiInformationFill, RiTeamFill } from 'react-icons/ri';
-import NavItem from './NavItem';
 
-const user = {
-  avatar: '/images/avatars/avatar_1.png',
-  jobTitle: 'CEO, Vandelay Industries',
-  name: 'Art Vandelay',
-};
+import { useUserInfo } from 'src/common/api/user';
+import NavItem from './NavItem';
 
 const items = [
   {
@@ -64,6 +51,7 @@ type Props = {
 const SideBar = ({ onSideBarClose, openSideBar }: Props) => {
   const classes = useStyles();
   const location = useLocation();
+  const { data } = useUserInfo();
 
   useEffect(() => {
     if (openSideBar && onSideBarClose) {
@@ -78,14 +66,14 @@ const SideBar = ({ onSideBarClose, openSideBar }: Props) => {
         <Avatar
           className={classes.avatar}
           component={Link}
-          src={user.avatar}
+          src="/images/avatars/avatar_1.png"
           to="/profile"
         />
         <Typography className="" color="textPrimary" variant="h5">
-          {user.name}
+          {data?.firstName}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {user.jobTitle}
+          {data?.jobTitle}
         </Typography>
       </Box>
       <Divider />
@@ -119,12 +107,7 @@ const SideBar = ({ onSideBarClose, openSideBar }: Props) => {
         </Drawer>
       </Hidden>
       <Hidden lgDown>
-        <Drawer
-          anchor="left"
-          classes={{ paper: classes.desktopDrawer }}
-          open
-          variant="persistent"
-        >
+        <Drawer anchor="left" classes={{ paper: classes.desktopDrawer }} open variant="persistent">
           {content}
         </Drawer>
       </Hidden>

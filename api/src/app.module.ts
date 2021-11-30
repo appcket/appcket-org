@@ -8,6 +8,7 @@ import * as session from 'express-session';
 import { configuration } from 'src/config';
 import { CommonModule } from 'src/common/common.module';
 import { TeamModule } from './team/team.module';
+import { UserModule } from './user/user.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -35,6 +36,7 @@ import { AppService } from './app.service';
       path: '/',
     }),
     TeamModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -44,10 +46,7 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     const memoryStore = new session.MemoryStore();
     // initialize keycloak using configuration service
-    const keycloak = new Keycloak(
-      { store: memoryStore },
-      this.configService.get('keycloak')
-    );
+    const keycloak = new Keycloak({ store: memoryStore }, this.configService.get('keycloak'));
 
     consumer
       // @ts-ignore

@@ -2,13 +2,7 @@ import React from 'react';
 import { Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { NavLink } from 'react-router-dom';
-import {
-  DataGrid,
-  GridRowsProp,
-  GridColDef,
-  GridValueFormatterParams,
-  GridCellValue,
-} from '@mui/x-data-grid';
+import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 
 import Page from 'src/components/Page';
 import TeamGrid from 'src/common/models/TeamGrid';

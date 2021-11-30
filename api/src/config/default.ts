@@ -1,6 +1,7 @@
 const realm = process.env.KEYCLOAK_REALM;
 const authServerUrl = `${process.env.ACCOUNTS_URL}/auth`;
 const tokenEndpointUrl = `${authServerUrl}/realms/${realm}/protocol/openid-connect/token`;
+const userAccountEndpointUrl = `${authServerUrl}/realms/${realm}/account`;
 
 export const config = {
   appUrl: process.env.APP_URL,
@@ -17,5 +18,6 @@ export const config = {
     secret: process.env.KEYCLOAK_CLIENT_SECRET,
     // custom keycloak config needed for authorization endpoint
     tokenEndpointUrl,
+    userAccountEndpointUrl,
   },
 };

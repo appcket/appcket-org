@@ -7,6 +7,8 @@ import makeStyles from '@mui/styles/makeStyles';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/NotificationsOutlined';
 import InputIcon from '@mui/icons-material/Input';
+import { useKeycloak } from '@react-keycloak/web';
+
 import Logo from 'src/components/Logo';
 
 const useStyles = makeStyles(() => ({
@@ -25,29 +27,21 @@ type Props = {
 const TopBar = ({ className, onSideBarOpen, ...rest }: Props) => {
   const classes = useStyles();
   const [notifications] = useState([]);
+  const { keycloak } = useKeycloak();
 
   return (
-    <AppBar
-      className={clsx(classes.root, className)}
-      color="primary"
-      elevation={0}
-      {...rest}
-    >
+    <AppBar className={clsx(classes.root, className)} color="primary" elevation={0} {...rest}>
       <Toolbar>
         <RouterLink to="/">
           <Logo />
         </RouterLink>
         <Box flexGrow={1} />
         <IconButton color="inherit" size="large">
-          <Badge
-            badgeContent={notifications.length}
-            color="primary"
-            variant="dot"
-          >
+          <Badge badgeContent={notifications.length} color="primary" variant="dot">
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <IconButton color="inherit" size="large">
+        <IconButton color="inherit" size="large" onClick={() => keycloak.logout()}>
           <InputIcon />
         </IconButton>
         <Hidden lgUp>

@@ -28,6 +28,15 @@ const organizationUserData: Prisma.organization_userCreateInput[] = [
   {
     organization: {
       connect: {
+        organization_id: '5fb17fd4-9292-4e20-bfa7-809d1a62fcc7'
+      }
+    },
+    user_id: '4379775d-7629-4dca-9dd0-8781329569b1',
+    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+  },
+  {
+    organization: {
+      connect: {
         organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8'
       }
     },
@@ -55,7 +64,7 @@ const organizationUserData: Prisma.organization_userCreateInput[] = [
   {
     organization: {
       connect: {
-        organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8'
+        organization_id: '5fb17fd4-9292-4e20-bfa7-809d1a62fcc7'
       }
     },
     user_id: '6dde7b5b-ffe1-4627-9ca9-d4c5290f6f20',
