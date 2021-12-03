@@ -99,6 +99,9 @@ kubectl create secret generic api-keycloak-client-secret --from-literal=clientse
 
 # Install istio
 ${ISTIOCTL} manifest install -y
+export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
 
 kubectl label namespace ${PROJECT_MACHINE_NAME} istio-injection=enabled
 

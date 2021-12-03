@@ -2,10 +2,9 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Team {
-  team_id: String!
-  name: String!
+type Organization {
   organization_id: String!
+  name: String!
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -14,6 +13,14 @@ type Team {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Team {
+  team_id: String!
+  name: String!
+  organization: Organization!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
 
 type User {
   userId: String!
@@ -24,6 +31,7 @@ type User {
 }
 
 type Query {
+  organizationById(id: String!): Organization
   teamById(id: String!): Team
   searchTeams(orderBy: TeamOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Team!]!
   userInfo: User!

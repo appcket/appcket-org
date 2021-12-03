@@ -44,6 +44,10 @@ export const useTeamById = (teamId: string): UseQueryResult<Team> => {
           name
           created_at
           updated_at
+          organization {
+            organization_id
+            name
+          }
         }
       }
     `,

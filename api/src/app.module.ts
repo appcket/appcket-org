@@ -7,6 +7,7 @@ import * as session from 'express-session';
 
 import { configuration } from 'src/config';
 import { CommonModule } from 'src/common/common.module';
+import { OrganizationModule } from './organization/organization.module';
 import { TeamModule } from './team/team.module';
 import { UserModule } from './user/user.module';
 import { AppController } from './app.controller';
@@ -35,6 +36,7 @@ import { AppService } from './app.service';
       installSubscriptionHandlers: true,
       path: '/',
     }),
+    OrganizationModule,
     TeamModule,
     UserModule,
   ],

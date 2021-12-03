@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import {
   Resolver,
+  ResolveField,
+  Parent,
   Query,
   Args,
   Context,
@@ -76,5 +78,10 @@ export class TeamResolver {
       skip: skip || undefined,
       orderBy: orderBy || undefined,
     });
+  }
+
+  @ResolveField('organization')
+  async organization(@Parent() team: Team) {
+    return this.prismaService.team.findUnique({ where: { team_id: team.team_id } }).organization();
   }
 }

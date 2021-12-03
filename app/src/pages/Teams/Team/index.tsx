@@ -1,7 +1,8 @@
 import React from 'react';
-import { Container } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import { useParams } from 'react-router-dom';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 
 import Page from 'src/components/Page';
 import { useTeamById } from 'src/common/api/team';
@@ -21,6 +22,10 @@ const Team = () => {
     teamComponent = (
       <div>
         <h1>{data?.name}</h1>
+
+        <Paper elevation={1} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+          <p>Team Form here</p>
+        </Paper>
       </div>
     );
   }

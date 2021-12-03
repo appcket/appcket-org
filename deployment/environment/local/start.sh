@@ -29,6 +29,9 @@ docker-compose -f ./environment/local/docker-compose.yml -p ${PROJECT_MACHINE_NA
 echo '---------------------'
 echo 'Starting Istio...'
 ${ISTIOCTL} manifest install -y
+export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
 
 # Delete existing instance
 echo '---------------------'
