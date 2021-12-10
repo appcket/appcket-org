@@ -65,7 +65,9 @@ const Teams = () => {
   return (
     <Page title="Teams">
       <Container maxWidth="lg">
-        <h1>Teams</h1>
+      <Typography variant="h4" gutterBottom>
+          Teams
+        </Typography>
         <div>{teamsComponent}</div>
       </Container>
     </Page>

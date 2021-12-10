@@ -12,6 +12,7 @@ import {
 } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
+import { intersectionBy } from 'lodash';
 
 import { Team } from './team';
 import { PrismaService } from 'src/prisma.service';
@@ -19,6 +20,7 @@ import { resources } from 'src/common/enums/resources.enum';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
+import { UserService } from 'src/common/services/user.service';
 
 @InputType()
 export class TeamCreateInput {
@@ -40,9 +42,13 @@ enum SortOrder {
 registerEnumType(SortOrder, {
   name: 'SortOrder',
 });
+
 @Resolver(Team)
 export class TeamResolver {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private prismaService: PrismaService,
+    @Inject(UserService) private userService: UserService,
+  ) {}
 
   @Query((returns) => Team, { nullable: true })
   @Permissions(`${resources.Team}#${TeamPermission.read}`)
@@ -50,6 +56,10 @@ export class TeamResolver {
   teamById(@Args('id') id: string) {
     return this.prismaService.team.findUnique({
       where: { team_id: id },
+      include: {
+        team_user: true,
+        organization: true,
+      },
     });
   }
 
@@ -61,7 +71,6 @@ export class TeamResolver {
     @Args('skip', { nullable: true }) skip: number,
     @Args('take', { nullable: true }) take: number,
     @Args('orderBy', { nullable: true }) orderBy: TeamOrderByUpdatedAtInput,
-    @Context() ctx
   ) {
     const or = searchString
       ? {
@@ -80,8 +89,9 @@ export class TeamResolver {
     });
   }
 
-  @ResolveField('organization')
-  async organization(@Parent() team: Team) {
-    return this.prismaService.team.findUnique({ where: { team_id: team.team_id } }).organization();
+  @ResolveField('users')
+  async users(@Parent() team: Team, @Context() ctx) {
+    const accountsUsers = await this.userService.getUsers(ctx.req.kauth.grant.access_token.token);
+    return intersectionBy(accountsUsers, team.team_user, 'user_id');
   }
 }

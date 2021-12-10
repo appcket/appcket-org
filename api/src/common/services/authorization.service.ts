@@ -3,19 +3,14 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { AxiosRequestConfig } from 'axios';
 import { URLSearchParams } from 'url';
+import { lastValueFrom } from 'rxjs';
 import * as _ from 'lodash';
 
 @Injectable()
 export class AuthorizationService {
-  constructor(
-    private httpService: HttpService,
-    private configService: ConfigService
-  ) {}
+  constructor(private httpService: HttpService, private configService: ConfigService) {}
 
-  public async checkPermission(
-    permissions: string[],
-    token: string
-  ): Promise<boolean> {
+  public async checkPermission(permissions: string[], token: string): Promise<boolean> {
     const config: AxiosRequestConfig = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -25,10 +20,7 @@ export class AuthorizationService {
     };
 
     const formData = new URLSearchParams();
-    formData.append(
-      'grant_type',
-      'urn:ietf:params:oauth:grant-type:uma-ticket'
-    );
+    formData.append('grant_type', 'urn:ietf:params:oauth:grant-type:uma-ticket');
     formData.append('audience', 'appcket_api');
     formData.append('response_mode', 'decision');
     _.each(permissions, (perm: string) => {
@@ -36,13 +28,13 @@ export class AuthorizationService {
     });
 
     try {
-      const response = await this.httpService
-        .post(
-          this.configService.get('keycloak.tokenEndpointUrl'),
-          formData,
-          config
-        )
-        .toPromise();
+      const response$ = this.httpService.post(
+        this.configService.get('keycloak.tokenEndpointUrl'),
+        formData,
+        config,
+      );
+
+      const response = await lastValueFrom(response$);
 
       if (response.data.result) {
         return true;

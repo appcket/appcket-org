@@ -1,10 +1,12 @@
 import 'reflect-metadata';
-import { ObjectType, Field, GraphQLISODateTime } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
+
+import { Team } from 'src/team/team';
 
 @ObjectType()
 export class User {
   @Field((type) => String)
-  userId: string;
+  user_id: string;
 
   @Field()
   username: string;
@@ -17,4 +19,6 @@ export class User {
 
   @Field()
   jobTitle: string | null;
+
+  @Field(() => [Team]) teams?: Team[];
 }

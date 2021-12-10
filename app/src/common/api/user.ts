@@ -16,7 +16,7 @@ export const useUserInfo = (): UseQueryResult<User> => {
     gql`
       {
         ${queryName} {
-          userId
+          user_id
           username
           email
           firstName
