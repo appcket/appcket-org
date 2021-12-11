@@ -44,8 +44,9 @@ cp ${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost.pem ../accounts/tls.cr
 cp ${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost-key.pem ../accounts/tls.key
 chmod 0644 ../accounts/tls.key
 
-# find root CA file and copy to api/certs
+# find root CA file and copy/rename to api/certs
 mkcert -CAROOT | awk '{print $1"/rootCA.pem"}' | xargs cp -t ../api/certs
+mv ../api/certs/rootCA.pem ../api/certs/rootCA.crt
 
 cp ${CERTS_DIR}_wildcard.${PROJECT_MACHINE_NAME}.localhost.pem ../api/certs/star.tls.crt
 cp ${CERTS_DIR}_wildcard.${PROJECT_MACHINE_NAME}.localhost-key.pem ../api/certs/star.tls.key
@@ -58,6 +59,7 @@ cp ${CERTS_DIR}_wildcard.${PROJECT_MACHINE_NAME}.localhost-key.pem ../app/certs/
 
 cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost.pem ../marketing/certs/tls.crt
 cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost-key.pem ../marketing/certs/tls.key
+chmod 0644 ../marketing/certs/tls.key
 
 # Rename env files
 mv ../deployment/database/dot.env.local ../deployment/database/.env.local

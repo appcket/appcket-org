@@ -32,7 +32,10 @@ spec:
       - name: {{ .Values.marketing.name }}
         image: "{{ .Values.image.repository }}/{{ .Values.marketing.image }}:{{ .Values.marketing.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        # command: ["/bin/bash"]
+        # uncomment the following (and need a change in the values-local.yaml file) if you want to develop the marketing site, otherwise it will use the nginx command from the Dockerfile to start the container
+        # {{- if eq .Values.env "local" }}
+        # command: ["/bin/sh"]
+        # {{- end }}
         env:
         - name: NODE_ENV
           value: {{ .Values.env }}

@@ -40,6 +40,7 @@ database:
 marketing:
   name: marketing
   tag: v0.0.1
+  # change to appcket_nodejs if you want to develop the marketing site, and also need a change in the marketing helm yaml file
   image: appcket_marketing
 
 replicaCount: 1
