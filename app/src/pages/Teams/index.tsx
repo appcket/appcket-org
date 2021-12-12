@@ -7,12 +7,16 @@ import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Page from 'src/components/Page';
 import TeamGrid from 'src/common/models/TeamGrid';
 import { useSearchTeams } from 'src/common/api/team';
+import { useHasPermission } from 'src/common/api/permission';
+import { TeamPermission } from 'src/common/enums/permissions.enum';
+import { Resources } from 'src/common/enums/resources.enum';
 
 const Teams = () => {
+  const permission = useHasPermission([`${Resources.Team}#${TeamPermission.read}`]);
   // TODO: user input from Team name filter input field should drive table results
   const { status, data, error } = useSearchTeams('');
 
-  let teamsComponent;
+  let teamsComponent = <Typography paragraph>Unable to view Teams</Typography>;
 
   const columns: GridColDef[] = [
     {
@@ -43,29 +47,31 @@ const Teams = () => {
     },
   ];
 
-  if (status === 'loading') {
-    teamsComponent = <Typography paragraph>Loading...</Typography>;
-  } else if (status === 'error' && error instanceof Error) {
-    teamsComponent = <Typography paragraph>Error: {error.message}</Typography>;
-  } else {
-    // convert api data to mui grid-compatible data
-    data?.forEach((team: TeamGrid) => {
-      team.id = team.team_id;
-    });
+  if (permission.data) {
+    if (status === 'loading') {
+      teamsComponent = <Typography paragraph>Loading...</Typography>;
+    } else if (status === 'error' && error instanceof Error) {
+      teamsComponent = <Typography paragraph>Error: {error.message}</Typography>;
+    } else {
+      // convert api data to mui grid-compatible data
+      data?.forEach((team: TeamGrid) => {
+        team.id = team.team_id;
+      });
 
-    const rows: GridRowsProp = data!;
+      const rows: GridRowsProp = data!;
 
-    teamsComponent = (
-      <div style={{ height: 300, width: '100%' }}>
-        <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} />
-      </div>
-    );
+      teamsComponent = (
+        <div style={{ height: 300, width: '100%' }}>
+          <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} />
+        </div>
+      );
+    }
   }
 
   return (
     <Page title="Teams">
       <Container maxWidth="lg">
-      <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           Teams
         </Typography>
         <div>{teamsComponent}</div>

@@ -8,10 +8,14 @@ import TextField from '@mui/material/TextField';
 
 import Page from 'src/components/Page';
 import { useTeamById } from 'src/common/api/team';
+import { useHasPermission } from 'src/common/api/permission';
+import { TeamPermission } from 'src/common/enums/permissions.enum';
+import { Resources } from 'src/common/enums/resources.enum';
 
 const Team = () => {
   let params = useParams();
 
+  const permission = useHasPermission([`${Resources.Team}#${TeamPermission.read}`]);
   const { status, data, error } = useTeamById(params.teamId!);
 
   let teamComponent;
@@ -21,19 +25,23 @@ const Team = () => {
   } else if (status === 'error' && error instanceof Error) {
     teamComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
-    teamComponent = (
-      <div>
-        <Typography variant="h4" gutterBottom>
-          {data?.name}
-        </Typography>
+    teamComponent = <Typography paragraph>Unable to view Team</Typography>;
 
-        <Paper elevation={1} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Grid item xs={12} sm={6}>
-            <TextField required id="name" name="name" label="Name" fullWidth variant="outlined" />
-          </Grid>
-        </Paper>
-      </div>
-    );
+    if (permission.data) {
+      teamComponent = (
+        <div>
+          <Typography variant="h4" gutterBottom>
+            {data?.name}
+          </Typography>
+
+          <Paper elevation={1} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+            <Grid item xs={12} sm={6}>
+              <TextField required id="name" name="name" label="Name" fullWidth variant="outlined" />
+            </Grid>
+          </Paper>
+        </div>
+      );
+    }
   }
 
   return (

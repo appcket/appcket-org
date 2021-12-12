@@ -1595,7 +1595,6 @@ INSERT INTO keycloak.associated_policy VALUES ('7db68186-ebbb-40a8-8dd7-147dedda
 INSERT INTO keycloak.associated_policy VALUES ('7db68186-ebbb-40a8-8dd7-147deddae4ce', '53667455-8734-49e0-9e11-db6aacce6cbf');
 INSERT INTO keycloak.associated_policy VALUES ('48345f52-292b-474c-acd3-1cc56513aa4f', 'f54d2838-ff5a-4259-8560-c50f042375ab');
 INSERT INTO keycloak.associated_policy VALUES ('48345f52-292b-474c-acd3-1cc56513aa4f', '0f3a33e0-4365-44e0-b7af-c6af4aa8e9c7');
-INSERT INTO keycloak.associated_policy VALUES ('48345f52-292b-474c-acd3-1cc56513aa4f', '56cc0301-6b50-4bb1-b870-514669458695');
 INSERT INTO keycloak.associated_policy VALUES ('48345f52-292b-474c-acd3-1cc56513aa4f', '53667455-8734-49e0-9e11-db6aacce6cbf');
 INSERT INTO keycloak.associated_policy VALUES ('73c7d9cb-5b6a-4a57-a7e1-5e81ec3aa8c2', 'f54d2838-ff5a-4259-8560-c50f042375ab');
 INSERT INTO keycloak.associated_policy VALUES ('73c7d9cb-5b6a-4a57-a7e1-5e81ec3aa8c2', '0f3a33e0-4365-44e0-b7af-c6af4aa8e9c7');
@@ -1603,6 +1602,7 @@ INSERT INTO keycloak.associated_policy VALUES ('73c7d9cb-5b6a-4a57-a7e1-5e81ec3a
 INSERT INTO keycloak.associated_policy VALUES ('2d99ec81-c6a8-4949-b129-0bc425126832', 'f54d2838-ff5a-4259-8560-c50f042375ab');
 INSERT INTO keycloak.associated_policy VALUES ('2d99ec81-c6a8-4949-b129-0bc425126832', '0f3a33e0-4365-44e0-b7af-c6af4aa8e9c7');
 INSERT INTO keycloak.associated_policy VALUES ('2d99ec81-c6a8-4949-b129-0bc425126832', '53667455-8734-49e0-9e11-db6aacce6cbf');
+INSERT INTO keycloak.associated_policy VALUES ('48345f52-292b-474c-acd3-1cc56513aa4f', '56cc0301-6b50-4bb1-b870-514669458695');
 
 
 --
@@ -2337,6 +2337,7 @@ INSERT INTO keycloak.composite_role VALUES ('d602aef9-4148-4ac0-bbe3-32894bb7cbf
 INSERT INTO keycloak.composite_role VALUES ('97caa102-e9d8-44de-94a1-74e5ea7bccb5', '934d2eb7-4ffa-406f-b8a9-155460dd9872');
 INSERT INTO keycloak.composite_role VALUES ('eee97160-4b67-4071-84f4-099bbcd704af', '934d2eb7-4ffa-406f-b8a9-155460dd9872');
 INSERT INTO keycloak.composite_role VALUES ('1b55f720-894d-4d89-b37d-358e5eb29309', '934d2eb7-4ffa-406f-b8a9-155460dd9872');
+INSERT INTO keycloak.composite_role VALUES ('a1234e9b-ccf4-43c2-8c5a-f8d5964d9e22', 'f82082f8-ce8f-4514-a0df-08b916e08db3');
 
 
 --
@@ -3433,18 +3434,18 @@ INSERT INTO keycloak.resource_server_policy VALUES ('0f3a33e0-4365-44e0-b7af-c6a
 INSERT INTO keycloak.resource_server_policy VALUES ('53667455-8734-49e0-9e11-db6aacce6cbf', 'Teammate Policy', 'Teammate role-based policy', 'role', '1', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 INSERT INTO keycloak.resource_server_policy VALUES ('56cc0301-6b50-4bb1-b870-514669458695', 'Spectator Policy', 'Spectator role-based policy', 'role', '1', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 INSERT INTO keycloak.resource_server_policy VALUES ('b498b31a-81fa-4a32-b625-71ca3e577dcb', 'Default Permission', 'A permission that applies to the default resource type', 'resource', '1', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
-INSERT INTO keycloak.resource_server_policy VALUES ('beb7d05d-19f7-4690-86e9-13dd49936d71', 'Create Project Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
-INSERT INTO keycloak.resource_server_policy VALUES ('a03337fa-5ad4-42e1-8beb-52afcac74329', 'Read Project Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
-INSERT INTO keycloak.resource_server_policy VALUES ('ab1f242c-d8bf-4860-a2b1-4702f367bbd5', 'Update Project Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
-INSERT INTO keycloak.resource_server_policy VALUES ('f93476a3-2536-4e2c-bcad-212d0859fbe1', 'Delete Project Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 INSERT INTO keycloak.resource_server_policy VALUES ('6338e03e-6909-496e-b52c-1cc62eb5eba6', 'Create Task Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 INSERT INTO keycloak.resource_server_policy VALUES ('42c43075-9052-4129-bebc-691c56a66dfd', 'Read Task Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 INSERT INTO keycloak.resource_server_policy VALUES ('f7b5232d-91c5-4444-b8ca-165d17552a5d', 'Update Task Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 INSERT INTO keycloak.resource_server_policy VALUES ('b6033d87-3b1b-4002-8f97-255956c2b506', 'Delete Task Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
-INSERT INTO keycloak.resource_server_policy VALUES ('48345f52-292b-474c-acd3-1cc56513aa4f', 'Read Organization Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
-INSERT INTO keycloak.resource_server_policy VALUES ('2d99ec81-c6a8-4949-b129-0bc425126832', 'Delete Organization Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
-INSERT INTO keycloak.resource_server_policy VALUES ('7db68186-ebbb-40a8-8dd7-147deddae4ce', 'Create Organization Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
-INSERT INTO keycloak.resource_server_policy VALUES ('73c7d9cb-5b6a-4a57-a7e1-5e81ec3aa8c2', 'Update Organization Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
+INSERT INTO keycloak.resource_server_policy VALUES ('2d99ec81-c6a8-4949-b129-0bc425126832', 'Delete Team Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
+INSERT INTO keycloak.resource_server_policy VALUES ('48345f52-292b-474c-acd3-1cc56513aa4f', 'Read Team Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
+INSERT INTO keycloak.resource_server_policy VALUES ('73c7d9cb-5b6a-4a57-a7e1-5e81ec3aa8c2', 'Update Team Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
+INSERT INTO keycloak.resource_server_policy VALUES ('beb7d05d-19f7-4690-86e9-13dd49936d71', 'Create Organization Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
+INSERT INTO keycloak.resource_server_policy VALUES ('f93476a3-2536-4e2c-bcad-212d0859fbe1', 'Delete Organization Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
+INSERT INTO keycloak.resource_server_policy VALUES ('a03337fa-5ad4-42e1-8beb-52afcac74329', 'Read Organization Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
+INSERT INTO keycloak.resource_server_policy VALUES ('ab1f242c-d8bf-4860-a2b1-4702f367bbd5', 'Update Organization Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
+INSERT INTO keycloak.resource_server_policy VALUES ('7db68186-ebbb-40a8-8dd7-147deddae4ce', 'Create Team Permission', NULL, 'scope', '0', '0', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 
 
 --
@@ -3630,14 +3631,15 @@ INSERT INTO keycloak.user_role_mapping VALUES ('a5654d13-57b2-4a00-8ffa-e4be21c1
 INSERT INTO keycloak.user_role_mapping VALUES ('395df0fe-9ce6-4af3-9d3f-a76b64e2c6b1', '6c15646c-89cb-43ad-aa91-cbdc4bdca430');
 INSERT INTO keycloak.user_role_mapping VALUES ('f82082f8-ce8f-4514-a0df-08b916e08db3', '6c15646c-89cb-43ad-aa91-cbdc4bdca430');
 INSERT INTO keycloak.user_role_mapping VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', '4379775d-7629-4dca-9dd0-8781329569b1');
-INSERT INTO keycloak.user_role_mapping VALUES ('97caa102-e9d8-44de-94a1-74e5ea7bccb5', '4379775d-7629-4dca-9dd0-8781329569b1');
 INSERT INTO keycloak.user_role_mapping VALUES ('a1234e9b-ccf4-43c2-8c5a-f8d5964d9e22', '18b24af2-ef61-4fcc-a1e0-b27bbc4f6a2d');
 INSERT INTO keycloak.user_role_mapping VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', 'cd88e2db-00bb-474f-91d2-2096e10f86a1');
 INSERT INTO keycloak.user_role_mapping VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', 'ff88829c-0226-44f3-9eb2-6e294ccd57d3');
 INSERT INTO keycloak.user_role_mapping VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', '6dde7b5b-ffe1-4627-9ca9-d4c5290f6f20');
-INSERT INTO keycloak.user_role_mapping VALUES ('1b55f720-894d-4d89-b37d-358e5eb29309', 'cd88e2db-00bb-474f-91d2-2096e10f86a1');
 INSERT INTO keycloak.user_role_mapping VALUES ('934d2eb7-4ffa-406f-b8a9-155460dd9872', '6c15646c-89cb-43ad-aa91-cbdc4bdca430');
 INSERT INTO keycloak.user_role_mapping VALUES ('eee97160-4b67-4071-84f4-099bbcd704af', '6c15646c-89cb-43ad-aa91-cbdc4bdca430');
+INSERT INTO keycloak.user_role_mapping VALUES ('1b55f720-894d-4d89-b37d-358e5eb29309', '4379775d-7629-4dca-9dd0-8781329569b1');
+INSERT INTO keycloak.user_role_mapping VALUES ('97caa102-e9d8-44de-94a1-74e5ea7bccb5', 'cd88e2db-00bb-474f-91d2-2096e10f86a1');
+INSERT INTO keycloak.user_role_mapping VALUES ('97caa102-e9d8-44de-94a1-74e5ea7bccb5', '6dde7b5b-ffe1-4627-9ca9-d4c5290f6f20');
 
 
 --
@@ -5936,7 +5938,7 @@ ALTER TABLE ONLY keycloak.identity_provider_config
     ADD CONSTRAINT fkdc4897cf864c4e43 FOREIGN KEY (identity_provider_id) REFERENCES keycloak.identity_provider(internal_id);
 
 
--- Completed on 2021-12-10 02:53:12 UTC
+-- Completed on 2021-12-12 19:34:34 UTC
 
 --
 -- PostgreSQL database dump complete

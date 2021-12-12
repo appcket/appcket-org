@@ -16,7 +16,7 @@ import { intersectionBy } from 'lodash';
 
 import { Team } from './team';
 import { PrismaService } from 'src/prisma.service';
-import { resources } from 'src/common/enums/resources.enum';
+import { Resources } from 'src/common/enums/resources.enum';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
@@ -51,7 +51,7 @@ export class TeamResolver {
   ) {}
 
   @Query((returns) => Team, { nullable: true })
-  @Permissions(`${resources.Team}#${TeamPermission.read}`)
+  @Permissions(`${Resources.Team}#${TeamPermission.read}`)
   @UseGuards(PermissionsGuard)
   teamById(@Args('id') id: string) {
     return this.prismaService.team.findUnique({
@@ -64,7 +64,7 @@ export class TeamResolver {
   }
 
   @Query((returns) => [Team])
-  @Permissions(`${resources.Team}#${TeamPermission.read}`)
+  @Permissions(`${Resources.Team}#${TeamPermission.read}`)
   @UseGuards(PermissionsGuard)
   searchTeams(
     @Args('searchString', { nullable: true }) searchString: string,

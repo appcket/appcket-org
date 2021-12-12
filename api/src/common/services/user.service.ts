@@ -21,7 +21,11 @@ export class UserService {
       username: userResponse.username,
       email: userResponse.email,
       firstName: userResponse.firstName,
-      jobTitle: (userResponse.attributes && userResponse?.attributes.jobTitle[0]) || '',
+      jobTitle:
+        (userResponse.attributes &&
+          userResponse?.attributes.jobTitle &&
+          userResponse?.attributes.jobTitle[0]) ||
+        '',
       teams: [],
     };
   }
