@@ -9,7 +9,7 @@ import NotificationsIcon from '@mui/icons-material/NotificationsOutlined';
 import InputIcon from '@mui/icons-material/Input';
 import { useKeycloak } from '@react-keycloak/web';
 
-import Logo from 'src/components/Logo';
+import Logo from 'src/common/components/Logo';
 
 const useStyles = makeStyles(() => ({
   root: {},

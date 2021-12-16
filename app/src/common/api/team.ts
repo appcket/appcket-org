@@ -48,6 +48,12 @@ export const useTeamById = (teamId: string): UseQueryResult<Team> => {
             organization_id
             name
           }
+          users {
+            user_id
+            username
+            firstName
+            jobTitle
+          }
         }
       }
     `,

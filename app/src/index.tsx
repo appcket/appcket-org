@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 
 import keycloak from 'src/common/keycloak';
 import App from './App';
-import Loading from './components/Loading';
+import Loading from './common/components/Loading';
 import reportWebVitals from './reportWebVitals';
 
 const keycloakInitOptions = {

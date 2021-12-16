@@ -5,12 +5,13 @@ import Typography from '@mui/material/Typography';
 
 import Page from 'src/common/components/Page';
 
-const NotFound = () => (
-  <Page title="404 Error Not Found">
+const Unauthorized = () => (
+  <Page title="Unauthorized">
     <Container maxWidth="lg">
-      <Typography variant="h3">Not Found</Typography>
+      <Typography variant="h3">Sorry ✋</Typography>
       <Typography variant="body1">
-        Oops, we weren't able to find what you were looking for.
+        You are do not have access to view this page. Please contact the administrator for more
+        information.
       </Typography>
       <Typography variant="body1">
         Try going <Link to="/">home</Link>.
@@ -19,4 +20,4 @@ const NotFound = () => (
   </Page>
 );
 
-export default NotFound;
+export default Unauthorized;

@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { ObjectType, Field } from '@nestjs/graphql';
 
 import { Team } from 'src/team/team';
+import { Permission } from './permission';
 
 @ObjectType()
 export class User {
@@ -21,4 +22,6 @@ export class User {
   jobTitle: string | null;
 
   @Field(() => [Team]) teams?: Team[];
+
+  @Field(() => [Permission]) permissions?: Permission[];
 }

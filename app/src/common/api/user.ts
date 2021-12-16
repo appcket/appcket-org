@@ -21,6 +21,10 @@ export const useUserInfo = (): UseQueryResult<User> => {
           email
           firstName
           jobTitle
+          permissions {
+            rsname
+            scopes
+          }
         }
       }
     `,

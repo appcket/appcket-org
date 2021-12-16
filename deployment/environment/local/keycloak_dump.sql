@@ -5,7 +5,7 @@
 -- Dumped from database version 13.4 (Debian 13.4-1.pgdg100+1)
 -- Dumped by pg_dump version 13.4 (Debian 13.4-1.pgdg100+1)
 
--- Started on 2021-12-10 02:53:11 UTC
+-- Started on 2021-12-16 02:43:23 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2338,6 +2338,7 @@ INSERT INTO keycloak.composite_role VALUES ('97caa102-e9d8-44de-94a1-74e5ea7bccb
 INSERT INTO keycloak.composite_role VALUES ('eee97160-4b67-4071-84f4-099bbcd704af', '934d2eb7-4ffa-406f-b8a9-155460dd9872');
 INSERT INTO keycloak.composite_role VALUES ('1b55f720-894d-4d89-b37d-358e5eb29309', '934d2eb7-4ffa-406f-b8a9-155460dd9872');
 INSERT INTO keycloak.composite_role VALUES ('a1234e9b-ccf4-43c2-8c5a-f8d5964d9e22', 'f82082f8-ce8f-4514-a0df-08b916e08db3');
+INSERT INTO keycloak.composite_role VALUES ('a1234e9b-ccf4-43c2-8c5a-f8d5964d9e22', '934d2eb7-4ffa-406f-b8a9-155460dd9872');
 
 
 --
@@ -2738,6 +2739,7 @@ INSERT INTO keycloak.keycloak_role VALUES ('28c9d094-9c20-41ae-a6b8-e76ff29509bf
 --
 
 INSERT INTO keycloak.migration_model VALUES ('mwnrl', '15.0.2', 1632600811);
+INSERT INTO keycloak.migration_model VALUES ('onbgu', '15.1.0', 1639591161);
 
 
 --
@@ -5938,7 +5940,7 @@ ALTER TABLE ONLY keycloak.identity_provider_config
     ADD CONSTRAINT fkdc4897cf864c4e43 FOREIGN KEY (identity_provider_id) REFERENCES keycloak.identity_provider(internal_id);
 
 
--- Completed on 2021-12-12 19:34:34 UTC
+-- Completed on 2021-12-16 02:43:24 UTC
 
 --
 -- PostgreSQL database dump complete

@@ -5,6 +5,7 @@ import { AxiosRequestConfig } from 'axios';
 import { lastValueFrom } from 'rxjs';
 
 import { PrismaService } from 'src/prisma.service';
+import { AuthorizationService } from 'src/common/services/authorization.service';
 import { User } from 'src/user/user';
 
 @Injectable()
@@ -13,6 +14,7 @@ export class UserService {
     private httpService: HttpService,
     private configService: ConfigService,
     private prismaService: PrismaService,
+    private authorizationService: AuthorizationService,
   ) {}
 
   private formatUserModel(userResponse): User {
@@ -27,6 +29,7 @@ export class UserService {
           userResponse?.attributes.jobTitle[0]) ||
         '',
       teams: [],
+      permissions: [],
     };
   }
 
@@ -45,10 +48,15 @@ export class UserService {
         config,
       );
 
+      const userPermissionsResponse$ = await this.authorizationService.getUserPermissions(token);
+
       const response = await lastValueFrom(response$);
+      const userPermissionsResponse = await lastValueFrom(userPermissionsResponse$);
 
       if (response.data) {
         let user: User = this.formatUserModel(response.data);
+
+        user.permissions = userPermissionsResponse.data;
 
         let userTeams = await this.prismaService.team_user.findMany({
           where: {

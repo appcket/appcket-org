@@ -1,24 +1,35 @@
 import React from 'react';
-import { useRoutes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
 
-import GlobalStyles from 'src/components/GlobalStyles';
+import GlobalStyles from 'src/common/components/GlobalStyles';
 import theme from 'src/common/theme';
-import routes from 'src/routes';
+import MainLayout from 'src/common/components/layouts/MainLayout';
+import Home from 'src/pages/Home';
+import Teams from 'src/pages/Teams';
+import About from 'src/pages/About';
+import NotFound from 'src/pages/NotFound';
+import Unauthorized from 'src/pages/Unauthorized';
 
 declare module '@mui/styles/defaultTheme' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultTheme extends Theme {}
 }
 
 const App = () => {
-  const routing = useRoutes(routes);
-
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        {routing}
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Home />} />
+            <Route path="teams/*" element={<Teams />} />
+            <Route path="about" element={<About />} />
+            <Route path="unauthorized" element={<Unauthorized />} />
+            <Route path="404" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/404" />} />
+          </Route>
+        </Routes>
       </ThemeProvider>
     </StyledEngineProvider>
   );

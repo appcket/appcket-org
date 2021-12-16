@@ -4,6 +4,7 @@
 /environment/qa/registry
 /environment/production/registry
 
+*.tgz
 **.crt
 **.key
 node_modules

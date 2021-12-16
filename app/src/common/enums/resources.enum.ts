@@ -1,5 +1,7 @@
-export enum Resources {
+enum Resources {
   Organization = 'Organization',
   Team = 'Team',
   Task = 'Task',
 }
+
+export default Resources;

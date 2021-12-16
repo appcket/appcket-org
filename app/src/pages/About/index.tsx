@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
-import Page from 'src/components/Page';
+import Page from 'src/common/components/Page';
 
 const About = () => (
   <Page title="About">
