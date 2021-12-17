@@ -6,6 +6,7 @@ import Resources from 'src/common/enums/resources.enum';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import ViewTeams from 'src/pages/Teams/ViewTeams';
 import ViewTeam from 'src/pages/Teams/ViewTeam';
+import EditTeam from 'src/pages/Teams/EditTeam';
 
 const Teams = () => {
   return (
@@ -23,6 +24,14 @@ const Teams = () => {
         element={
           <ProtectedRoute permission={[Resources.Team, TeamPermission.read]}>
             <ViewTeam />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/:teamId/edit"
+        element={
+          <ProtectedRoute permission={[Resources.Team, TeamPermission.update]}>
+            <EditTeam />
           </ProtectedRoute>
         }
       />
