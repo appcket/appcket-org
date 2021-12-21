@@ -42,8 +42,6 @@ spec:
         # - command: ["yarn"]
         #   args: ["start"]
         env:
-        - name: HOST
-          value: {{ .Values.api.name }}
         - name: NODE_ENV
           value: {{ .Values.env }}
         - name: PORT

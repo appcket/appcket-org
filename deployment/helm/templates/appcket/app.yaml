@@ -33,13 +33,11 @@ spec:
         image: "{{ .Values.image.repository }}/{{ .Values.app.image }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{- if eq .Values.env "local" }}
-        command: ["/bin/sh"]
+        command: ["/bin/bash"]
         {{- end }}
         # command: ["/bin/bash"]
         # command: ["yarn","start"]
         env:
-        - name: HOST
-          value: 0.0.0.0
         - name: NODE_ENV
           value: {{ .Values.env }}
         - name: PORT
