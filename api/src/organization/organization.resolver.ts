@@ -3,8 +3,8 @@ import { Resolver, Query, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { Organization } from './organization';
-import { PrismaService } from 'src/prisma.service';
+import { Organization } from './models/organization.model';
+import { PrismaService } from 'src/common/services/prisma.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { OrganizationPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';

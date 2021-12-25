@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { Context, Resolver, Query } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 
-import { User } from './user';
-import { UserService } from 'src/common/services/user.service';
+import { User } from './models/user.model';
+import { UserService } from 'src/user/services/user.service';
 
 @Resolver(User)
 export class UserResolver {

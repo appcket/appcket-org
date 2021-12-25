@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { ObjectType, Field } from '@nestjs/graphql';
 
-import { Team } from 'src/team/team';
-import { Permission } from './permission';
+import { Team } from 'src/team/models/team.model';
+import { Permission } from '../../permission/models/permission.model';
 
 @ObjectType()
 export class User {

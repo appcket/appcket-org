@@ -1,26 +1,30 @@
 import 'reflect-metadata';
 import {
-  Resolver,
-  ResolveField,
-  Parent,
-  Query,
   Args,
   Context,
-  InputType,
   Field,
+  InputType,
+  Mutation,
+  Parent,
+  Query,
+  Resolver,
+  ResolveField,
   registerEnumType,
 } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { intersectionBy } from 'lodash';
 
-import { Team } from './team';
-import { PrismaService } from 'src/prisma.service';
+import { Team } from './models/team.model';
+import { UpdateTeamInput } from './dtos/updateTeam.input';
+import { PrismaService } from 'src/common/services/prisma.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { UserService } from 'src/common/services/user.service';
+import { UserService } from 'src/user/services/user.service';
+import { GetTeamService } from 'src/team/services/getTeam.service';
+import { UpdateTeamService } from 'src/team/services/updateTeam.service';
 
 @InputType()
 export class TeamCreateInput {
@@ -43,27 +47,23 @@ registerEnumType(SortOrder, {
   name: 'SortOrder',
 });
 
-@Resolver(Team)
+@Resolver(() => Team)
 export class TeamResolver {
   constructor(
     @Inject(PrismaService) private prismaService: PrismaService,
     @Inject(UserService) private userService: UserService,
+    @Inject(GetTeamService) private getTeamService: GetTeamService,
+    @Inject(UpdateTeamService) private updateTeamService: UpdateTeamService,
   ) {}
 
-  @Query((returns) => Team, { nullable: true })
+  @Query(() => Team, { nullable: true })
   @Permissions(`${Resources.Team}#${TeamPermission.read}`)
   @UseGuards(PermissionsGuard)
-  teamById(@Args('id') id: string) {
-    return this.prismaService.team.findUnique({
-      where: { team_id: id },
-      include: {
-        team_user: true,
-        organization: true,
-      },
-    });
+  async getTeam(@Args('id') id: string) {
+    return await this.getTeamService.getTeam(id);
   }
 
-  @Query((returns) => [Team])
+  @Query(() => [Team])
   @Permissions(`${Resources.Team}#${TeamPermission.read}`)
   @UseGuards(PermissionsGuard)
   searchTeams(
@@ -87,6 +87,13 @@ export class TeamResolver {
       skip: skip || undefined,
       orderBy: orderBy || undefined,
     });
+  }
+
+  @Mutation(() => Team)
+  @Permissions(`${Resources.Team}#${TeamPermission.update}`)
+  @UseGuards(PermissionsGuard)
+  async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInput) {
+    return await this.updateTeamService.updateTeam(updateTeamInput);
   }
 
   @ResolveField('users')

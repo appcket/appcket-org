@@ -4,9 +4,9 @@ import { ConfigService } from '@nestjs/config';
 import { AxiosRequestConfig } from 'axios';
 import { lastValueFrom } from 'rxjs';
 
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/common/services/prisma.service';
 import { AuthorizationService } from 'src/common/services/authorization.service';
-import { User } from 'src/user/user';
+import { User } from 'src/user/models/user.model';
 
 @Injectable()
 export class UserService {

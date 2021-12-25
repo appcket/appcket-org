@@ -3,7 +3,7 @@ import { UseQueryResult } from 'react-query';
 
 import { useApiQuery } from 'src/common/api';
 import SearchTeamsQueryResponse from 'src/common/models/responses/SearchTeamsQueryResponse';
-import TeamByIdQueryResponse from 'src/common/models/responses/TeamByIdQueryResponse';
+import GetTeamQueryResponse from 'src/common/models/responses/GetTeamQueryResponse';
 import TeamGrid from 'src/common/models/TeamGrid';
 import Team from 'src/common/models/Team';
 
@@ -29,10 +29,10 @@ export const useSearchTeams = (searchString: string): UseQueryResult<TeamGrid[]>
   );
 };
 
-export const useTeamById = (teamId: string): UseQueryResult<Team> => {
-  const queryName = 'teamById';
-  const processData = (data: TeamByIdQueryResponse): Team => {
-    return data.teamById;
+export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
+  const queryName = 'getTeam';
+  const processData = (data: GetTeamQueryResponse): Team => {
+    return data.getTeam;
   };
 
   return useApiQuery(

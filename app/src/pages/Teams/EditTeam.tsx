@@ -14,7 +14,7 @@ import TextField from '@mui/material/TextField';
 
 import Page from 'src/common/components/Page';
 import Team from 'src/common/models/Team';
-import { useTeamById } from 'src/common/api/team';
+import { useGetTeam } from 'src/common/api/team';
 
 const EditTeam = () => {
   const params = useParams();
@@ -25,7 +25,7 @@ const EditTeam = () => {
     formState: { errors },
   } = useForm<Team>();
   const onSubmit = (data: unknown) => console.log(data);
-  const { status, data, error, isFetching } = useTeamById(params.teamId!);
+  const { status, data, error, isFetching } = useGetTeam(params.teamId!);
 
   let editTeamComponent;
 

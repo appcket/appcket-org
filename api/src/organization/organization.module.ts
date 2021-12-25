@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthorizationService } from 'src/common/services/authorization.service';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/common/services/prisma.service';
 import { CommonModule } from 'src/common/common.module';
 import { OrganizationResolver } from './organization.resolver';
 

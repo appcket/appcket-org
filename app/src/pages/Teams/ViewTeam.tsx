@@ -11,7 +11,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 import Page from 'src/common/components/Page';
-import { useTeamById } from 'src/common/api/team';
+import { useGetTeam } from 'src/common/api/team';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
@@ -27,7 +27,7 @@ const Team = () => {
     Resources.Team,
     TeamPermission.update,
   );
-  const { status, data, error, isFetching } = useTeamById(params.teamId!);
+  const { status, data, error, isFetching } = useGetTeam(params.teamId!);
 
   let teamComponent;
 

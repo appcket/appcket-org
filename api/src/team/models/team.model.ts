@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { ObjectType, Field, GraphQLISODateTime } from '@nestjs/graphql';
 
-import { Organization } from 'src/organization/organization';
-import { User } from 'src/user/user';
-import { TeamUser } from 'src/teamUser/teamUser';
+import { Organization } from 'src/organization/models/organization.model';
+import { User } from 'src/user/models/user.model';
+import { TeamUser } from 'src/teamUser/models/teamUser.model';
 
 @ObjectType()
 export class Team {

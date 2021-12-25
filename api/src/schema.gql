@@ -51,7 +51,7 @@ type Team {
 type Query {
   organizationById(id: String!): Organization
   hasPermission(permissions: [String!]!): Boolean!
-  teamById(id: String!): Team
+  getTeam(id: String!): Team
   searchTeams(orderBy: TeamOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Team!]!
   userInfo: User!
 }
@@ -63,4 +63,15 @@ input TeamOrderByUpdatedAtInput {
 enum SortOrder {
   asc
   desc
+}
+
+type Mutation {
+  updateTeam(updateTeamInput: UpdateTeamInput!): Team!
+}
+
+input UpdateTeamInput {
+  teamId: String!
+  name: String!
+  organizationId: String!
+  userIds: [String!]!
 }
