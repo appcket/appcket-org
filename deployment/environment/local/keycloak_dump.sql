@@ -5,7 +5,7 @@
 -- Dumped from database version 13.4 (Debian 13.4-1.pgdg100+1)
 -- Dumped by pg_dump version 13.4 (Debian 13.4-1.pgdg100+1)
 
--- Started on 2021-12-16 02:43:23 UTC
+-- Started on 2021-12-25 21:53:22 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1802,12 +1802,12 @@ INSERT INTO keycloak.client VALUES ('c6e9839d-b475-44bd-aec8-9ee1d4434c89', true
 INSERT INTO keycloak.client VALUES ('870ce4fe-4e0d-4fc1-a536-d1dbc292c22a', true, false, 'appcket-realm', 0, false, NULL, NULL, true, NULL, false, 'master', NULL, 0, false, false, 'appcket Realm', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('e801cbf0-541f-4466-80e1-fcce640df2a8', true, false, 'account', 0, false, '**********', '/realms/appcket/account/', false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_account}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('26f802c3-b7af-4e78-b785-40493ae2483a', true, false, 'account-console', 0, true, '**********', '/realms/appcket/account/', false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_account-console}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
+INSERT INTO keycloak.client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', true, true, 'appcket_app', 0, true, NULL, '/', false, 'https://app.appcket.localhost', false, 'appcket', 'openid-connect', -1, false, false, 'Appcket App', false, 'client-secret', 'https://app.appcket.localhost', NULL, NULL, true, false, true, false);
 INSERT INTO keycloak.client VALUES ('544076b9-bf22-4731-8d85-2ddc0edbd41e', true, false, 'admin-cli', 0, true, '**********', NULL, false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_admin-cli}', false, 'client-secret', NULL, NULL, NULL, false, false, true, false);
 INSERT INTO keycloak.client VALUES ('70da96f3-abee-4ade-a7f3-d22e04437a0a', true, false, 'broker', 0, false, '**********', NULL, false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_broker}', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('5ab9f6c1-1f4a-4e68-9ca4-59caf655bbe8', true, false, 'realm-management', 0, false, '**********', NULL, true, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_realm-management}', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', true, false, 'security-admin-console', 0, true, '**********', '/admin/appcket/console/', false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_security-admin-console}', false, 'client-secret', '${authAdminUrl}', NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', true, true, 'appcket_api', 0, false, 'ca9b4ce0-f152-46ff-b672-48c5a9fd678b', NULL, false, 'https://api.appcket.localhost', false, 'appcket', 'openid-connect', -1, false, false, 'Appcket API', true, 'client-secret', 'https://api.appcket.localhost', NULL, NULL, true, false, true, false);
-INSERT INTO keycloak.client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', true, true, 'appcket_app', 0, true, NULL, '/', false, 'https://app.appcket.localhost', false, 'appcket', 'openid-connect', -1, false, false, 'Appcket App', false, 'client-secret', 'https://app.appcket.localhost', NULL, NULL, true, false, true, false);
 
 
 --
@@ -2740,6 +2740,7 @@ INSERT INTO keycloak.keycloak_role VALUES ('28c9d094-9c20-41ae-a6b8-e76ff29509bf
 
 INSERT INTO keycloak.migration_model VALUES ('mwnrl', '15.0.2', 1632600811);
 INSERT INTO keycloak.migration_model VALUES ('onbgu', '15.1.0', 1639591161);
+INSERT INTO keycloak.migration_model VALUES ('n3ufn', '16.1.0', 1640468818);
 
 
 --
@@ -5940,7 +5941,7 @@ ALTER TABLE ONLY keycloak.identity_provider_config
     ADD CONSTRAINT fkdc4897cf864c4e43 FOREIGN KEY (identity_provider_id) REFERENCES keycloak.identity_provider(internal_id);
 
 
--- Completed on 2021-12-16 02:43:24 UTC
+-- Completed on 2021-12-25 21:53:23 UTC
 
 --
 -- PostgreSQL database dump complete
