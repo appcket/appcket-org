@@ -17,6 +17,8 @@ export class UpdateTeamService {
       },
       data: {
         name: data.name,
+        // TODO: validate this user is associated with this organization
+        // TODO: validate this team is associated with this organization
         organization_id: data.organizationId,
         updated_at: new Date(),
       },

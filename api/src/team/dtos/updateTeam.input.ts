@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsString, IsNotEmpty, IsUUID, MaxLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID, MaxLength, MinLength } from 'class-validator';
 
 @InputType()
 export class UpdateTeamInput {
@@ -12,6 +12,7 @@ export class UpdateTeamInput {
   @IsString()
   @IsNotEmpty()
   @MaxLength(50)
+  @MinLength(1)
   name: string;
 
   @Field()

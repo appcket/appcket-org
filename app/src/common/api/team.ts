@@ -1,23 +1,23 @@
 import { gql } from 'graphql-request';
-import { UseQueryResult } from 'react-query';
+import { UseMutationResult, UseQueryResult } from 'react-query';
 
-import { useApiQuery } from 'src/common/api';
+import { useApiMutation, useApiQuery } from 'src/common/api';
 import SearchTeamsQueryResponse from 'src/common/models/responses/SearchTeamsQueryResponse';
 import GetTeamQueryResponse from 'src/common/models/responses/GetTeamQueryResponse';
 import TeamGrid from 'src/common/models/TeamGrid';
 import Team from 'src/common/models/Team';
 
 export const useSearchTeams = (searchString: string): UseQueryResult<TeamGrid[]> => {
-  const queryName = 'searchTeams';
+  const queryKey = 'searchTeams';
   const processData = (data: SearchTeamsQueryResponse): Team[] => {
     return data.searchTeams;
   };
 
   return useApiQuery(
-    queryName,
+    queryKey,
     gql`
       {
-        ${queryName}(searchString: "${searchString}") {
+        ${queryKey}(searchString: "${searchString}") {
           team_id
           name
           created_at
@@ -30,16 +30,16 @@ export const useSearchTeams = (searchString: string): UseQueryResult<TeamGrid[]>
 };
 
 export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
-  const queryName = 'getTeam';
+  const queryKey = 'getTeam';
   const processData = (data: GetTeamQueryResponse): Team => {
     return data.getTeam;
   };
 
   return useApiQuery(
-    queryName,
+    queryKey,
     gql`
       {
-        ${queryName}(id: "${teamId}") {
+        ${queryKey}(id: "${teamId}") {
           team_id
           name
           created_at
@@ -58,5 +58,19 @@ export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
       }
     `,
     processData,
+  );
+};
+
+export const useUpdateTeam = (): UseMutationResult => {
+  const mutationKey = 'updateTeam';
+
+  return useApiMutation(
+    gql`
+      mutation ${mutationKey}($updateTeamInput: UpdateTeamInput!) {
+        updateTeam(updateTeamInput: $updateTeamInput) {
+          name
+        }
+      }
+    `,
   );
 };

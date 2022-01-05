@@ -6,16 +6,16 @@ import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResp
 import User from 'src/common/models/User';
 
 export const useUserInfo = (): UseQueryResult<User> => {
-  const queryName = 'userInfo';
+  const queryKey = 'userInfo';
   const processData = (data: UserInfoQueryResponse): User => {
     return data.userInfo;
   };
 
   return useApiQuery(
-    queryName,
+    queryKey,
     gql`
       {
-        ${queryName} {
+        ${queryKey} {
           user_id
           username
           email
