@@ -89,11 +89,11 @@ export class TeamResolver {
     });
   }
 
-  @Mutation(() => Team)
+  @Mutation(() => Team, { name: 'team' })
   @Permissions(`${Resources.Team}#${TeamPermission.update}`)
   @UseGuards(PermissionsGuard)
-  async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInput) {
-    return await this.updateTeamService.updateTeam(updateTeamInput);
+  async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInput, @Context() ctx) {
+    return await this.updateTeamService.updateTeam(updateTeamInput, ctx.user.id);
   }
 
   @ResolveField('users')

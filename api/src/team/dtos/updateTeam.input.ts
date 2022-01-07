@@ -19,5 +19,6 @@ export class UpdateTeamInput {
   @IsUUID()
   organizationId: string;
 
-  @Field(() => [String]) userIds?: string[];
+  @Field((type) => [String])
+  userIds: string[];
 }

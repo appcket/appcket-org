@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { ObjectType, Field } from '@nestjs/graphql';
+import { IsOptional } from 'class-validator';
 
 import { Team } from 'src/team/models/team.model';
 import { Permission } from '../../permission/models/permission.model';
@@ -18,8 +19,13 @@ export class User {
   @Field()
   firstName: string;
 
-  @Field()
-  jobTitle: string | null;
+  @IsOptional()
+  @Field({ nullable: true })
+  lastName: string | null;
+
+  @IsOptional()
+  @Field({ nullable: true })
+  jobTitle: string;
 
   @Field(() => [Team]) teams?: Team[];
 

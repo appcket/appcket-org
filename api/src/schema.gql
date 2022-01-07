@@ -25,7 +25,8 @@ type User {
   username: String!
   email: String!
   firstName: String!
-  jobTitle: String!
+  lastName: String
+  jobTitle: String
   teams: [Team!]!
   permissions: [Permission!]!
 }
@@ -66,7 +67,7 @@ enum SortOrder {
 }
 
 type Mutation {
-  updateTeam(updateTeamInput: UpdateTeamInput!): Team!
+  team(updateTeamInput: UpdateTeamInput!): Team!
 }
 
 input UpdateTeamInput {

@@ -4,6 +4,7 @@ import { UseMutationResult, UseQueryResult } from 'react-query';
 import { useApiMutation, useApiQuery } from 'src/common/api';
 import SearchTeamsQueryResponse from 'src/common/models/responses/SearchTeamsQueryResponse';
 import GetTeamQueryResponse from 'src/common/models/responses/GetTeamQueryResponse';
+import TeamResponse from 'src/common/models/responses/TeamResponse';
 import TeamGrid from 'src/common/models/TeamGrid';
 import Team from 'src/common/models/Team';
 
@@ -64,13 +65,18 @@ export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
 export const useUpdateTeam = (): UseMutationResult => {
   const mutationKey = 'updateTeam';
 
+  const processData = (data: TeamResponse): Team => {
+    return data.team;
+  };
+
   return useApiMutation(
     gql`
       mutation ${mutationKey}($updateTeamInput: UpdateTeamInput!) {
-        updateTeam(updateTeamInput: $updateTeamInput) {
+        team(updateTeamInput: $updateTeamInput) {
           name
         }
       }
     `,
+    processData,
   );
 };

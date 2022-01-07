@@ -1,12 +1,12 @@
 import { useKeycloak } from '@react-keycloak/web';
-import { UseMutationResult, useMutation, useQuery } from 'react-query';
+import { UseMutationResult, useMutation, useQuery, UseQueryResult } from 'react-query';
 import { GraphQLClient } from 'graphql-request';
 import { get } from 'lodash';
 
 const endpoint = get(process.env, 'REACT_APP_API_URL', 'https://api.appcket.org');
 
 // @ts-ignore
-export const useApiQuery = (queryKey: string, query: string, select?) => {
+export const useApiQuery = (queryKey: string, query: string, processData?) => {
   const { keycloak } = useKeycloak();
   return useQuery(
     queryKey,
@@ -22,12 +22,13 @@ export const useApiQuery = (queryKey: string, query: string, select?) => {
       return data;
     },
     {
-      select,
+      select: processData,
     },
   );
 };
 
-export const useApiMutation = (mutation: string): UseMutationResult<unknown> => {
+// @ts-ignore
+export const useApiMutation = (mutation: string, processData?): UseMutationResult<unknown> => {
   const { keycloak } = useKeycloak();
   return useMutation(async (inputVars) => {
     const graphQLClient = new GraphQLClient(endpoint, {
@@ -38,6 +39,6 @@ export const useApiMutation = (mutation: string): UseMutationResult<unknown> => 
 
     let data = await graphQLClient.request(mutation, inputVars);
 
-    return data;
+    return processData(data);
   });
 };

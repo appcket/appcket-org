@@ -23,6 +23,7 @@ export class UserService {
       username: userResponse.username,
       email: userResponse.email,
       firstName: userResponse.firstName,
+      lastName: userResponse.lastName,
       jobTitle:
         (userResponse.attributes &&
           userResponse?.attributes.jobTitle &&
@@ -82,8 +83,8 @@ export class UserService {
     }
   }
 
-  // TODO: uses the keycloak rest admin api to return all users in a realm
-  // better to query the user_entity table in the keycloak database directly and get users by an array of userIds, https://github.com/prisma/prisma/issues/2443#issuecomment-630679118
+  // TODO: uses the keycloak REST admin api to return all users in a realm
+  // better to query the user_entity table in the keycloak schema directly and get users by an array of userIds, https://github.com/prisma/prisma/issues/2443#issuecomment-630679118
   public async getUsers(token: string): Promise<User[]> {
     const config: AxiosRequestConfig = {
       headers: {

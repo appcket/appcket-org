@@ -10,16 +10,19 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 import Page from 'src/common/components/Page';
 import UpdateTeamMutationInput from 'src/common/models/inputs/UpdateTeamMutationInput';
 import { useGetTeam, useUpdateTeam } from 'src/common/api/team';
+import Team from 'src/common/models/Team';
 import { FormTextField } from 'src/common/components/form/FormTextField';
 
 const EditTeam = () => {
   const params = useParams();
   const getTeamsQuery = useGetTeam(params.teamId!);
   const updateTeam = useUpdateTeam();
+  const { enqueueSnackbar } = useSnackbar();
   let navigate = useNavigate();
 
   const {
@@ -38,7 +41,18 @@ const EditTeam = () => {
         'cd88e2db-00bb-474f-91d2-2096e10f86a1',
       ];
 
-      updateTeam.mutate({ updateTeamInput }, { onSuccess: (data) => navigate('/teams') });
+      updateTeam.mutate(
+        { updateTeamInput },
+        {
+          onSuccess: (data) => {
+            const updatedTeam = data as Team;
+            enqueueSnackbar(`Updated team successfully: ${updatedTeam.name}`, {
+              variant: 'success',
+            });
+            navigate('/teams');
+          },
+        },
+      );
     }
   };
 
@@ -67,36 +81,37 @@ const EditTeam = () => {
         </List>
       </div>
     );
+
     editTeamComponent = (
       <div>
         <Typography variant="h4" gutterBottom>
           {getTeamsQuery.data.name}
         </Typography>
 
-        <FormTextField
-          name="name"
-          control={control}
-          label="Team Name"
-          rules={{
-            required: { value: true, message: 'This field is required' },
-            maxLength: { value: 50, message: 'This field must be less than 50 characters' },
-            minLength: { value: 1, message: 'This field must be more than 1 character' },
-          }}
-        />
-
-        <Button onClick={handleSubmit(onSubmit)} variant="contained" disabled={!isValid}>
-          Save
-        </Button>
-        <Button onClick={() => reset()} variant="outlined">
-          Reset
-        </Button>
-
         <Paper elevation={1} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           <Grid item xs={12} sm={6}>
-            <Typography variant="body1">Organization:</Typography>
+            <FormTextField
+              name="name"
+              control={control}
+              label="Team Name"
+              rules={{
+                required: { value: true, message: 'This field is required' },
+                maxLength: { value: 50, message: 'This field must be less than 50 characters' },
+                minLength: { value: 1, message: 'This field must be more than 1 character' },
+              }}
+            />
+
+            <Button onClick={handleSubmit(onSubmit)} variant="contained" disabled={!isValid}>
+              Save
+            </Button>
+            <Button onClick={() => reset()} variant="outlined">
+              Reset
+            </Button>
+
             <Typography variant="body1" gutterBottom>
-              {getTeamsQuery.data.organization.name}
+              Organization: {getTeamsQuery.data.organization.name}
             </Typography>
+
             {usersComponent}
           </Grid>
         </Paper>

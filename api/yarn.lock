@@ -4113,10 +4113,10 @@ jwk-to-pem@^2.0.0:
     elliptic "^6.5.4"
     safe-buffer "^5.0.1"
 
-keycloak-connect@^15.1.0:
-  version "15.1.1"
-  resolved "https://registry.yarnpkg.com/keycloak-connect/-/keycloak-connect-15.1.1.tgz#cb6f937410eda50c02844cb1224f845b313c0f3c"
-  integrity sha512-vbCEiEqPFz5NKiX1/j0Et2KUj3K2bKIR90HOTSSRqcS3tj/6rGSE42Z4Lci1zcGgArf/PTAsjNe4/hb/gFRFFg==
+keycloak-connect@^16.1.0:
+  version "16.1.0"
+  resolved "https://registry.yarnpkg.com/keycloak-connect/-/keycloak-connect-16.1.0.tgz#13590d16e50cac08204214ae3bc83648500d74a0"
+  integrity sha512-1Mjm5AAFpO+FghCOFQ99xM2PYJdPhpvCCpwtIOOOEiNKK31m4BpZz70FCC6xcfQDb9euY5Zetgx+3791uvxqXg==
   dependencies:
     jwk-to-pem "^2.0.0"
   optionalDependencies:

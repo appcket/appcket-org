@@ -10,7 +10,7 @@ import { GetTeamService } from 'src/team/services/getTeam.service';
 export class UpdateTeamService {
   constructor(private prismaService: PrismaService, private getTeamService: GetTeamService) {}
 
-  public async updateTeam(data: UpdateTeamInput): Promise<Team> {
+  public async updateTeam(data: UpdateTeamInput, userId: string): Promise<Team> {
     await this.prismaService.team.update({
       where: {
         team_id: data.teamId,
@@ -21,6 +21,7 @@ export class UpdateTeamService {
         // TODO: validate this team is associated with this organization
         organization_id: data.organizationId,
         updated_at: new Date(),
+        updated_by: userId,
       },
     });
 
@@ -44,6 +45,7 @@ export class UpdateTeamService {
         },
         data: {
           deleted_at: new Date(),
+          deleted_by: userId,
         },
       });
     }
@@ -76,6 +78,7 @@ export class UpdateTeamService {
         data: {
           team_id: data.teamId,
           user_id: teamUserId,
+          created_by: userId,
         },
       });
     }
