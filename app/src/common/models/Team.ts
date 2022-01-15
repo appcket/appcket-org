@@ -2,6 +2,7 @@ import Organization from 'src/common/models/Organization';
 import User from 'src/common/models/User';
 
 export default interface Team {
+  id?: string;
   team_id: string;
   name: string;
   created_at: Date;

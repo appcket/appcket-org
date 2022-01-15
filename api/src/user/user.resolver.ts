@@ -13,4 +13,10 @@ export class UserResolver {
   userInfo(@Context() ctx) {
     return this.userService.getUserInfo(ctx.req.kauth.grant.access_token.token);
   }
+
+  // SearchUsers Query to return realm users based on criteria
+  @Query((returns) => [User])
+  searchUsers(@Context() ctx) {
+    return this.userService.getUsers(ctx.req.kauth.grant.access_token.token);
+  }
 }

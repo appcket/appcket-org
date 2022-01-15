@@ -55,6 +55,7 @@ type Query {
   getTeam(id: String!): Team
   searchTeams(orderBy: TeamOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Team!]!
   userInfo: User!
+  searchUsers: [User!]!
 }
 
 input TeamOrderByUpdatedAtInput {

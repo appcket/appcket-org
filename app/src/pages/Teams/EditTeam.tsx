@@ -6,25 +6,23 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { get } from 'lodash';
 
 import Page from 'src/common/components/Page';
 import UpdateTeamMutationInput from 'src/common/models/inputs/UpdateTeamMutationInput';
 import { useGetTeam, useUpdateTeam } from 'src/common/api/team';
 import Team from 'src/common/models/Team';
+import User from 'src/common/models/User';
 import { FormTextField } from 'src/common/components/form/FormTextField';
+import TeamUsersGrid from 'src/pages/Teams/TeamUsersGrid';
+import { useStore } from 'src/common/store';
 
 const EditTeam = () => {
   const params = useParams();
-  const getTeamsQuery = useGetTeam(params.teamId!);
-  const updateTeam = useUpdateTeam();
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  let navigate = useNavigate();
-
   const {
     formState: { isValid },
     handleSubmit,
@@ -32,14 +30,54 @@ const EditTeam = () => {
     control,
   } = useForm<UpdateTeamMutationInput>({ mode: 'all' });
 
-  const onSubmit = async (updateTeamInput: UpdateTeamMutationInput) => {
-    if (getTeamsQuery.isSuccess) {
-      updateTeamInput.organizationId = getTeamsQuery.data.organization.organization_id;
-      updateTeamInput.teamId = getTeamsQuery.data.team_id;
-      updateTeamInput.userIds = [
-        '4379775d-7629-4dca-9dd0-8781329569b1',
-        'cd88e2db-00bb-474f-91d2-2096e10f86a1',
-      ];
+  const getTeamQuery = useGetTeam(params.teamId!);
+  const updateTeam = useUpdateTeam();
+  const resetSelectedUserIds = useStore((state) => state.teamUsers.resetSelectedUserIds);
+  const selectedUserIds = useStore((state) => state.teamUsers.selectedUserIds);
+
+  const initialSelectedItemIds: <T>(items: T[], key: string) => string[] = (
+    items,
+    key,
+  ): string[] => {
+    if (items) {
+      return items.map((item) => get(item, key));
+    }
+    return [];
+  };
+
+  useEffect(() => {
+    reset({ name: getTeamQuery?.data?.name ?? '' });
+    useStore.setState((state) => ({
+      teamUsers: {
+        ...state.teamUsers,
+        selectedUserIds: initialSelectedItemIds(getTeamQuery?.data?.users as User[], 'user_id'),
+      },
+    }));
+  }, [reset, getTeamQuery.data]);
+
+  useStore.setState((state) => ({
+    teamUsers: {
+      ...state.teamUsers,
+      initialSelectedUserIds: initialSelectedItemIds(
+        getTeamQuery?.data?.users as User[],
+        'user_id',
+      ),
+    },
+  }));
+
+  let editTeamComponent;
+
+  if (getTeamQuery.status === 'loading' || getTeamQuery.isFetching) {
+    editTeamComponent = <Typography paragraph>Loading...</Typography>;
+  } else if (getTeamQuery.status === 'error' && getTeamQuery.error instanceof Error) {
+    editTeamComponent = <Typography paragraph>Error: {getTeamQuery.error.message}</Typography>;
+  } else if (getTeamQuery.isSuccess) {
+    editTeamComponent = <Typography paragraph>Unable to view Team</Typography>;
+
+    const onSubmit = async (updateTeamInput: UpdateTeamMutationInput) => {
+      updateTeamInput.organizationId = getTeamQuery.data.organization.organization_id;
+      updateTeamInput.teamId = getTeamQuery.data.team_id;
+      updateTeamInput.userIds = selectedUserIds;
 
       updateTeam.mutate(
         { updateTeamInput },
@@ -53,43 +91,16 @@ const EditTeam = () => {
           },
         },
       );
-    }
-  };
-
-  useEffect(() => {
-    reset({ name: getTeamsQuery?.data?.name ?? '' });
-  }, [reset, getTeamsQuery.data]);
-
-  let editTeamComponent;
-
-  if (getTeamsQuery.status === 'loading' || getTeamsQuery.isFetching) {
-    editTeamComponent = <Typography paragraph>Loading...</Typography>;
-  } else if (getTeamsQuery.status === 'error' && getTeamsQuery.error instanceof Error) {
-    editTeamComponent = <Typography paragraph>Error: {getTeamsQuery.error.message}</Typography>;
-  } else if (getTeamsQuery.isSuccess) {
-    editTeamComponent = <Typography paragraph>Unable to view Team</Typography>;
-
-    const usersComponent = (
-      <div>
-        <Typography variant="body1">Users:</Typography>
-        <List>
-          {getTeamsQuery.data.users.map((user) => (
-            <ListItem key={user.user_id}>
-              <ListItemText primary={user.firstName} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
+    };
 
     editTeamComponent = (
       <div>
         <Typography variant="h4" gutterBottom>
-          {getTeamsQuery.data.name}
+          {getTeamQuery.data.name}
         </Typography>
 
         <Paper elevation={1} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={24} sm={12}>
             <FormTextField
               name="name"
               control={control}
@@ -100,19 +111,31 @@ const EditTeam = () => {
                 minLength: { value: 1, message: 'This field must be more than 1 character' },
               }}
             />
-
-            <Button onClick={handleSubmit(onSubmit)} variant="contained" disabled={!isValid}>
-              Save
-            </Button>
-            <Button onClick={() => reset()} variant="outlined">
-              Reset
-            </Button>
-
             <Typography variant="body1" gutterBottom>
-              Organization: {getTeamsQuery.data.organization.name}
+              Organization: {getTeamQuery.data.organization.name}
             </Typography>
 
-            {usersComponent}
+            {/* instead of passing props to child components, we use zustand to hold local state.
+            In this case, it tracks initially selected users and user the selected users so the 
+            parent component can have this data and send it back to the api onSubmit*/}
+            <TeamUsersGrid />
+
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Button onClick={handleSubmit(onSubmit)} variant="contained" disabled={!isValid}>
+                  Save
+                </Button>
+                <Button
+                  onClick={() => {
+                    reset();
+                    resetSelectedUserIds();
+                  }}
+                  variant="outlined"
+                >
+                  Reset
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
         </Paper>
       </div>
@@ -120,7 +143,7 @@ const EditTeam = () => {
   }
 
   return (
-    <Page title={`Edit Team - ${getTeamsQuery.data?.name}`}>
+    <Page title={`Edit Team - ${getTeamQuery.data?.name}`}>
       <Container maxWidth="lg">
         <div>{editTeamComponent}</div>
       </Container>

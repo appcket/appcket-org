@@ -5,10 +5,9 @@ import { useApiMutation, useApiQuery } from 'src/common/api';
 import SearchTeamsQueryResponse from 'src/common/models/responses/SearchTeamsQueryResponse';
 import GetTeamQueryResponse from 'src/common/models/responses/GetTeamQueryResponse';
 import TeamResponse from 'src/common/models/responses/TeamResponse';
-import TeamGrid from 'src/common/models/TeamGrid';
 import Team from 'src/common/models/Team';
 
-export const useSearchTeams = (searchString: string): UseQueryResult<TeamGrid[]> => {
+export const useSearchTeams = (searchString: string): UseQueryResult<Team[]> => {
   const queryKey = 'searchTeams';
   const processData = (data: SearchTeamsQueryResponse): Team[] => {
     return data.searchTeams;
@@ -53,6 +52,7 @@ export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
             user_id
             username
             firstName
+            lastName
             jobTitle
           }
         }

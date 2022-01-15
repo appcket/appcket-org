@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 
 import Page from 'src/common/components/Page';
-import TeamGrid from 'src/common/models/TeamGrid';
 import { useSearchTeams } from 'src/common/api/team';
 
 const ViewTeams = () => {
@@ -48,7 +47,7 @@ const ViewTeams = () => {
     teamsComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
     // convert api data to mui grid-compatible data
-    data?.forEach((team: TeamGrid) => {
+    data?.forEach((team) => {
       team.id = team.team_id;
     });
 

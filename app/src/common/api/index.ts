@@ -1,5 +1,5 @@
 import { useKeycloak } from '@react-keycloak/web';
-import { UseMutationResult, useMutation, useQuery, UseQueryResult } from 'react-query';
+import { UseMutationResult, useMutation, useQuery } from 'react-query';
 import { GraphQLClient } from 'graphql-request';
 import { get } from 'lodash';
 

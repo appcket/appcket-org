@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
 import { Navigate } from 'react-router-dom';
 
-import UserInfoQueryResponse from '../models/responses/UserInfoQueryResponse';
-import Permission from '../models/Permission';
+import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import Permission from 'src/common/models/Permission';
 import hasPermission from 'src/common/utils/hasPermission';
 
 const ProtectedRoute = ({

@@ -87,7 +87,7 @@ const Team = () => {
   }
 
   return (
-    <Page title="Team">
+    <Page title={`Team - ${data?.name}`}>
       <Container maxWidth="lg">
         <div>{teamComponent}</div>
       </Container>

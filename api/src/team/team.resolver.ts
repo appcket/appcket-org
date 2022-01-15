@@ -78,6 +78,7 @@ export class TeamResolver {
         }
       : {};
 
+    // TODO: move to searchTeams.service
     return this.prismaService.team.findMany({
       where: {
         deleted_at: null,
