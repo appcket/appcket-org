@@ -42,6 +42,10 @@ spec:
           value: {{ .Values.env }}
         - name: PORT
           value: "3000"
+        - name: WDS_SOCKET_PORT
+          value: "0"
+        - name: GENERATE_SOURCEMAP
+          value: "false"
         - name: HTTPS
           value: "true"
         - name: SSL_CRT_FILE
