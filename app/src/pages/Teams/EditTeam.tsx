@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -95,12 +94,13 @@ const EditTeam = () => {
 
     editTeamComponent = (
       <div>
-        <Typography variant="h4" gutterBottom>
-          {getTeamQuery.data.name}
-        </Typography>
+        <Typography variant="h4">{getTeamQuery.data.name}</Typography>
 
-        <Paper elevation={1} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Grid item xs={24} sm={12}>
+        <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
+          <Typography variant="body1" sx={{ mb: 3 }}>
+            Organization: {getTeamQuery.data.organization.name}
+          </Typography>
+          <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
             <FormTextField
               name="name"
               control={control}
@@ -111,30 +111,32 @@ const EditTeam = () => {
                 minLength: { value: 1, message: 'This field must be more than 1 character' },
               }}
             />
-            <Typography variant="body1" gutterBottom>
-              Organization: {getTeamQuery.data.organization.name}
-            </Typography>
+          </Grid>
 
-            {/* instead of passing props to child components, we use zustand to hold local state.
+          {/* instead of passing props to child components, we use zustand to hold local state.
             In this case, it tracks initially selected users and user the selected users so the 
             parent component can have this data and send it back to the api onSubmit*/}
-            <TeamUsersGrid />
+          <TeamUsersGrid />
 
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Button onClick={handleSubmit(onSubmit)} variant="contained" disabled={!isValid}>
-                  Save
-                </Button>
-                <Button
-                  onClick={() => {
-                    reset();
-                    resetSelectedUserIds();
-                  }}
-                  variant="outlined"
-                >
-                  Reset
-                </Button>
-              </Grid>
+          <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
+            <Grid item>
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                variant="contained"
+                disabled={!isValid}
+                sx={{ mx: 1 }}
+              >
+                Save
+              </Button>
+              <Button
+                onClick={() => {
+                  reset();
+                  resetSelectedUserIds();
+                }}
+                variant="outlined"
+              >
+                Reset
+              </Button>
             </Grid>
           </Grid>
         </Paper>
@@ -144,9 +146,7 @@ const EditTeam = () => {
 
   return (
     <Page title={`Edit Team - ${getTeamQuery.data?.name}`}>
-      <Container maxWidth="lg">
-        <div>{editTeamComponent}</div>
-      </Container>
+      <div>{editTeamComponent}</div>
     </Page>
   );
 };

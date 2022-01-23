@@ -1,4 +1,5 @@
 import React from 'react';
+import Typography from '@mui/material/Typography';
 import { DataGrid, GridRowsProp, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 import User from 'src/common/models/User';
@@ -32,7 +33,10 @@ const TeamUsersGrid = () => {
     });
 
     return (
-      <div style={{ height: 300, width: '100%' }}>
+      <div style={{ height: 400, width: '100%' }}>
+        <Typography variant="body1" sx={{ mb: 2 }}>
+          Team Users:
+        </Typography>
         <DataGrid
           rows={rows}
           columns={columns}

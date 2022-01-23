@@ -1,59 +1,58 @@
 import React, { useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
-import makeStyles from '@mui/styles/makeStyles';
+import Box from '@mui/material/Box';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 
-import TopBar from './TopBar';
-import SideBar from './SideBar';
+import SideBar from 'src/common/components/layouts/MainLayout/SideBar';
+import SideBarHeader from 'src/common/components/layouts/MainLayout/SideBar/Header';
+import TopBar from 'src/common/components/layouts/MainLayout/TopBar';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.default,
-    display: 'flex',
-    height: '100%',
-    overflow: 'hidden',
-    width: '100%',
-  },
-  topBar: {
-    display: 'flex',
-  },
-  wrapper: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-    paddingTop: 64,
-    [theme.breakpoints.up('lg')]: {
-      paddingLeft: 256,
-    },
-  },
-  contentContainer: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-    paddingTop: '24px',
-  },
-  content: {
-    flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
-  },
+const drawerWidth = 240;
+
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+  open?: boolean;
+}>(({ theme, open }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  marginRight: 20,
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginLeft: 20,
+  ...(open && {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 20,
+  }),
 }));
 
 const MainLayout = () => {
-  const classes = useStyles();
-  const [isSideBarOpen, setSideBarOpen] = useState(false);
+  // open sidebar by default
+  const [open, setOpen] = useState(true);
+
+  const handleSideBarOpen = () => {
+    setOpen(true);
+  };
+
+  const handleSideBarClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <div className={classes.root}>
-      <TopBar className={classes.topBar} onSideBarOpen={() => setSideBarOpen(true)} />
-      <SideBar onSideBarClose={() => setSideBarOpen(false)} openSideBar={isSideBarOpen} />
-      <div className={classes.wrapper}>
-        <div className={classes.contentContainer}>
-          <div className={classes.content}>
-            <Outlet />
-          </div>
-        </div>
-      </div>
-    </div>
+    <Box sx={{ display: 'flex', height: '100%' }}>
+      <TopBar open={open} handleSideBarOpen={handleSideBarOpen} />
+      <SideBar open={open} handleSideBarClose={handleSideBarClose} drawerWidth={drawerWidth} />
+      <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={200}>
+        <Main open={open}>
+          <SideBarHeader />
+          <Outlet />
+        </Main>
+      </Scrollbars>
+    </Box>
   );
 };
 

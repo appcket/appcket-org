@@ -1,67 +1,79 @@
-import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import clsx from 'clsx';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { AppBar, Badge, Box, Hidden, IconButton, Toolbar } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/NotificationsOutlined';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
 import InputIcon from '@mui/icons-material/Input';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useKeycloak } from '@react-keycloak/web';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
-import Logo from 'src/common/components/Logo';
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
 
-const useStyles = makeStyles(() => ({
-  root: {},
-  avatar: {
-    width: 60,
-    height: 60,
-  },
+const drawerWidth = 240;
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
 }));
 
 type Props = {
-  className: string;
-  onSideBarOpen: () => void;
+  open: boolean;
+  handleSideBarOpen: () => void;
 };
 
-const TopBar = ({ className, onSideBarOpen, ...rest }: Props) => {
-  const classes = useStyles();
-  const [notifications] = useState([]);
+const TopBar = ({ open, handleSideBarOpen }: Props) => {
   const { keycloak } = useKeycloak();
 
   return (
-    <AppBar className={clsx(classes.root, className)} color="primary" elevation={0} {...rest}>
+    <AppBar position="fixed" open={open}>
       <Toolbar>
-        <RouterLink to="/">
-          <Logo />
-        </RouterLink>
-        <Box flexGrow={1} />
-        <IconButton color="inherit" size="large">
-          <Badge badgeContent={notifications.length} color="primary" variant="dot">
-            <NotificationsIcon />
-          </Badge>
+        <IconButton
+          color="inherit"
+          aria-label="Open Sidebar"
+          title="Open Sidebar"
+          onClick={handleSideBarOpen}
+          edge="start"
+          sx={{ mr: 2, ...(open && { display: 'none' }) }}
+        >
+          <MenuIcon />
         </IconButton>
-        <IconButton color="inherit" size="large" onClick={() => keycloak.logout()}>
+        <Box flexGrow={1} />
+        <IconButton
+          size="large"
+          onClick={() => keycloak.logout()}
+          title="Logout"
+          aria-label="Logout"
+        >
           <InputIcon />
         </IconButton>
-        <Hidden lgUp>
-          <IconButton color="inherit" onClick={onSideBarOpen} size="large">
-            <MenuIcon />
-          </IconButton>
-        </Hidden>
       </Toolbar>
     </AppBar>
   );
 };
 
-TopBar.defaultProps = {
-  className: '',
-  onSideBarOpen: () => {},
+TopBar.propTypes = {
+  handleSideBarOpen: PropTypes.func,
+  open: PropTypes.bool,
 };
 
-TopBar.propTypes = {
-  className: PropTypes.string,
-  onSideBarOpen: PropTypes.func,
+TopBar.defaultProps = {
+  handleSideBarOpen: () => {},
+  open: false,
 };
 
 export default TopBar;

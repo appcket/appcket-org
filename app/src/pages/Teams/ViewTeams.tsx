@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { NavLink } from 'react-router-dom';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
@@ -62,12 +61,10 @@ const ViewTeams = () => {
 
   return (
     <Page title="Teams">
-      <Container maxWidth="lg">
-        <Typography variant="h4" gutterBottom>
-          Teams
-        </Typography>
-        <div>{teamsComponent}</div>
-      </Container>
+      <Typography variant="h4" gutterBottom>
+        Teams
+      </Typography>
+      <div>{teamsComponent}</div>
     </Page>
   );
 };

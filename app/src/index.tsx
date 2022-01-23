@@ -5,6 +5,7 @@ import { ReactKeycloakProvider } from '@react-keycloak/web';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import keycloak from 'src/common/keycloak';
 import App from './App';
@@ -34,6 +35,7 @@ ReactDOM.render(
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
           <BrowserRouter>
+            <CssBaseline />
             <App />
           </BrowserRouter>
         </HelmetProvider>

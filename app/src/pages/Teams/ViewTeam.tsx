@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -88,9 +87,7 @@ const Team = () => {
 
   return (
     <Page title={`Team - ${data?.name}`}>
-      <Container maxWidth="lg">
-        <div>{teamComponent}</div>
-      </Container>
+      <div>{teamComponent}</div>
     </Page>
   );
 };
