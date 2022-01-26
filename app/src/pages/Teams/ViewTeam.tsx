@@ -65,19 +65,14 @@ const Team = () => {
     );
     teamComponent = (
       <div>
-        <Typography variant="h4" gutterBottom>
-          {data?.name}
-        </Typography>
+        <Typography variant="h4">{data?.name}</Typography>
 
-        <Paper elevation={1} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+        <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
           <Grid container justifyContent="flex-end">
             <Grid item>{updateTeamButton}</Grid>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Typography variant="body1">Organization:</Typography>
-            <Typography variant="body1" gutterBottom>
-              {data?.organization.name}
-            </Typography>
+            <Typography variant="body1">Organization: {data?.organization.name}</Typography>
             {usersComponent}
           </Grid>
         </Paper>
