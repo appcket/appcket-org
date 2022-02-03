@@ -1,4 +1,4 @@
-FROM jboss/keycloak:16.1.0
+FROM jboss/keycloak:16.1.1
 
 #ADD themes/appcket /opt/jboss/keycloak/themes/appcket
 

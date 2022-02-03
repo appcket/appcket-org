@@ -5,6 +5,13 @@ export enum OrganizationPermission {
   delete = 'organization:delete',
 }
 
+export enum ProjectPermission {
+  create = `project:create`,
+  read = 'project:read',
+  update = 'project:update',
+  delete = 'project:delete',
+}
+
 export enum TeamPermission {
   create = 'team:create',
   read = 'team:read',

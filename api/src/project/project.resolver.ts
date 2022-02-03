@@ -14,54 +14,54 @@ import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { intersectionBy } from 'lodash';
 
-import { Team } from './models/team.model';
-import { UpdateTeamInput } from './dtos/updateTeam.input';
+import { Project } from './models/project.model';
+import { UpdateProjectInput } from './dtos/updateProject.input';
 import { PrismaService } from 'src/common/services/prisma.service';
 import { Resources } from 'src/common/enums/resources.enum';
-import { TeamPermission } from 'src/common/enums/permissions.enum';
 import { SortOrder } from 'src/common/enums/sortOrder.enum';
+import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
 import { UserService } from 'src/user/services/user.service';
-import { GetTeamService } from 'src/team/services/getTeam.service';
-import { UpdateTeamService } from 'src/team/services/updateTeam.service';
+import { GetProjectService } from 'src/project/services/getProject.service';
+import { UpdateProjectService } from 'src/project/services/updateProject.service';
 
 @InputType()
-export class TeamCreateInput {
+export class ProjectCreateInput {
   @Field()
   name: string;
 }
 
 @InputType()
-class TeamOrderByUpdatedAtInput {
+class ProjectOrderByUpdatedAtInput {
   @Field((type) => SortOrder)
   updated_at: SortOrder;
 }
 
-@Resolver(() => Team)
-export class TeamResolver {
+@Resolver(() => Project)
+export class ProjectResolver {
   constructor(
     @Inject(PrismaService) private prismaService: PrismaService,
     @Inject(UserService) private userService: UserService,
-    @Inject(GetTeamService) private getTeamService: GetTeamService,
-    @Inject(UpdateTeamService) private updateTeamService: UpdateTeamService,
+    @Inject(GetProjectService) private getProjectService: GetProjectService,
+    @Inject(UpdateProjectService) private updateProjectService: UpdateProjectService,
   ) {}
 
-  @Query(() => Team, { nullable: true })
-  @Permissions(`${Resources.Team}#${TeamPermission.read}`)
+  @Query(() => Project, { nullable: true })
+  @Permissions(`${Resources.Project}#${ProjectPermission.read}`)
   @UseGuards(PermissionsGuard)
-  async getTeam(@Args('id') id: string) {
-    return await this.getTeamService.getTeam(id);
+  async getProject(@Args('id') id: string) {
+    return await this.getProjectService.getProject(id);
   }
 
-  @Query(() => [Team])
-  @Permissions(`${Resources.Team}#${TeamPermission.read}`)
+  @Query(() => [Project])
+  @Permissions(`${Resources.Project}#${ProjectPermission.read}`)
   @UseGuards(PermissionsGuard)
-  searchTeams(
+  searchProjects(
     @Args('searchString', { nullable: true }) searchString: string,
     @Args('skip', { nullable: true }) skip: number,
     @Args('take', { nullable: true }) take: number,
-    @Args('orderBy', { nullable: true }) orderBy: TeamOrderByUpdatedAtInput,
+    @Args('orderBy', { nullable: true }) orderBy: ProjectOrderByUpdatedAtInput,
   ) {
     const or = searchString
       ? {
@@ -69,8 +69,8 @@ export class TeamResolver {
         }
       : {};
 
-    // TODO: move to searchTeams.service
-    return this.prismaService.team.findMany({
+    // TODO: move to searchProjects.service
+    return this.prismaService.project.findMany({
       where: {
         deleted_at: null,
         ...or,
@@ -81,16 +81,16 @@ export class TeamResolver {
     });
   }
 
-  @Mutation(() => Team, { name: 'team' })
-  @Permissions(`${Resources.Team}#${TeamPermission.update}`)
+  @Mutation(() => Project, { name: 'project' })
+  @Permissions(`${Resources.Project}#${ProjectPermission.update}`)
   @UseGuards(PermissionsGuard)
-  async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInput, @Context() ctx) {
-    return await this.updateTeamService.updateTeam(updateTeamInput, ctx.user.id);
+  async updateProject(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput, @Context() ctx) {
+    return await this.updateProjectService.updateProject(updateProjectInput, ctx.user.id);
   }
 
   @ResolveField('users')
-  async users(@Parent() team: Team, @Context() ctx) {
+  async users(@Parent() project: Project, @Context() ctx) {
     const accountsUsers = await this.userService.getUsers(ctx.req.kauth.grant.access_token.token);
-    return intersectionBy(accountsUsers, team.team_user, 'user_id');
+    return intersectionBy(accountsUsers, project.project_user, 'user_id');
   }
 }

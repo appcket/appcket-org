@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Avatar, Box, Divider, Drawer, IconButton, List, Typography } from '@mui/material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { RiHome4Fill, RiInformationFill, RiTeamFill } from 'react-icons/ri';
+import { GoBriefcase } from 'react-icons/go';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
 import { useUserInfo } from 'src/common/api/user';
@@ -21,6 +22,11 @@ const items = [
     href: '/teams',
     icon: RiTeamFill,
     title: 'Teams',
+  },
+  {
+    href: '/projects',
+    icon: GoBriefcase,
+    title: 'Projects',
   },
   {
     href: '/about',

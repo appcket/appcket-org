@@ -1,20 +1,19 @@
 {
-  "name": "deployment-database",
+  "name": "appcket-deployment-database",
   "version": "0.0.1",
-  "private": true,
   "description": "",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "author": "",
   "dependencies": {
-    "@prisma/client": "^3.4.2"
+    "@prisma/client": "^3.8.1"
   },
   "devDependencies": {
     "@types/node": "^12.20.37",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "dotenv-cli": "^4.1.0",
-    "prettier": "^2.4.1",
-    "prisma": "^3.4.2",
+    "prettier": "^2.5.1",
+    "prisma": "^3.8.1",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.11.0",

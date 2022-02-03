@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -18,6 +21,7 @@ model organization {
   deleted_by        String?             @db.Uuid
   organization_user organization_user[]
   team              team[]
+  project           project[]
 }
 
 model organization_user {
@@ -48,6 +52,8 @@ model task {
   deleted_by          String?           @db.Uuid
   task_status_type_id String?           @db.Uuid
   task_status_type    task_status_type? @relation(fields: [task_status_type_id], references: [task_status_type_id])
+  project_id          String       @db.Uuid
+  project             project   @relation(fields: [project_id], references: [project_id])
 }
 
 model task_status_type {
@@ -87,4 +93,32 @@ model team_user {
   updated_by   String?   @db.Uuid
   deleted_by   String?   @db.Uuid
   team         team      @relation(fields: [team_id], references: [team_id])
+}
+
+model project {
+  project_id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String       @db.VarChar(50)
+  organization_id String       @db.Uuid
+  created_at      DateTime     @default(now()) @db.Timestamptz(0)
+  updated_at      DateTime     @default(now()) @db.Timestamptz(0)
+  deleted_at      DateTime?    @db.Timestamptz(0)
+  created_by      String?      @db.Uuid
+  updated_by      String?      @db.Uuid
+  deleted_by      String?      @db.Uuid
+  organization    organization @relation(fields: [organization_id], references: [organization_id])
+  project_user    project_user[]
+  task            task[]
+}
+
+model project_user {
+  project_user_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id      String    @db.Uuid
+  user_id      String    @db.Uuid
+  created_at   DateTime  @default(now()) @db.Timestamptz(0)
+  updated_at   DateTime  @default(now()) @db.Timestamptz(0)
+  deleted_at   DateTime? @db.Timestamptz(0)
+  created_by   String?   @db.Uuid
+  updated_by   String?   @db.Uuid
+  deleted_by   String?   @db.Uuid
+  project      project   @relation(fields: [project_id], references: [project_id])
 }

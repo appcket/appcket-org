@@ -14,23 +14,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Permission {
-  rsid: String!
-  rsname: String!
-  scopes: [String!]
-}
-
-type User {
-  user_id: String!
-  username: String!
-  email: String!
-  firstName: String!
-  lastName: String
-  jobTitle: String
-  teams: [Team!]!
-  permissions: [Permission!]!
-}
-
 type TeamUser {
   team_user_id: String!
   team_id: String!
@@ -49,16 +32,53 @@ type Team {
   team_user: [TeamUser!]!
 }
 
+type Permission {
+  rsid: String!
+  rsname: String!
+  scopes: [String!]
+}
+
+type User {
+  user_id: String!
+  username: String!
+  email: String!
+  firstName: String!
+  lastName: String
+  jobTitle: String
+  teams: [Team!]!
+  permissions: [Permission!]!
+}
+
+type ProjectUser {
+  project_user_id: String!
+  project_id: String!
+  user_id: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Project {
+  project_id: String!
+  name: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  organization: Organization!
+  users: [User!]!
+  project_user: [ProjectUser!]!
+}
+
 type Query {
   organizationById(id: String!): Organization
   hasPermission(permissions: [String!]!): Boolean!
+  getProject(id: String!): Project
+  searchProjects(orderBy: ProjectOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Project!]!
   getTeam(id: String!): Team
   searchTeams(orderBy: TeamOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Team!]!
   userInfo: User!
   searchUsers: [User!]!
 }
 
-input TeamOrderByUpdatedAtInput {
+input ProjectOrderByUpdatedAtInput {
   updated_at: SortOrder!
 }
 
@@ -67,8 +87,20 @@ enum SortOrder {
   desc
 }
 
+input TeamOrderByUpdatedAtInput {
+  updated_at: SortOrder!
+}
+
 type Mutation {
+  project(updateProjectInput: UpdateProjectInput!): Project!
   team(updateTeamInput: UpdateTeamInput!): Team!
+}
+
+input UpdateProjectInput {
+  projectId: String!
+  name: String!
+  organizationId: String!
+  userIds: [String!]!
 }
 
 input UpdateTeamInput {

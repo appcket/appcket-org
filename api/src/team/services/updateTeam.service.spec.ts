@@ -100,6 +100,7 @@ const createTeamUserArgs = {
   data: {
     team_id: updateTeamInput.teamId,
     user_id: createdTeamUserId,
+    created_by: createdTeamUserId,
   },
 };
 
@@ -159,7 +160,7 @@ describe('UpdateTeamService', () => {
   describe('updateTeam', () => {
     it('should create correct team_user records', async () => {
       const createTeamUserSpy = jest.spyOn(prisma.team_user, 'create');
-      await updateTeamService.updateTeam(updateTeamInput);
+      await updateTeamService.updateTeam(updateTeamInput, createTeamUserArgs.data.user_id);
       expect(createTeamUserSpy).toHaveBeenCalledWith(createTeamUserArgs);
     });
   });
