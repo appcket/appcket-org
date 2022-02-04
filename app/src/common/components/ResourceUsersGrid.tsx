@@ -10,9 +10,9 @@ function getFullName(params: GridValueGetterParams) {
   return `${params.row.firstName || ''} ${params.row.lastName || ''}`;
 }
 
-const TeamUsersGrid = () => {
+const ResourceUsersGrid = () => {
   const searchUsersQuery = useSearchUsers();
-  const selectedUserIds = useStore((state) => state.teamUsers.selectedUserIds);
+  const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
 
   const columns: GridColDef[] = [
     {
@@ -44,8 +44,8 @@ const TeamUsersGrid = () => {
           selectionModel={selectedUserIds}
           onSelectionModelChange={(userIds) => {
             useStore.setState((state) => ({
-              teamUsers: {
-                ...state.teamUsers,
+              resourceUsers: {
+                ...state.resourceUsers,
                 selectedUserIds: userIds as string[],
               },
             }));
@@ -58,4 +58,4 @@ const TeamUsersGrid = () => {
   }
 };
 
-export default TeamUsersGrid;
+export default ResourceUsersGrid;

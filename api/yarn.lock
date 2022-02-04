@@ -2007,7 +2007,7 @@ axios@0.24.0:
   dependencies:
     follow-redirects "^1.14.4"
 
-axios@0.25.0:
+axios@0.25.0, axios@^0.25.0:
   version "0.25.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.25.0.tgz#349cfbb31331a9b4453190791760a8d35b093e0a"
   integrity sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==
@@ -4473,10 +4473,10 @@ jwk-to-pem@^2.0.0:
     elliptic "^6.5.4"
     safe-buffer "^5.0.1"
 
-keycloak-connect@^16.1.0:
-  version "16.1.0"
-  resolved "https://registry.yarnpkg.com/keycloak-connect/-/keycloak-connect-16.1.0.tgz#13590d16e50cac08204214ae3bc83648500d74a0"
-  integrity sha512-1Mjm5AAFpO+FghCOFQ99xM2PYJdPhpvCCpwtIOOOEiNKK31m4BpZz70FCC6xcfQDb9euY5Zetgx+3791uvxqXg==
+keycloak-connect@^16.1.1:
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/keycloak-connect/-/keycloak-connect-16.1.1.tgz#10cd932e84e8d2e97fe0f4b121eaf4b562a4f20e"
+  integrity sha512-xu8Q0sEHBe0lWESXOc0pSeLAh45EEZ6vT3RPVaPcTRQzuJHfj5QuPdFeUzQSl8iGjojuHrkgdQqw4/ZSH3AOIA==
   dependencies:
     jwk-to-pem "^2.0.0"
   optionalDependencies:

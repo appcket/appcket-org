@@ -16,6 +16,7 @@ import { intersectionBy } from 'lodash';
 
 import { Project } from './models/project.model';
 import { UpdateProjectInput } from './dtos/updateProject.input';
+import { CreateProjectInput } from './dtos/createProject.input';
 import { PrismaService } from 'src/common/services/prisma.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { SortOrder } from 'src/common/enums/sortOrder.enum';
@@ -25,6 +26,7 @@ import { Permissions } from 'src/common/decorators/permissions.decorator';
 import { UserService } from 'src/user/services/user.service';
 import { GetProjectService } from 'src/project/services/getProject.service';
 import { UpdateProjectService } from 'src/project/services/updateProject.service';
+import { CreateProjectService } from 'src/project/services/createProject.service';
 
 @InputType()
 export class ProjectCreateInput {
@@ -45,6 +47,7 @@ export class ProjectResolver {
     @Inject(UserService) private userService: UserService,
     @Inject(GetProjectService) private getProjectService: GetProjectService,
     @Inject(UpdateProjectService) private updateProjectService: UpdateProjectService,
+    @Inject(CreateProjectService) private createProjectService: CreateProjectService,
   ) {}
 
   @Query(() => Project, { nullable: true })
@@ -81,11 +84,18 @@ export class ProjectResolver {
     });
   }
 
-  @Mutation(() => Project, { name: 'project' })
+  @Mutation(() => Project)
   @Permissions(`${Resources.Project}#${ProjectPermission.update}`)
   @UseGuards(PermissionsGuard)
   async updateProject(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput, @Context() ctx) {
     return await this.updateProjectService.updateProject(updateProjectInput, ctx.user.id);
+  }
+
+  @Mutation(() => Project)
+  @Permissions(`${Resources.Project}#${ProjectPermission.create}`)
+  @UseGuards(PermissionsGuard)
+  async createProject(@Args('createProjectInput') createProjectInput: CreateProjectInput, @Context() ctx) {
+    return await this.createProjectService.createProject(createProjectInput, ctx.user.id);
   }
 
   @ResolveField('users')

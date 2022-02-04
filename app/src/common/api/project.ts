@@ -66,13 +66,13 @@ export const useUpdateProject = (): UseMutationResult => {
   const mutationKey = 'updateProject';
 
   const processData = (data: ProjectResponse): Project => {
-    return data.project;
+    return data.updateProject;
   };
 
   return useApiMutation(
     gql`
       mutation ${mutationKey}($updateProjectInput: UpdateProjectInput!) {
-        project(updateProjectInput: $updateProjectInput) {
+        updateProject(updateProjectInput: $updateProjectInput) {
           name
         }
       }

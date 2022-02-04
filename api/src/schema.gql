@@ -92,12 +92,19 @@ input TeamOrderByUpdatedAtInput {
 }
 
 type Mutation {
-  project(updateProjectInput: UpdateProjectInput!): Project!
-  team(updateTeamInput: UpdateTeamInput!): Team!
+  updateProject(updateProjectInput: UpdateProjectInput!): Project!
+  createProject(createProjectInput: CreateProjectInput!): Project!
+  updateTeam(updateTeamInput: UpdateTeamInput!): Team!
 }
 
 input UpdateProjectInput {
+  name: String!
+  organizationId: String!
+  userIds: [String!]!
   projectId: String!
+}
+
+input CreateProjectInput {
   name: String!
   organizationId: String!
   userIds: [String!]!

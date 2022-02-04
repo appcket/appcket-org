@@ -81,7 +81,7 @@ export class TeamResolver {
     });
   }
 
-  @Mutation(() => Team, { name: 'team' })
+  @Mutation(() => Team)
   @Permissions(`${Resources.Team}#${TeamPermission.update}`)
   @UseGuards(PermissionsGuard)
   async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInput, @Context() ctx) {

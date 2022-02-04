@@ -1,24 +1,12 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsString, IsNotEmpty, IsUUID, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, IsUUID } from 'class-validator';
+
+import { CreateProjectInput } from 'src/project/dtos/createProject.input';
 
 @InputType()
-export class UpdateProjectInput {
+export class UpdateProjectInput extends CreateProjectInput {
   @Field()
   @IsUUID()
   @IsNotEmpty()
   projectId: string;
-
-  @Field()
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(50)
-  @MinLength(1)
-  name: string;
-
-  @Field()
-  @IsUUID()
-  organizationId: string;
-
-  @Field((type) => [String])
-  userIds: string[];
 }

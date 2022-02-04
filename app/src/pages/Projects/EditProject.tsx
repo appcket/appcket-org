@@ -10,15 +10,15 @@ import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
 import Page from 'src/common/components/Page';
-import UpdateTeamMutationInput from 'src/common/models/inputs/UpdateTeamMutationInput';
-import { useGetTeam, useUpdateTeam } from 'src/common/api/team';
-import Team from 'src/common/models/Team';
+import UpdateProjectMutationInput from 'src/common/models/inputs/UpdateProjectMutationInput';
+import { useGetProject, useUpdateProject } from 'src/common/api/project';
+import Project from 'src/common/models/Project';
 import User from 'src/common/models/User';
 import { FormTextField } from 'src/common/components/form/FormTextField';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
 
-const EditTeam = () => {
+const EditProject = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -27,10 +27,10 @@ const EditTeam = () => {
     handleSubmit,
     reset,
     control,
-  } = useForm<UpdateTeamMutationInput>({ mode: 'all' });
+  } = useForm<UpdateProjectMutationInput>({ mode: 'all' });
 
-  const getTeamQuery = useGetTeam(params.teamId!);
-  const updateTeam = useUpdateTeam();
+  const getProjectQuery = useGetProject(params.projectId!);
+  const updateProject = useUpdateProject();
   const resetSelectedUserIds = useStore((state) => state.resourceUsers.resetSelectedUserIds);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
 
@@ -45,66 +45,66 @@ const EditTeam = () => {
   };
 
   useEffect(() => {
-    reset({ name: getTeamQuery?.data?.name ?? '' });
+    reset({ name: getProjectQuery?.data?.name ?? '' });
     useStore.setState((state) => ({
       resourceUsers: {
         ...state.resourceUsers,
-        selectedUserIds: initialSelectedItemIds(getTeamQuery?.data?.users as User[], 'user_id'),
+        selectedUserIds: initialSelectedItemIds(getProjectQuery?.data?.users as User[], 'user_id'),
       },
     }));
-  }, [reset, getTeamQuery.data]);
+  }, [reset, getProjectQuery.data]);
 
   useStore.setState((state) => ({
     resourceUsers: {
       ...state.resourceUsers,
       initialSelectedUserIds: initialSelectedItemIds(
-        getTeamQuery?.data?.users as User[],
+        getProjectQuery?.data?.users as User[],
         'user_id',
       ),
     },
   }));
 
-  let editTeamComponent;
+  let editProjectComponent;
 
-  if (getTeamQuery.status === 'loading' || getTeamQuery.isFetching) {
-    editTeamComponent = <Typography paragraph>Loading...</Typography>;
-  } else if (getTeamQuery.status === 'error' && getTeamQuery.error instanceof Error) {
-    editTeamComponent = <Typography paragraph>Error: {getTeamQuery.error.message}</Typography>;
-  } else if (getTeamQuery.isSuccess) {
-    editTeamComponent = <Typography paragraph>Unable to view Team</Typography>;
+  if (getProjectQuery.status === 'loading' || getProjectQuery.isFetching) {
+    editProjectComponent = <Typography paragraph>Loading...</Typography>;
+  } else if (getProjectQuery.status === 'error' && getProjectQuery.error instanceof Error) {
+    editProjectComponent = <Typography paragraph>Error: {getProjectQuery.error.message}</Typography>;
+  } else if (getProjectQuery.isSuccess) {
+    editProjectComponent = <Typography paragraph>Unable to view Project</Typography>;
 
-    const onSubmit = async (updateTeamInput: UpdateTeamMutationInput) => {
-      updateTeamInput.organizationId = getTeamQuery.data.organization.organization_id;
-      updateTeamInput.teamId = getTeamQuery.data.team_id;
-      updateTeamInput.userIds = selectedUserIds;
+    const onSubmit = async (updateProjectInput: UpdateProjectMutationInput) => {
+      updateProjectInput.organizationId = getProjectQuery.data.organization.organization_id;
+      updateProjectInput.projectId = getProjectQuery.data.project_id;
+      updateProjectInput.userIds = selectedUserIds;
 
-      updateTeam.mutate(
-        { updateTeamInput },
+      updateProject.mutate(
+        { updateProjectInput },
         {
           onSuccess: (data) => {
-            const updatedTeam = data as Team;
-            enqueueSnackbar(`Updated team successfully: ${updatedTeam.name}`, {
+            const updatedProject = data as Project;
+            enqueueSnackbar(`Updated project successfully: ${updatedProject.name}`, {
               variant: 'success',
             });
-            navigate('/teams');
+            navigate('/projects');
           },
         },
       );
     };
 
-    editTeamComponent = (
+    editProjectComponent = (
       <div>
-        <Typography variant="h4">{getTeamQuery.data.name}</Typography>
+        <Typography variant="h4">{getProjectQuery.data.name}</Typography>
 
         <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
           <Typography variant="body1" sx={{ mb: 3 }}>
-            Organization: {getTeamQuery.data.organization.name}
+            Organization: {getProjectQuery.data.organization.name}
           </Typography>
           <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
             <FormTextField
               name="name"
               control={control}
-              label="Team Name"
+              label="Project Name"
               rules={{
                 required: { value: true, message: 'This field is required' },
                 maxLength: { value: 50, message: 'This field must be less than 50 characters' },
@@ -113,9 +113,6 @@ const EditTeam = () => {
             />
           </Grid>
 
-          {/* instead of passing props to child components, we use zustand to hold local state.
-            In this case, it tracks initially selected users and user the selected users so the 
-            parent component can have this data and send it back to the api onSubmit*/}
           <ResourceUsersGrid />
 
           <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
@@ -145,10 +142,10 @@ const EditTeam = () => {
   }
 
   return (
-    <Page title={`Edit Team - ${getTeamQuery.data?.name}`}>
-      <div>{editTeamComponent}</div>
+    <Page title={`Edit Project - ${getProjectQuery.data?.name}`}>
+      <div>{editProjectComponent}</div>
     </Page>
   );
 };
 
-export default EditTeam;
+export default EditProject;

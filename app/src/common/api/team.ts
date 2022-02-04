@@ -66,13 +66,13 @@ export const useUpdateTeam = (): UseMutationResult => {
   const mutationKey = 'updateTeam';
 
   const processData = (data: TeamResponse): Team => {
-    return data.team;
+    return data.updateTeam;
   };
 
   return useApiMutation(
     gql`
       mutation ${mutationKey}($updateTeamInput: UpdateTeamInput!) {
-        team(updateTeamInput: $updateTeamInput) {
+        updateTeam(updateTeamInput: $updateTeamInput) {
           name
         }
       }
