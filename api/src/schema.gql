@@ -47,6 +47,7 @@ type User {
   jobTitle: String
   teams: [Team!]!
   permissions: [Permission!]!
+  organizations: [Organization!]!
 }
 
 type ProjectUser {
@@ -75,7 +76,7 @@ type Query {
   getTeam(id: String!): Team
   searchTeams(orderBy: TeamOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Team!]!
   userInfo: User!
-  searchUsers: [User!]!
+  searchUsers(organizationId: String!): [User!]!
 }
 
 input ProjectOrderByUpdatedAtInput {

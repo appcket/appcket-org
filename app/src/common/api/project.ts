@@ -4,7 +4,8 @@ import { UseMutationResult, UseQueryResult } from 'react-query';
 import { useApiMutation, useApiQuery } from 'src/common/api';
 import SearchProjectsQueryResponse from 'src/common/models/responses/SearchProjectsQueryResponse';
 import GetProjectQueryResponse from 'src/common/models/responses/GetProjectQueryResponse';
-import ProjectResponse from 'src/common/models/responses/ProjectResponse';
+import UpdateProjectResponse from 'src/common/models/responses/UpdateProjectResponse';
+import CreateProjectResponse from 'src/common/models/responses/CreateProjectResponse';
 import Project from 'src/common/models/Project';
 
 export const useSearchProjects = (searchString: string): UseQueryResult<Project[]> => {
@@ -65,7 +66,7 @@ export const useGetProject = (projectId: string): UseQueryResult<Project> => {
 export const useUpdateProject = (): UseMutationResult => {
   const mutationKey = 'updateProject';
 
-  const processData = (data: ProjectResponse): Project => {
+  const processData = (data: UpdateProjectResponse): Project => {
     return data.updateProject;
   };
 
@@ -73,6 +74,25 @@ export const useUpdateProject = (): UseMutationResult => {
     gql`
       mutation ${mutationKey}($updateProjectInput: UpdateProjectInput!) {
         updateProject(updateProjectInput: $updateProjectInput) {
+          name
+        }
+      }
+    `,
+    processData,
+  );
+};
+
+export const useCreateProject = (): UseMutationResult => {
+  const mutationKey = 'createProject';
+
+  const processData = (data: CreateProjectResponse): Project => {
+    return data.createProject;
+  };
+
+  return useApiMutation(
+    gql`
+      mutation ${mutationKey}($createProjectInput: CreateProjectInput!) {
+        createProject(createProjectInput: $createProjectInput) {
           name
         }
       }

@@ -1,4 +1,5 @@
 import Permission from 'src/common/models/Permission';
+import Organization from 'src/common/models/Organization';
 
 export default interface User {
   id?: string;
@@ -8,4 +9,5 @@ export default interface User {
   firstName: string;
   jobTitle: string;
   permissions: Permission[];
+  organizations: Organization[];
 }

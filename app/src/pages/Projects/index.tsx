@@ -7,6 +7,7 @@ import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import ViewProjects from 'src/pages/Projects/ViewProjects';
 import ViewProject from 'src/pages/Projects/ViewProject';
 import EditProject from 'src/pages/Projects/EditProject';
+import CreateProject from 'src/pages/Projects/CreateProject';
 
 const Projects = () => {
   return (
@@ -32,6 +33,14 @@ const Projects = () => {
         element={
           <ProtectedRoute permission={[Resources.Project, ProjectPermission.update]}>
             <EditProject />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/create"
+        element={
+          <ProtectedRoute permission={[Resources.Project, ProjectPermission.create]}>
+            <CreateProject />
           </ProtectedRoute>
         }
       />

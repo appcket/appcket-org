@@ -1,14 +1,42 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 import Typography from '@mui/material/Typography';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 
 import Page from 'src/common/components/Page';
 import { useSearchProjects } from 'src/common/api/project';
+import hasPermission from 'src/common/utils/hasPermission';
+import { ProjectPermission } from 'src/common/enums/permissions.enum';
+import Resources from 'src/common/enums/resources.enum';
+import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
+import Permission from 'src/common/models/Permission';
 
 const ViewProjects = () => {
   // TODO: user input from Project name filter input field should drive table results
   const { status, data, error } = useSearchProjects('');
+  const userInfoQuery = useQuery<UserInfoQueryResponse>('userInfo');
+  const createProjectPermission = hasPermission(
+    userInfoQuery.data?.userInfo.permissions as Permission[],
+    Resources.Project,
+    ProjectPermission.create,
+  );
+
+  let createProjectButton = (
+    <Button variant="outlined" disabled>
+      Create
+    </Button>
+  );
+
+  if (createProjectPermission) {
+    createProjectButton = (
+      <Button variant="contained" component={Link} to="create">
+        Create
+      </Button>
+    );
+  }
 
   let projectsComponent = <Typography paragraph>Unable to view Projects</Typography>;
 
@@ -18,7 +46,9 @@ const ViewProjects = () => {
       headerName: 'Name',
       width: 150,
       renderCell: (cellValues) => {
-        return <NavLink to={`/projects/${cellValues.row.project_id}`}>{cellValues.row.name}</NavLink>;
+        return (
+          <NavLink to={`/projects/${cellValues.row.project_id}`}>{cellValues.row.name}</NavLink>
+        );
       },
     },
     {
@@ -64,6 +94,9 @@ const ViewProjects = () => {
       <Typography variant="h4" gutterBottom>
         Projects
       </Typography>
+      <Grid container justifyContent="flex-end">
+        <Grid item>{createProjectButton}</Grid>
+      </Grid>
       <div>{projectsComponent}</div>
     </Page>
   );

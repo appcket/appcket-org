@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Context, Resolver, Query } from '@nestjs/graphql';
+import { Args, Context, Resolver, Query } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 
 import { User } from './models/user.model';
@@ -16,7 +16,7 @@ export class UserResolver {
 
   // SearchUsers Query to return realm users based on criteria
   @Query((returns) => [User])
-  searchUsers(@Context() ctx) {
-    return this.userService.getUsers(ctx.req.kauth.grant.access_token.token);
+  searchUsers(@Args('organizationId') organizationId: string, @Context() ctx) {
+    return this.userService.getUsers(organizationId, ctx.req.kauth.grant.access_token.token);
   }
 }

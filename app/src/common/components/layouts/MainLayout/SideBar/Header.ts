@@ -1,6 +1,5 @@
 import { styled } from '@mui/material/styles';
 
-// @ts-ignore
 const SideBarHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',

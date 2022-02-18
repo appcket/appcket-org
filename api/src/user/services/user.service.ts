@@ -3,10 +3,12 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { AxiosRequestConfig } from 'axios';
 import { lastValueFrom } from 'rxjs';
+import { intersectionBy } from 'lodash';
 
 import { PrismaService } from 'src/common/services/prisma.service';
 import { AuthorizationService } from 'src/common/services/authorization.service';
 import { User } from 'src/user/models/user.model';
+import { Organization } from 'src/organization/models/organization.model';
 
 @Injectable()
 export class UserService {
@@ -31,6 +33,7 @@ export class UserService {
         '',
       teams: [],
       permissions: [],
+      organizations: [],
     };
   }
 
@@ -75,6 +78,22 @@ export class UserService {
           });
         }
 
+        let userOrganizations = await this.prismaService.organization_user.findMany({
+          where: {
+            deleted_at: null,
+            user_id: response.data.id,
+          },
+          include: {
+            organization: true,
+          },
+        });
+
+        if (userOrganizations.length > 0) {
+          userOrganizations.forEach((userOrganization) => {
+            user.organizations.push(userOrganization.organization);
+          });
+        }
+
         return user;
       }
     } catch (error) {
@@ -85,7 +104,7 @@ export class UserService {
 
   // TODO: uses the keycloak REST admin api to return all users in a realm
   // better to query the user_entity table in the keycloak schema directly and get users by an array of userIds, https://github.com/prisma/prisma/issues/2443#issuecomment-630679118
-  public async getUsers(token: string): Promise<User[]> {
+  public async getUsers(organizationId: string, token: string): Promise<User[]> {
     const config: AxiosRequestConfig = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -110,7 +129,13 @@ export class UserService {
         });
       }
 
-      return users;
+      const organizationUsers = await this.prismaService.organization_user.findMany({
+        where: {
+          organization_id: organizationId,
+        },
+      });
+
+      return intersectionBy(users, organizationUsers, 'user_id');
     } catch (error) {
       console.log(error);
       return null;

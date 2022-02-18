@@ -3,11 +3,8 @@ import { UseQueryResult } from 'react-query';
 
 import { useApiQuery } from 'src/common/api';
 import User from 'src/common/models/User';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
-
-interface SearchUsersQueryResponse extends User {
-  searchUsers: User[];
-}
+import SearchUsersQueryResponse from 'src/common/models/responses/user/SearchUsersQueryResponse';
+import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
 
 export const useUserInfo = (): UseQueryResult<User> => {
   const queryKey = 'userInfo';
@@ -30,6 +27,10 @@ export const useUserInfo = (): UseQueryResult<User> => {
             rsname
             scopes
           }
+          organizations {
+            organization_id
+            name
+          }
         }
       }
     `,
@@ -37,8 +38,8 @@ export const useUserInfo = (): UseQueryResult<User> => {
   );
 };
 
-export const useSearchUsers = (): UseQueryResult<User[]> => {
-  const queryKey = 'searchUsers';
+export const useSearchUsers = (organizationId: string): UseQueryResult<User[]> => {
+  const queryKey = ['searchUsers', organizationId];
   const processData = (data: SearchUsersQueryResponse): User[] => {
     return data.searchUsers;
   };
@@ -47,7 +48,7 @@ export const useSearchUsers = (): UseQueryResult<User[]> => {
     queryKey,
     gql`
       {
-        ${queryKey} {
+        ${queryKey[0]}(organizationId: "${organizationId}") {
           user_id
           username
           email

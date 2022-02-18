@@ -90,7 +90,10 @@ export class TeamResolver {
 
   @ResolveField('users')
   async users(@Parent() team: Team, @Context() ctx) {
-    const accountsUsers = await this.userService.getUsers(ctx.req.kauth.grant.access_token.token);
+    const accountsUsers = await this.userService.getUsers(
+      team.organization.organization_id,
+      ctx.req.kauth.grant.access_token.token,
+    );
     return intersectionBy(accountsUsers, team.team_user, 'user_id');
   }
 }

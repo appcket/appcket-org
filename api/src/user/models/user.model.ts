@@ -4,6 +4,7 @@ import { IsOptional } from 'class-validator';
 
 import { Team } from 'src/team/models/team.model';
 import { Permission } from '../../permission/models/permission.model';
+import { Organization } from 'src/organization/models/organization.model';
 
 @ObjectType()
 export class User {
@@ -30,4 +31,5 @@ export class User {
   @Field(() => [Team]) teams?: Team[];
 
   @Field(() => [Permission]) permissions?: Permission[];
+  @Field(() => [Organization]) organizations?: Organization[];
 }

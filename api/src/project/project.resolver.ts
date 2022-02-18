@@ -87,20 +87,29 @@ export class ProjectResolver {
   @Mutation(() => Project)
   @Permissions(`${Resources.Project}#${ProjectPermission.update}`)
   @UseGuards(PermissionsGuard)
-  async updateProject(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput, @Context() ctx) {
+  async updateProject(
+    @Args('updateProjectInput') updateProjectInput: UpdateProjectInput,
+    @Context() ctx,
+  ) {
     return await this.updateProjectService.updateProject(updateProjectInput, ctx.user.id);
   }
 
   @Mutation(() => Project)
   @Permissions(`${Resources.Project}#${ProjectPermission.create}`)
   @UseGuards(PermissionsGuard)
-  async createProject(@Args('createProjectInput') createProjectInput: CreateProjectInput, @Context() ctx) {
+  async createProject(
+    @Args('createProjectInput') createProjectInput: CreateProjectInput,
+    @Context() ctx,
+  ) {
     return await this.createProjectService.createProject(createProjectInput, ctx.user.id);
   }
 
   @ResolveField('users')
   async users(@Parent() project: Project, @Context() ctx) {
-    const accountsUsers = await this.userService.getUsers(ctx.req.kauth.grant.access_token.token);
+    const accountsUsers = await this.userService.getUsers(
+      project.organization.organization_id,
+      ctx.req.kauth.grant.access_token.token,
+    );
     return intersectionBy(accountsUsers, project.project_user, 'user_id');
   }
 }

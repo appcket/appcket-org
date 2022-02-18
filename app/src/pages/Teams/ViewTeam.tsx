@@ -14,7 +14,7 @@ import { useGetTeam } from 'src/common/api/team';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
 import Permission from 'src/common/models/Permission';
 
 const Team = () => {

@@ -27,7 +27,12 @@ const EditProject = () => {
     handleSubmit,
     reset,
     control,
-  } = useForm<UpdateProjectMutationInput>({ mode: 'all' });
+  } = useForm<UpdateProjectMutationInput>({
+    mode: 'all',
+    defaultValues: {
+      name: '',
+    },
+  });
 
   const getProjectQuery = useGetProject(params.projectId!);
   const updateProject = useUpdateProject();
@@ -69,7 +74,9 @@ const EditProject = () => {
   if (getProjectQuery.status === 'loading' || getProjectQuery.isFetching) {
     editProjectComponent = <Typography paragraph>Loading...</Typography>;
   } else if (getProjectQuery.status === 'error' && getProjectQuery.error instanceof Error) {
-    editProjectComponent = <Typography paragraph>Error: {getProjectQuery.error.message}</Typography>;
+    editProjectComponent = (
+      <Typography paragraph>Error: {getProjectQuery.error.message}</Typography>
+    );
   } else if (getProjectQuery.isSuccess) {
     editProjectComponent = <Typography paragraph>Unable to view Project</Typography>;
 
@@ -113,7 +120,7 @@ const EditProject = () => {
             />
           </Grid>
 
-          <ResourceUsersGrid />
+          <ResourceUsersGrid organizationId={getProjectQuery.data.organization.organization_id} />
 
           <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
             <Grid item>

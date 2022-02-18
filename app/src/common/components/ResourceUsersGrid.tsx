@@ -1,17 +1,22 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import { DataGrid, GridRowsProp, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import PropTypes from 'prop-types';
 
 import User from 'src/common/models/User';
 import { useSearchUsers } from 'src/common/api/user';
 import { useStore } from 'src/common/store';
 
+type Props = {
+  organizationId: string;
+};
+
 function getFullName(params: GridValueGetterParams) {
   return `${params.row.firstName || ''} ${params.row.lastName || ''}`;
 }
 
-const ResourceUsersGrid = () => {
-  const searchUsersQuery = useSearchUsers();
+const ResourceUsersGrid = ({ organizationId }: Props) => {
+  const searchUsersQuery = useSearchUsers(organizationId);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
 
   const columns: GridColDef[] = [
@@ -56,6 +61,14 @@ const ResourceUsersGrid = () => {
   } else {
     return <div>Loading users...</div>;
   }
+};
+
+ResourceUsersGrid.defaultProps = {
+  organizationId: '',
+};
+
+ResourceUsersGrid.propTypes = {
+  organizationId: PropTypes.string,
 };
 
 export default ResourceUsersGrid;

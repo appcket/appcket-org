@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { Navigate } from 'react-router-dom';
 
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
 import Permission from 'src/common/models/Permission';
 import hasPermission from 'src/common/utils/hasPermission';
 

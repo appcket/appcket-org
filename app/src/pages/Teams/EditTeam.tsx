@@ -27,7 +27,12 @@ const EditTeam = () => {
     handleSubmit,
     reset,
     control,
-  } = useForm<UpdateTeamMutationInput>({ mode: 'all' });
+  } = useForm<UpdateTeamMutationInput>({
+    mode: 'all',
+    defaultValues: {
+      name: '',
+    },
+  });
 
   const getTeamQuery = useGetTeam(params.teamId!);
   const updateTeam = useUpdateTeam();
@@ -113,10 +118,10 @@ const EditTeam = () => {
             />
           </Grid>
 
-          {/* instead of passing props to child components, we use zustand to hold local state.
-            In this case, it tracks initially selected users and user the selected users so the 
+          {/* instead of passing selectedUsers prop to child components, we use zustand to hold local state.
+            In this case, it tracks initially selected users and user-selected users so the 
             parent component can have this data and send it back to the api onSubmit*/}
-          <ResourceUsersGrid />
+          <ResourceUsersGrid organizationId={getTeamQuery.data.organization.organization_id} />
 
           <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
             <Grid item>
