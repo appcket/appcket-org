@@ -21,7 +21,7 @@ api:
   tag: v0.0.1
   image: appcket_nodejs
   keycloakClientSecretName: api-keycloak-client-secret
-  keycloakClientPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmzaUqgEvtzH2veC1L2q36zfG6h/Lz4uKPZusGJfq8HRfIXi6IAlR45Jc+jSYhrkIeqqE/WlZDtETihC1vZzaTR/Q8xbXaQMPrLHtr/1utBCsKie+gtUzlE0doDKh875f8A9su9SUpi3jbCcXJCGYskQ0tEV9mRB+Dyftqsphjs6cwNBcbb+w0oQkci62AOOp5e9qlNB2V1SsX2PDnN0UDTXwoyQKfopYbuqafbsHO7n3RS1UEN8vqXfQSrRPDbmzH+kOCVMB1BM8cpEi+0GhXrr+M2mqdNJnLnhcPspU41JiG7gmptFg98qkpBMBbaAE6Mqrb6JsLX2snhZe41mTXQIDAQAB
+  keycloakClientPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwVYWh7Jl6T9eyWNMfMX4L10KQu6Ulr0qqkEYKtw3GsOHOTRp0Q0C8OIN2HEwSV0/Fc00ToKIsyK6TC0PgSsWIZqQDTDyJ3rVENFck1rmsayBFVf53dcTcE6g/zA/TTrb2wD0k1FgLS66Irv/4+eYQITXC/LRmllpYTB2IVacZEhD7N5WXl70j7vxPsPerRGweDWHiTaGGTAZP83NEO7Hyec6Ko89nuyewsGr2ZnMrzTxgV9vurZ9QL6yGIs635RaM4Xf9ZCDK9gEVCU1X1nfALNr/0UiFheFJ9tTWhiqWXUbasD4dQd5lpuX8Ihw1pzSsFAIe/G9gOgqDH92v14JNQIDAQAB
 
 app:
   name: app
@@ -35,7 +35,7 @@ database:
   secretName: database-secret
   database: appcket
   schema: keycloak
-  vendor: POSTGRES
+  vendor: postgres
 
 marketing:
   name: marketing
@@ -49,11 +49,11 @@ image:
   repository: localhost:5000
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: 'latest'
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: ''
+fullnameOverride: ''
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -62,14 +62,16 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: ''
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -83,7 +85,8 @@ service:
 
 ingress:
   enabled: false
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -94,7 +97,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following

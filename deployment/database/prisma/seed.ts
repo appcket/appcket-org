@@ -6,12 +6,12 @@ const organizationData: Prisma.organizationCreateInput[] = [
   {
     organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
     name: 'Vandelay Industries',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
   },
   {
     organization_id: '5fb17fd4-9292-4e20-bfa7-809d1a62fcc7',
     name: 'Pennypacker Enterprises',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
   },
 ];
 
@@ -22,8 +22,8 @@ const organizationUserData: Prisma.organization_userCreateInput[] = [
         organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
       },
     },
-    user_id: '4379775d-7629-4dca-9dd0-8781329569b1',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    user_id: 'de3127bc-dbe6-4775-9334-2f873f413d23',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
   },
   {
     organization: {
@@ -31,8 +31,8 @@ const organizationUserData: Prisma.organization_userCreateInput[] = [
         organization_id: '5fb17fd4-9292-4e20-bfa7-809d1a62fcc7',
       },
     },
-    user_id: '4379775d-7629-4dca-9dd0-8781329569b1',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    user_id: 'de3127bc-dbe6-4775-9334-2f873f413d23',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
   },
   {
     organization: {
@@ -40,8 +40,8 @@ const organizationUserData: Prisma.organization_userCreateInput[] = [
         organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
       },
     },
-    user_id: '18b24af2-ef61-4fcc-a1e0-b27bbc4f6a2d',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    user_id: 'ba3b17f0-2698-4455-b150-0dcfbf9fdcd8',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
   },
   {
     organization: {
@@ -49,8 +49,8 @@ const organizationUserData: Prisma.organization_userCreateInput[] = [
         organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
       },
     },
-    user_id: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    user_id: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
   },
   {
     organization: {
@@ -58,8 +58,8 @@ const organizationUserData: Prisma.organization_userCreateInput[] = [
         organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
       },
     },
-    user_id: 'ff88829c-0226-44f3-9eb2-6e294ccd57d3',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    user_id: '7e2e3888-b370-4309-b82c-403b6871a390',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
   },
   {
     organization: {
@@ -67,8 +67,8 @@ const organizationUserData: Prisma.organization_userCreateInput[] = [
         organization_id: '5fb17fd4-9292-4e20-bfa7-809d1a62fcc7',
       },
     },
-    user_id: '6dde7b5b-ffe1-4627-9ca9-d4c5290f6f20',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    user_id: '83d2fae6-76d9-497c-bbf6-f177785e6195',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
   },
 ];
 
@@ -91,7 +91,7 @@ const projectData: Prisma.projectCreateInput[] = [
   {
     project_id: '1cb17fd4-9292-4e20-bfa7-809d1a62fcd5',
     name: 'Latex 3.0',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     organization: {
       connect: {
         organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
@@ -101,7 +101,7 @@ const projectData: Prisma.projectCreateInput[] = [
   {
     project_id: '2fb17fd4-9292-4e20-bfa7-809d1a62fca4',
     name: 'Project Bosco',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     organization: {
       connect: {
         organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
@@ -114,7 +114,7 @@ const taskData: Prisma.taskCreateInput[] = [
   {
     name: 'Hire new salesman to help sell Latex 2.0 line',
     description: 'Optional description text notes',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     task_status_type: {
       connect: {
         task_status_type_id: '272892f2-f03b-4c33-94e0-a5ed27f9e2df',
@@ -129,7 +129,7 @@ const taskData: Prisma.taskCreateInput[] = [
   {
     name: 'Reply to George Costanza and inform him we have decided to go in a different direction',
     description: "George's email is jerkstore@gmail.com",
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     task_status_type: {
       connect: {
         task_status_type_id: '152892f2-f03b-4c33-94e0-a5ed27f9e2dd',
@@ -144,7 +144,7 @@ const taskData: Prisma.taskCreateInput[] = [
   {
     name: 'Research new materials for super secret Latex 3.0 line',
     description: 'TOP SECRET, require NDAs from everybody you speak with',
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     task_status_type: {
       connect: {
         task_status_type_id: '272892f2-f03b-4c33-94e0-a5ed27f9e2df',
@@ -163,7 +163,7 @@ const teamData: Prisma.teamCreateInput[] = [
     team_id: '9f107212-ecb8-4a3c-931e-10edaf9af582',
     name: 'Sales',
     created_at: new Date(),
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     organization: {
       connect: {
         organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
@@ -174,7 +174,7 @@ const teamData: Prisma.teamCreateInput[] = [
     team_id: 'da31bf7f-b32c-4ef3-83fb-e16ce7781753',
     name: 'Manufacturing',
     created_at: new Date(),
-    created_by: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     organization: {
       connect: {
         organization_id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
@@ -185,7 +185,7 @@ const teamData: Prisma.teamCreateInput[] = [
 
 const teamUserData: Prisma.team_userCreateInput[] = [
   {
-    user_id: '4379775d-7629-4dca-9dd0-8781329569b1',
+    user_id: 'de3127bc-dbe6-4775-9334-2f873f413d23',
     team: {
       connect: {
         team_id: '9f107212-ecb8-4a3c-931e-10edaf9af582',
@@ -193,7 +193,7 @@ const teamUserData: Prisma.team_userCreateInput[] = [
     },
   },
   {
-    user_id: '18b24af2-ef61-4fcc-a1e0-b27bbc4f6a2d',
+    user_id: 'ba3b17f0-2698-4455-b150-0dcfbf9fdcd8',
     team: {
       connect: {
         team_id: '9f107212-ecb8-4a3c-931e-10edaf9af582',
@@ -201,7 +201,7 @@ const teamUserData: Prisma.team_userCreateInput[] = [
     },
   },
   {
-    user_id: 'cd88e2db-00bb-474f-91d2-2096e10f86a1',
+    user_id: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     team: {
       connect: {
         team_id: '9f107212-ecb8-4a3c-931e-10edaf9af582',
@@ -209,7 +209,7 @@ const teamUserData: Prisma.team_userCreateInput[] = [
     },
   },
   {
-    user_id: 'ff88829c-0226-44f3-9eb2-6e294ccd57d3',
+    user_id: '7e2e3888-b370-4309-b82c-403b6871a390',
     team: {
       connect: {
         team_id: 'da31bf7f-b32c-4ef3-83fb-e16ce7781753',
@@ -217,7 +217,7 @@ const teamUserData: Prisma.team_userCreateInput[] = [
     },
   },
   {
-    user_id: '6dde7b5b-ffe1-4627-9ca9-d4c5290f6f20',
+    user_id: '83d2fae6-76d9-497c-bbf6-f177785e6195',
     team: {
       connect: {
         team_id: 'da31bf7f-b32c-4ef3-83fb-e16ce7781753',

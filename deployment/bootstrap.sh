@@ -10,7 +10,7 @@ DATABASE_PASSWORD='Ch@ng3To@StrongP@ssw0rd'
 
 # You shouldn't need to change anything below unless you have customized these values elsewhere
 CERTS_DIR='./environment/local/certs/'
-API_CLIENT_KEYCLOAK_SECRET='ca9b4ce0-f152-46ff-b672-48c5a9fd678b'
+API_CLIENT_KEYCLOAK_SECRET='1SMHqsPrhtoxlMPLRYcHP39uJL16oGG1'
 
 # Check which istioctl command to use
 ISTIOCTL=istioctl

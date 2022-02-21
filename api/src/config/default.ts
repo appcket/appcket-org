@@ -1,5 +1,5 @@
 const realm = process.env.KEYCLOAK_REALM;
-const authServerUrl = `${process.env.ACCOUNTS_URL}/auth`;
+const authServerUrl = `${process.env.ACCOUNTS_URL}`;
 const tokenEndpointUrl = `${authServerUrl}/realms/${realm}/protocol/openid-connect/token`;
 const userAccountEndpointUrl = `${authServerUrl}/realms/${realm}/account`;
 const adminEndpointUrl = `${authServerUrl}/admin/realms/${realm}`;

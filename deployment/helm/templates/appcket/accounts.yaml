@@ -33,12 +33,12 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Values.accounts.name }}
         env:
-        - name: KEYCLOAK_USER
+        - name: KEYCLOAK_ADMIN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.accounts.secretName }}
               key: adminuser
-        - name: KEYCLOAK_PASSWORD
+        - name: KEYCLOAK_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.accounts.secretName }}
@@ -47,28 +47,24 @@ spec:
           value: {{ .Values.accounts.logLevel }}
         - name: PROXY_ADDRESS_FORWARDING
           value: "true"
-        - name: DB_ADDR
-          value: {{ .Values.database.address }}
-        - name: DB_PORT
-          value: "{{ .Values.database.port }}"
-        - name: DB_USER
+        - name: KC_DB_URL
+          value: jdbc:postgresql://{{ .Values.database.address }}:{{ .Values.database.port }}/{{ .Values.database.database }}?currentSchema={{ .Values.database.schema }}
+        - name: KC_DB_USERNAME
           valueFrom:
             secretKeyRef:
               name: {{ .Values.database.secretName }}
               key: user
-        - name: DB_PASSWORD
+        - name: KC_DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.database.secretName }}
               key: password
-        - name: DB_DATABASE
-          value: {{ .Values.database.database }}
-        - name: DB_SCHEMA
+        - name: KC_DB_SCHEMA
           value: {{ .Values.database.schema }}
-        - name: DB_VENDOR
+        - name: KC_DB
           value: {{ .Values.database.vendor }}
-        - name: JAVA_OPTS
-          value: -Dkeycloak.profile.feature.scripts=enabled -Dkeycloak.profile.feature.upload_scripts=enabled -Dkeycloak.logging.level=all
+        - name: KC_HOSTNAME
+          value: {{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
         stdin: true
         tty: true
 ---
