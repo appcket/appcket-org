@@ -96,6 +96,7 @@ type Mutation {
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   createProject(createProjectInput: CreateProjectInput!): Project!
   updateTeam(updateTeamInput: UpdateTeamInput!): Team!
+  createTeam(createTeamInput: CreateTeamInput!): Team!
 }
 
 input UpdateProjectInput {
@@ -113,6 +114,12 @@ input CreateProjectInput {
 
 input UpdateTeamInput {
   teamId: String!
+  name: String!
+  organizationId: String!
+  userIds: [String!]!
+}
+
+input CreateTeamInput {
   name: String!
   organizationId: String!
   userIds: [String!]!

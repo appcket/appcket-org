@@ -19,6 +19,7 @@ export class CreateProjectService {
         organization_id: data.organizationId,
         updated_at: new Date(),
         updated_by: userId,
+        created_by: userId,
       },
     });
 

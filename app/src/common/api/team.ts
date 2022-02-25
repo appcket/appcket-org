@@ -4,7 +4,8 @@ import { UseMutationResult, UseQueryResult } from 'react-query';
 import { useApiMutation, useApiQuery } from 'src/common/api';
 import SearchTeamsQueryResponse from 'src/common/models/responses/SearchTeamsQueryResponse';
 import GetTeamQueryResponse from 'src/common/models/responses/GetTeamQueryResponse';
-import TeamResponse from 'src/common/models/responses/TeamResponse';
+import UpdateTeamResponse from 'src/common/models/responses/UpdateTeamResponse';
+import CreateTeamResponse from 'src/common/models/responses/CreateTeamResponse';
 import Team from 'src/common/models/Team';
 
 export const useSearchTeams = (searchString: string): UseQueryResult<Team[]> => {
@@ -65,7 +66,7 @@ export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
 export const useUpdateTeam = (): UseMutationResult => {
   const mutationKey = 'updateTeam';
 
-  const processData = (data: TeamResponse): Team => {
+  const processData = (data: UpdateTeamResponse): Team => {
     return data.updateTeam;
   };
 
@@ -73,6 +74,25 @@ export const useUpdateTeam = (): UseMutationResult => {
     gql`
       mutation ${mutationKey}($updateTeamInput: UpdateTeamInput!) {
         updateTeam(updateTeamInput: $updateTeamInput) {
+          name
+        }
+      }
+    `,
+    processData,
+  );
+};
+
+export const useCreateTeam = (): UseMutationResult => {
+  const mutationKey = 'createTeam';
+
+  const processData = (data: CreateTeamResponse): Team => {
+    return data.createTeam;
+  };
+
+  return useApiMutation(
+    gql`
+      mutation ${mutationKey}($createTeamInput: CreateTeamInput!) {
+        createTeam(createTeamInput: $createTeamInput) {
           name
         }
       }

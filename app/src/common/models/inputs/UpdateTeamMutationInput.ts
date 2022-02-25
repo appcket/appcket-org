@@ -1,6 +1,5 @@
-export default interface UpdateTeamMutationInput {
+import CreateTeamMutationInput from 'src/common/models/inputs/CreateTeamMutationInput';
+
+export default interface UpdateTeamMutationInput extends CreateTeamMutationInput {
   teamId: string;
-  name: string;
-  organizationId: string;
-  userIds: string[];
 }

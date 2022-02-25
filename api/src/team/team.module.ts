@@ -7,14 +7,16 @@ import { TeamResolver } from './team.resolver';
 import { UserService } from 'src/user/services/user.service';
 import { UpdateTeamService } from 'src/team/services/updateTeam.service';
 import { GetTeamService } from 'src/team/services/getTeam.service';
+import { CreateTeamService } from 'src/team/services/createTeam.service';
 
 @Module({
   imports: [CommonModule],
   providers: [
     AuthorizationService,
+    CreateTeamService,
+    GetTeamService,
     PrismaService,
     TeamResolver,
-    GetTeamService,
     UpdateTeamService,
     UserService,
   ],

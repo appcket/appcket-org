@@ -1,14 +1,43 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 import Typography from '@mui/material/Typography';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 
 import Page from 'src/common/components/Page';
 import { useSearchTeams } from 'src/common/api/team';
+import hasPermission from 'src/common/utils/hasPermission';
+import { TeamPermission } from 'src/common/enums/permissions.enum';
+import Resources from 'src/common/enums/resources.enum';
+import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
+import Permission from 'src/common/models/Permission';
 
 const ViewTeams = () => {
   // TODO: user input from Team name filter input field should drive table results
   const { status, data, error } = useSearchTeams('');
+
+  const userInfoQuery = useQuery<UserInfoQueryResponse>('userInfo');
+  const createTeamPermission = hasPermission(
+    userInfoQuery.data?.userInfo.permissions as Permission[],
+    Resources.Team,
+    TeamPermission.create,
+  );
+
+  let createTeamButton = (
+    <Button variant="outlined" disabled>
+      Create
+    </Button>
+  );
+
+  if (createTeamPermission) {
+    createTeamButton = (
+      <Button variant="contained" component={Link} to="create">
+        Create
+      </Button>
+    );
+  }
 
   let teamsComponent = <Typography paragraph>Unable to view Teams</Typography>;
 
@@ -64,6 +93,9 @@ const ViewTeams = () => {
       <Typography variant="h4" gutterBottom>
         Teams
       </Typography>
+      <Grid container justifyContent="flex-end">
+        <Grid item>{createTeamButton}</Grid>
+      </Grid>
       <div>{teamsComponent}</div>
     </Page>
   );

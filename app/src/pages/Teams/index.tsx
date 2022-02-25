@@ -7,6 +7,7 @@ import { TeamPermission } from 'src/common/enums/permissions.enum';
 import ViewTeams from 'src/pages/Teams/ViewTeams';
 import ViewTeam from 'src/pages/Teams/ViewTeam';
 import EditTeam from 'src/pages/Teams/EditTeam';
+import CreateTeam from 'src/pages/Teams/CreateTeam';
 
 const Teams = () => {
   return (
@@ -32,6 +33,14 @@ const Teams = () => {
         element={
           <ProtectedRoute permission={[Resources.Team, TeamPermission.update]}>
             <EditTeam />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/create"
+        element={
+          <ProtectedRoute permission={[Resources.Team, TeamPermission.create]}>
+            <CreateTeam />
           </ProtectedRoute>
         }
       />

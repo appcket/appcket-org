@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -102,6 +102,13 @@ const EditTeam = () => {
         <Typography variant="h4">{getTeamQuery.data.name}</Typography>
 
         <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Button variant="contained" component={Link} to={`../${params.teamId!}`}>
+                Cancel
+              </Button>
+            </Grid>
+          </Grid>
           <Typography variant="body1" sx={{ mb: 3 }}>
             Organization: {getTeamQuery.data.organization.name}
           </Typography>
