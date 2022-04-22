@@ -5,7 +5,7 @@
 -- Dumped from database version 13.4 (Debian 13.4-1.pgdg100+1)
 -- Dumped by pg_dump version 13.4 (Debian 13.4-1.pgdg100+1)
 
--- Started on 2022-02-20 15:45:13 UTC
+-- Started on 2022-04-22 02:13:23 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1553,7 +1553,7 @@ CREATE TABLE keycloak.web_origins (
 ALTER TABLE keycloak.web_origins OWNER TO dbuser;
 
 --
--- TOC entry 4202 (class 0 OID 35541)
+-- TOC entry 4203 (class 0 OID 35541)
 -- Dependencies: 345
 -- Data for Name: admin_event_entity; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1561,7 +1561,7 @@ ALTER TABLE keycloak.web_origins OWNER TO dbuser;
 
 
 --
--- TOC entry 4231 (class 0 OID 36002)
+-- TOC entry 4232 (class 0 OID 36002)
 -- Dependencies: 374
 -- Data for Name: associated_policy; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1616,7 +1616,7 @@ INSERT INTO keycloak.associated_policy VALUES ('dbc609b4-6662-4067-b552-7ff079e1
 
 
 --
--- TOC entry 4205 (class 0 OID 35559)
+-- TOC entry 4206 (class 0 OID 35559)
 -- Dependencies: 348
 -- Data for Name: authentication_execution; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1718,7 +1718,7 @@ INSERT INTO keycloak.authentication_execution VALUES ('c41b89ba-26b8-402a-a57d-1
 
 
 --
--- TOC entry 4204 (class 0 OID 35553)
+-- TOC entry 4205 (class 0 OID 35553)
 -- Dependencies: 347
 -- Data for Name: authentication_flow; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1766,7 +1766,7 @@ INSERT INTO keycloak.authentication_flow VALUES ('d2ca8abd-5613-4600-a4a1-95f824
 
 
 --
--- TOC entry 4203 (class 0 OID 35547)
+-- TOC entry 4204 (class 0 OID 35547)
 -- Dependencies: 346
 -- Data for Name: authenticator_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1778,7 +1778,7 @@ INSERT INTO keycloak.authenticator_config VALUES ('f640f8af-b3dd-46cf-9477-5797f
 
 
 --
--- TOC entry 4206 (class 0 OID 35564)
+-- TOC entry 4207 (class 0 OID 35564)
 -- Dependencies: 349
 -- Data for Name: authenticator_config_entry; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1790,7 +1790,7 @@ INSERT INTO keycloak.authenticator_config_entry VALUES ('f640f8af-b3dd-46cf-9477
 
 
 --
--- TOC entry 4232 (class 0 OID 36017)
+-- TOC entry 4233 (class 0 OID 36017)
 -- Dependencies: 375
 -- Data for Name: broker_link; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1798,7 +1798,7 @@ INSERT INTO keycloak.authenticator_config_entry VALUES ('f640f8af-b3dd-46cf-9477
 
 
 --
--- TOC entry 4163 (class 0 OID 34896)
+-- TOC entry 4164 (class 0 OID 34896)
 -- Dependencies: 306
 -- Data for Name: client; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1821,7 +1821,7 @@ INSERT INTO keycloak.client VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', true
 
 
 --
--- TOC entry 4186 (class 0 OID 35270)
+-- TOC entry 4187 (class 0 OID 35270)
 -- Dependencies: 329
 -- Data for Name: client_attributes; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1869,7 +1869,7 @@ INSERT INTO keycloak.client_attributes VALUES ('4dd4c360-d5b9-4730-8091-78b394ce
 
 
 --
--- TOC entry 4243 (class 0 OID 36276)
+-- TOC entry 4244 (class 0 OID 36276)
 -- Dependencies: 386
 -- Data for Name: client_auth_flow_bindings; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1879,7 +1879,7 @@ INSERT INTO keycloak.client_auth_flow_bindings VALUES ('6518e1e7-19a8-4e2b-8718-
 
 
 --
--- TOC entry 4242 (class 0 OID 36151)
+-- TOC entry 4243 (class 0 OID 36151)
 -- Dependencies: 385
 -- Data for Name: client_initial_access; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1887,7 +1887,7 @@ INSERT INTO keycloak.client_auth_flow_bindings VALUES ('6518e1e7-19a8-4e2b-8718-
 
 
 --
--- TOC entry 4188 (class 0 OID 35282)
+-- TOC entry 4189 (class 0 OID 35282)
 -- Dependencies: 331
 -- Data for Name: client_node_registrations; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1895,7 +1895,7 @@ INSERT INTO keycloak.client_auth_flow_bindings VALUES ('6518e1e7-19a8-4e2b-8718-
 
 
 --
--- TOC entry 4220 (class 0 OID 35801)
+-- TOC entry 4221 (class 0 OID 35801)
 -- Dependencies: 363
 -- Data for Name: client_scope; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1918,10 +1918,12 @@ INSERT INTO keycloak.client_scope VALUES ('63984129-44c9-4bd1-97d1-da0df3407112'
 INSERT INTO keycloak.client_scope VALUES ('a15b2f14-004d-47f8-b137-7bca43fc8b30', 'microprofile-jwt', 'appcket', 'Microprofile - JWT built-in scope', 'openid-connect');
 INSERT INTO keycloak.client_scope VALUES ('aee86bba-572b-4335-8f5b-c9969c70cbce', 'profile', 'appcket', 'OpenID Connect built-in scope: profile', 'openid-connect');
 INSERT INTO keycloak.client_scope VALUES ('4709e0fb-184a-4b47-a804-ae1556e53a73', 'phone', 'appcket', 'OpenID Connect built-in scope: phone', 'openid-connect');
+INSERT INTO keycloak.client_scope VALUES ('f2af3385-b007-4e90-b783-54eaa0aac86d', 'acr', 'master', 'OpenID Connect scope for add acr (authentication context class reference) to the token', 'openid-connect');
+INSERT INTO keycloak.client_scope VALUES ('c03824d3-cc18-4529-90cd-968ab5d3653d', 'acr', 'appcket', 'OpenID Connect scope for add acr (authentication context class reference) to the token', 'openid-connect');
 
 
 --
--- TOC entry 4221 (class 0 OID 35816)
+-- TOC entry 4222 (class 0 OID 35816)
 -- Dependencies: 364
 -- Data for Name: client_scope_attributes; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -1974,10 +1976,14 @@ INSERT INTO keycloak.client_scope_attributes VALUES ('aee86bba-572b-4335-8f5b-c9
 INSERT INTO keycloak.client_scope_attributes VALUES ('4709e0fb-184a-4b47-a804-ae1556e53a73', 'true', 'include.in.token.scope');
 INSERT INTO keycloak.client_scope_attributes VALUES ('4709e0fb-184a-4b47-a804-ae1556e53a73', 'true', 'display.on.consent.screen');
 INSERT INTO keycloak.client_scope_attributes VALUES ('4709e0fb-184a-4b47-a804-ae1556e53a73', '${phoneScopeConsentText}', 'consent.screen.text');
+INSERT INTO keycloak.client_scope_attributes VALUES ('f2af3385-b007-4e90-b783-54eaa0aac86d', 'false', 'display.on.consent.screen');
+INSERT INTO keycloak.client_scope_attributes VALUES ('f2af3385-b007-4e90-b783-54eaa0aac86d', 'false', 'include.in.token.scope');
+INSERT INTO keycloak.client_scope_attributes VALUES ('c03824d3-cc18-4529-90cd-968ab5d3653d', 'false', 'display.on.consent.screen');
+INSERT INTO keycloak.client_scope_attributes VALUES ('c03824d3-cc18-4529-90cd-968ab5d3653d', 'false', 'include.in.token.scope');
 
 
 --
--- TOC entry 4244 (class 0 OID 36318)
+-- TOC entry 4245 (class 0 OID 36318)
 -- Dependencies: 387
 -- Data for Name: client_scope_client; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2097,7 +2103,7 @@ INSERT INTO keycloak.client_scope_client VALUES ('4dd4c360-d5b9-4730-8091-78b394
 
 
 --
--- TOC entry 4222 (class 0 OID 35822)
+-- TOC entry 4223 (class 0 OID 35822)
 -- Dependencies: 365
 -- Data for Name: client_scope_role_mapping; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2107,7 +2113,7 @@ INSERT INTO keycloak.client_scope_role_mapping VALUES ('1ddb5c58-3c5b-43bc-ae48-
 
 
 --
--- TOC entry 4164 (class 0 OID 34908)
+-- TOC entry 4165 (class 0 OID 34908)
 -- Dependencies: 307
 -- Data for Name: client_session; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2115,7 +2121,7 @@ INSERT INTO keycloak.client_scope_role_mapping VALUES ('1ddb5c58-3c5b-43bc-ae48-
 
 
 --
--- TOC entry 4209 (class 0 OID 35585)
+-- TOC entry 4210 (class 0 OID 35585)
 -- Dependencies: 352
 -- Data for Name: client_session_auth_status; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2123,7 +2129,7 @@ INSERT INTO keycloak.client_scope_role_mapping VALUES ('1ddb5c58-3c5b-43bc-ae48-
 
 
 --
--- TOC entry 4187 (class 0 OID 35276)
+-- TOC entry 4188 (class 0 OID 35276)
 -- Dependencies: 330
 -- Data for Name: client_session_note; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2131,7 +2137,7 @@ INSERT INTO keycloak.client_scope_role_mapping VALUES ('1ddb5c58-3c5b-43bc-ae48-
 
 
 --
--- TOC entry 4201 (class 0 OID 35463)
+-- TOC entry 4202 (class 0 OID 35463)
 -- Dependencies: 344
 -- Data for Name: client_session_prot_mapper; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2139,7 +2145,7 @@ INSERT INTO keycloak.client_scope_role_mapping VALUES ('1ddb5c58-3c5b-43bc-ae48-
 
 
 --
--- TOC entry 4165 (class 0 OID 34914)
+-- TOC entry 4166 (class 0 OID 34914)
 -- Dependencies: 308
 -- Data for Name: client_session_role; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2147,7 +2153,7 @@ INSERT INTO keycloak.client_scope_role_mapping VALUES ('1ddb5c58-3c5b-43bc-ae48-
 
 
 --
--- TOC entry 4210 (class 0 OID 35666)
+-- TOC entry 4211 (class 0 OID 35666)
 -- Dependencies: 353
 -- Data for Name: client_user_session_note; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2155,7 +2161,7 @@ INSERT INTO keycloak.client_scope_role_mapping VALUES ('1ddb5c58-3c5b-43bc-ae48-
 
 
 --
--- TOC entry 4240 (class 0 OID 36067)
+-- TOC entry 4241 (class 0 OID 36067)
 -- Dependencies: 383
 -- Data for Name: component; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2186,7 +2192,7 @@ INSERT INTO keycloak.component VALUES ('dc5145c3-7f57-40ac-a57b-90d37eccb35e', '
 
 
 --
--- TOC entry 4239 (class 0 OID 36061)
+-- TOC entry 4240 (class 0 OID 36061)
 -- Dependencies: 382
 -- Data for Name: component_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2262,7 +2268,7 @@ INSERT INTO keycloak.component_config VALUES ('47934d46-3e06-480b-92f0-ef9bcc380
 
 
 --
--- TOC entry 4166 (class 0 OID 34917)
+-- TOC entry 4167 (class 0 OID 34917)
 -- Dependencies: 309
 -- Data for Name: composite_role; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2352,7 +2358,7 @@ INSERT INTO keycloak.composite_role VALUES ('1250ac00-2380-4150-81a7-10a0ae10504
 
 
 --
--- TOC entry 4167 (class 0 OID 34920)
+-- TOC entry 4168 (class 0 OID 34920)
 -- Dependencies: 310
 -- Data for Name: credential; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2366,7 +2372,7 @@ INSERT INTO keycloak.credential VALUES ('0e881b5d-b6ca-476c-abbc-3ad965594a94', 
 
 
 --
--- TOC entry 4162 (class 0 OID 34887)
+-- TOC entry 4163 (class 0 OID 34887)
 -- Dependencies: 305
 -- Data for Name: databasechangelog; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2476,10 +2482,11 @@ INSERT INTO keycloak.databasechangelog VALUES ('KEYCLOAK-17267-add-index-to-user
 INSERT INTO keycloak.databasechangelog VALUES ('KEYCLOAK-18146-add-saml-art-binding-identifier', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2022-02-20 02:29:14.54442', 103, 'EXECUTED', '8:276a44955eab693c970a42880197fff2', 'customChange', '', NULL, '4.6.2', NULL, NULL, '5324150155');
 INSERT INTO keycloak.databasechangelog VALUES ('15.0.0-KEYCLOAK-18467', 'keycloak', 'META-INF/jpa-changelog-15.0.0.xml', '2022-02-20 02:29:14.558209', 104, 'EXECUTED', '8:ba8ee3b694d043f2bfc1a1079d0760d7', 'addColumn tableName=REALM_LOCALIZATIONS; update tableName=REALM_LOCALIZATIONS; dropColumn columnName=TEXTS, tableName=REALM_LOCALIZATIONS; renameColumn newColumnName=TEXTS, oldColumnName=TEXTS_NEW, tableName=REALM_LOCALIZATIONS; addNotNullConstrai...', '', NULL, '4.6.2', NULL, NULL, '5324150155');
 INSERT INTO keycloak.databasechangelog VALUES ('17.0.0-9562', 'keycloak', 'META-INF/jpa-changelog-17.0.0.xml', '2022-02-20 02:29:14.568829', 105, 'EXECUTED', '8:5e06b1d75f5d17685485e610c2851b17', 'createIndex indexName=IDX_USER_SERVICE_ACCOUNT, tableName=USER_ENTITY', '', NULL, '4.6.2', NULL, NULL, '5324150155');
+INSERT INTO keycloak.databasechangelog VALUES ('18.0.0-10625-IDX_ADMIN_EVENT_TIME', 'keycloak', 'META-INF/jpa-changelog-18.0.0.xml', '2022-04-21 18:59:49.897065', 106, 'EXECUTED', '8:4b80546c1dc550ac552ee7b24a4ab7c0', 'createIndex indexName=IDX_ADMIN_EVENT_TIME, tableName=ADMIN_EVENT_ENTITY', '', NULL, '4.8.0', NULL, NULL, '0567589704');
 
 
 --
--- TOC entry 4161 (class 0 OID 34882)
+-- TOC entry 4162 (class 0 OID 34882)
 -- Dependencies: 304
 -- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2490,7 +2497,7 @@ INSERT INTO keycloak.databasechangeloglock VALUES (1001, false, NULL, NULL);
 
 
 --
--- TOC entry 4245 (class 0 OID 36334)
+-- TOC entry 4246 (class 0 OID 36334)
 -- Dependencies: 388
 -- Data for Name: default_client_scope; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2513,10 +2520,12 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', '1ddb5c58-3c5b-43bc
 INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'b2414a14-1f25-4d4b-9162-de66eeb6652d', false);
 INSERT INTO keycloak.default_client_scope VALUES ('appcket', '4709e0fb-184a-4b47-a804-ae1556e53a73', false);
 INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8-b137-7bca43fc8b30', false);
+INSERT INTO keycloak.default_client_scope VALUES ('master', 'f2af3385-b007-4e90-b783-54eaa0aac86d', true);
+INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'c03824d3-cc18-4529-90cd-968ab5d3653d', true);
 
 
 --
--- TOC entry 4168 (class 0 OID 34926)
+-- TOC entry 4169 (class 0 OID 34926)
 -- Dependencies: 311
 -- Data for Name: event_entity; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2524,7 +2533,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4233 (class 0 OID 36023)
+-- TOC entry 4234 (class 0 OID 36023)
 -- Dependencies: 376
 -- Data for Name: fed_user_attribute; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2532,7 +2541,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4234 (class 0 OID 36029)
+-- TOC entry 4235 (class 0 OID 36029)
 -- Dependencies: 377
 -- Data for Name: fed_user_consent; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2540,7 +2549,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4247 (class 0 OID 36360)
+-- TOC entry 4248 (class 0 OID 36360)
 -- Dependencies: 390
 -- Data for Name: fed_user_consent_cl_scope; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2548,7 +2557,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4235 (class 0 OID 36038)
+-- TOC entry 4236 (class 0 OID 36038)
 -- Dependencies: 378
 -- Data for Name: fed_user_credential; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2556,7 +2565,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4236 (class 0 OID 36048)
+-- TOC entry 4237 (class 0 OID 36048)
 -- Dependencies: 379
 -- Data for Name: fed_user_group_membership; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2564,7 +2573,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4237 (class 0 OID 36051)
+-- TOC entry 4238 (class 0 OID 36051)
 -- Dependencies: 380
 -- Data for Name: fed_user_required_action; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2572,7 +2581,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4238 (class 0 OID 36058)
+-- TOC entry 4239 (class 0 OID 36058)
 -- Dependencies: 381
 -- Data for Name: fed_user_role_mapping; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2580,7 +2589,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4191 (class 0 OID 35320)
+-- TOC entry 4192 (class 0 OID 35320)
 -- Dependencies: 334
 -- Data for Name: federated_identity; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2588,7 +2597,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4241 (class 0 OID 36127)
+-- TOC entry 4242 (class 0 OID 36127)
 -- Dependencies: 384
 -- Data for Name: federated_user; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2596,7 +2605,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4217 (class 0 OID 35739)
+-- TOC entry 4218 (class 0 OID 35739)
 -- Dependencies: 360
 -- Data for Name: group_attribute; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2604,7 +2613,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4216 (class 0 OID 35736)
+-- TOC entry 4217 (class 0 OID 35736)
 -- Dependencies: 359
 -- Data for Name: group_role_mapping; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2612,7 +2621,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4192 (class 0 OID 35326)
+-- TOC entry 4193 (class 0 OID 35326)
 -- Dependencies: 335
 -- Data for Name: identity_provider; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2620,7 +2629,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4193 (class 0 OID 35336)
+-- TOC entry 4194 (class 0 OID 35336)
 -- Dependencies: 336
 -- Data for Name: identity_provider_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2628,7 +2637,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4198 (class 0 OID 35442)
+-- TOC entry 4199 (class 0 OID 35442)
 -- Dependencies: 341
 -- Data for Name: identity_provider_mapper; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2636,7 +2645,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4199 (class 0 OID 35448)
+-- TOC entry 4200 (class 0 OID 35448)
 -- Dependencies: 342
 -- Data for Name: idp_mapper_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2644,7 +2653,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4215 (class 0 OID 35733)
+-- TOC entry 4216 (class 0 OID 35733)
 -- Dependencies: 358
 -- Data for Name: keycloak_group; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2652,7 +2661,7 @@ INSERT INTO keycloak.default_client_scope VALUES ('appcket', 'a15b2f14-004d-47f8
 
 
 --
--- TOC entry 4169 (class 0 OID 34935)
+-- TOC entry 4170 (class 0 OID 34935)
 -- Dependencies: 312
 -- Data for Name: keycloak_role; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2744,16 +2753,18 @@ INSERT INTO keycloak.keycloak_role VALUES ('cbd7ba23-5f0a-4ec5-a795-25ecebc54a79
 
 
 --
--- TOC entry 4197 (class 0 OID 35439)
+-- TOC entry 4198 (class 0 OID 35439)
 -- Dependencies: 340
 -- Data for Name: migration_model; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
 
 INSERT INTO keycloak.migration_model VALUES ('8rsjk', '17.0.0', 1645324288);
+INSERT INTO keycloak.migration_model VALUES ('zvo02', '17.0.1', 1649123024);
+INSERT INTO keycloak.migration_model VALUES ('armx3', '18.0.0', 1650567590);
 
 
 --
--- TOC entry 4214 (class 0 OID 35723)
+-- TOC entry 4215 (class 0 OID 35723)
 -- Dependencies: 357
 -- Data for Name: offline_client_session; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2761,7 +2772,7 @@ INSERT INTO keycloak.migration_model VALUES ('8rsjk', '17.0.0', 1645324288);
 
 
 --
--- TOC entry 4213 (class 0 OID 35717)
+-- TOC entry 4214 (class 0 OID 35717)
 -- Dependencies: 356
 -- Data for Name: offline_user_session; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2769,7 +2780,7 @@ INSERT INTO keycloak.migration_model VALUES ('8rsjk', '17.0.0', 1645324288);
 
 
 --
--- TOC entry 4227 (class 0 OID 35944)
+-- TOC entry 4228 (class 0 OID 35944)
 -- Dependencies: 370
 -- Data for Name: policy_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2785,7 +2796,7 @@ INSERT INTO keycloak.policy_config VALUES ('b498b31a-81fa-4a32-b625-71ca3e577dcb
 
 
 --
--- TOC entry 4189 (class 0 OID 35307)
+-- TOC entry 4190 (class 0 OID 35307)
 -- Dependencies: 332
 -- Data for Name: protocol_mapper; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -2850,10 +2861,12 @@ INSERT INTO keycloak.protocol_mapper VALUES ('cadcd86f-31bb-4bfe-9f09-b155027a83
 INSERT INTO keycloak.protocol_mapper VALUES ('795f38ba-3268-4e2f-a956-ca2ad1a0d3be', 'Client IP Address', 'openid-connect', 'oidc-usersessionmodel-note-mapper', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 INSERT INTO keycloak.protocol_mapper VALUES ('9d14a67a-613b-4f8c-a8c4-1d34b23d595c', 'Audience for appcket_app', 'openid-connect', 'oidc-audience-mapper', '68d063b7-66bc-4e03-8ed0-38694d466ad3', NULL);
 INSERT INTO keycloak.protocol_mapper VALUES ('f600d7c2-c282-46c4-877f-12e54f486cb6', 'locale', 'openid-connect', 'oidc-usermodel-attribute-mapper', '4dd4c360-d5b9-4730-8091-78b394cea334', NULL);
+INSERT INTO keycloak.protocol_mapper VALUES ('487f106e-8394-4353-a39c-64890e759820', 'acr loa level', 'openid-connect', 'oidc-acr-mapper', NULL, 'f2af3385-b007-4e90-b783-54eaa0aac86d');
+INSERT INTO keycloak.protocol_mapper VALUES ('2d2a0c1c-6121-41c8-8c22-1625136dcf74', 'acr loa level', 'openid-connect', 'oidc-acr-mapper', NULL, 'c03824d3-cc18-4529-90cd-968ab5d3653d');
 
 
 --
--- TOC entry 4190 (class 0 OID 35314)
+-- TOC entry 4191 (class 0 OID 35314)
 -- Dependencies: 333
 -- Data for Name: protocol_mapper_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3171,10 +3184,14 @@ INSERT INTO keycloak.protocol_mapper_config VALUES ('f600d7c2-c282-46c4-877f-12e
 INSERT INTO keycloak.protocol_mapper_config VALUES ('f600d7c2-c282-46c4-877f-12e54f486cb6', 'true', 'access.token.claim');
 INSERT INTO keycloak.protocol_mapper_config VALUES ('f600d7c2-c282-46c4-877f-12e54f486cb6', 'locale', 'claim.name');
 INSERT INTO keycloak.protocol_mapper_config VALUES ('f600d7c2-c282-46c4-877f-12e54f486cb6', 'String', 'jsonType.label');
+INSERT INTO keycloak.protocol_mapper_config VALUES ('487f106e-8394-4353-a39c-64890e759820', 'true', 'id.token.claim');
+INSERT INTO keycloak.protocol_mapper_config VALUES ('487f106e-8394-4353-a39c-64890e759820', 'true', 'access.token.claim');
+INSERT INTO keycloak.protocol_mapper_config VALUES ('2d2a0c1c-6121-41c8-8c22-1625136dcf74', 'true', 'id.token.claim');
+INSERT INTO keycloak.protocol_mapper_config VALUES ('2d2a0c1c-6121-41c8-8c22-1625136dcf74', 'true', 'access.token.claim');
 
 
 --
--- TOC entry 4170 (class 0 OID 34942)
+-- TOC entry 4171 (class 0 OID 34942)
 -- Dependencies: 313
 -- Data for Name: realm; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3184,7 +3201,7 @@ INSERT INTO keycloak.realm VALUES ('appcket', 60, 300, 1800, NULL, NULL, NULL, t
 
 
 --
--- TOC entry 4171 (class 0 OID 34960)
+-- TOC entry 4172 (class 0 OID 34960)
 -- Dependencies: 314
 -- Data for Name: realm_attribute; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3263,7 +3280,7 @@ INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.strictTransportSec
 
 
 --
--- TOC entry 4219 (class 0 OID 35749)
+-- TOC entry 4220 (class 0 OID 35749)
 -- Dependencies: 362
 -- Data for Name: realm_default_groups; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3271,7 +3288,7 @@ INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.strictTransportSec
 
 
 --
--- TOC entry 4196 (class 0 OID 35431)
+-- TOC entry 4197 (class 0 OID 35431)
 -- Dependencies: 339
 -- Data for Name: realm_enabled_event_types; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3279,7 +3296,7 @@ INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.strictTransportSec
 
 
 --
--- TOC entry 4172 (class 0 OID 34969)
+-- TOC entry 4173 (class 0 OID 34969)
 -- Dependencies: 315
 -- Data for Name: realm_events_listeners; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3289,7 +3306,7 @@ INSERT INTO keycloak.realm_events_listeners VALUES ('appcket', 'jboss-logging');
 
 
 --
--- TOC entry 4252 (class 0 OID 36472)
+-- TOC entry 4253 (class 0 OID 36472)
 -- Dependencies: 395
 -- Data for Name: realm_localizations; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3297,7 +3314,7 @@ INSERT INTO keycloak.realm_events_listeners VALUES ('appcket', 'jboss-logging');
 
 
 --
--- TOC entry 4173 (class 0 OID 34972)
+-- TOC entry 4174 (class 0 OID 34972)
 -- Dependencies: 316
 -- Data for Name: realm_required_credential; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3307,7 +3324,7 @@ INSERT INTO keycloak.realm_required_credential VALUES ('password', 'password', t
 
 
 --
--- TOC entry 4174 (class 0 OID 34980)
+-- TOC entry 4175 (class 0 OID 34980)
 -- Dependencies: 317
 -- Data for Name: realm_smtp_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3315,7 +3332,7 @@ INSERT INTO keycloak.realm_required_credential VALUES ('password', 'password', t
 
 
 --
--- TOC entry 4194 (class 0 OID 35346)
+-- TOC entry 4195 (class 0 OID 35346)
 -- Dependencies: 337
 -- Data for Name: realm_supported_locales; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3323,7 +3340,7 @@ INSERT INTO keycloak.realm_required_credential VALUES ('password', 'password', t
 
 
 --
--- TOC entry 4175 (class 0 OID 34992)
+-- TOC entry 4176 (class 0 OID 34992)
 -- Dependencies: 318
 -- Data for Name: redirect_uris; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3341,7 +3358,7 @@ INSERT INTO keycloak.redirect_uris VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6
 
 
 --
--- TOC entry 4212 (class 0 OID 35680)
+-- TOC entry 4213 (class 0 OID 35680)
 -- Dependencies: 355
 -- Data for Name: required_action_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3349,7 +3366,7 @@ INSERT INTO keycloak.redirect_uris VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6
 
 
 --
--- TOC entry 4211 (class 0 OID 35672)
+-- TOC entry 4212 (class 0 OID 35672)
 -- Dependencies: 354
 -- Data for Name: required_action_provider; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3371,7 +3388,7 @@ INSERT INTO keycloak.required_action_provider VALUES ('fa887271-4679-447c-9d99-b
 
 
 --
--- TOC entry 4249 (class 0 OID 36399)
+-- TOC entry 4250 (class 0 OID 36399)
 -- Dependencies: 392
 -- Data for Name: resource_attribute; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3379,7 +3396,7 @@ INSERT INTO keycloak.required_action_provider VALUES ('fa887271-4679-447c-9d99-b
 
 
 --
--- TOC entry 4229 (class 0 OID 35972)
+-- TOC entry 4230 (class 0 OID 35972)
 -- Dependencies: 372
 -- Data for Name: resource_policy; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3403,7 +3420,7 @@ INSERT INTO keycloak.resource_policy VALUES ('c2b44cad-bf85-486a-b96e-45f849b7ae
 
 
 --
--- TOC entry 4228 (class 0 OID 35957)
+-- TOC entry 4229 (class 0 OID 35957)
 -- Dependencies: 371
 -- Data for Name: resource_scope; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3427,7 +3444,7 @@ INSERT INTO keycloak.resource_scope VALUES ('c2b44cad-bf85-486a-b96e-45f849b7ae2
 
 
 --
--- TOC entry 4223 (class 0 OID 35891)
+-- TOC entry 4224 (class 0 OID 35891)
 -- Dependencies: 366
 -- Data for Name: resource_server; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3436,7 +3453,7 @@ INSERT INTO keycloak.resource_server VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49a
 
 
 --
--- TOC entry 4248 (class 0 OID 36375)
+-- TOC entry 4249 (class 0 OID 36375)
 -- Dependencies: 391
 -- Data for Name: resource_server_perm_ticket; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3444,7 +3461,7 @@ INSERT INTO keycloak.resource_server VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49a
 
 
 --
--- TOC entry 4226 (class 0 OID 35929)
+-- TOC entry 4227 (class 0 OID 35929)
 -- Dependencies: 369
 -- Data for Name: resource_server_policy; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3474,7 +3491,7 @@ INSERT INTO keycloak.resource_server_policy VALUES ('dbc609b4-6662-4067-b552-7ff
 
 
 --
--- TOC entry 4224 (class 0 OID 35899)
+-- TOC entry 4225 (class 0 OID 35899)
 -- Dependencies: 367
 -- Data for Name: resource_server_resource; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3487,7 +3504,7 @@ INSERT INTO keycloak.resource_server_resource VALUES ('c2b44cad-bf85-486a-b96e-4
 
 
 --
--- TOC entry 4225 (class 0 OID 35914)
+-- TOC entry 4226 (class 0 OID 35914)
 -- Dependencies: 368
 -- Data for Name: resource_server_scope; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3511,7 +3528,7 @@ INSERT INTO keycloak.resource_server_scope VALUES ('7b62a73c-d6cf-4e6c-9b79-fa02
 
 
 --
--- TOC entry 4250 (class 0 OID 36418)
+-- TOC entry 4251 (class 0 OID 36418)
 -- Dependencies: 393
 -- Data for Name: resource_uris; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3520,7 +3537,7 @@ INSERT INTO keycloak.resource_uris VALUES ('b59ef162-80d4-43af-9758-9fa0a2fc158a
 
 
 --
--- TOC entry 4251 (class 0 OID 36428)
+-- TOC entry 4252 (class 0 OID 36428)
 -- Dependencies: 394
 -- Data for Name: role_attribute; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3528,7 +3545,7 @@ INSERT INTO keycloak.resource_uris VALUES ('b59ef162-80d4-43af-9758-9fa0a2fc158a
 
 
 --
--- TOC entry 4176 (class 0 OID 34995)
+-- TOC entry 4177 (class 0 OID 34995)
 -- Dependencies: 319
 -- Data for Name: scope_mapping; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3538,13 +3555,12 @@ INSERT INTO keycloak.scope_mapping VALUES ('26f802c3-b7af-4e78-b785-40493ae2483a
 
 
 --
--- TOC entry 4230 (class 0 OID 35987)
+-- TOC entry 4231 (class 0 OID 35987)
 -- Dependencies: 373
 -- Data for Name: scope_policy; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
 
 INSERT INTO keycloak.scope_policy VALUES ('fb335bfa-b1e9-4557-8cc4-a113e9a7f929', '6338e03e-6909-496e-b52c-1cc62eb5eba6');
-INSERT INTO keycloak.scope_policy VALUES ('fb335bfa-b1e9-4557-8cc4-a113e9a7f929', '42c43075-9052-4129-bebc-691c56a66dfd');
 INSERT INTO keycloak.scope_policy VALUES ('cfc355ca-0083-4237-b2a5-b8bba690e9f2', 'f7b5232d-91c5-4444-b8ca-165d17552a5d');
 INSERT INTO keycloak.scope_policy VALUES ('6ba0e730-65b0-4c13-81c1-ccf1576b3926', 'b6033d87-3b1b-4002-8f97-255956c2b506');
 INSERT INTO keycloak.scope_policy VALUES ('2de7d2b4-f1a9-41d9-a34a-07b2f2f35f66', '2d99ec81-c6a8-4949-b129-0bc425126832');
@@ -3559,18 +3575,22 @@ INSERT INTO keycloak.scope_policy VALUES ('0cad1c5f-c4ca-4bb1-955f-532f0d1e1862'
 INSERT INTO keycloak.scope_policy VALUES ('bd4a6c23-aba5-4b86-b394-690ee1c3ddc1', '69a3bcf1-89b4-4602-bc26-9d34eb5d9c55');
 INSERT INTO keycloak.scope_policy VALUES ('328dd4b0-065d-4a9c-86dc-412b567f7331', 'df6b4650-ee44-4f35-b5fe-1891afe29334');
 INSERT INTO keycloak.scope_policy VALUES ('7b62a73c-d6cf-4e6c-9b79-fa02e98c4ecd', 'dbc609b4-6662-4067-b552-7ff079e1d7ed');
+INSERT INTO keycloak.scope_policy VALUES ('34d6c370-b0af-41e9-a129-3fd5fc4622f6', '42c43075-9052-4129-bebc-691c56a66dfd');
 
 
 --
--- TOC entry 4178 (class 0 OID 35001)
+-- TOC entry 4179 (class 0 OID 35001)
 -- Dependencies: 321
 -- Data for Name: user_attribute; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
 
+INSERT INTO keycloak.user_attribute VALUES ('jobTitle', 'CEO, Vandelay Industries', 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9', '9b5c4ab3-b16e-4ad4-a2b2-cf2d8fc60e30');
+INSERT INTO keycloak.user_attribute VALUES ('jobTitle', 'Regional Director, Manufacturing', '7e2e3888-b370-4309-b82c-403b6871a390', 'ba3efcb4-4e67-49f9-8772-44b0f519a403');
+INSERT INTO keycloak.user_attribute VALUES ('jobTitle', 'Assistant Vice President', 'de3127bc-dbe6-4775-9334-2f873f413d23', 'ea15cddd-ab22-43a4-8b27-8f17e52cec52');
 
 
 --
--- TOC entry 4200 (class 0 OID 35454)
+-- TOC entry 4201 (class 0 OID 35454)
 -- Dependencies: 343
 -- Data for Name: user_consent; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3578,7 +3598,7 @@ INSERT INTO keycloak.scope_policy VALUES ('7b62a73c-d6cf-4e6c-9b79-fa02e98c4ecd'
 
 
 --
--- TOC entry 4246 (class 0 OID 36350)
+-- TOC entry 4247 (class 0 OID 36350)
 -- Dependencies: 389
 -- Data for Name: user_consent_client_scope; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3586,7 +3606,7 @@ INSERT INTO keycloak.scope_policy VALUES ('7b62a73c-d6cf-4e6c-9b79-fa02e98c4ecd'
 
 
 --
--- TOC entry 4179 (class 0 OID 35007)
+-- TOC entry 4180 (class 0 OID 35007)
 -- Dependencies: 322
 -- Data for Name: user_entity; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3601,7 +3621,7 @@ INSERT INTO keycloak.user_entity VALUES ('ba3b17f0-2698-4455-b150-0dcfbf9fdcd8',
 
 
 --
--- TOC entry 4180 (class 0 OID 35016)
+-- TOC entry 4181 (class 0 OID 35016)
 -- Dependencies: 323
 -- Data for Name: user_federation_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3609,7 +3629,7 @@ INSERT INTO keycloak.user_entity VALUES ('ba3b17f0-2698-4455-b150-0dcfbf9fdcd8',
 
 
 --
--- TOC entry 4207 (class 0 OID 35570)
+-- TOC entry 4208 (class 0 OID 35570)
 -- Dependencies: 350
 -- Data for Name: user_federation_mapper; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3617,7 +3637,7 @@ INSERT INTO keycloak.user_entity VALUES ('ba3b17f0-2698-4455-b150-0dcfbf9fdcd8',
 
 
 --
--- TOC entry 4208 (class 0 OID 35576)
+-- TOC entry 4209 (class 0 OID 35576)
 -- Dependencies: 351
 -- Data for Name: user_federation_mapper_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3625,7 +3645,7 @@ INSERT INTO keycloak.user_entity VALUES ('ba3b17f0-2698-4455-b150-0dcfbf9fdcd8',
 
 
 --
--- TOC entry 4181 (class 0 OID 35022)
+-- TOC entry 4182 (class 0 OID 35022)
 -- Dependencies: 324
 -- Data for Name: user_federation_provider; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3633,7 +3653,7 @@ INSERT INTO keycloak.user_entity VALUES ('ba3b17f0-2698-4455-b150-0dcfbf9fdcd8',
 
 
 --
--- TOC entry 4218 (class 0 OID 35746)
+-- TOC entry 4219 (class 0 OID 35746)
 -- Dependencies: 361
 -- Data for Name: user_group_membership; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3641,7 +3661,7 @@ INSERT INTO keycloak.user_entity VALUES ('ba3b17f0-2698-4455-b150-0dcfbf9fdcd8',
 
 
 --
--- TOC entry 4182 (class 0 OID 35028)
+-- TOC entry 4183 (class 0 OID 35028)
 -- Dependencies: 325
 -- Data for Name: user_required_action; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3649,7 +3669,7 @@ INSERT INTO keycloak.user_entity VALUES ('ba3b17f0-2698-4455-b150-0dcfbf9fdcd8',
 
 
 --
--- TOC entry 4183 (class 0 OID 35031)
+-- TOC entry 4184 (class 0 OID 35031)
 -- Dependencies: 326
 -- Data for Name: user_role_mapping; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3692,7 +3712,7 @@ INSERT INTO keycloak.user_role_mapping VALUES ('eee97160-4b67-4071-84f4-099bbcd7
 
 
 --
--- TOC entry 4184 (class 0 OID 35034)
+-- TOC entry 4185 (class 0 OID 35034)
 -- Dependencies: 327
 -- Data for Name: user_session; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3700,7 +3720,7 @@ INSERT INTO keycloak.user_role_mapping VALUES ('eee97160-4b67-4071-84f4-099bbcd7
 
 
 --
--- TOC entry 4195 (class 0 OID 35349)
+-- TOC entry 4196 (class 0 OID 35349)
 -- Dependencies: 338
 -- Data for Name: user_session_note; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3708,7 +3728,7 @@ INSERT INTO keycloak.user_role_mapping VALUES ('eee97160-4b67-4071-84f4-099bbcd7
 
 
 --
--- TOC entry 4177 (class 0 OID 34998)
+-- TOC entry 4178 (class 0 OID 34998)
 -- Dependencies: 320
 -- Data for Name: username_login_failure; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3716,7 +3736,7 @@ INSERT INTO keycloak.user_role_mapping VALUES ('eee97160-4b67-4071-84f4-099bbcd7
 
 
 --
--- TOC entry 4185 (class 0 OID 35047)
+-- TOC entry 4186 (class 0 OID 35047)
 -- Dependencies: 328
 -- Data for Name: web_origins; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
@@ -3747,7 +3767,7 @@ ALTER TABLE ONLY keycloak.keycloak_role
 
 
 --
--- TOC entry 3930 (class 2606 OID 36280)
+-- TOC entry 3931 (class 2606 OID 36280)
 -- Name: client_auth_flow_bindings c_cli_flow_bind; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3756,7 +3776,7 @@ ALTER TABLE ONLY keycloak.client_auth_flow_bindings
 
 
 --
--- TOC entry 3932 (class 2606 OID 36485)
+-- TOC entry 3933 (class 2606 OID 36485)
 -- Name: client_scope_client c_cli_scope_bind; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3765,7 +3785,7 @@ ALTER TABLE ONLY keycloak.client_scope_client
 
 
 --
--- TOC entry 3927 (class 2606 OID 36155)
+-- TOC entry 3928 (class 2606 OID 36155)
 -- Name: client_initial_access cnstr_client_init_acc_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3774,7 +3794,7 @@ ALTER TABLE ONLY keycloak.client_initial_access
 
 
 --
--- TOC entry 3844 (class 2606 OID 35787)
+-- TOC entry 3845 (class 2606 OID 35787)
 -- Name: realm_default_groups con_group_id_def_groups; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3783,7 +3803,7 @@ ALTER TABLE ONLY keycloak.realm_default_groups
 
 
 --
--- TOC entry 3892 (class 2606 OID 36074)
+-- TOC entry 3893 (class 2606 OID 36074)
 -- Name: broker_link constr_broker_link_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3792,7 +3812,7 @@ ALTER TABLE ONLY keycloak.broker_link
 
 
 --
--- TOC entry 3814 (class 2606 OID 35693)
+-- TOC entry 3815 (class 2606 OID 35693)
 -- Name: client_user_session_note constr_cl_usr_ses_note; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3801,7 +3821,7 @@ ALTER TABLE ONLY keycloak.client_user_session_note
 
 
 --
--- TOC entry 3918 (class 2606 OID 36094)
+-- TOC entry 3919 (class 2606 OID 36094)
 -- Name: component_config constr_component_config_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3810,7 +3830,7 @@ ALTER TABLE ONLY keycloak.component_config
 
 
 --
--- TOC entry 3921 (class 2606 OID 36092)
+-- TOC entry 3922 (class 2606 OID 36092)
 -- Name: component constr_component_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3819,7 +3839,7 @@ ALTER TABLE ONLY keycloak.component
 
 
 --
--- TOC entry 3910 (class 2606 OID 36090)
+-- TOC entry 3911 (class 2606 OID 36090)
 -- Name: fed_user_required_action constr_fed_required_action; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3828,7 +3848,7 @@ ALTER TABLE ONLY keycloak.fed_user_required_action
 
 
 --
--- TOC entry 3894 (class 2606 OID 36076)
+-- TOC entry 3895 (class 2606 OID 36076)
 -- Name: fed_user_attribute constr_fed_user_attr_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3837,7 +3857,7 @@ ALTER TABLE ONLY keycloak.fed_user_attribute
 
 
 --
--- TOC entry 3897 (class 2606 OID 36078)
+-- TOC entry 3898 (class 2606 OID 36078)
 -- Name: fed_user_consent constr_fed_user_consent_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3846,7 +3866,7 @@ ALTER TABLE ONLY keycloak.fed_user_consent
 
 
 --
--- TOC entry 3902 (class 2606 OID 36084)
+-- TOC entry 3903 (class 2606 OID 36084)
 -- Name: fed_user_credential constr_fed_user_cred_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3855,7 +3875,7 @@ ALTER TABLE ONLY keycloak.fed_user_credential
 
 
 --
--- TOC entry 3906 (class 2606 OID 36086)
+-- TOC entry 3907 (class 2606 OID 36086)
 -- Name: fed_user_group_membership constr_fed_user_group; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3864,7 +3884,7 @@ ALTER TABLE ONLY keycloak.fed_user_group_membership
 
 
 --
--- TOC entry 3914 (class 2606 OID 36088)
+-- TOC entry 3915 (class 2606 OID 36088)
 -- Name: fed_user_role_mapping constr_fed_user_role; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3873,7 +3893,7 @@ ALTER TABLE ONLY keycloak.fed_user_role_mapping
 
 
 --
--- TOC entry 3925 (class 2606 OID 36134)
+-- TOC entry 3926 (class 2606 OID 36134)
 -- Name: federated_user constr_federated_user; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -3882,7 +3902,7 @@ ALTER TABLE ONLY keycloak.federated_user
 
 
 --
--- TOC entry 3846 (class 2606 OID 36239)
+-- TOC entry 3847 (class 2606 OID 36239)
 -- Name: realm_default_groups constr_realm_default_groups; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4071,7 +4091,7 @@ ALTER TABLE ONLY keycloak.admin_event_entity
 
 
 --
--- TOC entry 3804 (class 2606 OID 35598)
+-- TOC entry 3805 (class 2606 OID 35598)
 -- Name: authenticator_config_entry constraint_auth_cfg_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4080,7 +4100,7 @@ ALTER TABLE ONLY keycloak.authenticator_config_entry
 
 
 --
--- TOC entry 3800 (class 2606 OID 35596)
+-- TOC entry 3801 (class 2606 OID 35596)
 -- Name: authentication_execution constraint_auth_exec_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4089,7 +4109,7 @@ ALTER TABLE ONLY keycloak.authentication_execution
 
 
 --
--- TOC entry 3797 (class 2606 OID 35594)
+-- TOC entry 3798 (class 2606 OID 35594)
 -- Name: authentication_flow constraint_auth_flow_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4098,7 +4118,7 @@ ALTER TABLE ONLY keycloak.authentication_flow
 
 
 --
--- TOC entry 3794 (class 2606 OID 35592)
+-- TOC entry 3795 (class 2606 OID 35592)
 -- Name: authenticator_config constraint_auth_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4107,7 +4127,7 @@ ALTER TABLE ONLY keycloak.authenticator_config
 
 
 --
--- TOC entry 3812 (class 2606 OID 35602)
+-- TOC entry 3813 (class 2606 OID 35602)
 -- Name: client_session_auth_status constraint_auth_status_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4152,7 +4172,7 @@ ALTER TABLE ONLY keycloak.identity_provider_config
 
 
 --
--- TOC entry 3878 (class 2606 OID 35951)
+-- TOC entry 3879 (class 2606 OID 35951)
 -- Name: policy_config constraint_dpc; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4188,7 +4208,7 @@ ALTER TABLE ONLY keycloak.user_federation_config
 
 
 --
--- TOC entry 3945 (class 2606 OID 36379)
+-- TOC entry 3946 (class 2606 OID 36379)
 -- Name: resource_server_perm_ticket constraint_fapmt; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4197,7 +4217,7 @@ ALTER TABLE ONLY keycloak.resource_server_perm_ticket
 
 
 --
--- TOC entry 3863 (class 2606 OID 35906)
+-- TOC entry 3864 (class 2606 OID 35906)
 -- Name: resource_server_resource constraint_farsr; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4206,7 +4226,7 @@ ALTER TABLE ONLY keycloak.resource_server_resource
 
 
 --
--- TOC entry 3873 (class 2606 OID 35936)
+-- TOC entry 3874 (class 2606 OID 35936)
 -- Name: resource_server_policy constraint_farsrp; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4215,7 +4235,7 @@ ALTER TABLE ONLY keycloak.resource_server_policy
 
 
 --
--- TOC entry 3889 (class 2606 OID 36006)
+-- TOC entry 3890 (class 2606 OID 36006)
 -- Name: associated_policy constraint_farsrpap; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4224,7 +4244,7 @@ ALTER TABLE ONLY keycloak.associated_policy
 
 
 --
--- TOC entry 3883 (class 2606 OID 35976)
+-- TOC entry 3884 (class 2606 OID 35976)
 -- Name: resource_policy constraint_farsrpp; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4233,7 +4253,7 @@ ALTER TABLE ONLY keycloak.resource_policy
 
 
 --
--- TOC entry 3868 (class 2606 OID 35921)
+-- TOC entry 3869 (class 2606 OID 35921)
 -- Name: resource_server_scope constraint_farsrs; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4242,7 +4262,7 @@ ALTER TABLE ONLY keycloak.resource_server_scope
 
 
 --
--- TOC entry 3880 (class 2606 OID 35961)
+-- TOC entry 3881 (class 2606 OID 35961)
 -- Name: resource_scope constraint_farsrsp; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4251,7 +4271,7 @@ ALTER TABLE ONLY keycloak.resource_scope
 
 
 --
--- TOC entry 3886 (class 2606 OID 35991)
+-- TOC entry 3887 (class 2606 OID 35991)
 -- Name: scope_policy constraint_farsrsps; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4269,7 +4289,7 @@ ALTER TABLE ONLY keycloak.user_entity
 
 
 --
--- TOC entry 3810 (class 2606 OID 35606)
+-- TOC entry 3811 (class 2606 OID 35606)
 -- Name: user_federation_mapper_config constraint_fedmapper_cfg_pm; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4278,7 +4298,7 @@ ALTER TABLE ONLY keycloak.user_federation_mapper_config
 
 
 --
--- TOC entry 3806 (class 2606 OID 35604)
+-- TOC entry 3807 (class 2606 OID 35604)
 -- Name: user_federation_mapper constraint_fedmapperpm; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4287,7 +4307,7 @@ ALTER TABLE ONLY keycloak.user_federation_mapper
 
 
 --
--- TOC entry 3943 (class 2606 OID 36364)
+-- TOC entry 3944 (class 2606 OID 36364)
 -- Name: fed_user_consent_cl_scope constraint_fgrntcsnt_clsc_pm; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4296,7 +4316,7 @@ ALTER TABLE ONLY keycloak.fed_user_consent_cl_scope
 
 
 --
--- TOC entry 3940 (class 2606 OID 36354)
+-- TOC entry 3941 (class 2606 OID 36354)
 -- Name: user_consent_client_scope constraint_grntcsnt_clsc_pm; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4314,7 +4334,7 @@ ALTER TABLE ONLY keycloak.user_consent
 
 
 --
--- TOC entry 3831 (class 2606 OID 35754)
+-- TOC entry 3832 (class 2606 OID 35754)
 -- Name: keycloak_group constraint_group; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4323,7 +4343,7 @@ ALTER TABLE ONLY keycloak.keycloak_group
 
 
 --
--- TOC entry 3838 (class 2606 OID 35761)
+-- TOC entry 3839 (class 2606 OID 35761)
 -- Name: group_attribute constraint_group_attribute_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4332,7 +4352,7 @@ ALTER TABLE ONLY keycloak.group_attribute
 
 
 --
--- TOC entry 3835 (class 2606 OID 35775)
+-- TOC entry 3836 (class 2606 OID 35775)
 -- Name: group_role_mapping constraint_group_role; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4368,7 +4388,7 @@ ALTER TABLE ONLY keycloak.migration_model
 
 
 --
--- TOC entry 3827 (class 2606 OID 36460)
+-- TOC entry 3828 (class 2606 OID 36460)
 -- Name: offline_client_session constraint_offl_cl_ses_pk3; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4377,7 +4397,7 @@ ALTER TABLE ONLY keycloak.offline_client_session
 
 
 --
--- TOC entry 3821 (class 2606 OID 35730)
+-- TOC entry 3822 (class 2606 OID 35730)
 -- Name: offline_user_session constraint_offl_us_ses_pk2; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4413,7 +4433,7 @@ ALTER TABLE ONLY keycloak.redirect_uris
 
 
 --
--- TOC entry 3819 (class 2606 OID 35691)
+-- TOC entry 3820 (class 2606 OID 35691)
 -- Name: required_action_config constraint_req_act_cfg_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4422,7 +4442,7 @@ ALTER TABLE ONLY keycloak.required_action_config
 
 
 --
--- TOC entry 3816 (class 2606 OID 35689)
+-- TOC entry 3817 (class 2606 OID 35689)
 -- Name: required_action_provider constraint_req_act_prv_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4440,7 +4460,7 @@ ALTER TABLE ONLY keycloak.user_required_action
 
 
 --
--- TOC entry 3951 (class 2606 OID 36427)
+-- TOC entry 3952 (class 2606 OID 36427)
 -- Name: resource_uris constraint_resour_uris_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4449,7 +4469,7 @@ ALTER TABLE ONLY keycloak.resource_uris
 
 
 --
--- TOC entry 3953 (class 2606 OID 36435)
+-- TOC entry 3954 (class 2606 OID 36435)
 -- Name: role_attribute constraint_role_attribute_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4467,7 +4487,7 @@ ALTER TABLE ONLY keycloak.user_attribute
 
 
 --
--- TOC entry 3841 (class 2606 OID 35768)
+-- TOC entry 3842 (class 2606 OID 35768)
 -- Name: user_group_membership constraint_user_group; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4503,7 +4523,7 @@ ALTER TABLE ONLY keycloak.databasechangeloglock
 
 
 --
--- TOC entry 3855 (class 2606 OID 35873)
+-- TOC entry 3856 (class 2606 OID 35873)
 -- Name: client_scope_attributes pk_cl_tmpl_attr; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4512,7 +4532,7 @@ ALTER TABLE ONLY keycloak.client_scope_attributes
 
 
 --
--- TOC entry 3850 (class 2606 OID 35832)
+-- TOC entry 3851 (class 2606 OID 35832)
 -- Name: client_scope pk_cli_template; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4521,7 +4541,7 @@ ALTER TABLE ONLY keycloak.client_scope
 
 
 --
--- TOC entry 3861 (class 2606 OID 36217)
+-- TOC entry 3862 (class 2606 OID 36217)
 -- Name: resource_server pk_resource_server; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4530,7 +4550,7 @@ ALTER TABLE ONLY keycloak.resource_server
 
 
 --
--- TOC entry 3859 (class 2606 OID 35861)
+-- TOC entry 3860 (class 2606 OID 35861)
 -- Name: client_scope_role_mapping pk_template_scope; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4539,7 +4559,7 @@ ALTER TABLE ONLY keycloak.client_scope_role_mapping
 
 
 --
--- TOC entry 3938 (class 2606 OID 36339)
+-- TOC entry 3939 (class 2606 OID 36339)
 -- Name: default_client_scope r_def_cli_scope_bind; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4548,7 +4568,7 @@ ALTER TABLE ONLY keycloak.default_client_scope
 
 
 --
--- TOC entry 3956 (class 2606 OID 36479)
+-- TOC entry 3957 (class 2606 OID 36479)
 -- Name: realm_localizations realm_localizations_pkey; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4557,7 +4577,7 @@ ALTER TABLE ONLY keycloak.realm_localizations
 
 
 --
--- TOC entry 3949 (class 2606 OID 36407)
+-- TOC entry 3950 (class 2606 OID 36407)
 -- Name: resource_attribute res_attr_pk; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4566,7 +4586,7 @@ ALTER TABLE ONLY keycloak.resource_attribute
 
 
 --
--- TOC entry 3833 (class 2606 OID 36147)
+-- TOC entry 3834 (class 2606 OID 36147)
 -- Name: keycloak_group sibling_names; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4593,7 +4613,7 @@ ALTER TABLE ONLY keycloak.client
 
 
 --
--- TOC entry 3852 (class 2606 OID 36292)
+-- TOC entry 3853 (class 2606 OID 36292)
 -- Name: client_scope uk_cli_scope; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4611,7 +4631,7 @@ ALTER TABLE ONLY keycloak.user_entity
 
 
 --
--- TOC entry 3866 (class 2606 OID 36469)
+-- TOC entry 3867 (class 2606 OID 36469)
 -- Name: resource_server_resource uk_frsr6t700s9v50bu18ws5ha6; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4620,7 +4640,7 @@ ALTER TABLE ONLY keycloak.resource_server_resource
 
 
 --
--- TOC entry 3947 (class 2606 OID 36464)
+-- TOC entry 3948 (class 2606 OID 36464)
 -- Name: resource_server_perm_ticket uk_frsr6t700s9v50bu18ws5pmt; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4629,7 +4649,7 @@ ALTER TABLE ONLY keycloak.resource_server_perm_ticket
 
 
 --
--- TOC entry 3876 (class 2606 OID 36208)
+-- TOC entry 3877 (class 2606 OID 36208)
 -- Name: resource_server_policy uk_frsrpt700s9v50bu18ws5ha6; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4638,7 +4658,7 @@ ALTER TABLE ONLY keycloak.resource_server_policy
 
 
 --
--- TOC entry 3871 (class 2606 OID 36212)
+-- TOC entry 3872 (class 2606 OID 36212)
 -- Name: resource_server_scope uk_frsrst700s9v50bu18ws5ha6; Type: CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -4674,7 +4694,15 @@ ALTER TABLE ONLY keycloak.user_entity
 
 
 --
--- TOC entry 3890 (class 1259 OID 36161)
+-- TOC entry 3793 (class 1259 OID 36509)
+-- Name: idx_admin_event_time; Type: INDEX; Schema: keycloak; Owner: dbuser
+--
+
+CREATE INDEX idx_admin_event_time ON keycloak.admin_event_entity USING btree (realm_id, admin_event_time);
+
+
+--
+-- TOC entry 3891 (class 1259 OID 36161)
 -- Name: idx_assoc_pol_assoc_pol_id; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4682,7 +4710,7 @@ CREATE INDEX idx_assoc_pol_assoc_pol_id ON keycloak.associated_policy USING btre
 
 
 --
--- TOC entry 3795 (class 1259 OID 36165)
+-- TOC entry 3796 (class 1259 OID 36165)
 -- Name: idx_auth_config_realm; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4690,7 +4718,7 @@ CREATE INDEX idx_auth_config_realm ON keycloak.authenticator_config USING btree 
 
 
 --
--- TOC entry 3801 (class 1259 OID 36163)
+-- TOC entry 3802 (class 1259 OID 36163)
 -- Name: idx_auth_exec_flow; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4698,7 +4726,7 @@ CREATE INDEX idx_auth_exec_flow ON keycloak.authentication_execution USING btree
 
 
 --
--- TOC entry 3802 (class 1259 OID 36162)
+-- TOC entry 3803 (class 1259 OID 36162)
 -- Name: idx_auth_exec_realm_flow; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4706,7 +4734,7 @@ CREATE INDEX idx_auth_exec_realm_flow ON keycloak.authentication_execution USING
 
 
 --
--- TOC entry 3798 (class 1259 OID 36164)
+-- TOC entry 3799 (class 1259 OID 36164)
 -- Name: idx_auth_flow_realm; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4714,7 +4742,7 @@ CREATE INDEX idx_auth_flow_realm ON keycloak.authentication_flow USING btree (re
 
 
 --
--- TOC entry 3933 (class 1259 OID 36486)
+-- TOC entry 3934 (class 1259 OID 36486)
 -- Name: idx_cl_clscope; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4738,7 +4766,7 @@ CREATE INDEX idx_client_id ON keycloak.client USING btree (client_id);
 
 
 --
--- TOC entry 3928 (class 1259 OID 36205)
+-- TOC entry 3929 (class 1259 OID 36205)
 -- Name: idx_client_init_acc_realm; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4754,7 +4782,7 @@ CREATE INDEX idx_client_session_session ON keycloak.client_session USING btree (
 
 
 --
--- TOC entry 3853 (class 1259 OID 36369)
+-- TOC entry 3854 (class 1259 OID 36369)
 -- Name: idx_clscope_attrs; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4762,7 +4790,7 @@ CREATE INDEX idx_clscope_attrs ON keycloak.client_scope_attributes USING btree (
 
 
 --
--- TOC entry 3934 (class 1259 OID 36483)
+-- TOC entry 3935 (class 1259 OID 36483)
 -- Name: idx_clscope_cl; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4778,7 +4806,7 @@ CREATE INDEX idx_clscope_protmap ON keycloak.protocol_mapper USING btree (client
 
 
 --
--- TOC entry 3856 (class 1259 OID 36367)
+-- TOC entry 3857 (class 1259 OID 36367)
 -- Name: idx_clscope_role; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4786,7 +4814,7 @@ CREATE INDEX idx_clscope_role ON keycloak.client_scope_role_mapping USING btree 
 
 
 --
--- TOC entry 3919 (class 1259 OID 36171)
+-- TOC entry 3920 (class 1259 OID 36171)
 -- Name: idx_compo_config_compo; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4794,7 +4822,7 @@ CREATE INDEX idx_compo_config_compo ON keycloak.component_config USING btree (co
 
 
 --
--- TOC entry 3922 (class 1259 OID 36442)
+-- TOC entry 3923 (class 1259 OID 36442)
 -- Name: idx_component_provider_type; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4802,7 +4830,7 @@ CREATE INDEX idx_component_provider_type ON keycloak.component USING btree (prov
 
 
 --
--- TOC entry 3923 (class 1259 OID 36170)
+-- TOC entry 3924 (class 1259 OID 36170)
 -- Name: idx_component_realm; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4826,7 +4854,7 @@ CREATE INDEX idx_composite_child ON keycloak.composite_role USING btree (child_r
 
 
 --
--- TOC entry 3935 (class 1259 OID 36372)
+-- TOC entry 3936 (class 1259 OID 36372)
 -- Name: idx_defcls_realm; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4834,7 +4862,7 @@ CREATE INDEX idx_defcls_realm ON keycloak.default_client_scope USING btree (real
 
 
 --
--- TOC entry 3936 (class 1259 OID 36373)
+-- TOC entry 3937 (class 1259 OID 36373)
 -- Name: idx_defcls_scope; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4866,7 +4894,7 @@ CREATE INDEX idx_fedidentity_user ON keycloak.federated_identity USING btree (us
 
 
 --
--- TOC entry 3895 (class 1259 OID 36265)
+-- TOC entry 3896 (class 1259 OID 36265)
 -- Name: idx_fu_attribute; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4874,7 +4902,7 @@ CREATE INDEX idx_fu_attribute ON keycloak.fed_user_attribute USING btree (user_i
 
 
 --
--- TOC entry 3898 (class 1259 OID 36286)
+-- TOC entry 3899 (class 1259 OID 36286)
 -- Name: idx_fu_cnsnt_ext; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4882,7 +4910,7 @@ CREATE INDEX idx_fu_cnsnt_ext ON keycloak.fed_user_consent USING btree (user_id,
 
 
 --
--- TOC entry 3899 (class 1259 OID 36451)
+-- TOC entry 3900 (class 1259 OID 36451)
 -- Name: idx_fu_consent; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4890,7 +4918,7 @@ CREATE INDEX idx_fu_consent ON keycloak.fed_user_consent USING btree (user_id, c
 
 
 --
--- TOC entry 3900 (class 1259 OID 36267)
+-- TOC entry 3901 (class 1259 OID 36267)
 -- Name: idx_fu_consent_ru; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4898,7 +4926,7 @@ CREATE INDEX idx_fu_consent_ru ON keycloak.fed_user_consent USING btree (realm_i
 
 
 --
--- TOC entry 3903 (class 1259 OID 36268)
+-- TOC entry 3904 (class 1259 OID 36268)
 -- Name: idx_fu_credential; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4906,7 +4934,7 @@ CREATE INDEX idx_fu_credential ON keycloak.fed_user_credential USING btree (user
 
 
 --
--- TOC entry 3904 (class 1259 OID 36269)
+-- TOC entry 3905 (class 1259 OID 36269)
 -- Name: idx_fu_credential_ru; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4914,7 +4942,7 @@ CREATE INDEX idx_fu_credential_ru ON keycloak.fed_user_credential USING btree (r
 
 
 --
--- TOC entry 3907 (class 1259 OID 36270)
+-- TOC entry 3908 (class 1259 OID 36270)
 -- Name: idx_fu_group_membership; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4922,7 +4950,7 @@ CREATE INDEX idx_fu_group_membership ON keycloak.fed_user_group_membership USING
 
 
 --
--- TOC entry 3908 (class 1259 OID 36271)
+-- TOC entry 3909 (class 1259 OID 36271)
 -- Name: idx_fu_group_membership_ru; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4930,7 +4958,7 @@ CREATE INDEX idx_fu_group_membership_ru ON keycloak.fed_user_group_membership US
 
 
 --
--- TOC entry 3911 (class 1259 OID 36272)
+-- TOC entry 3912 (class 1259 OID 36272)
 -- Name: idx_fu_required_action; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4938,7 +4966,7 @@ CREATE INDEX idx_fu_required_action ON keycloak.fed_user_required_action USING b
 
 
 --
--- TOC entry 3912 (class 1259 OID 36273)
+-- TOC entry 3913 (class 1259 OID 36273)
 -- Name: idx_fu_required_action_ru; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4946,7 +4974,7 @@ CREATE INDEX idx_fu_required_action_ru ON keycloak.fed_user_required_action USIN
 
 
 --
--- TOC entry 3915 (class 1259 OID 36274)
+-- TOC entry 3916 (class 1259 OID 36274)
 -- Name: idx_fu_role_mapping; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4954,7 +4982,7 @@ CREATE INDEX idx_fu_role_mapping ON keycloak.fed_user_role_mapping USING btree (
 
 
 --
--- TOC entry 3916 (class 1259 OID 36275)
+-- TOC entry 3917 (class 1259 OID 36275)
 -- Name: idx_fu_role_mapping_ru; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4962,7 +4990,7 @@ CREATE INDEX idx_fu_role_mapping_ru ON keycloak.fed_user_role_mapping USING btre
 
 
 --
--- TOC entry 3839 (class 1259 OID 36176)
+-- TOC entry 3840 (class 1259 OID 36176)
 -- Name: idx_group_attr_group; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -4970,7 +4998,7 @@ CREATE INDEX idx_group_attr_group ON keycloak.group_attribute USING btree (group
 
 
 --
--- TOC entry 3836 (class 1259 OID 36177)
+-- TOC entry 3837 (class 1259 OID 36177)
 -- Name: idx_group_role_mapp_group; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5010,7 +5038,7 @@ CREATE INDEX idx_keycloak_role_realm ON keycloak.keycloak_role USING btree (real
 
 
 --
--- TOC entry 3828 (class 1259 OID 36490)
+-- TOC entry 3829 (class 1259 OID 36490)
 -- Name: idx_offline_css_preload; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5018,7 +5046,7 @@ CREATE INDEX idx_offline_css_preload ON keycloak.offline_client_session USING bt
 
 
 --
--- TOC entry 3822 (class 1259 OID 36491)
+-- TOC entry 3823 (class 1259 OID 36491)
 -- Name: idx_offline_uss_by_user; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5026,7 +5054,7 @@ CREATE INDEX idx_offline_uss_by_user ON keycloak.offline_user_session USING btre
 
 
 --
--- TOC entry 3823 (class 1259 OID 36492)
+-- TOC entry 3824 (class 1259 OID 36492)
 -- Name: idx_offline_uss_by_usersess; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5034,7 +5062,7 @@ CREATE INDEX idx_offline_uss_by_usersess ON keycloak.offline_user_session USING 
 
 
 --
--- TOC entry 3824 (class 1259 OID 36446)
+-- TOC entry 3825 (class 1259 OID 36446)
 -- Name: idx_offline_uss_createdon; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5042,7 +5070,7 @@ CREATE INDEX idx_offline_uss_createdon ON keycloak.offline_user_session USING bt
 
 
 --
--- TOC entry 3825 (class 1259 OID 36480)
+-- TOC entry 3826 (class 1259 OID 36480)
 -- Name: idx_offline_uss_preload; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5066,7 +5094,7 @@ CREATE INDEX idx_realm_attr_realm ON keycloak.realm_attribute USING btree (realm
 
 
 --
--- TOC entry 3848 (class 1259 OID 36365)
+-- TOC entry 3849 (class 1259 OID 36365)
 -- Name: idx_realm_clscope; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5074,7 +5102,7 @@ CREATE INDEX idx_realm_clscope ON keycloak.client_scope USING btree (realm_id);
 
 
 --
--- TOC entry 3847 (class 1259 OID 36186)
+-- TOC entry 3848 (class 1259 OID 36186)
 -- Name: idx_realm_def_grp_realm; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5122,7 +5150,7 @@ CREATE INDEX idx_redir_uri_client ON keycloak.redirect_uris USING btree (client_
 
 
 --
--- TOC entry 3817 (class 1259 OID 36192)
+-- TOC entry 3818 (class 1259 OID 36192)
 -- Name: idx_req_act_prov_realm; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5130,7 +5158,7 @@ CREATE INDEX idx_req_act_prov_realm ON keycloak.required_action_provider USING b
 
 
 --
--- TOC entry 3884 (class 1259 OID 36193)
+-- TOC entry 3885 (class 1259 OID 36193)
 -- Name: idx_res_policy_policy; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5138,7 +5166,7 @@ CREATE INDEX idx_res_policy_policy ON keycloak.resource_policy USING btree (poli
 
 
 --
--- TOC entry 3881 (class 1259 OID 36194)
+-- TOC entry 3882 (class 1259 OID 36194)
 -- Name: idx_res_scope_scope; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5146,7 +5174,7 @@ CREATE INDEX idx_res_scope_scope ON keycloak.resource_scope USING btree (scope_i
 
 
 --
--- TOC entry 3874 (class 1259 OID 36213)
+-- TOC entry 3875 (class 1259 OID 36213)
 -- Name: idx_res_serv_pol_res_serv; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5154,7 +5182,7 @@ CREATE INDEX idx_res_serv_pol_res_serv ON keycloak.resource_server_policy USING 
 
 
 --
--- TOC entry 3864 (class 1259 OID 36214)
+-- TOC entry 3865 (class 1259 OID 36214)
 -- Name: idx_res_srv_res_res_srv; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5162,7 +5190,7 @@ CREATE INDEX idx_res_srv_res_res_srv ON keycloak.resource_server_resource USING 
 
 
 --
--- TOC entry 3869 (class 1259 OID 36215)
+-- TOC entry 3870 (class 1259 OID 36215)
 -- Name: idx_res_srv_scope_res_srv; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5170,7 +5198,7 @@ CREATE INDEX idx_res_srv_scope_res_srv ON keycloak.resource_server_scope USING b
 
 
 --
--- TOC entry 3954 (class 1259 OID 36441)
+-- TOC entry 3955 (class 1259 OID 36441)
 -- Name: idx_role_attribute; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5178,7 +5206,7 @@ CREATE INDEX idx_role_attribute ON keycloak.role_attribute USING btree (role_id)
 
 
 --
--- TOC entry 3857 (class 1259 OID 36368)
+-- TOC entry 3858 (class 1259 OID 36368)
 -- Name: idx_role_clscope; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5194,7 +5222,7 @@ CREATE INDEX idx_scope_mapping_role ON keycloak.scope_mapping USING btree (role_
 
 
 --
--- TOC entry 3887 (class 1259 OID 36199)
+-- TOC entry 3888 (class 1259 OID 36199)
 -- Name: idx_scope_policy_policy; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5210,7 +5238,7 @@ CREATE INDEX idx_update_time ON keycloak.migration_model USING btree (update_tim
 
 
 --
--- TOC entry 3829 (class 1259 OID 35879)
+-- TOC entry 3830 (class 1259 OID 35879)
 -- Name: idx_us_sess_id_on_cl_sess; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5218,7 +5246,7 @@ CREATE INDEX idx_us_sess_id_on_cl_sess ON keycloak.offline_client_session USING 
 
 
 --
--- TOC entry 3941 (class 1259 OID 36374)
+-- TOC entry 3942 (class 1259 OID 36374)
 -- Name: idx_usconsent_clscope; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5266,7 +5294,7 @@ CREATE INDEX idx_user_email ON keycloak.user_entity USING btree (email);
 
 
 --
--- TOC entry 3842 (class 1259 OID 35882)
+-- TOC entry 3843 (class 1259 OID 35882)
 -- Name: idx_user_group_mapping; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5298,7 +5326,7 @@ CREATE INDEX idx_user_service_account ON keycloak.user_entity USING btree (realm
 
 
 --
--- TOC entry 3807 (class 1259 OID 36201)
+-- TOC entry 3808 (class 1259 OID 36201)
 -- Name: idx_usr_fed_map_fed_prv; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5306,7 +5334,7 @@ CREATE INDEX idx_usr_fed_map_fed_prv ON keycloak.user_federation_mapper USING bt
 
 
 --
--- TOC entry 3808 (class 1259 OID 36202)
+-- TOC entry 3809 (class 1259 OID 36202)
 -- Name: idx_usr_fed_map_realm; Type: INDEX; Schema: keycloak; Owner: dbuser
 --
 
@@ -5330,7 +5358,7 @@ CREATE INDEX idx_web_orig_client ON keycloak.web_origins USING btree (client_id)
 
 
 --
--- TOC entry 3998 (class 2606 OID 35607)
+-- TOC entry 3999 (class 2606 OID 35607)
 -- Name: client_session_auth_status auth_status_constraint; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5339,7 +5367,7 @@ ALTER TABLE ONLY keycloak.client_session_auth_status
 
 
 --
--- TOC entry 3982 (class 2606 OID 35368)
+-- TOC entry 3983 (class 2606 OID 35368)
 -- Name: identity_provider fk2b4ebc52ae5c3b34; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5348,7 +5376,7 @@ ALTER TABLE ONLY keycloak.identity_provider
 
 
 --
--- TOC entry 3975 (class 2606 OID 35292)
+-- TOC entry 3976 (class 2606 OID 35292)
 -- Name: client_attributes fk3c47c64beacca966; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5357,7 +5385,7 @@ ALTER TABLE ONLY keycloak.client_attributes
 
 
 --
--- TOC entry 3981 (class 2606 OID 35378)
+-- TOC entry 3982 (class 2606 OID 35378)
 -- Name: federated_identity fk404288b92ef007a6; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5366,7 +5394,7 @@ ALTER TABLE ONLY keycloak.federated_identity
 
 
 --
--- TOC entry 3977 (class 2606 OID 35527)
+-- TOC entry 3978 (class 2606 OID 35527)
 -- Name: client_node_registrations fk4129723ba992f594; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5375,7 +5403,7 @@ ALTER TABLE ONLY keycloak.client_node_registrations
 
 
 --
--- TOC entry 3976 (class 2606 OID 35297)
+-- TOC entry 3977 (class 2606 OID 35297)
 -- Name: client_session_note fk5edfb00ff51c2736; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5384,7 +5412,7 @@ ALTER TABLE ONLY keycloak.client_session_note
 
 
 --
--- TOC entry 3985 (class 2606 OID 35408)
+-- TOC entry 3986 (class 2606 OID 35408)
 -- Name: user_session_note fk5edfb00ff51d3472; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5393,7 +5421,7 @@ ALTER TABLE ONLY keycloak.user_session_note
 
 
 --
--- TOC entry 3958 (class 2606 OID 35110)
+-- TOC entry 3959 (class 2606 OID 35110)
 -- Name: client_session_role fk_11b7sgqw18i532811v7o2dv76; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5402,7 +5430,7 @@ ALTER TABLE ONLY keycloak.client_session_role
 
 
 --
--- TOC entry 3967 (class 2606 OID 35115)
+-- TOC entry 3968 (class 2606 OID 35115)
 -- Name: redirect_uris fk_1burs8pb4ouj97h5wuppahv9f; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5411,7 +5439,7 @@ ALTER TABLE ONLY keycloak.redirect_uris
 
 
 --
--- TOC entry 3971 (class 2606 OID 35120)
+-- TOC entry 3972 (class 2606 OID 35120)
 -- Name: user_federation_provider fk_1fj32f6ptolw2qy60cd8n01e8; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5420,7 +5448,7 @@ ALTER TABLE ONLY keycloak.user_federation_provider
 
 
 --
--- TOC entry 3990 (class 2606 OID 35505)
+-- TOC entry 3991 (class 2606 OID 35505)
 -- Name: client_session_prot_mapper fk_33a8sgqw18i532811v7o2dk89; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5429,7 +5457,7 @@ ALTER TABLE ONLY keycloak.client_session_prot_mapper
 
 
 --
--- TOC entry 3965 (class 2606 OID 35130)
+-- TOC entry 3966 (class 2606 OID 35130)
 -- Name: realm_required_credential fk_5hg65lybevavkqfki3kponh9v; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5438,7 +5466,7 @@ ALTER TABLE ONLY keycloak.realm_required_credential
 
 
 --
--- TOC entry 4028 (class 2606 OID 36408)
+-- TOC entry 4029 (class 2606 OID 36408)
 -- Name: resource_attribute fk_5hrm2vlf9ql5fu022kqepovbr; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5447,7 +5475,7 @@ ALTER TABLE ONLY keycloak.resource_attribute
 
 
 --
--- TOC entry 3969 (class 2606 OID 35135)
+-- TOC entry 3970 (class 2606 OID 35135)
 -- Name: user_attribute fk_5hrm2vlf9ql5fu043kqepovbr; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5456,7 +5484,7 @@ ALTER TABLE ONLY keycloak.user_attribute
 
 
 --
--- TOC entry 3972 (class 2606 OID 35145)
+-- TOC entry 3973 (class 2606 OID 35145)
 -- Name: user_required_action fk_6qj3w1jw9cvafhe19bwsiuvmd; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5465,7 +5493,7 @@ ALTER TABLE ONLY keycloak.user_required_action
 
 
 --
--- TOC entry 3962 (class 2606 OID 35150)
+-- TOC entry 3963 (class 2606 OID 35150)
 -- Name: keycloak_role fk_6vyqfe4cn4wlq8r6kt5vdsj5c; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5474,7 +5502,7 @@ ALTER TABLE ONLY keycloak.keycloak_role
 
 
 --
--- TOC entry 3966 (class 2606 OID 35155)
+-- TOC entry 3967 (class 2606 OID 35155)
 -- Name: realm_smtp_config fk_70ej8xdxgxd0b9hh6180irr0o; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5483,7 +5511,7 @@ ALTER TABLE ONLY keycloak.realm_smtp_config
 
 
 --
--- TOC entry 3963 (class 2606 OID 35170)
+-- TOC entry 3964 (class 2606 OID 35170)
 -- Name: realm_attribute fk_8shxd6l3e9atqukacxgpffptw; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5492,7 +5520,7 @@ ALTER TABLE ONLY keycloak.realm_attribute
 
 
 --
--- TOC entry 3959 (class 2606 OID 35175)
+-- TOC entry 3960 (class 2606 OID 35175)
 -- Name: composite_role fk_a63wvekftu8jo1pnj81e7mce2; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5501,7 +5529,7 @@ ALTER TABLE ONLY keycloak.composite_role
 
 
 --
--- TOC entry 3994 (class 2606 OID 35627)
+-- TOC entry 3995 (class 2606 OID 35627)
 -- Name: authentication_execution fk_auth_exec_flow; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5510,7 +5538,7 @@ ALTER TABLE ONLY keycloak.authentication_execution
 
 
 --
--- TOC entry 3993 (class 2606 OID 35622)
+-- TOC entry 3994 (class 2606 OID 35622)
 -- Name: authentication_execution fk_auth_exec_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5519,7 +5547,7 @@ ALTER TABLE ONLY keycloak.authentication_execution
 
 
 --
--- TOC entry 3992 (class 2606 OID 35617)
+-- TOC entry 3993 (class 2606 OID 35617)
 -- Name: authentication_flow fk_auth_flow_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5528,7 +5556,7 @@ ALTER TABLE ONLY keycloak.authentication_flow
 
 
 --
--- TOC entry 3991 (class 2606 OID 35612)
+-- TOC entry 3992 (class 2606 OID 35612)
 -- Name: authenticator_config fk_auth_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5537,7 +5565,7 @@ ALTER TABLE ONLY keycloak.authenticator_config
 
 
 --
--- TOC entry 3957 (class 2606 OID 35180)
+-- TOC entry 3958 (class 2606 OID 35180)
 -- Name: client_session fk_b4ao2vcvat6ukau74wbwtfqo1; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5546,7 +5574,7 @@ ALTER TABLE ONLY keycloak.client_session
 
 
 --
--- TOC entry 3973 (class 2606 OID 35185)
+-- TOC entry 3974 (class 2606 OID 35185)
 -- Name: user_role_mapping fk_c4fqv34p1mbylloxang7b1q3l; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5555,7 +5583,7 @@ ALTER TABLE ONLY keycloak.user_role_mapping
 
 
 --
--- TOC entry 4005 (class 2606 OID 36313)
+-- TOC entry 4006 (class 2606 OID 36313)
 -- Name: client_scope_attributes fk_cl_scope_attr_scope; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5564,7 +5592,7 @@ ALTER TABLE ONLY keycloak.client_scope_attributes
 
 
 --
--- TOC entry 4006 (class 2606 OID 36303)
+-- TOC entry 4007 (class 2606 OID 36303)
 -- Name: client_scope_role_mapping fk_cl_scope_rm_scope; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5573,7 +5601,7 @@ ALTER TABLE ONLY keycloak.client_scope_role_mapping
 
 
 --
--- TOC entry 3999 (class 2606 OID 35699)
+-- TOC entry 4000 (class 2606 OID 35699)
 -- Name: client_user_session_note fk_cl_usr_ses_note; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5582,7 +5610,7 @@ ALTER TABLE ONLY keycloak.client_user_session_note
 
 
 --
--- TOC entry 3979 (class 2606 OID 36298)
+-- TOC entry 3980 (class 2606 OID 36298)
 -- Name: protocol_mapper fk_cli_scope_mapper; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5591,7 +5619,7 @@ ALTER TABLE ONLY keycloak.protocol_mapper
 
 
 --
--- TOC entry 4021 (class 2606 OID 36156)
+-- TOC entry 4022 (class 2606 OID 36156)
 -- Name: client_initial_access fk_client_init_acc_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5600,7 +5628,7 @@ ALTER TABLE ONLY keycloak.client_initial_access
 
 
 --
--- TOC entry 4019 (class 2606 OID 36100)
+-- TOC entry 4020 (class 2606 OID 36100)
 -- Name: component_config fk_component_config; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5609,7 +5637,7 @@ ALTER TABLE ONLY keycloak.component_config
 
 
 --
--- TOC entry 4020 (class 2606 OID 36095)
+-- TOC entry 4021 (class 2606 OID 36095)
 -- Name: component fk_component_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5618,7 +5646,7 @@ ALTER TABLE ONLY keycloak.component
 
 
 --
--- TOC entry 4004 (class 2606 OID 35788)
+-- TOC entry 4005 (class 2606 OID 35788)
 -- Name: realm_default_groups fk_def_groups_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5627,7 +5655,7 @@ ALTER TABLE ONLY keycloak.realm_default_groups
 
 
 --
--- TOC entry 3997 (class 2606 OID 35642)
+-- TOC entry 3998 (class 2606 OID 35642)
 -- Name: user_federation_mapper_config fk_fedmapper_cfg; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5636,7 +5664,7 @@ ALTER TABLE ONLY keycloak.user_federation_mapper_config
 
 
 --
--- TOC entry 3996 (class 2606 OID 35637)
+-- TOC entry 3997 (class 2606 OID 35637)
 -- Name: user_federation_mapper fk_fedmapperpm_fedprv; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5645,7 +5673,7 @@ ALTER TABLE ONLY keycloak.user_federation_mapper
 
 
 --
--- TOC entry 3995 (class 2606 OID 35632)
+-- TOC entry 3996 (class 2606 OID 35632)
 -- Name: user_federation_mapper fk_fedmapperpm_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5654,7 +5682,7 @@ ALTER TABLE ONLY keycloak.user_federation_mapper
 
 
 --
--- TOC entry 4018 (class 2606 OID 36012)
+-- TOC entry 4019 (class 2606 OID 36012)
 -- Name: associated_policy fk_frsr5s213xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5663,7 +5691,7 @@ ALTER TABLE ONLY keycloak.associated_policy
 
 
 --
--- TOC entry 4016 (class 2606 OID 35997)
+-- TOC entry 4017 (class 2606 OID 35997)
 -- Name: scope_policy fk_frsrasp13xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5672,7 +5700,7 @@ ALTER TABLE ONLY keycloak.scope_policy
 
 
 --
--- TOC entry 4024 (class 2606 OID 36380)
+-- TOC entry 4025 (class 2606 OID 36380)
 -- Name: resource_server_perm_ticket fk_frsrho213xcx4wnkog82sspmt; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5681,7 +5709,7 @@ ALTER TABLE ONLY keycloak.resource_server_perm_ticket
 
 
 --
--- TOC entry 4007 (class 2606 OID 36223)
+-- TOC entry 4008 (class 2606 OID 36223)
 -- Name: resource_server_resource fk_frsrho213xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5690,7 +5718,7 @@ ALTER TABLE ONLY keycloak.resource_server_resource
 
 
 --
--- TOC entry 4025 (class 2606 OID 36385)
+-- TOC entry 4026 (class 2606 OID 36385)
 -- Name: resource_server_perm_ticket fk_frsrho213xcx4wnkog83sspmt; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5699,7 +5727,7 @@ ALTER TABLE ONLY keycloak.resource_server_perm_ticket
 
 
 --
--- TOC entry 4026 (class 2606 OID 36390)
+-- TOC entry 4027 (class 2606 OID 36390)
 -- Name: resource_server_perm_ticket fk_frsrho213xcx4wnkog84sspmt; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5708,7 +5736,7 @@ ALTER TABLE ONLY keycloak.resource_server_perm_ticket
 
 
 --
--- TOC entry 4017 (class 2606 OID 36007)
+-- TOC entry 4018 (class 2606 OID 36007)
 -- Name: associated_policy fk_frsrpas14xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5717,7 +5745,7 @@ ALTER TABLE ONLY keycloak.associated_policy
 
 
 --
--- TOC entry 4015 (class 2606 OID 35992)
+-- TOC entry 4016 (class 2606 OID 35992)
 -- Name: scope_policy fk_frsrpass3xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5726,7 +5754,7 @@ ALTER TABLE ONLY keycloak.scope_policy
 
 
 --
--- TOC entry 4027 (class 2606 OID 36413)
+-- TOC entry 4028 (class 2606 OID 36413)
 -- Name: resource_server_perm_ticket fk_frsrpo2128cx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5735,7 +5763,7 @@ ALTER TABLE ONLY keycloak.resource_server_perm_ticket
 
 
 --
--- TOC entry 4009 (class 2606 OID 36218)
+-- TOC entry 4010 (class 2606 OID 36218)
 -- Name: resource_server_policy fk_frsrpo213xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5744,7 +5772,7 @@ ALTER TABLE ONLY keycloak.resource_server_policy
 
 
 --
--- TOC entry 4011 (class 2606 OID 35962)
+-- TOC entry 4012 (class 2606 OID 35962)
 -- Name: resource_scope fk_frsrpos13xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5753,7 +5781,7 @@ ALTER TABLE ONLY keycloak.resource_scope
 
 
 --
--- TOC entry 4013 (class 2606 OID 35977)
+-- TOC entry 4014 (class 2606 OID 35977)
 -- Name: resource_policy fk_frsrpos53xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5762,7 +5790,7 @@ ALTER TABLE ONLY keycloak.resource_policy
 
 
 --
--- TOC entry 4014 (class 2606 OID 35982)
+-- TOC entry 4015 (class 2606 OID 35982)
 -- Name: resource_policy fk_frsrpp213xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5771,7 +5799,7 @@ ALTER TABLE ONLY keycloak.resource_policy
 
 
 --
--- TOC entry 4012 (class 2606 OID 35967)
+-- TOC entry 4013 (class 2606 OID 35967)
 -- Name: resource_scope fk_frsrps213xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5780,7 +5808,7 @@ ALTER TABLE ONLY keycloak.resource_scope
 
 
 --
--- TOC entry 4008 (class 2606 OID 36228)
+-- TOC entry 4009 (class 2606 OID 36228)
 -- Name: resource_server_scope fk_frsrso213xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5789,7 +5817,7 @@ ALTER TABLE ONLY keycloak.resource_server_scope
 
 
 --
--- TOC entry 3960 (class 2606 OID 35200)
+-- TOC entry 3961 (class 2606 OID 35200)
 -- Name: composite_role fk_gr7thllb9lu8q4vqa4524jjy8; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5798,7 +5826,7 @@ ALTER TABLE ONLY keycloak.composite_role
 
 
 --
--- TOC entry 4023 (class 2606 OID 36355)
+-- TOC entry 4024 (class 2606 OID 36355)
 -- Name: user_consent_client_scope fk_grntcsnt_clsc_usc; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5807,7 +5835,7 @@ ALTER TABLE ONLY keycloak.user_consent_client_scope
 
 
 --
--- TOC entry 3989 (class 2606 OID 35490)
+-- TOC entry 3990 (class 2606 OID 35490)
 -- Name: user_consent fk_grntcsnt_user; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5816,7 +5844,7 @@ ALTER TABLE ONLY keycloak.user_consent
 
 
 --
--- TOC entry 4002 (class 2606 OID 35762)
+-- TOC entry 4003 (class 2606 OID 35762)
 -- Name: group_attribute fk_group_attribute_group; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5825,7 +5853,7 @@ ALTER TABLE ONLY keycloak.group_attribute
 
 
 --
--- TOC entry 4001 (class 2606 OID 35776)
+-- TOC entry 4002 (class 2606 OID 35776)
 -- Name: group_role_mapping fk_group_role_group; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5834,7 +5862,7 @@ ALTER TABLE ONLY keycloak.group_role_mapping
 
 
 --
--- TOC entry 3986 (class 2606 OID 35434)
+-- TOC entry 3987 (class 2606 OID 35434)
 -- Name: realm_enabled_event_types fk_h846o4h0w8epx5nwedrf5y69j; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5843,7 +5871,7 @@ ALTER TABLE ONLY keycloak.realm_enabled_event_types
 
 
 --
--- TOC entry 3964 (class 2606 OID 35210)
+-- TOC entry 3965 (class 2606 OID 35210)
 -- Name: realm_events_listeners fk_h846o4h0w8epx5nxev9f5y69j; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5852,7 +5880,7 @@ ALTER TABLE ONLY keycloak.realm_events_listeners
 
 
 --
--- TOC entry 3987 (class 2606 OID 35480)
+-- TOC entry 3988 (class 2606 OID 35480)
 -- Name: identity_provider_mapper fk_idpm_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5861,7 +5889,7 @@ ALTER TABLE ONLY keycloak.identity_provider_mapper
 
 
 --
--- TOC entry 3988 (class 2606 OID 35656)
+-- TOC entry 3989 (class 2606 OID 35656)
 -- Name: idp_mapper_config fk_idpmconfig; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5870,7 +5898,7 @@ ALTER TABLE ONLY keycloak.idp_mapper_config
 
 
 --
--- TOC entry 3974 (class 2606 OID 35220)
+-- TOC entry 3975 (class 2606 OID 35220)
 -- Name: web_origins fk_lojpho213xcx4wnkog82ssrfy; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5879,7 +5907,7 @@ ALTER TABLE ONLY keycloak.web_origins
 
 
 --
--- TOC entry 3968 (class 2606 OID 35230)
+-- TOC entry 3969 (class 2606 OID 35230)
 -- Name: scope_mapping fk_ouse064plmlr732lxjcn1q5f1; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5888,7 +5916,7 @@ ALTER TABLE ONLY keycloak.scope_mapping
 
 
 --
--- TOC entry 3978 (class 2606 OID 35373)
+-- TOC entry 3979 (class 2606 OID 35373)
 -- Name: protocol_mapper fk_pcm_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5897,7 +5925,7 @@ ALTER TABLE ONLY keycloak.protocol_mapper
 
 
 --
--- TOC entry 3961 (class 2606 OID 35245)
+-- TOC entry 3962 (class 2606 OID 35245)
 -- Name: credential fk_pfyr0glasqyl0dei3kl69r6v0; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5906,7 +5934,7 @@ ALTER TABLE ONLY keycloak.credential
 
 
 --
--- TOC entry 3980 (class 2606 OID 35649)
+-- TOC entry 3981 (class 2606 OID 35649)
 -- Name: protocol_mapper_config fk_pmconfig; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5915,7 +5943,7 @@ ALTER TABLE ONLY keycloak.protocol_mapper_config
 
 
 --
--- TOC entry 4022 (class 2606 OID 36340)
+-- TOC entry 4023 (class 2606 OID 36340)
 -- Name: default_client_scope fk_r_def_cli_scope_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5924,7 +5952,7 @@ ALTER TABLE ONLY keycloak.default_client_scope
 
 
 --
--- TOC entry 4000 (class 2606 OID 35694)
+-- TOC entry 4001 (class 2606 OID 35694)
 -- Name: required_action_provider fk_req_act_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5933,7 +5961,7 @@ ALTER TABLE ONLY keycloak.required_action_provider
 
 
 --
--- TOC entry 4029 (class 2606 OID 36421)
+-- TOC entry 4030 (class 2606 OID 36421)
 -- Name: resource_uris fk_resource_server_uris; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5942,7 +5970,7 @@ ALTER TABLE ONLY keycloak.resource_uris
 
 
 --
--- TOC entry 4030 (class 2606 OID 36436)
+-- TOC entry 4031 (class 2606 OID 36436)
 -- Name: role_attribute fk_role_attribute_id; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5951,7 +5979,7 @@ ALTER TABLE ONLY keycloak.role_attribute
 
 
 --
--- TOC entry 3984 (class 2606 OID 35403)
+-- TOC entry 3985 (class 2606 OID 35403)
 -- Name: realm_supported_locales fk_supported_locales_realm; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5960,7 +5988,7 @@ ALTER TABLE ONLY keycloak.realm_supported_locales
 
 
 --
--- TOC entry 3970 (class 2606 OID 35265)
+-- TOC entry 3971 (class 2606 OID 35265)
 -- Name: user_federation_config fk_t13hpu1j94r2ebpekr39x5eu5; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5969,7 +5997,7 @@ ALTER TABLE ONLY keycloak.user_federation_config
 
 
 --
--- TOC entry 4003 (class 2606 OID 35769)
+-- TOC entry 4004 (class 2606 OID 35769)
 -- Name: user_group_membership fk_user_group_user; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5978,7 +6006,7 @@ ALTER TABLE ONLY keycloak.user_group_membership
 
 
 --
--- TOC entry 4010 (class 2606 OID 35952)
+-- TOC entry 4011 (class 2606 OID 35952)
 -- Name: policy_config fkdc34197cf864c4e43; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5987,7 +6015,7 @@ ALTER TABLE ONLY keycloak.policy_config
 
 
 --
--- TOC entry 3983 (class 2606 OID 35383)
+-- TOC entry 3984 (class 2606 OID 35383)
 -- Name: identity_provider_config fkdc4897cf864c4e43; Type: FK CONSTRAINT; Schema: keycloak; Owner: dbuser
 --
 
@@ -5995,7 +6023,7 @@ ALTER TABLE ONLY keycloak.identity_provider_config
     ADD CONSTRAINT fkdc4897cf864c4e43 FOREIGN KEY (identity_provider_id) REFERENCES keycloak.identity_provider(internal_id);
 
 
--- Completed on 2022-02-20 15:45:14 UTC
+-- Completed on 2022-04-22 02:13:24 UTC
 
 --
 -- PostgreSQL database dump complete

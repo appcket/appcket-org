@@ -115,6 +115,7 @@ const taskData: Prisma.taskCreateInput[] = [
     name: 'Hire new salesman to help sell Latex 2.0 line',
     description: 'Optional description text notes',
     created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
+    assigned_to: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     task_status_type: {
       connect: {
         task_status_type_id: '272892f2-f03b-4c33-94e0-a5ed27f9e2df',
@@ -130,6 +131,7 @@ const taskData: Prisma.taskCreateInput[] = [
     name: 'Reply to George Costanza and inform him we have decided to go in a different direction',
     description: "George's email is jerkstore@gmail.com",
     created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
+    assigned_to: '7e2e3888-b370-4309-b82c-403b6871a390',
     task_status_type: {
       connect: {
         task_status_type_id: '152892f2-f03b-4c33-94e0-a5ed27f9e2dd',
@@ -145,6 +147,7 @@ const taskData: Prisma.taskCreateInput[] = [
     name: 'Research new materials for super secret Latex 3.0 line',
     description: 'TOP SECRET, require NDAs from everybody you speak with',
     created_by: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
+    assigned_to: '7e2e3888-b370-4309-b82c-403b6871a390',
     task_status_type: {
       connect: {
         task_status_type_id: '272892f2-f03b-4c33-94e0-a5ed27f9e2df',

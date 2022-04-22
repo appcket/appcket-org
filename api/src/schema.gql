@@ -68,11 +68,32 @@ type Project {
   project_user: [ProjectUser!]!
 }
 
+type TaskStatusType {
+  task_status_type_id: String!
+  name: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Task {
+  task_id: String!
+  name: String!
+  description: String!
+  assigned_to: String!
+  assigned_to_user: User!
+  created_at: DateTime!
+  updated_at: DateTime!
+  project: Project!
+  task_status_type_id: String!
+  task_status_type: TaskStatusType!
+}
+
 type Query {
   organizationById(id: String!): Organization
   hasPermission(permissions: [String!]!): Boolean!
   getProject(id: String!): Project
   searchProjects(orderBy: ProjectOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Project!]!
+  searchTasks(orderBy: TaskOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Task!]!
   getTeam(id: String!): Team
   searchTeams(orderBy: TeamOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Team!]!
   userInfo: User!
@@ -86,6 +107,10 @@ input ProjectOrderByUpdatedAtInput {
 enum SortOrder {
   asc
   desc
+}
+
+input TaskOrderByUpdatedAtInput {
+  updated_at: SortOrder!
 }
 
 input TeamOrderByUpdatedAtInput {

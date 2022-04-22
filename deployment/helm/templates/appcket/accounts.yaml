@@ -6,7 +6,7 @@ metadata:
 spec:
   ports:
   - port: 443
-    targetPort: 8443
+    targetPort: 443
     protocol: TCP
     name: https-{{ .Values.accounts.name }}
   selector:

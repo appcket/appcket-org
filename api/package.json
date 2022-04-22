@@ -34,7 +34,7 @@
     "class-transformer": "^0.5.1",
     "express-session": "^1.17.2",
     "graphql": "^15.8.0",
-    "keycloak-connect": "^17.0.0",
+    "keycloak-connect": "^18.0.0",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

@@ -52,8 +52,8 @@ model task {
   deleted_by          String?           @db.Uuid
   task_status_type_id String?           @db.Uuid
   task_status_type    task_status_type? @relation(fields: [task_status_type_id], references: [task_status_type_id])
-  project_id          String       @db.Uuid
-  project             project   @relation(fields: [project_id], references: [project_id])
+  project_id          String            @db.Uuid
+  project             project           @relation(fields: [project_id], references: [project_id])
 }
 
 model task_status_type {
@@ -96,7 +96,7 @@ model team_user {
 }
 
 model project {
-  project_id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id      String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name            String       @db.VarChar(50)
   organization_id String       @db.Uuid
   created_at      DateTime     @default(now()) @db.Timestamptz(0)
