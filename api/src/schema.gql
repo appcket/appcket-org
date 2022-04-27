@@ -92,10 +92,10 @@ type Query {
   organizationById(id: String!): Organization
   hasPermission(permissions: [String!]!): Boolean!
   getProject(id: String!): Project
-  searchProjects(orderBy: ProjectOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Project!]!
-  searchTasks(orderBy: TaskOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Task!]!
+  searchProjects(searchString: String, skip: Float, take: Float, orderBy: ProjectOrderByUpdatedAtInput): [Project!]!
+  searchTasks(searchString: String, skip: Float, take: Float, orderBy: TaskOrderByUpdatedAtInput): [Task!]!
   getTeam(id: String!): Team
-  searchTeams(orderBy: TeamOrderByUpdatedAtInput, take: Float, skip: Float, searchString: String): [Team!]!
+  searchTeams(searchString: String, skip: Float, take: Float, orderBy: TeamOrderByUpdatedAtInput): [Team!]!
   userInfo: User!
   searchUsers(organizationId: String!): [User!]!
 }

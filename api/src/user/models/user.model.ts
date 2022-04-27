@@ -3,7 +3,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 import { Team } from 'src/team/models/team.model';
-import { Permission } from '../../permission/models/permission.model';
+import { Permission } from 'src/permission/models/permission.model';
 import { Organization } from 'src/organization/models/organization.model';
 
 @ObjectType()

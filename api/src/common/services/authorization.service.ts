@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { URLSearchParams } from 'url';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import * as _ from 'lodash';
 
 import UserPermissionsResponse from 'src/common/models/responses/userPermissionsResponse';
@@ -47,7 +47,7 @@ export class AuthorizationService {
     }
   }
 
-  public async getUserPermissions(token: string) {
+  public getUserPermissions(token: string): Observable<AxiosResponse<UserPermissionsResponse[]>> {
     const config: AxiosRequestConfig = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

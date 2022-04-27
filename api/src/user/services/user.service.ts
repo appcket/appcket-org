@@ -8,7 +8,6 @@ import { intersectionBy } from 'lodash';
 import { PrismaService } from 'src/common/services/prisma.service';
 import { AuthorizationService } from 'src/common/services/authorization.service';
 import { User } from 'src/user/models/user.model';
-import { Organization } from 'src/organization/models/organization.model';
 
 @Injectable()
 export class UserService {

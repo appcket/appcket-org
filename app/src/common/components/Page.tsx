@@ -17,7 +17,7 @@ const Page = forwardRef<HTMLDivElement, Props>(({ children, title = '', ...rest 
 ));
 
 Page.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.element,
 };
 
 export default Page;
