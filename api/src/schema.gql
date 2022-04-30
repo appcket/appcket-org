@@ -93,7 +93,7 @@ type Query {
   hasPermission(permissions: [String!]!): Boolean!
   getProject(id: String!): Project
   searchProjects(searchString: String, skip: Float, take: Float, orderBy: ProjectOrderByUpdatedAtInput): [Project!]!
-  searchTasks(searchString: String, skip: Float, take: Float, orderBy: TaskOrderByUpdatedAtInput): [Task!]!
+  searchTasks(searchTasksInput: SearchTasksInput!): [Task!]!
   getTeam(id: String!): Team
   searchTeams(searchString: String, skip: Float, take: Float, orderBy: TeamOrderByUpdatedAtInput): [Team!]!
   userInfo: User!
@@ -109,7 +109,15 @@ enum SortOrder {
   desc
 }
 
-input TaskOrderByUpdatedAtInput {
+input SearchTasksInput {
+  searchString: String
+  projectIds: [String!]
+  skip: Float
+  take: Float
+  orderBy: OrderByUpdatedAtInput
+}
+
+input OrderByUpdatedAtInput {
   updated_at: SortOrder!
 }
 
