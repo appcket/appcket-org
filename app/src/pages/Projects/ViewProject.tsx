@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -63,6 +63,7 @@ const Project = () => {
         </List>
       </div>
     );
+
     projectComponent = (
       <div>
         <Typography variant="h4">{data?.name}</Typography>
@@ -73,6 +74,9 @@ const Project = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1">Organization: {data?.organization.name}</Typography>
+            <Typography variant="body1">
+              <NavLink to={`tasks`}>View Tasks</NavLink>
+            </Typography>
             {usersComponent}
           </Grid>
         </Paper>
