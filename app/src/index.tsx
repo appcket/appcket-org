@@ -1,21 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import CssBaseline from '@mui/material/CssBaseline';
+import { AuthProvider } from "react-oidc-context";
 
-import keycloak from 'src/common/keycloak';
+import oidcConfig from 'src/common/oidc';
 import App from './App';
-import Loading from './common/components/Loading';
 import reportWebVitals from './reportWebVitals';
-
-const keycloakInitOptions = {
-  onLoad: 'login-required',
-  enableLogging: true,
-};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,13 +19,12 @@ const queryClient = new QueryClient({
   },
 });
 
-ReactDOM.render(
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement!);
+
+root.render(
   <React.StrictMode>
-    <ReactKeycloakProvider
-      authClient={keycloak}
-      LoadingComponent={Loading()}
-      initOptions={keycloakInitOptions}
-    >
+    <AuthProvider {...oidcConfig}>
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
           <BrowserRouter>
@@ -41,9 +34,8 @@ ReactDOM.render(
         </HelmetProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </ReactKeycloakProvider>
-  </React.StrictMode>,
-  document.getElementById('root'),
+    </AuthProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import InputIcon from '@mui/icons-material/Input';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useKeycloak } from '@react-keycloak/web';
+import { useAuth } from "react-oidc-context";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
 interface AppBarProps extends MuiAppBarProps {
@@ -37,7 +37,7 @@ type Props = {
 };
 
 const TopBar = ({ open, handleSideBarOpen }: Props) => {
-  const { keycloak } = useKeycloak();
+  const auth = useAuth();
 
   return (
     <AppBar position="fixed" open={open}>
@@ -55,7 +55,7 @@ const TopBar = ({ open, handleSideBarOpen }: Props) => {
         <Box flexGrow={1} />
         <IconButton
           size="large"
-          onClick={() => keycloak.logout()}
+          onClick={() => auth.signoutRedirect()}
           title="Logout"
           aria-label="Logout"
         >

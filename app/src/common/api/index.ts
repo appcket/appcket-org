@@ -1,4 +1,4 @@
-import { useKeycloak } from '@react-keycloak/web';
+import { useAuth } from "react-oidc-context";
 import { UseMutationResult, useMutation, useQuery } from 'react-query';
 import { GraphQLClient } from 'graphql-request';
 import { get } from 'lodash';
@@ -8,13 +8,13 @@ const endpoint = get(process.env, 'REACT_APP_API_URL', 'https://api.appcket.org'
 
 // @ts-ignore
 export const useApiQuery = (queryKey: string | string[], query: string, processData?) => {
-  const { keycloak } = useKeycloak();
+  const auth = useAuth();
   return useQuery(
     queryKey,
     async () => {
       const graphQLClient = new GraphQLClient(endpoint, {
         headers: {
-          authorization: `Bearer ${keycloak.token}`,
+          authorization: `Bearer ${auth.user?.access_token}`,
         },
       });
 
@@ -30,12 +30,12 @@ export const useApiQuery = (queryKey: string | string[], query: string, processD
 
 // @ts-ignore
 export const useApiMutation = (mutation: string, processData?): UseMutationResult<unknown> => {
-  const { keycloak } = useKeycloak();
+  const auth = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   return useMutation(async (inputVars) => {
     const graphQLClient = new GraphQLClient(endpoint, {
       headers: {
-        authorization: `Bearer ${keycloak.token}`,
+        authorization: `Bearer ${auth.user?.access_token}`,
       },
     });
 
