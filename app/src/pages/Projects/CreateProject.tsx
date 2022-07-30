@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -43,7 +43,7 @@ const CreateProject = () => {
   const createProject = useCreateProject();
   const resetSelectedUserIds = useStore((state) => state.resourceUsers.resetSelectedUserIds);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
-  const userInfoQuery = useQuery<UserInfoQueryResponse>('userInfo');
+  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
 
   const initialSelectedItemIds: <T>(items: T[], key: string) => string[] = (
     items,

@@ -1,12 +1,12 @@
 import { gql } from 'graphql-request';
-import { UseQueryResult } from 'react-query';
+import { UseQueryResult } from '@tanstack/react-query';
 
 import { useApiQuery } from 'src/common/api';
 import SearchTasksQueryResponse from 'src/common/models/responses/SearchTasksQueryResponse';
 import Task from 'src/common/models/Task';
 
 export const useSearchTasks = (projectIds: string[]): UseQueryResult<Task[]> => {
-  const queryKey = 'searchTasks';
+  const queryKey = ['searchTasks'];
   const processData = (data: SearchTasksQueryResponse): Task[] => {
     return data.searchTasks;
   };

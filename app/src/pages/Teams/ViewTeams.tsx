@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import Typography from '@mui/material/Typography';
 import { Link, NavLink } from 'react-router-dom';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
@@ -18,7 +18,7 @@ const ViewTeams = () => {
   // TODO: user input from Team name filter input field should drive table results
   const { status, data, error } = useSearchTeams('');
 
-  const userInfoQuery = useQuery<UserInfoQueryResponse>('userInfo');
+  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
   const createTeamPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
     Resources.Team,

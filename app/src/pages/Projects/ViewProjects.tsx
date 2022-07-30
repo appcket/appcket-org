@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import Typography from '@mui/material/Typography';
 import { Link, NavLink } from 'react-router-dom';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
@@ -17,7 +17,7 @@ import Permission from 'src/common/models/Permission';
 const ViewProjects = () => {
   // TODO: user input from Project name filter input field should drive table results
   const { status, data, error } = useSearchProjects('');
-  const userInfoQuery = useQuery<UserInfoQueryResponse>('userInfo');
+  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
   const createProjectPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
     Resources.Project,

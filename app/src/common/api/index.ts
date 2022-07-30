@@ -1,5 +1,5 @@
 import { useAuth } from "react-oidc-context";
-import { UseMutationResult, useMutation, useQuery } from 'react-query';
+import { UseMutationResult, useMutation, useQuery } from '@tanstack/react-query';
 import { GraphQLClient } from 'graphql-request';
 import { get } from 'lodash';
 import { useSnackbar } from 'notistack';
@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 const endpoint = get(process.env, 'REACT_APP_API_URL', 'https://api.appcket.org');
 
 // @ts-ignore
-export const useApiQuery = (queryKey: string | string[], query: string, processData?) => {
+export const useApiQuery = (queryKey: string[], query: string, processData?) => {
   const auth = useAuth();
   return useQuery(
     queryKey,

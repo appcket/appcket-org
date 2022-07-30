@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request';
-import { UseMutationResult, UseQueryResult } from 'react-query';
+import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import { useApiMutation, useApiQuery } from 'src/common/api';
 import SearchProjectsQueryResponse from 'src/common/models/responses/SearchProjectsQueryResponse';
@@ -9,7 +9,7 @@ import CreateProjectResponse from 'src/common/models/responses/CreateProjectResp
 import Project from 'src/common/models/Project';
 
 export const useSearchProjects = (searchString: string): UseQueryResult<Project[]> => {
-  const queryKey = 'searchProjects';
+  const queryKey = ['searchProjects'];
   const processData = (data: SearchProjectsQueryResponse): Project[] => {
     return data.searchProjects;
   };
@@ -31,7 +31,7 @@ export const useSearchProjects = (searchString: string): UseQueryResult<Project[
 };
 
 export const useGetProject = (projectId: string): UseQueryResult<Project> => {
-  const queryKey = 'getProject';
+  const queryKey = ['getProject'];
   const processData = (data: GetProjectQueryResponse): Project => {
     return data.getProject;
   };

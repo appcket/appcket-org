@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -19,7 +19,7 @@ import Permission from 'src/common/models/Permission';
 
 const Team = () => {
   const params = useParams();
-  const userInfoQuery = useQuery<UserInfoQueryResponse>('userInfo');
+  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
 
   const updateTeamPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],

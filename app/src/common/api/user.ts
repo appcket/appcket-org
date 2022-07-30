@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request';
-import { UseQueryResult } from 'react-query';
+import { UseQueryResult } from '@tanstack/react-query';
 
 import { useApiQuery } from 'src/common/api';
 import User from 'src/common/models/User';
@@ -7,7 +7,7 @@ import SearchUsersQueryResponse from 'src/common/models/responses/user/SearchUse
 import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
 
 export const useUserInfo = (): UseQueryResult<User> => {
-  const queryKey = 'userInfo';
+  const queryKey = ['userInfo'];
   const processData = (data: UserInfoQueryResponse): User => {
     return data.userInfo;
   };
