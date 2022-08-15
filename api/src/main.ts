@@ -6,8 +6,8 @@ import * as fs from 'fs';
 import { AppModule } from './app.module';
 
 const httpsOptions = {
-  cert: fs.readFileSync('certs/star.tls.crt'),
-  key: fs.readFileSync('certs/star.tls.key'),
+  cert: fs.readFileSync('certs/api.tls.crt'),
+  key: fs.readFileSync('certs/api.tls.key'),
 };
 
 async function bootstrap() {

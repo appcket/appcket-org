@@ -27,7 +27,9 @@ app:
   name: app
   subdomain: app
   tag: v0.0.1
+  # change to appcket_nodejs if you want to develop the app (use appcket_app image to serve using nginx), and also need a change in the app helm yaml file
   image: appcket_nodejs
+  # image: appcket_marketing
 
 database:
   address: 172.17.0.1
@@ -40,8 +42,9 @@ database:
 marketing:
   name: marketing
   tag: v0.0.1
-  # change to appcket_nodejs if you want to develop the marketing site, and also need a change in the marketing helm yaml file
-  image: appcket_marketing
+  # change to appcket_nodejs if you want to develop the marketing site (use appcket_marketing image to serve using nginx), and also need a change in the marketing helm yaml file
+  image: appcket_nodejs
+  # image: appcket_marketing
 
 replicaCount: 1
 

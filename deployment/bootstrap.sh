@@ -31,35 +31,38 @@ find ../ -type f -name '*' ! -name 'bootstrap.sh' | xargs sed -i  "s/Ch@ng3To@St
 echo '---------------------'
 echo 'Creating local certs...'
 
+#each subdomain gets own cert, had problems with wildcard cert and istio tls gateway/virtualservice routing
 mkcert ${PROJECT_MACHINE_NAME}.localhost
-mkcert *.${PROJECT_MACHINE_NAME}.localhost
+mkcert api.${PROJECT_MACHINE_NAME}.localhost
+mkcert app.${PROJECT_MACHINE_NAME}.localhost
 mkcert accounts.${PROJECT_MACHINE_NAME}.localhost
 
-# move to local/certs
-mv ${PROJECT_MACHINE_NAME}.localhost.pem ${PROJECT_MACHINE_NAME}.localhost-key.pem ./environment/local/certs
-mv _wildcard.${PROJECT_MACHINE_NAME}.localhost.pem _wildcard.${PROJECT_MACHINE_NAME}.localhost-key.pem ./environment/local/certs
-mv accounts.${PROJECT_MACHINE_NAME}.localhost.pem accounts.${PROJECT_MACHINE_NAME}.localhost-key.pem ./environment/local/certs
+# move to certs directory
+mv ${PROJECT_MACHINE_NAME}.localhost.pem ${PROJECT_MACHINE_NAME}.localhost-key.pem ${CERTS_DIR}
+mv api.${PROJECT_MACHINE_NAME}.localhost.pem api.${PROJECT_MACHINE_NAME}.localhost-key.pem ${CERTS_DIR}
+mv app.${PROJECT_MACHINE_NAME}.localhost.pem app.${PROJECT_MACHINE_NAME}.localhost-key.pem ${CERTS_DIR}
+mv accounts.${PROJECT_MACHINE_NAME}.localhost.pem accounts.${PROJECT_MACHINE_NAME}.localhost-key.pem ${CERTS_DIR}
 
 cp ${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost.pem ../accounts/tls.crt
 cp ${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost-key.pem ../accounts/tls.key
 chmod 0644 ../accounts/tls.key
 
+cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost.pem ../marketing/certs/tls.crt
+cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost-key.pem ../marketing/certs/tls.key
+chmod 0644 ../marketing/certs/tls.key
+
 # find root CA file and copy/rename to api/certs
 mkcert -CAROOT | awk '{print $1"/rootCA.pem"}' | xargs cp -t ../api/certs
 mv ../api/certs/rootCA.pem ../api/certs/rootCA.crt
 
-cp ${CERTS_DIR}_wildcard.${PROJECT_MACHINE_NAME}.localhost.pem ../api/certs/star.tls.crt
-cp ${CERTS_DIR}_wildcard.${PROJECT_MACHINE_NAME}.localhost-key.pem ../api/certs/star.tls.key
+cp ${CERTS_DIR}api.${PROJECT_MACHINE_NAME}.localhost.pem ../api/certs/api.tls.crt
+cp ${CERTS_DIR}api.${PROJECT_MACHINE_NAME}.localhost-key.pem ../api/certs/api.tls.key
 
 cp ${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost.pem ../api/certs/accounts.tls.crt
 cp ${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost-key.pem ../api/certs/accounts.tls.key
 
-cp ${CERTS_DIR}_wildcard.${PROJECT_MACHINE_NAME}.localhost.pem ../app/certs/tls.crt
-cp ${CERTS_DIR}_wildcard.${PROJECT_MACHINE_NAME}.localhost-key.pem ../app/certs/tls.key
-
-cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost.pem ../marketing/certs/tls.crt
-cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost-key.pem ../marketing/certs/tls.key
-chmod 0644 ../marketing/certs/tls.key
+cp ${CERTS_DIR}app.${PROJECT_MACHINE_NAME}.localhost.pem ../app/certs/app.tls.crt
+cp ${CERTS_DIR}app.${PROJECT_MACHINE_NAME}.localhost-key.pem ../app/certs/app.tls.key
 
 # Rename env files
 mv ../deployment/database/dot.env.local ../deployment/database/.env.local
@@ -100,7 +103,7 @@ kubectl create secret generic accounts-secret --from-literal=adminuser=admin --f
 kubectl create secret generic api-keycloak-client-secret --from-literal=clientsecret=${API_CLIENT_KEYCLOAK_SECRET} -n ${PROJECT_MACHINE_NAME}
 
 # Install istio
-${ISTIOCTL} manifest install -y
+${ISTIOCTL} install --set profile=default -y
 export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
 export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')

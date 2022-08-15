@@ -30,7 +30,7 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "start": "gatsby develop",
+    "start": "gatsby develop -p 3000 -H 0.0.0.0 --https --key-file ./certs/tls.key --cert-file ./certs/tls.crt --ca-file ./certs/rootCA.crt",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"

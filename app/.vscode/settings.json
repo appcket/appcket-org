@@ -1,7 +1,8 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
-  "prettier.jsxSingleQuote": false,
-  "prettier.singleQuote": true
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "editor.tabSize": 2,
+  "prettier.documentSelectors": ["*.{tsx,ts}", "*.{jsx,js}"]
 }
