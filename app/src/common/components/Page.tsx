@@ -1,9 +1,8 @@
 import { forwardRef, ReactNode } from 'react';
 import { Helmet } from 'react-helmet-async';
-import PropTypes from 'prop-types';
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode[];
   title: string;
 };
 
@@ -17,9 +16,5 @@ const Page = forwardRef<HTMLDivElement, Props>(({ children, title = '', ...rest 
 ));
 
 Page.displayName = 'Page';
-
-Page.propTypes = {
-  children: PropTypes.element,
-};
 
 export default Page;
