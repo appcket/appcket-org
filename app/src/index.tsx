@@ -6,7 +6,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from 'react-oidc-context';
 
-// import './index.css';
 import 'tailwindcss/tailwind.css';
 
 import oidcConfig from 'src/common/oidc';

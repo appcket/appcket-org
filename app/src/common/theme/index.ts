@@ -7,7 +7,7 @@ const themeColors = {
   warning: '#FFA319',
   error: '#FF1943',
   info: '#33C2FF',
-  black: '#223354',
+  black: '#000000',
   white: '#ffffff',
   primaryAlt: '#000C57',
 };
@@ -44,7 +44,7 @@ const colors = {
   },
   layout: {
     general: {
-      bodyBg: '#f2f5f9',
+      bodyBg: '#e9eef3',
     },
     sidebar: {
       background: themeColors.white,
@@ -242,8 +242,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily:
-      '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+    fontFamily: '"Inter", sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
     h1: {
       fontWeight: 700,
       fontSize: 35,
@@ -271,13 +270,13 @@ const theme = createTheme({
     },
     body1: {
       fontSize: 15,
-      fontWeight: 500,
+      fontWeight: 400,
     },
     body2: {
       fontSize: 12,
     },
     button: {
-      fontWeight: 600,
+      fontWeight: 400,
     },
     caption: {
       fontSize: 13,

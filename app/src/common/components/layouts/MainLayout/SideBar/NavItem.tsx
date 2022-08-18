@@ -1,3 +1,4 @@
+import { alpha } from '@mui/material';
 import { ElementType } from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -5,6 +6,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 
 type Props = {
   className: string;
@@ -13,16 +16,41 @@ type Props = {
   title: string;
 };
 
+const NavItemWrapper = styled(Box)(
+  ({ theme }) => `
+  .MuiListItemButton-root {
+    padding: ${theme.spacing(1.2, 3)};
+
+    .MuiListItemIcon-root {
+      color: ${alpha(theme.palette.common.white, 0.4)};
+      transition: ${theme.transitions.create(['color'])};
+    }
+
+    &.active,
+    &:hover {
+      background-color: ${alpha(theme.palette.common.white, 0.06)};
+      color: ${theme.palette.common.white};
+
+      .MuiListItemIcon-root {
+        color: ${theme.palette.common.white};
+      }
+    }
+  }
+`,
+);
+
 const NavItem = ({ href, icon: Icon, title }: Props) => {
   return (
-    <ListItem disablePadding className="pl-4 pr-4">
-      <ListItemButton className="rounded-md hover:bg-slate-100/[.08]" component={NavLink} to={href}>
-        <ListItemIcon>
-          <Icon size="20" className="text-slate-400" />
-        </ListItemIcon>
-        <ListItemText primary={title} />
-      </ListItemButton>
-    </ListItem>
+    <NavItemWrapper>
+      <ListItem disablePadding className="pl-4 pr-4 mb-1">
+        <ListItemButton className="rounded-md" component={NavLink} to={href}>
+          <ListItemIcon>
+            <Icon size="20" />
+          </ListItemIcon>
+          <ListItemText primary={title} />
+        </ListItemButton>
+      </ListItem>
+    </NavItemWrapper>
   );
 };
 
