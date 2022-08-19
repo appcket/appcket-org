@@ -1,0 +1,58 @@
+import { useAuth } from 'react-oidc-context';
+import { UseMutationResult, useMutation, useQuery } from '@tanstack/react-query';
+import { GraphQLClient } from 'graphql-request';
+import { get } from 'lodash';
+import { useSnackbar } from 'notistack';
+
+const endpoint = get(import.meta.env, 'VITE_API_URL', 'https://api.appcket.org');
+
+export const useApiQuery = <T, U>(
+  queryKey: string[],
+  query: string,
+  processData?: (data: T) => U,
+) => {
+  const auth = useAuth();
+  return useQuery(
+    queryKey,
+    async () => {
+      const graphQLClient = new GraphQLClient(endpoint, {
+        headers: {
+          authorization: `Bearer ${auth.user?.access_token}`,
+        },
+      });
+
+      const data = await graphQLClient.request(query);
+
+      return data;
+    },
+    {
+      select: processData,
+    },
+  );
+};
+
+export const useApiMutation = <T>(
+  mutation: string,
+  processData?: (data: T) => T,
+): UseMutationResult<unknown> => {
+  const auth = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
+  return useMutation(async (inputVars) => {
+    const graphQLClient = new GraphQLClient(endpoint, {
+      headers: {
+        authorization: `Bearer ${auth.user?.access_token}`,
+      },
+    });
+
+    try {
+      const data = await graphQLClient.request(mutation, inputVars);
+      if (processData) return processData(data);
+    } catch (error) {
+      const message = JSON.stringify(error, undefined, 2);
+
+      enqueueSnackbar(message, {
+        variant: 'error',
+      });
+    }
+  });
+};

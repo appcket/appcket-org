@@ -14,7 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { grey } from '@mui/material/colors';
 import theme from 'src/common/theme';
-// import { useUserInfo } from 'src/common/api/user';
+import { useUserInfo } from 'src/common/api/user';
 import { ReactComponent as Logo } from 'src/assets/logo.svg';
 import SideBarHeader from 'src/common/components/layouts/MainLayout/SideBar/Header';
 import NavItem from 'src/common/components/layouts/MainLayout/SideBar/NavItem';
@@ -49,7 +49,7 @@ type Props = {
 };
 
 const SideBar = ({ open, handleSideBarClose, drawerWidth }: Props) => {
-  // const { data } = useUserInfo();
+  const { data } = useUserInfo();
 
   return (
     <Drawer
@@ -106,10 +106,10 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth }: Props) => {
             to="/profile"
           />
           <Typography className="text-slate-200 mt-4" variant="h4">
-            George Costanza
+            {data?.firstName} {data?.lastName}
           </Typography>
           <Typography className="text-slate-200" variant="body2">
-            Assistant to the Traveling Secretary
+            {data?.jobTitle}
           </Typography>
         </Box>
         <Divider />
