@@ -3,16 +3,19 @@ kind: Service
 metadata:
   name: {{ .Values.api.name }}
   namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.api.name }}
+    service: {{ .Values.api.name }}
 spec:
   ports:
   - port: 443
     targetPort: 3000
-    protocol: TCP
-    name: https-{{ .Values.api.name }}
+    appProtocol: https
+    name: {{ .Values.api.name }}
   - port: 9229
     targetPort: 9229
-    protocol: TCP
-    name: http-{{ .Values.api.name }}-debug
+    appProtocol: http
+    name: {{ .Values.api.name }}-debug
   selector:
     app: {{ .Values.api.name }}
 ---

@@ -1,7 +1,5 @@
-import React from 'react';
-import { Link, NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -10,15 +8,18 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 import Page from 'src/common/components/Page';
+import PageHeader from 'src/common/components/PageHeader';
 import { useGetProject } from 'src/common/api/project';
 import hasPermission from 'src/common/utils/hasPermission';
 import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
+import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
 import Permission from 'src/common/models/Permission';
+import EditButton from 'src/common/components/buttons/EditButton';
 
 const Project = () => {
   const params = useParams();
+  const projectId = params.projectId || '';
   const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
 
   const updateProjectPermission = hasPermission(
@@ -26,7 +27,7 @@ const Project = () => {
     Resources.Project,
     ProjectPermission.update,
   );
-  const { status, data, error, isFetching } = useGetProject(params.projectId!);
+  const { status, data, error, isFetching } = useGetProject(projectId);
 
   let projectComponent;
 
@@ -37,18 +38,10 @@ const Project = () => {
   } else {
     projectComponent = <Typography paragraph>Unable to view Project</Typography>;
 
-    let updateProjectButton = (
-      <Button variant="outlined" disabled>
-        Edit
-      </Button>
-    );
+    let updateProjectButton = <EditButton variant="outlined" isDisabled={true} />;
 
     if (updateProjectPermission) {
-      updateProjectButton = (
-        <Button variant="contained" component={Link} to="edit">
-          Edit
-        </Button>
-      );
+      updateProjectButton = <EditButton linkTo="edit" />;
     }
 
     const usersComponent = (
@@ -66,7 +59,7 @@ const Project = () => {
 
     projectComponent = (
       <div>
-        <Typography variant="h4">{data?.name}</Typography>
+        <PageHeader title={data?.name} subTitle="Project details" />
 
         <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
           <Grid container justifyContent="flex-end">

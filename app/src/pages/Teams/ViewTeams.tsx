@@ -1,17 +1,18 @@
-import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Typography from '@mui/material/Typography';
 import { Link, NavLink } from 'react-router-dom';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
 import Page from 'src/common/components/Page';
+import PageHeader from 'src/common/components/PageHeader';
 import { useSearchTeams } from 'src/common/api/team';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
+import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
 import Permission from 'src/common/models/Permission';
 
 const ViewTeams = () => {
@@ -27,14 +28,19 @@ const ViewTeams = () => {
 
   let createTeamButton = (
     <Button variant="outlined" disabled>
-      Create
+      Create Team
     </Button>
   );
 
   if (createTeamPermission) {
     createTeamButton = (
-      <Button variant="contained" component={Link} to="create">
-        Create
+      <Button
+        variant="contained"
+        component={Link}
+        to="create"
+        startIcon={<AddCircleOutlineOutlinedIcon />}
+      >
+        Create Team
       </Button>
     );
   }
@@ -45,7 +51,7 @@ const ViewTeams = () => {
     {
       field: 'name',
       headerName: 'Name',
-      width: 150,
+      flex: 0.25,
       renderCell: (cellValues) => {
         return <NavLink to={`/teams/${cellValues.row.team_id}`}>{cellValues.row.name}</NavLink>;
       },
@@ -53,7 +59,7 @@ const ViewTeams = () => {
     {
       field: 'updated_at',
       headerName: 'Updated',
-      width: 250,
+      flex: 0.75,
       type: 'dateTime',
       valueGetter: ({ value }) =>
         value &&
@@ -82,21 +88,19 @@ const ViewTeams = () => {
     const rows: GridRowsProp = data!;
 
     teamsComponent = (
-      <div style={{ height: 300, width: '100%' }}>
-        <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} />
-      </div>
+      <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} autoHeight={true} />
     );
   }
 
   return (
     <Page title="Teams">
-      <Typography variant="h4" gutterBottom>
-        Teams
-      </Typography>
-      <Grid container justifyContent="flex-end">
-        <Grid item>{createTeamButton}</Grid>
-      </Grid>
-      <div>{teamsComponent}</div>
+      <PageHeader title="Teams" subTitle="Manage teams for an organization">
+        <Grid container justifyContent="flex-end">
+          <Grid>{createTeamButton}</Grid>
+        </Grid>
+      </PageHeader>
+
+      {teamsComponent}
     </Page>
   );
 };

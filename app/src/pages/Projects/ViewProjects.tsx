@@ -1,4 +1,3 @@
-import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Typography from '@mui/material/Typography';
 import { Link, NavLink } from 'react-router-dom';
@@ -6,12 +5,14 @@ import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import Page from 'src/common/components/Page';
+import PageHeader from 'src/common/components/PageHeader';
 import { useSearchProjects } from 'src/common/api/project';
 import hasPermission from 'src/common/utils/hasPermission';
 import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
+import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
 import Permission from 'src/common/models/Permission';
 
 const ViewProjects = () => {
@@ -32,8 +33,13 @@ const ViewProjects = () => {
 
   if (createProjectPermission) {
     createProjectButton = (
-      <Button variant="contained" component={Link} to="create">
-        Create
+      <Button
+        variant="contained"
+        component={Link}
+        to="create"
+        startIcon={<AddCircleOutlineOutlinedIcon />}
+      >
+        Create Project
       </Button>
     );
   }
@@ -44,7 +50,7 @@ const ViewProjects = () => {
     {
       field: 'name',
       headerName: 'Name',
-      width: 150,
+      flex: 0.25,
       renderCell: (cellValues) => {
         return (
           <NavLink to={`/projects/${cellValues.row.project_id}`}>{cellValues.row.name}</NavLink>
@@ -54,7 +60,7 @@ const ViewProjects = () => {
     {
       field: 'updated_at',
       headerName: 'Updated',
-      width: 250,
+      flex: 0.75,
       type: 'dateTime',
       valueGetter: ({ value }) =>
         value &&
@@ -83,21 +89,18 @@ const ViewProjects = () => {
     const rows: GridRowsProp = data!;
 
     projectsComponent = (
-      <div style={{ height: 300, width: '100%' }}>
-        <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} />
-      </div>
+      <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} autoHeight={true} />
     );
   }
 
   return (
     <Page title="Projects">
-      <Typography variant="h4" gutterBottom>
-        Projects
-      </Typography>
-      <Grid container justifyContent="flex-end">
-        <Grid item>{createProjectButton}</Grid>
-      </Grid>
-      <div>{projectsComponent}</div>
+      <PageHeader title="Projects" subTitle="Manage projects for an organization">
+        <Grid container justifyContent="flex-end">
+          <Grid>{createProjectButton}</Grid>
+        </Grid>
+      </PageHeader>
+      {projectsComponent}
     </Page>
   );
 };

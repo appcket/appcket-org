@@ -38,7 +38,7 @@ export class UpdateTeamService {
       },
     });
 
-    for (let teamUser of teamUsersToDelete) {
+    for (const teamUser of teamUsersToDelete) {
       await this.prismaService.team_user.update({
         where: {
           team_user_id: teamUser.team_user_id,
@@ -50,7 +50,7 @@ export class UpdateTeamService {
       });
     }
 
-    let existingTeamUsers = await this.prismaService.team_user.findMany({
+    const existingTeamUsers = await this.prismaService.team_user.findMany({
       where: {
         team_id: data.teamId,
         deleted_at: null,
@@ -63,7 +63,7 @@ export class UpdateTeamService {
       },
     });
 
-    let teamUserIdsToCreate: string[] = [];
+    const teamUserIdsToCreate: string[] = [];
 
     data.userIds.forEach((inputDataUserId) => {
       const foundIndex = findIndex(existingTeamUsers, { user_id: inputDataUserId });
@@ -73,7 +73,7 @@ export class UpdateTeamService {
       }
     });
 
-    for (let teamUserId of teamUserIdsToCreate) {
+    for (const teamUserId of teamUserIdsToCreate) {
       await this.prismaService.team_user.create({
         data: {
           team_id: data.teamId,

@@ -1,7 +1,13 @@
-import React, { ElementType } from 'react';
+import { alpha } from '@mui/material';
+import { ElementType } from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, ListItem } from '@mui/material';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 
 type Props = {
   className: string;
@@ -10,35 +16,42 @@ type Props = {
   title: string;
 };
 
-const NavItem = ({ href, icon: Icon, title, ...rest }: Props) => {
+const NavItemWrapper = styled(Box)(
+  ({ theme }) => `
+  .MuiListItemButton-root {
+    padding: ${theme.spacing(1.2, 3)};
+
+    .MuiListItemIcon-root {
+      color: ${alpha(theme.palette.common.white, 0.4)};
+      transition: ${theme.transitions.create(['color'])};
+      min-width: 40px;
+    }
+
+    &.active,
+    &:hover {
+      background-color: ${alpha(theme.palette.common.white, 0.06)};
+      color: ${theme.palette.common.white};
+
+      .MuiListItemIcon-root {
+        color: ${theme.palette.common.white};
+      }
+    }
+  }
+`,
+);
+
+const NavItem = ({ href, icon: Icon, title }: Props) => {
   return (
-    <ListItem
-      sx={{
-        display: 'flex',
-        paddingTop: 0,
-        paddingBottom: 0,
-      }}
-      disableGutters
-      {...rest}
-    >
-      <Button
-        sx={{
-          fontSize: '16px',
-          color: 'text.primary',
-          fontWeight: 'typography.fontWeightMedium',
-          justifyContent: 'flex-start',
-          padding: '10px 8px 10px 20px',
-          textTransform: 'none',
-          width: '100%',
-        }}
-        component={NavLink}
-        to={href}
-      >
-        {Icon && <Icon size="20" />}
-        &nbsp;
-        <span>{title}</span>
-      </Button>
-    </ListItem>
+    <NavItemWrapper>
+      <ListItem disablePadding className="pl-4 pr-4 mb-1">
+        <ListItemButton className="rounded-md" component={NavLink} to={href}>
+          <ListItemIcon>
+            <Icon size="20" />
+          </ListItemIcon>
+          <ListItemText primary={title} />
+        </ListItemButton>
+      </ListItem>
+    </NavItemWrapper>
   );
 };
 

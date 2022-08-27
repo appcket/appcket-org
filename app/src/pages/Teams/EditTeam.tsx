@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
 import Page from 'src/common/components/Page';
+import PageHeader from 'src/common/components/PageHeader';
 import UpdateTeamMutationInput from 'src/common/models/inputs/UpdateTeamMutationInput';
 import { useGetTeam, useUpdateTeam } from 'src/common/api/team';
 import Team from 'src/common/models/Team';
@@ -17,9 +17,14 @@ import User from 'src/common/models/User';
 import { FormTextField } from 'src/common/components/form/FormTextField';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
+import CancelButton from 'src/common/components/buttons/CancelButton';
 
 const EditTeam = () => {
   const params = useParams();
+  let teamId = '';
+  if (params.teamId) {
+    teamId = params.teamId;
+  }
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const {
@@ -34,7 +39,7 @@ const EditTeam = () => {
     },
   });
 
-  const getTeamQuery = useGetTeam(params.teamId!);
+  const getTeamQuery = useGetTeam(teamId);
   const updateTeam = useUpdateTeam();
   const resetSelectedUserIds = useStore((state) => state.resourceUsers.resetSelectedUserIds);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
@@ -59,15 +64,17 @@ const EditTeam = () => {
     }));
   }, [reset, getTeamQuery.data]);
 
-  useStore.setState((state) => ({
-    resourceUsers: {
-      ...state.resourceUsers,
-      initialSelectedUserIds: initialSelectedItemIds(
-        getTeamQuery?.data?.users as User[],
-        'user_id',
-      ),
-    },
-  }));
+  useEffect(() => {
+    useStore.setState((state) => ({
+      resourceUsers: {
+        ...state.resourceUsers,
+        initialSelectedUserIds: initialSelectedItemIds(
+          getTeamQuery?.data?.users as User[],
+          'user_id',
+        ),
+      },
+    }));
+  }, [getTeamQuery?.data?.users]);
 
   let editTeamComponent;
 
@@ -98,66 +105,61 @@ const EditTeam = () => {
     };
 
     editTeamComponent = (
-      <div>
-        <Typography variant="h4">{getTeamQuery.data.name}</Typography>
-
-        <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Button variant="contained" component={Link} to={`../${params.teamId!}`}>
-                Cancel
-              </Button>
-            </Grid>
+      <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <CancelButton linkTo={`../${teamId}`} />
           </Grid>
-          <Typography variant="body1" sx={{ mb: 3 }}>
-            Organization: {getTeamQuery.data.organization.name}
-          </Typography>
-          <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
-            <FormTextField
-              name="name"
-              control={control}
-              label="Team Name"
-              rules={{
-                required: { value: true, message: 'This field is required' },
-                maxLength: { value: 50, message: 'This field must be less than 50 characters' },
-                minLength: { value: 1, message: 'This field must be more than 1 character' },
-              }}
-            />
-          </Grid>
+        </Grid>
+        <Typography variant="body1" sx={{ mb: 3 }}>
+          Organization: {getTeamQuery.data.organization.name}
+        </Typography>
+        <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
+          <FormTextField
+            name="name"
+            control={control}
+            label="Team Name"
+            rules={{
+              required: { value: true, message: 'This field is required' },
+              maxLength: { value: 50, message: 'This field must be less than 50 characters' },
+              minLength: { value: 1, message: 'This field must be more than 1 character' },
+            }}
+          />
+        </Grid>
 
-          {/* instead of passing selectedUsers prop to child components, we use zustand to hold local state.
+        {/* instead of passing selectedUsers prop to child components, we use zustand to hold local state.
             In this case, it tracks initially selected users and user-selected users so the 
             parent component can have this data and send it back to the api onSubmit*/}
-          <ResourceUsersGrid organizationId={getTeamQuery.data.organization.organization_id} />
+        <ResourceUsersGrid organizationId={getTeamQuery.data.organization.organization_id} />
 
-          <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
-            <Grid item>
-              <Button
-                onClick={handleSubmit(onSubmit)}
-                variant="contained"
-                disabled={!isValid}
-                sx={{ mx: 1 }}
-              >
-                Save
-              </Button>
-              <Button
-                onClick={() => {
-                  reset();
-                  resetSelectedUserIds();
-                }}
-                variant="outlined"
-              >
-                Reset
-              </Button>
-            </Grid>
+        <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
+          <Grid item>
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              variant="contained"
+              disabled={!isValid}
+              sx={{ mx: 1 }}
+            >
+              Save
+            </Button>
+            <Button
+              onClick={() => {
+                reset();
+                resetSelectedUserIds();
+              }}
+              variant="outlined"
+            >
+              Reset
+            </Button>
           </Grid>
-        </Paper>
-      </div>
+        </Grid>
+      </Paper>
     );
   }
 
   return (
     <Page title={`Edit Team - ${getTeamQuery.data?.name}`}>
+      <PageHeader title={getTeamQuery.data?.name} subTitle="Edit team details" />
       <div>{editTeamComponent}</div>
     </Page>
   );

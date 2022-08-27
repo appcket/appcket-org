@@ -1,11 +1,12 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import CssBaseline from '@mui/material/CssBaseline';
-import { AuthProvider } from "react-oidc-context";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from 'react-oidc-context';
+
+import 'tailwindcss/tailwind.css';
 
 import oidcConfig from 'src/common/oidc';
 import App from './App';
@@ -20,23 +21,24 @@ const queryClient = new QueryClient({
 });
 
 const rootElement = document.getElementById('root');
-const root = createRoot(rootElement!);
 
-root.render(
-  <React.StrictMode>
-    <AuthProvider {...oidcConfig}>
-      <QueryClientProvider client={queryClient}>
-        <HelmetProvider>
-          <BrowserRouter>
-            <CssBaseline />
-            <App />
-          </BrowserRouter>
-        </HelmetProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </AuthProvider>
-  </React.StrictMode>
-);
+if (rootElement) {
+  const root = createRoot(rootElement);
+  root.render(
+    <StrictMode>
+      <AuthProvider {...oidcConfig}>
+        <QueryClientProvider client={queryClient}>
+          <HelmetProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </HelmetProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </AuthProvider>
+    </StrictMode>,
+  );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

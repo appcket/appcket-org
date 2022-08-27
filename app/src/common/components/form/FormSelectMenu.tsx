@@ -1,10 +1,9 @@
-import React from 'react';
 import { Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { FormInputProps } from 'src/common/components/form/FormInputProps';
 
-export const FormSelectMenu = ({ name, control, label, rules, options }: FormInputProps) => {
+const FormSelectMenu = ({ name, control, label, rules, options }: FormInputProps) => {
   return (
     <Controller
       name={name}

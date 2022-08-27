@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
 import Page from 'src/common/components/Page';
+import PageHeader from 'src/common/components/PageHeader';
 import UpdateProjectMutationInput from 'src/common/models/inputs/UpdateProjectMutationInput';
 import { useGetProject, useUpdateProject } from 'src/common/api/project';
 import Project from 'src/common/models/Project';
@@ -17,9 +17,15 @@ import User from 'src/common/models/User';
 import { FormTextField } from 'src/common/components/form/FormTextField';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
+import CancelButton from 'src/common/components/buttons/CancelButton';
 
 const EditProject = () => {
   const params = useParams();
+  let projectId = '';
+  if (params.projectId) {
+    projectId = params.projectId;
+  }
+
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const {
@@ -34,7 +40,7 @@ const EditProject = () => {
     },
   });
 
-  const getProjectQuery = useGetProject(params.projectId!);
+  const getProjectQuery = useGetProject(projectId);
   const updateProject = useUpdateProject();
   const resetSelectedUserIds = useStore((state) => state.resourceUsers.resetSelectedUserIds);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
@@ -59,15 +65,17 @@ const EditProject = () => {
     }));
   }, [reset, getProjectQuery.data]);
 
-  useStore.setState((state) => ({
-    resourceUsers: {
-      ...state.resourceUsers,
-      initialSelectedUserIds: initialSelectedItemIds(
-        getProjectQuery?.data?.users as User[],
-        'user_id',
-      ),
-    },
-  }));
+  useEffect(() => {
+    useStore.setState((state) => ({
+      resourceUsers: {
+        ...state.resourceUsers,
+        initialSelectedUserIds: initialSelectedItemIds(
+          getProjectQuery?.data?.users as User[],
+          'user_id',
+        ),
+      },
+    }));
+  }, [getProjectQuery?.data?.users]);
 
   let editProjectComponent;
 
@@ -100,63 +108,58 @@ const EditProject = () => {
     };
 
     editProjectComponent = (
-      <div>
-        <Typography variant="h4">{getProjectQuery.data.name}</Typography>
-
-        <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Button variant="contained" component={Link} to={`../${params.projectId!}`}>
-                Cancel
-              </Button>
-            </Grid>
+      <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <CancelButton linkTo={`../${projectId}`} />
           </Grid>
-          <Typography variant="body1" sx={{ mb: 3 }}>
-            Organization: {getProjectQuery.data.organization.name}
-          </Typography>
-          <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
-            <FormTextField
-              name="name"
-              control={control}
-              label="Project Name"
-              rules={{
-                required: { value: true, message: 'This field is required' },
-                maxLength: { value: 50, message: 'This field must be less than 50 characters' },
-                minLength: { value: 1, message: 'This field must be more than 1 character' },
+        </Grid>
+        <Typography variant="body1" sx={{ mb: 3 }}>
+          Organization: {getProjectQuery.data.organization.name}
+        </Typography>
+        <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
+          <FormTextField
+            name="name"
+            control={control}
+            label="Project Name"
+            rules={{
+              required: { value: true, message: 'This field is required' },
+              maxLength: { value: 50, message: 'This field must be less than 50 characters' },
+              minLength: { value: 1, message: 'This field must be more than 1 character' },
+            }}
+          />
+        </Grid>
+
+        <ResourceUsersGrid organizationId={getProjectQuery.data.organization.organization_id} />
+
+        <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
+          <Grid item>
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              variant="contained"
+              disabled={!isValid}
+              sx={{ mx: 1 }}
+            >
+              Save
+            </Button>
+            <Button
+              onClick={() => {
+                reset();
+                resetSelectedUserIds();
               }}
-            />
+              variant="outlined"
+            >
+              Reset
+            </Button>
           </Grid>
-
-          <ResourceUsersGrid organizationId={getProjectQuery.data.organization.organization_id} />
-
-          <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
-            <Grid item>
-              <Button
-                onClick={handleSubmit(onSubmit)}
-                variant="contained"
-                disabled={!isValid}
-                sx={{ mx: 1 }}
-              >
-                Save
-              </Button>
-              <Button
-                onClick={() => {
-                  reset();
-                  resetSelectedUserIds();
-                }}
-                variant="outlined"
-              >
-                Reset
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
-      </div>
+        </Grid>
+      </Paper>
     );
   }
 
   return (
     <Page title={`Edit Project - ${getProjectQuery.data?.name}`}>
+      <PageHeader title={getProjectQuery.data?.name} subTitle="Edit project details" />
       <div>{editProjectComponent}</div>
     </Page>
   );

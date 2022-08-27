@@ -1,11 +1,12 @@
-import create, { GetState, SetState } from 'zustand';
+import create from 'zustand';
+import { mountStoreDevtool } from 'simple-zustand-devtools';
 
 import { ResourceUsersSlice, createResourceUsersSlice } from './resourceUsersSlice';
 
-export type StoreState = ResourceUsersSlice; // & OtherSlice & AnotherSlice etc.
-
-export type StoreSlice<T> = (set: SetState<StoreState>, get: GetState<StoreState>) => T;
-
-export const useStore = create<StoreState>((set, get) => ({
-  ...createResourceUsersSlice(set, get),
+export const useStore = create<ResourceUsersSlice>()((...a) => ({
+  ...createResourceUsersSlice(...a),
 }));
+
+if (import.meta.env.MODE === 'development') {
+  mountStoreDevtool('Store', useStore);
+}

@@ -7,8 +7,8 @@ spec:
   ports:
   - port: 443
     targetPort: 3000
-    protocol: TCP
-    name: https-{{ .Values.app.name }}
+    appProtocol: https
+    name: {{ .Values.app.name }}
   selector:
     app: {{ .Values.app.name }}
 ---
@@ -35,8 +35,6 @@ spec:
         {{- if eq .Values.env "local" }}
         command: ["/bin/bash"]
         {{- end }}
-        # command: ["/bin/bash"]
-        # command: ["yarn","start"]
         env:
         - name: NODE_ENV
           value: {{ .Values.env }}

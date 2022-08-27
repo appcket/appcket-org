@@ -7,8 +7,8 @@ spec:
   ports:
   - port: 443
     targetPort: 443
-    protocol: TCP
-    name: https-{{ .Values.accounts.name }}
+    name: {{ .Values.accounts.name }}
+    appProtocol: https
   selector:
     app: {{ .Values.accounts.name }}
 ---

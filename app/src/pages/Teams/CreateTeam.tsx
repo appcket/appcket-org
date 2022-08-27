@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
@@ -10,6 +10,7 @@ import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
 import Page from 'src/common/components/Page';
+import PageHeader from 'src/common/components/PageHeader';
 import CreateTeamMutationInput from 'src/common/models/inputs/CreateTeamMutationInput';
 import { useCreateTeam } from 'src/common/api/team';
 import Team from 'src/common/models/Team';
@@ -19,8 +20,9 @@ import { FormTextField } from 'src/common/components/form/FormTextField';
 import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
-import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
+import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
 import { resourcesToSelectMenuOptions } from 'src/common/utils/form';
+import CancelButton from 'src/common/components/buttons/CancelButton';
 
 const CreateTeam = () => {
   const navigate = useNavigate();
@@ -64,8 +66,6 @@ const CreateTeam = () => {
       },
     }));
   }, [reset]);
-
-  let createTeamComponent;
 
   const onSubmit = async (createTeamInput: CreateTeamMutationInput) => {
     createTeamInput.userIds = selectedUserIds;
@@ -115,9 +115,15 @@ const CreateTeam = () => {
     organizationUsersGrid = <ResourceUsersGrid organizationId={watchOrganizationId} />;
   }
 
-  createTeamComponent = (
+  const createTeamComponent = (
     <div>
-      <Typography variant="h4">Create New Team</Typography>
+      <PageHeader title="New Team" subTitle="Create a new team for your organization">
+        <Grid container justifyContent="flex-end">
+          <Grid>
+            <CancelButton linkTo="../" />
+          </Grid>
+        </Grid>
+      </PageHeader>
 
       <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
@@ -140,14 +146,6 @@ const CreateTeam = () => {
         <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
           <Grid item>
             <Button
-              onClick={handleSubmit(onSubmit)}
-              variant="contained"
-              disabled={!isValid}
-              sx={{ mx: 1 }}
-            >
-              Save
-            </Button>
-            <Button
               onClick={() => {
                 reset();
                 resetSelectedUserIds();
@@ -156,6 +154,14 @@ const CreateTeam = () => {
             >
               Reset
             </Button>
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              variant="contained"
+              disabled={!isValid}
+              sx={{ mx: 1 }}
+            >
+              Save
+            </Button>
           </Grid>
         </Grid>
       </Paper>
@@ -163,7 +169,7 @@ const CreateTeam = () => {
   );
 
   return (
-    <Page title="Create New Team">
+    <Page title="New Team">
       <div>{createTeamComponent}</div>
     </Page>
   );

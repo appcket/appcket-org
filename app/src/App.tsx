@@ -1,19 +1,18 @@
-import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 import { useAuth } from 'react-oidc-context';
+import { ThemeProvider } from '@mui/material/styles';
 
 import theme from 'src/common/theme';
+import Loading from 'src/common/components/Loading';
 import MainLayout from 'src/common/components/layouts/MainLayout';
 import Home from 'src/pages/Home';
-import Teams from 'src/pages/Teams';
-import Projects from 'src/pages/Projects';
 import About from 'src/pages/About';
+import Projects from 'src/pages/Projects';
+import Teams from 'src/pages/Teams';
 import NotFound from 'src/pages/NotFound';
 import Unauthorized from 'src/pages/Unauthorized';
-import Loading from 'src/common/components/Loading';
 
 export default function App() {
   const auth = useAuth();
@@ -51,9 +50,9 @@ export default function App() {
           <Routes>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Home />} />
+              <Route path="about" element={<About />} />
               <Route path="teams/*" element={<Teams />} />
               <Route path="projects/*" element={<Projects />} />
-              <Route path="about" element={<About />} />
               <Route path="unauthorized" element={<Unauthorized />} />
               <Route path="404" element={<NotFound />} />
               <Route path="*" element={<Navigate to="/404" />} />
