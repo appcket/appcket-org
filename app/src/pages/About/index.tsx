@@ -1,31 +1,15 @@
-import { useRef } from 'react';
 import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Slide from '@mui/material/Slide';
 import Fade from '@mui/material/Fade';
 
 import Page from 'src/common/components/Page';
+import PageHeader from 'src/common/components/PageHeader';
 
 const About = () => {
-  const containerRef = useRef(null);
   return (
     <Page title="About">
-      <Container maxWidth={false} className="mb-10 py-10 shadow-sm bg-white/70">
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item>
-            <Slide direction="right" in={true} container={containerRef.current}>
-              <Box>
-                <Typography variant="h1" component="h1" gutterBottom>
-                  About
-                </Typography>
-                <Typography variant="subtitle2">Learn about the Appcket starter kit</Typography>
-              </Box>
-            </Slide>
-          </Grid>
-        </Grid>
-      </Container>
+      <PageHeader title="About" subTitle="Learn about the Appcket starter kit" />
       <Container maxWidth={false}>
         <Fade
           in={true}

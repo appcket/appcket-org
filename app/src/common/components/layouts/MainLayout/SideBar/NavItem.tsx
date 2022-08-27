@@ -24,6 +24,7 @@ const NavItemWrapper = styled(Box)(
     .MuiListItemIcon-root {
       color: ${alpha(theme.palette.common.white, 0.4)};
       transition: ${theme.transitions.create(['color'])};
+      min-width: 40px;
     }
 
     &.active,

@@ -31,9 +31,9 @@ export const useApiQuery = <T, U>(
   );
 };
 
-export const useApiMutation = <T>(
+export const useApiMutation = <T, U>(
   mutation: string,
-  processData?: (data: T) => T,
+  processData?: (data: T) => U,
 ): UseMutationResult<unknown> => {
   const auth = useAuth();
   const { enqueueSnackbar } = useSnackbar();

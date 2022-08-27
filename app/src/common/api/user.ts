@@ -3,8 +3,8 @@ import { UseQueryResult } from '@tanstack/react-query';
 
 import { useApiQuery } from 'src/common/api';
 import User from 'src/common/models/User';
-import SearchUsersQueryResponse from 'src/common/models/responses/user/SearchUsersQueryResponse';
-import UserInfoQueryResponse from 'src/common/models/responses/user/UserInfoQueryResponse';
+import SearchUsersQueryResponse from 'src/common/models/responses/SearchUsersQueryResponse';
+import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
 
 export const useUserInfo = (): UseQueryResult<User> => {
   const queryKey = ['userInfo'];

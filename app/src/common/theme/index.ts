@@ -1,5 +1,11 @@
 import { alpha, createTheme, lighten, darken } from '@mui/material';
 
+declare module '@mui/material/styles' {
+  interface Components {
+    [key: string]: any;
+  }
+}
+
 const themeColors = {
   primary: '#03071D',
   secondary: '#E14A1B',
@@ -32,12 +38,7 @@ const colors = {
     black2: 'linear-gradient(60deg, #29323c 0%, #485563 100%)',
   },
   shadows: {
-    success: '0px 1px 4px rgba(68, 214, 0, 0.25), 0px 3px 12px 2px rgba(68, 214, 0, 0.35)',
-    error: '0px 1px 4px rgba(255, 25, 67, 0.25), 0px 3px 12px 2px rgba(255, 25, 67, 0.35)',
-    info: '0px 1px 4px rgba(51, 194, 255, 0.25), 0px 3px 12px 2px rgba(51, 194, 255, 0.35)',
-    primary: '0px 1px 4px rgba(85, 105, 255, 0.25), 0px 3px 12px 2px rgba(85, 105, 255, 0.35)',
-    warning: '0px 1px 4px rgba(255, 163, 25, 0.25), 0px 3px 12px 2px rgba(255, 163, 25, 0.35)',
-    card: '0px 9px 16px rgba(159, 162, 191, .18), 0px 2px 2px rgba(159, 162, 191, 0.32)',
+    card: '0px 5px 14px rgba(159, 162, 191, .2), 0px 2px 2px rgba(159, 162, 191, 0.35)',
     cardSm: '0px 2px 3px rgba(159, 162, 191, .18), 0px 1px 1px rgba(159, 162, 191, 0.32)',
     cardLg:
       '0 5rem 14rem 0 rgb(255 255 255 / 30%), 0 0.8rem 2.3rem rgb(0 0 0 / 60%), 0 0.2rem 0.3rem rgb(0 0 0 / 45%)',
@@ -125,6 +126,29 @@ const colors = {
 
 const theme = createTheme({
   components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          background: themeColors.white,
+          color: themeColors.primary,
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 18,
+          boxShadow: 'none',
+          whiteSpace: 'nowrap',
+          ':active': {
+            boxShadow: 'none',
+          },
+          ':hover': {
+            boxShadow: 'none',
+          },
+        },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: {
         html: {
@@ -132,26 +156,9 @@ const theme = createTheme({
         },
         body: {
           height: '100%',
-          fontFamily:
-            "'Montserrat', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'sans-serif'",
         },
         '#root': {
           height: '100%',
-        },
-      },
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          color: themeColors.black[200],
-        },
-      },
-    },
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          background: themeColors.white,
-          color: themeColors.primary,
         },
       },
     },
@@ -163,10 +170,80 @@ const theme = createTheme({
         },
       },
     },
+    MuiDataGrid: {
+      styleOverrides: {
+        root: {
+          background: themeColors.white,
+          color: themeColors.primary,
+          '& .MuiDataGrid-cell': {
+            padding: '0 30px',
+          },
+          '& .MuiDataGrid-columnHeaders': {
+            background: darken(themeColors.white, 0.03),
+          },
+          '& .MuiDataGrid-row': {
+            ':hover': {
+              background: darken(themeColors.white, 0.07),
+            },
+          },
+          '& .MuiDataGrid-columnHeader': {
+            fontSize: 16,
+            padding: '0 30px',
+            color: colors.alpha.black[100],
+            ':hover': {
+              color: colors.alpha.black[70],
+            },
+          },
+          '& .MuiDataGrid-columnHeader--sorted': {
+            fontSize: 16,
+            color: colors.alpha.black[100],
+            ':hover': {
+              color: colors.alpha.black[100],
+            },
+          },
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: colors.alpha.black[50],
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+        elevation0: {
+          boxShadow: 'none',
+        },
+        elevation: {
+          boxShadow: colors.shadows.card,
+        },
+        elevation2: {
+          boxShadow: colors.shadows.cardSm,
+        },
+        elevation24: {
+          boxShadow: colors.shadows.cardLg,
+        },
+        outlined: {
+          boxShadow: colors.shadows.card,
+        },
+      },
+    },
   },
   spacing: 9,
   shape: {
-    borderRadius: 10,
+    borderRadius: 8,
   },
   palette: {
     common: {
@@ -246,37 +323,43 @@ const theme = createTheme({
     h1: {
       fontWeight: 700,
       fontSize: 35,
+      color: colors.primary.main,
     },
     h2: {
       fontWeight: 700,
       fontSize: 30,
+      color: colors.primary.main,
     },
     h3: {
       fontWeight: 700,
       fontSize: 25,
       lineHeight: 1.4,
-      color: colors.alpha.black[100],
+      color: colors.primary.main,
     },
     h4: {
       fontWeight: 700,
       fontSize: 16,
+      color: colors.primary.main,
     },
     h5: {
       fontWeight: 700,
       fontSize: 14,
+      color: colors.primary.main,
     },
     h6: {
       fontSize: 15,
+      color: colors.primary.main,
     },
     body1: {
       fontSize: 15,
       fontWeight: 400,
     },
     body2: {
-      fontSize: 12,
+      fontSize: 14,
     },
     button: {
       fontWeight: 400,
+      textTransform: 'none',
     },
     caption: {
       fontSize: 13,

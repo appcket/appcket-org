@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars-2';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Box from '@mui/material/Box';
 
 import SideBar from 'src/common/components/layouts/MainLayout/SideBar';
 import SideBarHeader from 'src/common/components/layouts/MainLayout/SideBar/Header';
+import BottomBar from 'src/common/components/layouts/MainLayout/BottomBar';
 import TopBar from 'src/common/components/layouts/MainLayout/TopBar';
-
-import theme from 'src/common/theme';
 
 const drawerWidth = 280;
 
@@ -20,16 +20,18 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  marginLeft: `-${drawerWidth}px`,
   ...(open && {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: drawerWidth,
+    marginLeft: 0,
   }),
 }));
 
 const MainLayout = () => {
+  const theme = useTheme();
   const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [open, setOpen] = useState(true);
@@ -52,16 +54,17 @@ const MainLayout = () => {
   }, [lessThanSmall]);
 
   return (
-    <>
-      <TopBar open={open} handleSideBarOpen={handleSideBarOpen} />
+    <Box sx={{ display: 'flex' }}>
+      <TopBar open={open} drawerWidth={drawerWidth} handleSideBarOpen={handleSideBarOpen} />
       <SideBar open={open} handleSideBarClose={handleSideBarClose} drawerWidth={drawerWidth} />
-      <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={200}>
-        <Main open={open}>
-          <SideBarHeader />
-          <Outlet />
-        </Main>
-      </Scrollbars>
-    </>
+      <Main open={open}>
+        <SideBarHeader />
+        {/* <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={200}> */}
+        <Outlet />
+        {/* </Scrollbars> */}
+      </Main>
+      <BottomBar open={open} theme={theme} drawerWidth={drawerWidth} />
+    </Box>
   );
 };
 

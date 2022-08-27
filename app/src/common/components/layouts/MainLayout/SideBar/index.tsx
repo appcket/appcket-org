@@ -65,7 +65,7 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth }: Props) => {
       anchor="left"
       open={open}
     >
-      <SideBarHeader className="w-fit">
+      <SideBarHeader className="w-fit py-5">
         <Link to="/">
           <Logo width={170} className="mt-2 ml-2" />
         </Link>
