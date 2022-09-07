@@ -32,13 +32,18 @@ spec:
       - name: {{ .Values.marketing.name }}
         image: "{{ .Values.image.repository }}/{{ .Values.marketing.image }}:{{ .Values.marketing.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        # uncomment the following if lines (and need a change in the values-local.yaml file) if you want to develop the marketing site, otherwise it will use the nginx command from the Dockerfile to start the container
+        # uncomment the following 3 if-end lines (and need a change in the values-local.yaml file) if you want to develop the marketing site, otherwise it will use the nginx command from the Dockerfile to start the container
         {{- if eq .Values.env "local" }}
         command: ["/bin/sh"]
         {{- end }}
         env:
+        {{- if eq .Values.env "local" }}
+        - name: NODE_ENV
+          value: development
+        {{ else }}
         - name: NODE_ENV
           value: {{ .Values.env }}
+        {{- end }}
         - name: PORT
           value: "3000"
         stdin: true

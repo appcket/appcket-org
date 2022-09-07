@@ -23,6 +23,7 @@ import { useStore } from 'src/common/store';
 import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
 import { resourcesToSelectMenuOptions } from 'src/common/utils/form';
 import CancelButton from 'src/common/components/buttons/CancelButton';
+import Loading from 'src/common/components/Loading';
 
 const CreateTeam = () => {
   const navigate = useNavigate();
@@ -88,8 +89,8 @@ const CreateTeam = () => {
   let organizationUsersGrid;
 
   if (userInfoQuery.status === 'loading' || userInfoQuery.isFetching) {
-    organizationSelectMenu = <Typography paragraph>Loading...</Typography>;
-    organizationUsersGrid = <Typography paragraph>Loading...</Typography>;
+    organizationSelectMenu = <Loading />;
+    organizationUsersGrid = <Loading />;
   } else if (userInfoQuery.status === 'error' && userInfoQuery.error instanceof Error) {
     organizationSelectMenu = (
       <Typography paragraph>Error: {userInfoQuery.error.message}</Typography>
@@ -103,6 +104,7 @@ const CreateTeam = () => {
     organizationSelectMenu = (
       <FormSelectMenu
         name="organizationId"
+        className="mb-4"
         control={control}
         label="Organization"
         options={options}
@@ -116,7 +118,50 @@ const CreateTeam = () => {
   }
 
   const createTeamComponent = (
-    <div>
+    <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
+      <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
+        {organizationSelectMenu}
+
+        <FormTextField
+          name="name"
+          control={control}
+          label="Team Name"
+          rules={{
+            required: { value: true, message: 'This field is required' },
+            maxLength: { value: 50, message: 'This field must be less than 50 characters' },
+            minLength: { value: 1, message: 'This field must be more than 1 character' },
+          }}
+        />
+      </Grid>
+
+      {watchOrganizationId && organizationUsersGrid}
+
+      <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
+        <Grid item>
+          <Button
+            onClick={() => {
+              reset();
+              resetSelectedUserIds();
+            }}
+            variant="outlined"
+          >
+            Reset
+          </Button>
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            variant="contained"
+            disabled={!isValid}
+            sx={{ mx: 1 }}
+          >
+            Save
+          </Button>
+        </Grid>
+      </Grid>
+    </Paper>
+  );
+
+  return (
+    <Page title="New Team">
       <PageHeader title="New Team" subTitle="Create a new team for your organization">
         <Grid container justifyContent="flex-end">
           <Grid>
@@ -124,52 +169,6 @@ const CreateTeam = () => {
           </Grid>
         </Grid>
       </PageHeader>
-
-      <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
-        <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
-          {organizationSelectMenu}
-
-          <FormTextField
-            name="name"
-            control={control}
-            label="Team Name"
-            rules={{
-              required: { value: true, message: 'This field is required' },
-              maxLength: { value: 50, message: 'This field must be less than 50 characters' },
-              minLength: { value: 1, message: 'This field must be more than 1 character' },
-            }}
-          />
-        </Grid>
-
-        {watchOrganizationId && organizationUsersGrid}
-
-        <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
-          <Grid item>
-            <Button
-              onClick={() => {
-                reset();
-                resetSelectedUserIds();
-              }}
-              variant="outlined"
-            >
-              Reset
-            </Button>
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              variant="contained"
-              disabled={!isValid}
-              sx={{ mx: 1 }}
-            >
-              Save
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
-    </div>
-  );
-
-  return (
-    <Page title="New Team">
       <div>{createTeamComponent}</div>
     </Page>
   );

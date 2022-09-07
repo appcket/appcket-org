@@ -16,6 +16,7 @@ import Resources from 'src/common/enums/resources.enum';
 import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
+import Loading from 'src/common/components/Loading';
 
 const Project = () => {
   const params = useParams();
@@ -32,7 +33,7 @@ const Project = () => {
   let projectComponent;
 
   if (status === 'loading' || isFetching) {
-    projectComponent = <Typography paragraph>Loading...</Typography>;
+    projectComponent = <Loading />;
   } else if (status === 'error' && error instanceof Error) {
     projectComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
@@ -46,7 +47,9 @@ const Project = () => {
 
     const usersComponent = (
       <div>
-        <Typography variant="body1">Users:</Typography>
+        <Typography variant="body1">
+          Users: {data?.users.length === 0 ? 'No users associated with this project' : null}
+        </Typography>
         <List>
           {data?.users.map((user) => (
             <ListItem key={user.user_id}>

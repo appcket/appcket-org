@@ -7,6 +7,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
+import Loading from 'src/common/components/Loading';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import { useGetTeam } from 'src/common/api/team';
@@ -27,12 +28,12 @@ const Team = () => {
     Resources.Team,
     TeamPermission.update,
   );
-  const { status, data, error, isFetching } = useGetTeam(teamId!);
+  const { status, data, error, isFetching } = useGetTeam(teamId);
 
   let teamComponent;
 
   if (status === 'loading' || isFetching) {
-    teamComponent = <Typography paragraph>Loading...</Typography>;
+    teamComponent = <Loading />;
   } else if (status === 'error' && error instanceof Error) {
     teamComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
@@ -46,7 +47,9 @@ const Team = () => {
 
     const usersComponent = (
       <div>
-        <Typography variant="body1">Users:</Typography>
+        <Typography variant="body1">
+          Users: {data?.users.length === 0 ? 'No users associated with this team' : null}
+        </Typography>
         <List>
           {data?.users.map((user) => (
             <ListItem key={user.user_id}>
@@ -72,7 +75,7 @@ const Team = () => {
   return (
     <Page title={`Team - ${data?.name}`}>
       <PageHeader title={data?.name} subTitle="Team details" />
-      <div>{teamComponent}</div>
+      {teamComponent}
     </Page>
   );
 };

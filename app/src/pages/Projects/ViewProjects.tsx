@@ -14,6 +14,7 @@ import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
 import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
 import Permission from 'src/common/models/Permission';
+import Loading from 'src/common/components/Loading';
 
 const ViewProjects = () => {
   // TODO: user input from Project name filter input field should drive table results
@@ -77,7 +78,7 @@ const ViewProjects = () => {
   ];
 
   if (status === 'loading') {
-    projectsComponent = <Typography paragraph>Loading...</Typography>;
+    projectsComponent = <Loading />;
   } else if (status === 'error' && error instanceof Error) {
     projectsComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {

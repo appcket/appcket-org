@@ -3,7 +3,14 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { FormInputProps } from 'src/common/components/form/FormInputProps';
 
-const FormSelectMenu = ({ name, control, label, rules, options }: FormInputProps) => {
+const FormSelectMenu = ({
+  name,
+  className = null,
+  control,
+  label,
+  rules,
+  options,
+}: FormInputProps) => {
   return (
     <Controller
       name={name}
@@ -11,6 +18,7 @@ const FormSelectMenu = ({ name, control, label, rules, options }: FormInputProps
       rules={rules}
       render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
         <TextField
+          className={className}
           helperText={error ? error.message : null}
           size="small"
           select

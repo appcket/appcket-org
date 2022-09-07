@@ -5,6 +5,7 @@ export interface FormSelectMenuOption {
 
 export interface FormInputProps {
   name: string;
+  className?: string | string[] | null;
   control: any;
   label: string;
   rules?: any;

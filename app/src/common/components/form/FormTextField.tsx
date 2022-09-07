@@ -1,9 +1,14 @@
-import React from 'react';
 import { Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { FormInputProps } from './FormInputProps';
 
-export const FormTextField = ({ name, control, label, rules }: FormInputProps) => {
+export const FormTextField = ({
+  name,
+  className = null,
+  control,
+  label,
+  rules,
+}: FormInputProps) => {
   return (
     <Controller
       name={name}

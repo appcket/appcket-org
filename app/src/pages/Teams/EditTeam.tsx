@@ -18,6 +18,7 @@ import { FormTextField } from 'src/common/components/form/FormTextField';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
 import CancelButton from 'src/common/components/buttons/CancelButton';
+import Loading from 'src/common/components/Loading';
 
 const EditTeam = () => {
   const params = useParams();
@@ -79,7 +80,7 @@ const EditTeam = () => {
   let editTeamComponent;
 
   if (getTeamQuery.status === 'loading' || getTeamQuery.isFetching) {
-    editTeamComponent = <Typography paragraph>Loading...</Typography>;
+    editTeamComponent = <Loading />;
   } else if (getTeamQuery.status === 'error' && getTeamQuery.error instanceof Error) {
     editTeamComponent = <Typography paragraph>Error: {getTeamQuery.error.message}</Typography>;
   } else if (getTeamQuery.isSuccess) {

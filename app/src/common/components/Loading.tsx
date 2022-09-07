@@ -1,8 +1,8 @@
-import React from 'react';
-import { CircularProgress, Container } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import Container from '@mui/material/Container';
 
 const Loading = () => (
-  <Container maxWidth="lg">
+  <Container maxWidth="lg" className="text-center">
     <CircularProgress />
   </Container>
 );

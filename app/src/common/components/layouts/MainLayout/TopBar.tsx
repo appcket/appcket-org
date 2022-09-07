@@ -73,7 +73,7 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
               component="div"
               sx={{ flexGrow: 1, display: { xs: 'flex' } }}
             >
-              Top Toolbar
+              {/* Top Toolbar */}
             </Typography>
           </Box>
           <Box sx={{ flexGrow: 0 }}>

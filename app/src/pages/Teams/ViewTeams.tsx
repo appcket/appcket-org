@@ -14,6 +14,7 @@ import { TeamPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
 import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
 import Permission from 'src/common/models/Permission';
+import Loading from 'src/common/components/Loading';
 
 const ViewTeams = () => {
   // TODO: user input from Team name filter input field should drive table results
@@ -76,7 +77,7 @@ const ViewTeams = () => {
   ];
 
   if (status === 'loading') {
-    teamsComponent = <Typography paragraph>Loading...</Typography>;
+    teamsComponent = <Loading />;
   } else if (status === 'error' && error instanceof Error) {
     teamsComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {

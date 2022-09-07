@@ -218,6 +218,14 @@ const theme = createTheme({
         },
       },
     },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          paddingTop: '2px',
+          paddingBottom: '2px',
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         root: {

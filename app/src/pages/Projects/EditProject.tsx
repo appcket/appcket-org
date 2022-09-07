@@ -18,6 +18,7 @@ import { FormTextField } from 'src/common/components/form/FormTextField';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
 import CancelButton from 'src/common/components/buttons/CancelButton';
+import Loading from 'src/common/components/Loading';
 
 const EditProject = () => {
   const params = useParams();
@@ -80,7 +81,7 @@ const EditProject = () => {
   let editProjectComponent;
 
   if (getProjectQuery.status === 'loading' || getProjectQuery.isFetching) {
-    editProjectComponent = <Typography paragraph>Loading...</Typography>;
+    editProjectComponent = <Loading />;
   } else if (getProjectQuery.status === 'error' && getProjectQuery.error instanceof Error) {
     editProjectComponent = (
       <Typography paragraph>Error: {getProjectQuery.error.message}</Typography>

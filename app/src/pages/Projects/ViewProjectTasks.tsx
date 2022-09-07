@@ -7,11 +7,16 @@ import Page from 'src/common/components/Page';
 import { useSearchTasks } from 'src/common/api/task';
 import { useGetProject } from 'src/common/api/project';
 import Task from 'src/common/models/Task';
+import Loading from 'src/common/components/Loading';
 
 const ViewProjectTasks = () => {
   const params = useParams();
-  const { status, data, error } = useSearchTasks([params.projectId!]);
-  const getProjectResult = useGetProject(params.projectId!);
+  let projectId = '';
+  if (params.projectId) {
+    projectId = params.projectId;
+  }
+  const { status, data, error } = useSearchTasks([projectId]);
+  const getProjectResult = useGetProject(projectId);
 
   let tasksComponent = <Typography paragraph>Unable to view Tasks</Typography>;
 
@@ -44,7 +49,7 @@ const ViewProjectTasks = () => {
   ];
 
   if (status === 'loading') {
-    tasksComponent = <Typography paragraph>Loading...</Typography>;
+    tasksComponent = <Loading />;
   } else if (status === 'error' && error instanceof Error) {
     tasksComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
