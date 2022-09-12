@@ -87,7 +87,7 @@ const ViewProjects = () => {
       project.id = project.project_id;
     });
 
-    const rows: GridRowsProp = data!;
+    const rows: GridRowsProp = data ? data : [];
 
     projectsComponent = (
       <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} autoHeight={true} />

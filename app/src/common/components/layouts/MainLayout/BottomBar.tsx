@@ -46,7 +46,7 @@ const BottomBar = ({ theme, open, drawerWidth }: Props) => {
           {new Intl.DateTimeFormat('en-US', {
             year: 'numeric',
           }).format(new Date())}{' '}
-          Appcket
+          Appcket. All rights reserved.
         </Typography>
       </Toolbar>
     </AppBar>

@@ -7,7 +7,7 @@ import { User } from 'src/user/models/user.model';
 
 @ObjectType()
 export class Task {
-  @Field((type) => String)
+  @Field(() => String)
   task_id: string;
 
   @Field()
@@ -16,21 +16,21 @@ export class Task {
   @Field()
   description: string;
 
-  @Field((type) => String)
+  @Field(() => String)
   assigned_to: string;
 
-  @Field(() => User) assigned_to_user: User;
+  @Field(() => User) assigned_to_user?: User;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   created_at: Date;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   updated_at: Date;
 
   @Field()
   project?: Project;
 
-  @Field((type) => String)
+  @Field(() => String)
   task_status_type_id: string;
 
   @Field()

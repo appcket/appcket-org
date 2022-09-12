@@ -3,7 +3,7 @@ import { ObjectType, Field, GraphQLISODateTime } from '@nestjs/graphql';
 
 @ObjectType()
 export class ProjectUser {
-  @Field((type) => String)
+  @Field(() => String)
   project_user_id: string;
 
   @Field()
@@ -12,9 +12,9 @@ export class ProjectUser {
   @Field()
   user_id: string;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   created_at: Date;
 
-  @Field((type) => GraphQLISODateTime)
+  @Field(() => GraphQLISODateTime)
   updated_at: Date;
 }

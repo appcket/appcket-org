@@ -24,6 +24,7 @@ import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
 import { UserService } from 'src/user/services/user.service';
 import { SearchTasksService } from 'src/task/services/searchTasks.service';
+import { GetTaskService } from 'src/task/services/getTask.service';
 
 @InputType()
 export class TaskCreateInput {
@@ -31,18 +32,13 @@ export class TaskCreateInput {
   name: string;
 }
 
-@InputType()
-class TaskOrderByUpdatedAtInput {
-  @Field((type) => SortOrder)
-  updated_at: SortOrder;
-}
-
 @Resolver(() => Task)
 export class TaskResolver {
   constructor(
     @Inject(PrismaService) private prismaService: PrismaService,
     @Inject(UserService) private userService: UserService,
-    @Inject(SearchTasksService) private searchTasksService: SearchTasksService, // @Inject(GetTaskService) private getTaskService: GetTaskService, // @Inject(UpdateTaskService) private updateTaskService: UpdateTaskService, // @Inject(CreateTaskService) private createTaskService: CreateTaskService,
+    @Inject(SearchTasksService) private searchTasksService: SearchTasksService,
+    @Inject(GetTaskService) private getTaskService: GetTaskService, // @Inject(UpdateTaskService) private updateTaskService: UpdateTaskService, // @Inject(CreateTaskService) private createTaskService: CreateTaskService,
   ) {}
 
   @Query(() => [Task])
@@ -50,6 +46,13 @@ export class TaskResolver {
   @UseGuards(PermissionsGuard)
   async searchTasks(@Args('searchTasksInput') searchTasksInput: SearchTasksInput) {
     return await this.searchTasksService.searchTasks(searchTasksInput);
+  }
+
+  @Query(() => Task, { nullable: true })
+  @Permissions(`${Resources.Task}#${TaskPermission.read}`)
+  @UseGuards(PermissionsGuard)
+  async getTask(@Args('id') id: string) {
+    return await this.getTaskService.getTask(id);
   }
 
   @ResolveField('assigned_to_user')

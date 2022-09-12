@@ -6,12 +6,7 @@
 
 PROJECT_MACHINE_NAME='appcket'
 
-# Check which istioctl command to use
 ISTIOCTL=istioctl
-if ! ${ISTIOCTL} &> /dev/null
-then
-    ISTIOCTL=istioctl.exe
-fi
 
 # Create bind mount
 echo '---------------------'

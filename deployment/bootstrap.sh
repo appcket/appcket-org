@@ -12,12 +12,7 @@ DATABASE_PASSWORD='Ch@ng3To@StrongP@ssw0rd'
 CERTS_DIR='./environment/local/certs/'
 API_CLIENT_KEYCLOAK_SECRET='1SMHqsPrhtoxlMPLRYcHP39uJL16oGG1'
 
-# Check which istioctl command to use
 ISTIOCTL=istioctl
-if ! ${ISTIOCTL} &> /dev/null
-then
-    ISTIOCTL=istioctl.exe
-fi
 
 # Rename in files to new project name but exlude renaming in this file
 echo '---------------------'

@@ -139,6 +139,14 @@ const CreateTeam = () => {
       <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
         <Grid item>
           <Button
+            onClick={handleSubmit(onSubmit)}
+            variant="contained"
+            disabled={!isValid}
+            sx={{ mx: 1 }}
+          >
+            Save
+          </Button>
+          <Button
             onClick={() => {
               reset();
               resetSelectedUserIds();
@@ -146,14 +154,6 @@ const CreateTeam = () => {
             variant="outlined"
           >
             Reset
-          </Button>
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            variant="contained"
-            disabled={!isValid}
-            sx={{ mx: 1 }}
-          >
-            Save
           </Button>
         </Grid>
       </Grid>

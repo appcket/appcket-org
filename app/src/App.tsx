@@ -10,6 +10,7 @@ import MainLayout from 'src/common/components/layouts/MainLayout';
 import Home from 'src/pages/Home';
 import About from 'src/pages/About';
 import Projects from 'src/pages/Projects';
+import Tasks from 'src/pages/Tasks';
 import Teams from 'src/pages/Teams';
 import NotFound from 'src/pages/NotFound';
 import Unauthorized from 'src/pages/Unauthorized';
@@ -53,6 +54,7 @@ export default function App() {
               <Route path="about" element={<About />} />
               <Route path="teams/*" element={<Teams />} />
               <Route path="projects/*" element={<Projects />} />
+              <Route path="tasks/*" element={<Tasks />} />
               <Route path="unauthorized" element={<Unauthorized />} />
               <Route path="404" element={<NotFound />} />
               <Route path="*" element={<Navigate to="/404" />} />

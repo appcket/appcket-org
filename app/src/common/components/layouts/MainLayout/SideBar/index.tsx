@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { RiHome4Line, RiInformationLine, RiTeamLine } from 'react-icons/ri';
+import { RiHome4Line, RiInformationLine } from 'react-icons/ri';
+import { GoJersey } from 'react-icons/go';
 import { CgBriefcase } from 'react-icons/cg';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import List from '@mui/material/List';
@@ -27,7 +28,7 @@ const items = [
   },
   {
     href: '/teams',
-    icon: RiTeamLine,
+    icon: GoJersey,
     title: 'Teams',
   },
   {
