@@ -66,8 +66,6 @@ spec:
             secretKeyRef:
               name: {{ .Values.api.keycloakClientSecretName }}
               key: clientsecret
-        - name: KEYCLOAK_CLIENT_SECRET
-          value: {{ .Values.api.keycloakClientSecretName }}
         - name: KEYCLOAK_CLIENT_PUBLIC_KEY
           value: {{ .Values.api.keycloakClientPublicKey }}
         - name: KEYCLOAK_REALM

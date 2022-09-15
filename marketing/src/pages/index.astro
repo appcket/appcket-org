@@ -1,0 +1,16 @@
+---
+import Config from "../site.config.cjs"
+
+import Layout from "../layouts/Layout.astro"
+import Hero from "../components/home/Hero.astro"
+import Features from "../components/home/Features.astro"
+import Pricing from "../components/home/Pricing.astro"
+---
+
+<Layout title={`${Config.siteTitle} - ${Config.tagLine}`}>
+  <main>
+    <Hero />
+    <Features />
+    <Pricing />
+  </main>
+</Layout>

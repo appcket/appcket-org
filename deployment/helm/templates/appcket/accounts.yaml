@@ -32,6 +32,7 @@ spec:
       - image: "{{ .Values.image.repository }}/{{ .Values.accounts.image }}:{{ .Values.accounts.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Values.accounts.name }}
+        # Setting the Keycloak admin credentials here is only needed if you don't want to use the bootstrap script to seed the initial Keycloak database. See a full explanation in the bootstrap.sh file.
         env:
         - name: KEYCLOAK_ADMIN
           valueFrom:

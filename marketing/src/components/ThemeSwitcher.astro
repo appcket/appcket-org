@@ -1,0 +1,23 @@
+---
+import { Icon } from "astro-icon";
+---
+
+<button
+  data-set-theme="corporate"
+  class="btn btn-xs btn-ghost btn-square mx-2 mt-3"
+  data-act-class="btn-active"
+>
+  <Icon name="heroicons-outline:sun" />
+</button>
+<button
+  data-set-theme="business"
+  class="btn btn-xs btn-ghost btn-square mt-3"
+  data-act-class="btn-active"
+>
+  <Icon name="heroicons-outline:moon" />
+</button>
+
+<script hoist type="module">
+  import { themeChange } from "theme-change";
+  themeChange(false);
+</script>

@@ -93,6 +93,8 @@ kubectl create namespace ${PROJECT_MACHINE_NAME}
 
 kubectl create secret generic database-secret --from-literal=user=dbuser --from-literal=password=${DATABASE_PASSWORD} -n ${PROJECT_MACHINE_NAME}
 
+# Setting the Keycloak admin username and password in a secret here won't do anything because the admin credentials gets set by running the Keycloak sql script below.
+# It's only needed if you want to setup a fresh Keycloak database yourself. But fair warning that the Appcket realm will not be setup and your app won't work without extensive customization. It's better to install the defaults and change things later.
 kubectl create secret generic accounts-secret --from-literal=adminuser=admin --from-literal=adminpassword=${DATABASE_PASSWORD} -n ${PROJECT_MACHINE_NAME}
 
 kubectl create secret generic api-keycloak-client-secret --from-literal=clientsecret=${API_CLIENT_KEYCLOAK_SECRET} -n ${PROJECT_MACHINE_NAME}
@@ -107,7 +109,7 @@ kubectl label namespace ${PROJECT_MACHINE_NAME} istio-injection=enabled
 
 # Database setup, create the database, project schema, keycloak schema and insert sample keycloak data
 echo '---------------------'
-echo 'Setting up keycloak Schema...'
+echo 'Setting up Keycloak schema...'
 
 psql -c "CREATE DATABASE ${PROJECT_MACHINE_NAME} WITH ENCODING 'UTF8'" "dbname=${PROJECT_MACHINE_NAME} user=dbuser password=${DATABASE_PASSWORD} host=localhost"
 psql -c "CREATE SCHEMA IF NOT EXISTS ${PROJECT_MACHINE_NAME}; CREATE SCHEMA IF NOT EXISTS keycloak" "dbname=${PROJECT_MACHINE_NAME} user=dbuser password=${DATABASE_PASSWORD} host=localhost"
