@@ -50,6 +50,7 @@ const Task = () => {
         <Grid item xs={12} sm={6}>
           <Typography variant="body1">Status: {data?.task_status_type.name}</Typography>
           <Typography variant="body1">Assigned to: {data?.assigned_to_user.username}</Typography>
+          <Typography variant="body1">Description: {data?.description}</Typography>
         </Grid>
       </Paper>
     );

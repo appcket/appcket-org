@@ -129,6 +129,7 @@ input TeamOrderByUpdatedAtInput {
 type Mutation {
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   createProject(createProjectInput: CreateProjectInput!): Project!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
   updateTeam(updateTeamInput: UpdateTeamInput!): Team!
   createTeam(createTeamInput: CreateTeamInput!): Team!
 }
@@ -144,6 +145,15 @@ input CreateProjectInput {
   name: String!
   organizationId: String!
   userIds: [String!]!
+}
+
+input UpdateTaskInput {
+  taskId: String!
+  taskStatusTypeId: String!
+  name: String!
+  description: String!
+  projectId: String!
+  assignedTo: String!
 }
 
 input UpdateTeamInput {

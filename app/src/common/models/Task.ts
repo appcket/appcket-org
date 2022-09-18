@@ -6,6 +6,7 @@ export default interface Task {
   id?: string;
   task_id: string;
   name: string;
+  description: string;
   created_at: Date;
   updated_at: Date;
   project: Project;

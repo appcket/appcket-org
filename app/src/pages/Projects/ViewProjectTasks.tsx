@@ -59,7 +59,7 @@ const ViewProjectTasks = () => {
     {
       field: 'name',
       headerName: 'Name',
-      flex: 0.25,
+      flex: 0.5,
       renderCell: (cellValues) => {
         return <NavLink to={`/tasks/${cellValues.row.task_id}`}>{cellValues.row.name}</NavLink>;
       },
@@ -67,7 +67,7 @@ const ViewProjectTasks = () => {
     {
       field: 'updated_at',
       headerName: 'Updated',
-      flex: 0.75,
+      flex: 0.5,
       type: 'dateTime',
       valueGetter: ({ value }) =>
         value &&

@@ -32,10 +32,6 @@ export const useSearchTasks = (projectIds: string[]): UseQueryResult<Task[]> => 
           task_status_type_id
           name
         }
-        assigned_to_user {
-          user_id
-          username
-        }
       }
     }
     `,
@@ -56,6 +52,7 @@ export const useGetTask = (taskId: string): UseQueryResult<Task> => {
         ${queryKey}(id: "${taskId}") {
           task_id
           name
+          description
           created_at
           updated_at
           task_status_type_id

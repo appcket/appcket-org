@@ -55,7 +55,7 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
 
   return (
     <AppBar position="fixed" open={open} drawerwidth={drawerWidth} elevation={3}>
-      <Container maxWidth="xl">
+      <Container maxWidth={false}>
         <Toolbar disableGutters>
           <IconButton
             color="inherit"

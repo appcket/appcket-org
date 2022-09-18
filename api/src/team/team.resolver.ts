@@ -36,7 +36,7 @@ export class TeamCreateInput {
 
 @InputType()
 class TeamOrderByUpdatedAtInput {
-  @Field((type) => SortOrder)
+  @Field(() => SortOrder)
   updated_at: SortOrder;
 }
 
