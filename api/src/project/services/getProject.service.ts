@@ -1,23 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
 
-import { PrismaService } from 'src/common/services/prisma.service';
-import { Project } from 'src/project/models/project.model';
+import { Project } from 'src/project/project.entity';
+import { ProjectModel } from 'src/project/project.model';
 
 @Injectable()
 export class GetProjectService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    @InjectRepository(Project)
+    private readonly projectRepository: EntityRepository<Project>,
+  ) {}
 
-  public async getProject(id: string): Promise<Project> {
-    return this.prismaService.project.findFirst({
-      where: { project_id: id, deleted_at: null },
-      include: {
-        project_user: {
-          where: {
-            deleted_at: null,
-          },
-        },
-        organization: true,
-      },
+  public async getProject(id: string): Promise<ProjectModel> {
+    const dbProject = await this.projectRepository.findOne(id, {
+      populate: ['organization', 'users'],
     });
+
+    return {
+      id: dbProject.id,
+      name: dbProject.name,
+      description: dbProject.description,
+      organization: {
+        id: dbProject.organization.id,
+        name: dbProject.organization.name,
+      },
+      users: dbProject.users.toJSON(),
+    };
   }
 }

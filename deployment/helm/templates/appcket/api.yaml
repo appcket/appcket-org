@@ -61,6 +61,12 @@ spec:
             secretKeyRef:
               name: {{ .Values.database.secretName }}
               key: password
+        - name: DB_NAME
+          value: {{ .Values.database.name }}
+        - name: DB_SCHEMA
+          value: {{ .Values.database.schemaApp }}
+        - name: DB_PORT
+          value: {{ .Values.database.port }}
         - name: KEYCLOAK_CLIENT_SECRET
           valueFrom:
             secretKeyRef:

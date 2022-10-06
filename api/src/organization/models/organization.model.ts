@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { ObjectType, Field, GraphQLISODateTime } from '@nestjs/graphql';
 
 @ObjectType()
-export class Organization {
+export class Organization2 {
   @Field((type) => String)
   organization_id: string;
 

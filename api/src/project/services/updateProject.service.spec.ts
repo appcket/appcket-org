@@ -160,7 +160,10 @@ describe('UpdateProjectService', () => {
   describe('updateProject', () => {
     it('should create correct project_user records', async () => {
       const createProjectUserSpy = jest.spyOn(prisma.project_user, 'create');
-      await updateProjectService.updateProject(updateProjectInput, createProjectUserArgs.data.user_id);
+      await updateProjectService.updateProject(
+        updateProjectInput,
+        createProjectUserArgs.data.user_id,
+      );
       expect(createProjectUserSpy).toHaveBeenCalledWith(createProjectUserArgs);
     });
   });

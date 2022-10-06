@@ -1,1 +1,5 @@
-export const config = {};
+export const config = {
+  orm: {
+    debug: true
+  }
+};

@@ -5,6 +5,7 @@ import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Keycloak from 'keycloak-connect';
 import * as session from 'express-session';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { configuration } from 'src/config';
 import { CommonModule } from 'src/common/common.module';
@@ -41,11 +42,26 @@ import { AppService } from './app.service';
       installSubscriptionHandlers: true,
       path: '/',
     }),
+    MikroOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        autoLoadEntities: true,
+        dbName: configService.get('orm.dbName'),
+        schema: configService.get('orm.schema'),
+        type: configService.get('orm.type'),
+        user: configService.get('orm.user'),
+        password: configService.get('orm.password'),
+        host: configService.get('orm.host'),
+        port: configService.get('orm.port'),
+        debug: configService.get('orm.debug'),
+      }),
+      inject: [ConfigService],
+    }),
     OrganizationModule,
     PermissionModule,
     ProjectModule,
-    TaskModule,
-    TeamModule,
+    // TaskModule,
+    // TeamModule,
     UserModule,
   ],
   controllers: [AppController],

@@ -14,22 +14,19 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type TeamUser {
-  team_user_id: String!
-  team_id: String!
-  user_id: String!
-  created_at: DateTime!
-  updated_at: DateTime!
+type TeamModel {
+  id: String!
+  name: String!
+  organization: Organization!
+  users: [UserModel!]!
 }
 
-type Team {
-  team_id: String!
+type ProjectModel {
+  id: String!
   name: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-  organization: Organization!
-  users: [User!]!
-  team_user: [TeamUser!]!
+  description: String!
+  organization: OrganizationModel!
+  users: [UserModel!]!
 }
 
 type Permission {
@@ -38,67 +35,32 @@ type Permission {
   scopes: [String!]
 }
 
-type User {
-  user_id: String!
+type UserModel {
+  id: String!
   username: String!
   email: String!
   firstName: String!
   lastName: String
   jobTitle: String
-  teams: [Team!]!
+  teams: [TeamModel!]!
+  projects: [ProjectModel!]!
   permissions: [Permission!]!
-  organizations: [Organization!]!
+  organizations: [OrganizationModel!]!
 }
 
-type ProjectUser {
-  project_user_id: String!
-  project_id: String!
-  user_id: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-type Project {
-  project_id: String!
+type OrganizationModel {
+  id: String!
   name: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-  organization: Organization!
-  users: [User!]!
-  project_user: [ProjectUser!]!
-}
-
-type TaskStatusType {
-  task_status_type_id: String!
-  name: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-type Task {
-  task_id: String!
-  name: String!
-  description: String!
-  assigned_to: String!
-  assigned_to_user: User!
-  created_at: DateTime!
-  updated_at: DateTime!
-  project: Project!
-  task_status_type_id: String!
-  task_status_type: TaskStatusType!
+  users: [UserModel!]!
 }
 
 type Query {
-  organizationById(id: String!): Organization
+  organizationById(id: String!): OrganizationModel
   hasPermission(permissions: [String!]!): Boolean!
-  getProject(id: String!): Project
-  searchProjects(searchString: String, skip: Float, take: Float, orderBy: ProjectOrderByUpdatedAtInput): [Project!]!
-  searchTasks(searchTasksInput: SearchTasksInput!): [Task!]!
-  getTask(id: String!): Task
-  getTeam(id: String!): Team
-  searchTeams(searchString: String, skip: Float, take: Float, orderBy: TeamOrderByUpdatedAtInput): [Team!]!
-  userInfo: User!
-  searchUsers(organizationId: String!): [User!]!
+  getProject(id: String!): ProjectModel
+  searchProjects(searchString: String, limit: Float, offset: Float, orderBy: ProjectOrderByUpdatedAtInput): [ProjectModel!]!
+  userInfo: UserModel!
+  searchUsers(organizationId: String!): [UserModel!]!
 }
 
 input ProjectOrderByUpdatedAtInput {
@@ -110,28 +72,9 @@ enum SortOrder {
   desc
 }
 
-input SearchTasksInput {
-  searchString: String
-  projectIds: [String!]
-  skip: Float
-  take: Float
-  orderBy: OrderByUpdatedAtInput
-}
-
-input OrderByUpdatedAtInput {
-  updated_at: SortOrder!
-}
-
-input TeamOrderByUpdatedAtInput {
-  updated_at: SortOrder!
-}
-
 type Mutation {
-  updateProject(updateProjectInput: UpdateProjectInput!): Project!
-  createProject(createProjectInput: CreateProjectInput!): Project!
-  updateTask(updateTaskInput: UpdateTaskInput!): Task!
-  updateTeam(updateTeamInput: UpdateTeamInput!): Team!
-  createTeam(createTeamInput: CreateTeamInput!): Team!
+  updateProject(updateProjectInput: UpdateProjectInput!): ProjectModel!
+  createProject(createProjectInput: CreateProjectInput!): ProjectModel!
 }
 
 input UpdateProjectInput {
@@ -142,28 +85,6 @@ input UpdateProjectInput {
 }
 
 input CreateProjectInput {
-  name: String!
-  organizationId: String!
-  userIds: [String!]!
-}
-
-input UpdateTaskInput {
-  taskId: String!
-  taskStatusTypeId: String!
-  name: String!
-  description: String!
-  projectId: String!
-  assignedTo: String!
-}
-
-input UpdateTeamInput {
-  teamId: String!
-  name: String!
-  organizationId: String!
-  userIds: [String!]!
-}
-
-input CreateTeamInput {
   name: String!
   organizationId: String!
   userIds: [String!]!

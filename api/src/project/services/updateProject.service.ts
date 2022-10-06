@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { findIndex } from 'lodash';
 
-import { Project } from 'src/project/models/project.model';
+import { ProjectModel } from 'src/project/project.model';
 import { UpdateProjectInput } from 'src/project/dtos/updateProject.input';
 import { PrismaService } from 'src/common/services/prisma.service';
 import { GetProjectService } from 'src/project/services/getProject.service';
@@ -10,7 +10,7 @@ import { GetProjectService } from 'src/project/services/getProject.service';
 export class UpdateProjectService {
   constructor(private prismaService: PrismaService, private getProjectService: GetProjectService) {}
 
-  public async updateProject(data: UpdateProjectInput, userId: string): Promise<Project> {
+  public async updateProject(data: UpdateProjectInput, userId: string): Promise<ProjectModel> {
     await this.prismaService.project.update({
       where: {
         project_id: data.projectId,
