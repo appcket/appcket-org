@@ -20,13 +20,13 @@ export class Team {
   @Property({ columnType: 'text', length: 500, nullable: true })
   description?: string;
 
-  @Field(() => [Organization])
+  @Field(() => Organization)
   @ManyToOne({
     entity: () => Organization,
     fieldName: 'organization_id',
     onUpdateIntegrity: 'cascade',
   })
-  organizationId!: Organization;
+  organization!: Organization;
 
   @Field(() => [User])
   @ManyToMany({

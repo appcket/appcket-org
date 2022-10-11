@@ -60,8 +60,8 @@ import { AppService } from './app.service';
     OrganizationModule,
     PermissionModule,
     ProjectModule,
-    // TaskModule,
-    // TeamModule,
+    TaskModule,
+    TeamModule,
     UserModule,
   ],
   controllers: [AppController],
@@ -77,6 +77,6 @@ export class AppModule {
     consumer
       // @ts-ignore
       .apply(keycloak.middleware(), keycloak.protect()) // keycloak.protect() here will ensure any graphql request must include a valid token
-      .forRoutes({ path: '*', method: RequestMethod.POST });
+      .forRoutes({ path: '/', method: RequestMethod.POST });
   }
 }

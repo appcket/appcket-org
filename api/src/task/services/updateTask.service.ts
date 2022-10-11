@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { Task } from 'src/task/models/task.model';
+import { Task } from 'src/task/task.entity';
 import { UpdateTaskInput } from 'src/task/dtos/updateTask.input';
 import { PrismaService } from 'src/common/services/prisma.service';
 import { GetTaskService } from 'src/task/services/getTask.service';

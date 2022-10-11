@@ -1,17 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { findIndex } from 'lodash';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
 
-import { Project } from 'src/project/models/project.model';
+import { Project } from 'src/project/project.entity';
+import { User } from 'src/user/user.entity';
 import { CreateProjectInput } from 'src/project/dtos/createProject.input';
-import { PrismaService } from 'src/common/services/prisma.service';
-import { GetProjectService } from 'src/project/services/getProject.service';
 
 @Injectable()
 export class CreateProjectService {
-  constructor(private prismaService: PrismaService, private getProjectService: GetProjectService) {}
+  constructor(
+    @InjectRepository(Project)
+    private readonly projectRepository: EntityRepository<Project>,
+    @InjectRepository(User)
+    private readonly userRepository: EntityRepository<User>,
+  ) {}
 
   public async createProject(data: CreateProjectInput, userId: string): Promise<Project> {
-    const createdProject = await this.prismaService.project.create({
+    const projectUsers = await this.userRepository.find({ $contains: data.userIds });
+    const createdProject = await this.projectRepository.create({
+      name: data.name,
+      organization: {
+        id: data.organizationId,
+      },
+      users: projectUsers,
+    });
+
+    return createdProject;
+    /* const createdProject = await this.prismaService.project.create({
       data: {
         name: data.name,
         // TODO: validate this user is associated with this organization
@@ -81,6 +96,6 @@ export class CreateProjectService {
       });
     }
 
-    return createdProject;
+    return createdProject; */
   }
 }

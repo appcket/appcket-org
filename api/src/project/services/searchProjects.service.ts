@@ -3,7 +3,6 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 
 import { Project } from 'src/project/project.entity';
-import { ProjectModel } from 'src/project/project.model';
 
 @Injectable()
 export class SearchProjectsService {

@@ -6,7 +6,6 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 
 import { Organization } from './organization.entity';
-import { OrganizationModel } from './organization.model';
 import { Resources } from 'src/common/enums/resources.enum';
 import { OrganizationPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';

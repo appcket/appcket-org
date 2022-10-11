@@ -1,13 +1,15 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-import { Collection, Entity, ManyToMany, PrimaryKey, Property } from '@mikro-orm/core';
+import { Collection, Entity, ManyToMany, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
 
 import { Organization } from 'src/organization/organization.entity';
 import { OrganizationUser } from 'src/organization/organizationUser.entity';
 
+import { Permission } from 'src/permission/models/permission.model';
 import { Project } from 'src/project/project.entity';
 import { ProjectUser } from 'src/projectUser/projectUser.entity';
 import { Team } from 'src/team/team.entity';
 import { TeamUser } from 'src/teamUser/teamUser.entity';
+import { UserAttribute } from 'src/user/userAttribute.entity';
 
 @ObjectType()
 @Entity({ schema: 'keycloak', tableName: 'user_entity' })
@@ -24,7 +26,7 @@ export class User {
   @Property({ length: 255 })
   firstName: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Property({ length: 255 })
   lastName: string;
 
@@ -32,7 +34,7 @@ export class User {
   @Property({ length: 255 })
   username: string;
 
-  @Field(() => Organization)
+  @Field(() => [Organization])
   @ManyToMany({
     entity: () => Organization,
     pivotEntity: () => OrganizationUser,
@@ -55,4 +57,11 @@ export class User {
     pivotTable: 'appcket.team_user',
   })
   teams = new Collection<Team>(this);
+
+  @Field(() => [UserAttribute])
+  @OneToMany({ entity: () => UserAttribute, mappedBy: 'user' })
+  attributes = new Collection<UserAttribute>(this);
+
+  @Field(() => [Permission])
+  permissions?: Permission[];
 }

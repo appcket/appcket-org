@@ -1,22 +1,11 @@
 import 'reflect-metadata';
-import {
-  Args,
-  Context,
-  Field,
-  InputType,
-  Mutation,
-  Parent,
-  Query,
-  Resolver,
-  ResolveField,
-} from '@nestjs/graphql';
+import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
-import { intersectionBy } from 'lodash';
 
-import { Team } from './models/team.model';
-import { UpdateTeamInput } from './dtos/updateTeam.input';
-import { CreateTeamInput } from './dtos/createTeam.input';
+import { Team } from './team.entity';
+import { UpdateTeamInputDto } from './dtos/updateTeam.input';
+import { CreateTeamInputDto } from './dtos/createTeam.input';
 import { PrismaService } from 'src/common/services/prisma.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
@@ -27,6 +16,7 @@ import { UserService } from 'src/user/services/user.service';
 import { GetTeamService } from 'src/team/services/getTeam.service';
 import { UpdateTeamService } from 'src/team/services/updateTeam.service';
 import { CreateTeamService } from 'src/team/services/createTeam.service';
+import { SearchTeamsService } from 'src/team/services/searchTeams.service';
 
 @InputType()
 export class TeamCreateInput {
@@ -48,6 +38,7 @@ export class TeamResolver {
     @Inject(GetTeamService) private getTeamService: GetTeamService,
     @Inject(UpdateTeamService) private updateTeamService: UpdateTeamService,
     @Inject(CreateTeamService) private createTeamService: CreateTeamService,
+    @Inject(SearchTeamsService) private searchTeamsService: SearchTeamsService,
   ) {}
 
   @Query(() => Team, { nullable: true })
@@ -60,50 +51,26 @@ export class TeamResolver {
   @Query(() => [Team])
   @Permissions(`${Resources.Team}#${TeamPermission.read}`)
   @UseGuards(PermissionsGuard)
-  searchTeams(
+  async searchTeams(
     @Args('searchString', { nullable: true }) searchString: string,
-    @Args('skip', { nullable: true }) skip: number,
-    @Args('take', { nullable: true }) take: number,
+    @Args('limit', { nullable: true }) limit: number,
+    @Args('offset', { nullable: true }) offset: number,
     @Args('orderBy', { nullable: true }) orderBy: TeamOrderByUpdatedAtInput,
   ) {
-    const or = searchString
-      ? {
-          OR: [{ name: { contains: searchString } }],
-        }
-      : {};
-
-    // TODO: move to searchTeams.service
-    return this.prismaService.team.findMany({
-      where: {
-        deleted_at: null,
-        ...or,
-      },
-      take: take || undefined,
-      skip: skip || undefined,
-      orderBy: orderBy || undefined,
-    });
+    return await this.searchTeamsService.searchTeams(searchString, limit, offset);
   }
 
   @Mutation(() => Team)
   @Permissions(`${Resources.Team}#${TeamPermission.update}`)
   @UseGuards(PermissionsGuard)
-  async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInput, @Context() ctx) {
+  async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInputDto, @Context() ctx) {
     return await this.updateTeamService.updateTeam(updateTeamInput, ctx.user.id);
   }
 
   @Mutation(() => Team)
   @Permissions(`${Resources.Team}#${TeamPermission.create}`)
   @UseGuards(PermissionsGuard)
-  async createTeam(@Args('createTeamInput') createTeamInput: CreateTeamInput, @Context() ctx) {
+  async createTeam(@Args('createTeamInput') createTeamInput: CreateTeamInputDto, @Context() ctx) {
     return await this.createTeamService.createTeam(createTeamInput, ctx.user.id);
-  }
-
-  @ResolveField('users')
-  async users(@Parent() team: Team, @Context() ctx) {
-    const accountsUsers = await this.userService.getUsers(
-      team.organization.organization_id,
-      ctx.req.kauth.grant.access_token.token,
-    );
-    return intersectionBy(accountsUsers, team.team_user, 'user_id');
   }
 }

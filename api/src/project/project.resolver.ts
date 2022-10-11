@@ -1,19 +1,8 @@
 import 'reflect-metadata';
-import {
-  Args,
-  Context,
-  Field,
-  InputType,
-  Mutation,
-  Parent,
-  Query,
-  Resolver,
-  ResolveField,
-} from '@nestjs/graphql';
+import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { ProjectModel } from 'src/project/project.model';
 import { Project } from 'src/project/project.entity';
 import { UpdateProjectInput } from './dtos/updateProject.input';
 import { CreateProjectInput } from './dtos/createProject.input';
@@ -41,7 +30,7 @@ class ProjectOrderByUpdatedAtInput {
   updated_at: SortOrder;
 }
 
-@Resolver(() => ProjectModel)
+@Resolver(() => Project)
 export class ProjectResolver {
   constructor(
     @Inject(PrismaService) private prismaService: PrismaService,
@@ -52,7 +41,7 @@ export class ProjectResolver {
     @Inject(CreateProjectService) private createProjectService: CreateProjectService,
   ) {}
 
-  @Query(() => ProjectModel, { nullable: true })
+  @Query(() => Project, { nullable: true })
   @Permissions(`${Resources.Project}#${ProjectPermission.read}`)
   @UseGuards(PermissionsGuard)
   async getProject(@Args('id') id: string) {
@@ -71,7 +60,7 @@ export class ProjectResolver {
     return await this.searchProjectsService.searchProjects(searchString, limit, offset);
   }
 
-  @Mutation(() => ProjectModel)
+  @Mutation(() => Project)
   @Permissions(`${Resources.Project}#${ProjectPermission.update}`)
   @UseGuards(PermissionsGuard)
   async updateProject(
@@ -81,7 +70,7 @@ export class ProjectResolver {
     return await this.updateProjectService.updateProject(updateProjectInput, ctx.user.id);
   }
 
-  @Mutation(() => ProjectModel)
+  @Mutation(() => Project)
   @Permissions(`${Resources.Project}#${ProjectPermission.create}`)
   @UseGuards(PermissionsGuard)
   async createProject(
@@ -90,13 +79,4 @@ export class ProjectResolver {
   ) {
     return await this.createProjectService.createProject(createProjectInput, ctx.user.id);
   }
-
-  // @ResolveField('users')
-  // async users(@Parent() project: ProjectModel, @Context() ctx) {
-  //   const accountsUsers = await this.userService.getUsers(
-  //     project.organization.id,
-  //     ctx.req.kauth.grant.access_token.token,
-  //   );
-  //   return intersectionBy(accountsUsers, project.users, 'user_id');
-  // }
 }

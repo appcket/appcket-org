@@ -1,23 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
 
-import { PrismaService } from 'src/common/services/prisma.service';
-import { Task } from 'src/task/models/task.model';
+import { Task } from 'src/task/task.entity';
 
 @Injectable()
 export class GetTaskService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    @InjectRepository(Task)
+    private readonly taskRepository: EntityRepository<Task>,
+  ) {}
 
   public async getTask(id: string): Promise<Task> {
-    return this.prismaService.task.findFirst({
-      where: { task_id: id, deleted_at: null },
-      include: {
-        project: {
-          include: {
-            organization: true,
-          },
-        },
-        task_status_type: true,
-      },
+    const task = await this.taskRepository.findOne(id, {
+      populate: ['project', 'taskStatusType', 'assignedTo'],
     });
+    return task;
   }
 }

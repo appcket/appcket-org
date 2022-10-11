@@ -2,65 +2,78 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Organization {
-  organization_id: String!
-  name: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type TeamModel {
-  id: String!
-  name: String!
-  organization: Organization!
-  users: [UserModel!]!
-}
-
-type ProjectModel {
-  id: String!
-  name: String!
-  description: String!
-  organization: OrganizationModel!
-  users: [UserModel!]!
-}
-
 type Permission {
   rsid: String!
   rsname: String!
   scopes: [String!]
 }
 
-type UserModel {
+type Project {
   id: String!
-  username: String!
+  name: String!
+  description: String!
+  organization: Organization!
+  users: [User!]!
+}
+
+type Team {
+  id: String!
+  name: String!
+  description: String!
+  organization: Organization!
+  users: [User!]!
+}
+
+type UserAttribute {
+  id: String!
+  name: String!
+  value: String!
+}
+
+type User {
+  id: String!
   email: String!
   firstName: String!
   lastName: String
-  jobTitle: String
-  teams: [TeamModel!]!
-  projects: [ProjectModel!]!
+  username: String!
+  organizations: [Organization!]!
+  projects: [Project!]!
+  teams: [Team!]!
+  attributes: [UserAttribute!]!
   permissions: [Permission!]!
-  organizations: [OrganizationModel!]!
 }
 
-type OrganizationModel {
+type Organization {
   id: String!
   name: String!
-  users: [UserModel!]!
+  users: [User!]!
+}
+
+type TaskStatusType {
+  id: String!
+  name: String!
+}
+
+type Task {
+  id: String!
+  name: String!
+  description: String!
+  assignedTo: User!
+  taskStatusType: TaskStatusType!
+  project: Project!
 }
 
 type Query {
-  organizationById(id: String!): OrganizationModel
+  organizationById(id: String!): Organization
   hasPermission(permissions: [String!]!): Boolean!
-  getProject(id: String!): ProjectModel
-  searchProjects(searchString: String, limit: Float, offset: Float, orderBy: ProjectOrderByUpdatedAtInput): [ProjectModel!]!
-  userInfo: UserModel!
-  searchUsers(organizationId: String!): [UserModel!]!
+  getProject(id: String!): Project
+  searchProjects(searchString: String, limit: Float, offset: Float, orderBy: ProjectOrderByUpdatedAtInput): [Project!]!
+  searchTasks(searchTasksInput: SearchTasksInput!): [Task!]!
+  getTask(id: String!): Task
+  getTeam(id: String!): Team
+  searchTeams(searchString: String, limit: Float, offset: Float, orderBy: TeamOrderByUpdatedAtInput): [Team!]!
+  userInfo: User!
+  searchUsers(organizationId: String!): [User!]!
 }
 
 input ProjectOrderByUpdatedAtInput {
@@ -72,9 +85,28 @@ enum SortOrder {
   desc
 }
 
+input SearchTasksInput {
+  searchString: String
+  projectIds: [String!]
+  limit: Float
+  offset: Float
+  orderBy: OrderByUpdatedAtInput
+}
+
+input OrderByUpdatedAtInput {
+  updated_at: SortOrder!
+}
+
+input TeamOrderByUpdatedAtInput {
+  updated_at: SortOrder!
+}
+
 type Mutation {
-  updateProject(updateProjectInput: UpdateProjectInput!): ProjectModel!
-  createProject(createProjectInput: CreateProjectInput!): ProjectModel!
+  updateProject(updateProjectInput: UpdateProjectInput!): Project!
+  createProject(createProjectInput: CreateProjectInput!): Project!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+  updateTeam(updateTeamInput: UpdateTeamInputDto!): Team!
+  createTeam(createTeamInput: CreateTeamInputDto!): Team!
 }
 
 input UpdateProjectInput {
@@ -85,6 +117,28 @@ input UpdateProjectInput {
 }
 
 input CreateProjectInput {
+  name: String!
+  organizationId: String!
+  userIds: [String!]!
+}
+
+input UpdateTaskInput {
+  taskId: String!
+  taskStatusTypeId: String!
+  name: String!
+  description: String!
+  projectId: String!
+  assignedTo: String!
+}
+
+input UpdateTeamInputDto {
+  teamId: String!
+  name: String!
+  organizationId: String!
+  userIds: [String!]!
+}
+
+input CreateTeamInputDto {
   name: String!
   organizationId: String!
   userIds: [String!]!

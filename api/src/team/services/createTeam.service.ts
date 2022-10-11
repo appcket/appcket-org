@@ -1,17 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { findIndex } from 'lodash';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
 
-import { Team } from 'src/team/models/team.model';
-import { CreateTeamInput } from 'src/team/dtos/createTeam.input';
-import { PrismaService } from 'src/common/services/prisma.service';
-import { GetTeamService } from 'src/team/services/getTeam.service';
+import { Team } from 'src/team/team.entity';
+import { CreateTeamInputDto } from 'src/team/dtos/createTeam.input';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class CreateTeamService {
-  constructor(private prismaService: PrismaService, private getTeamService: GetTeamService) {}
+  constructor(
+    @InjectRepository(Team)
+    private readonly teamRepository: EntityRepository<Team>,
+    @InjectRepository(User)
+    private readonly userRepository: EntityRepository<User>,
+  ) {}
 
-  public async createTeam(data: CreateTeamInput, userId: string): Promise<Team> {
-    const createdTeam = await this.prismaService.team.create({
+  public async createTeam(data: CreateTeamInputDto, userId: string): Promise<Team> {
+    const teamUsers = await this.userRepository.find({ $contains: data.userIds });
+    const createdTeam = await this.teamRepository.create({
+      name: data.name,
+      organization: {
+        id: data.organizationId,
+      },
+      users: teamUsers,
+    });
+
+    return createdTeam;
+    /* const createdTeam = await this.prismaService.team.create({
       data: {
         name: data.name,
         // TODO: validate this user is associated with this organization
@@ -81,6 +96,6 @@ export class CreateTeamService {
       });
     }
 
-    return createdTeam;
+    return createdTeam; */
   }
 }

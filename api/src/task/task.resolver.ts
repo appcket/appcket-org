@@ -1,20 +1,9 @@
 import 'reflect-metadata';
-import {
-  Args,
-  Context,
-  Field,
-  InputType,
-  Mutation,
-  Parent,
-  Query,
-  Resolver,
-  ResolveField,
-} from '@nestjs/graphql';
+import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
-import { find } from 'lodash';
 
-import { Task } from './models/task.model';
+import { Task } from './task.entity';
 import { SearchTasksInput } from 'src/task/dtos/searchTasks.input';
 import { UpdateTaskInput } from 'src/task/dtos/updateTask.input';
 import { PrismaService } from 'src/common/services/prisma.service';
@@ -62,14 +51,5 @@ export class TaskResolver {
   @UseGuards(PermissionsGuard)
   async updateTask(@Args('updateTaskInput') updateTaskInput: UpdateTaskInput, @Context() ctx) {
     return await this.updateTaskService.updateTask(updateTaskInput, ctx.user.id);
-  }
-
-  @ResolveField('assigned_to_user')
-  async assigned_to_user(@Parent() task: Task, @Context() ctx) {
-    const accountsUsers = await this.userService.getUsers(
-      task.project.organization.organization_id,
-      ctx.req.kauth.grant.access_token.token,
-    );
-    return find(accountsUsers, { user_id: task.assigned_to });
   }
 }

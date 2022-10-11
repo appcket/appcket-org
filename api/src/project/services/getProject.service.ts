@@ -3,7 +3,6 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 
 import { Project } from 'src/project/project.entity';
-import { ProjectModel } from 'src/project/project.model';
 
 @Injectable()
 export class GetProjectService {
@@ -12,20 +11,11 @@ export class GetProjectService {
     private readonly projectRepository: EntityRepository<Project>,
   ) {}
 
-  public async getProject(id: string): Promise<ProjectModel> {
+  public async getProject(id: string): Promise<Project> {
     const dbProject = await this.projectRepository.findOne(id, {
-      populate: ['organization', 'users'],
+      populate: ['organization', 'users', 'users.attributes'],
     });
 
-    return {
-      id: dbProject.id,
-      name: dbProject.name,
-      description: dbProject.description,
-      organization: {
-        id: dbProject.organization.id,
-        name: dbProject.organization.name,
-      },
-      users: dbProject.users.toJSON(),
-    };
+    return dbProject;
   }
 }

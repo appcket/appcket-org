@@ -2,19 +2,20 @@ import 'reflect-metadata';
 import { Args, Context, Resolver, Query } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 
-import { UserModel } from './user.model';
+import { User } from './user.entity';
 import { UserService } from 'src/user/services/user.service';
 
-@Resolver(UserModel)
+@Resolver(User)
 export class UserResolver {
   constructor(@Inject(UserService) private userService: UserService) {}
 
-  @Query((returns) => UserModel)
-  userInfo(@Context() ctx) {
-    return this.userService.getUserInfo(ctx.req.kauth.grant.access_token.token);
+  @Query(() => User)
+  async userInfo(@Context() ctx) {
+    const user = await this.userService.getUserInfo(ctx.req.kauth.grant.access_token.token);
+    return user;
   }
 
-  @Query((returns) => [UserModel])
+  @Query(() => [User])
   searchUsers(@Args('organizationId') organizationId: string, @Context() ctx) {
     return this.userService.getUsers(organizationId, ctx.req.kauth.grant.access_token.token);
   }

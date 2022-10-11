@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { findIndex } from 'lodash';
 
-import { Team } from 'src/team/models/team.model';
-import { UpdateTeamInput } from 'src/team/dtos/updateTeam.input';
+import { Team } from 'src/team/team.entity';
+import { UpdateTeamInputDto } from 'src/team/dtos/updateTeam.input';
 import { PrismaService } from 'src/common/services/prisma.service';
 import { GetTeamService } from 'src/team/services/getTeam.service';
 
@@ -10,7 +10,7 @@ import { GetTeamService } from 'src/team/services/getTeam.service';
 export class UpdateTeamService {
   constructor(private prismaService: PrismaService, private getTeamService: GetTeamService) {}
 
-  public async updateTeam(data: UpdateTeamInput, userId: string): Promise<Team> {
+  public async updateTeam(data: UpdateTeamInputDto, userId: string): Promise<Team> {
     await this.prismaService.team.update({
       where: {
         team_id: data.teamId,

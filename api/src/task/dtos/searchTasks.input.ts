@@ -19,12 +19,12 @@ export class SearchTasksInput {
   @Field(() => Number, { nullable: true })
   @IsOptional()
   @IsNumber()
-  skip: number;
+  limit: number;
 
   @Field(() => Number, { nullable: true })
   @IsOptional()
   @IsNumber()
-  take: number;
+  offset: number;
 
   @Field((type) => OrderByUpdatedAtInput, { nullable: true })
   @IsOptional()
