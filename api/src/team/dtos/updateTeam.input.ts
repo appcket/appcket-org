@@ -1,24 +1,12 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsString, IsNotEmpty, IsUUID, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, IsUUID } from 'class-validator';
+
+import { CreateTeamInput } from 'src/team/dtos/createTeam.input';
 
 @InputType()
-export class UpdateTeamInputDto {
+export class UpdateTeamInput extends CreateTeamInput {
   @Field()
   @IsUUID()
   @IsNotEmpty()
-  teamId: string;
-
-  @Field()
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(50)
-  @MinLength(1)
-  name: string;
-
-  @Field()
-  @IsUUID()
-  organizationId: string;
-
-  @Field(() => [String])
-  userIds: string[];
+  id: string;
 }

@@ -2,24 +2,30 @@ import { InputType, Field } from '@nestjs/graphql';
 import { IsString, IsNotEmpty, IsOptional, IsUUID, MaxLength, MinLength } from 'class-validator';
 
 @InputType()
-export class CreateTeamInput {
+export class CreateTaskInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(50)
+  taskStatusTypeId: string;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(100)
   @MinLength(1)
   name: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  @MaxLength(500)
+  @MaxLength(1000)
   description: string;
 
   @Field()
   @IsUUID()
-  organizationId: string;
+  projectId: string;
 
-  @Field((type) => [String])
-  userIds: string[];
+  @Field()
+  @IsUUID()
+  assignedTo: string;
 }

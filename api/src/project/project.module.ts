@@ -5,7 +5,6 @@ import { AuthorizationService } from 'src/common/services/authorization.service'
 import { CommonModule } from 'src/common/common.module';
 import { CreateProjectService } from 'src/project/services/createProject.service';
 import { GetProjectService } from 'src/project/services/getProject.service';
-import { PrismaService } from 'src/common/services/prisma.service';
 import { ProjectResolver } from './project.resolver';
 import { SearchProjectsService } from 'src/project/services/searchProjects.service';
 import { UpdateProjectService } from 'src/project/services/updateProject.service';
@@ -19,7 +18,6 @@ import { User } from 'src/user/user.entity';
     AuthorizationService,
     CreateProjectService,
     GetProjectService,
-    PrismaService,
     ProjectResolver,
     SearchProjectsService,
     UpdateProjectService,

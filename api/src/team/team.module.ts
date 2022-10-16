@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { AuthorizationService } from 'src/common/services/authorization.service';
-import { PrismaService } from 'src/common/services/prisma.service';
 import { CommonModule } from 'src/common/common.module';
 import { TeamResolver } from './team.resolver';
 import { UserService } from 'src/user/services/user.service';
@@ -20,7 +19,6 @@ import { User } from 'src/user/user.entity';
     CreateTeamService,
     GetTeamService,
     SearchTeamsService,
-    PrismaService,
     TeamResolver,
     UpdateTeamService,
     UserService,

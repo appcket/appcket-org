@@ -20,12 +20,12 @@ export class SearchTasksService {
         }
       : {};
 
-    const dbTasks = await this.taskRepository.find(where, {
+    const tasks = await this.taskRepository.find(where, {
       populate: ['project', 'taskStatusType', 'assignedTo'],
       limit: input.limit,
       offset: input.offset,
     });
 
-    return dbTasks;
+    return tasks;
   }
 }

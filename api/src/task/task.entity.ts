@@ -31,7 +31,7 @@ export class Task {
     onDelete: 'set null',
     nullable: true,
   })
-  taskStatusType?: TaskStatusType;
+  taskStatusType!: TaskStatusType;
 
   @Field()
   @ManyToOne({ entity: () => Project, fieldName: 'project_id', onUpdateIntegrity: 'cascade' })

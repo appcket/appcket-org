@@ -4,7 +4,7 @@ import { Collection, Entity, ManyToMany, OneToMany, PrimaryKey, Property } from 
 import { Organization } from 'src/organization/organization.entity';
 import { OrganizationUser } from 'src/organization/organizationUser.entity';
 
-import { Permission } from 'src/permission/models/permission.model';
+import { Permission } from 'src/permission/permission.model';
 import { Project } from 'src/project/project.entity';
 import { ProjectUser } from 'src/projectUser/projectUser.entity';
 import { Team } from 'src/team/team.entity';

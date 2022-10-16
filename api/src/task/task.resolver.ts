@@ -5,15 +5,15 @@ import { UseGuards } from '@nestjs/common';
 
 import { Task } from './task.entity';
 import { SearchTasksInput } from 'src/task/dtos/searchTasks.input';
+import { CreateTaskInput } from 'src/task/dtos/createTask.input';
 import { UpdateTaskInput } from 'src/task/dtos/updateTask.input';
-import { PrismaService } from 'src/common/services/prisma.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { TaskPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { UserService } from 'src/user/services/user.service';
 import { SearchTasksService } from 'src/task/services/searchTasks.service';
 import { GetTaskService } from 'src/task/services/getTask.service';
+import { CreateTaskService } from 'src/task/services/createTask.service';
 import { UpdateTaskService } from 'src/task/services/updateTask.service';
 
 @InputType()
@@ -25,11 +25,10 @@ export class TaskCreateInput {
 @Resolver(() => Task)
 export class TaskResolver {
   constructor(
-    @Inject(PrismaService) private prismaService: PrismaService,
-    @Inject(UserService) private userService: UserService,
     @Inject(SearchTasksService) private searchTasksService: SearchTasksService,
     @Inject(GetTaskService) private getTaskService: GetTaskService,
-    @Inject(UpdateTaskService) private updateTaskService: UpdateTaskService, // @Inject(CreateTaskService) private createTaskService: CreateTaskService,
+    @Inject(UpdateTaskService) private updateTaskService: UpdateTaskService,
+    @Inject(CreateTaskService) private createTaskService: CreateTaskService,
   ) {}
 
   @Query(() => [Task])
@@ -44,6 +43,13 @@ export class TaskResolver {
   @UseGuards(PermissionsGuard)
   async getTask(@Args('id') id: string) {
     return await this.getTaskService.getTask(id);
+  }
+
+  @Mutation(() => Task)
+  @Permissions(`${Resources.Task}#${TaskPermission.create}`)
+  @UseGuards(PermissionsGuard)
+  async createTask(@Args('createTaskInput') createTaskInput: CreateTaskInput, @Context() ctx) {
+    return await this.createTaskService.createTask(createTaskInput, ctx.user.id);
   }
 
   @Mutation(() => Task)

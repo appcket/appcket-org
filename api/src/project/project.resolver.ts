@@ -6,13 +6,11 @@ import { UseGuards } from '@nestjs/common';
 import { Project } from 'src/project/project.entity';
 import { UpdateProjectInput } from './dtos/updateProject.input';
 import { CreateProjectInput } from './dtos/createProject.input';
-import { PrismaService } from 'src/common/services/prisma.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { SortOrder } from 'src/common/enums/sortOrder.enum';
 import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { UserService } from 'src/user/services/user.service';
 import { GetProjectService } from 'src/project/services/getProject.service';
 import { SearchProjectsService } from 'src/project/services/searchProjects.service';
 import { UpdateProjectService } from 'src/project/services/updateProject.service';
@@ -33,8 +31,6 @@ class ProjectOrderByUpdatedAtInput {
 @Resolver(() => Project)
 export class ProjectResolver {
   constructor(
-    @Inject(PrismaService) private prismaService: PrismaService,
-    @Inject(UserService) private userService: UserService,
     @Inject(GetProjectService) private getProjectService: GetProjectService,
     @Inject(SearchProjectsService) private searchProjectsService: SearchProjectsService,
     @Inject(UpdateProjectService) private updateProjectService: UpdateProjectService,

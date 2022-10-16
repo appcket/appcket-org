@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Keycloak from 'keycloak-connect';
 import * as session from 'express-session';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { LoggerModule } from 'nestjs-pino';
 
 import { configuration } from 'src/config';
 import { CommonModule } from 'src/common/common.module';
@@ -41,6 +42,12 @@ import { AppService } from './app.service';
       },
       installSubscriptionHandlers: true,
       path: '/',
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        // don't log the authorization Bearer token
+        redact: ['req.headers.authorization']
+      }
     }),
     MikroOrmModule.forRootAsync({
       imports: [ConfigModule],

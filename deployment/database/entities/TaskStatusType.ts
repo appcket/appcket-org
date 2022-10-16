@@ -5,6 +5,6 @@ export class TaskStatusType {
   @PrimaryKey({ length: 50 })
   id!: string;
 
-  @Property({ length: 50, nullable: true })
-  name?: string;
+  @Property({ length: 50 })
+  name!: string;
 }

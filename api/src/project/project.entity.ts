@@ -19,7 +19,7 @@ export class Project {
 
   @Field()
   @Property({ columnType: 'text', length: 500, nullable: true })
-  description?: string;
+  description: string;
 
   @Field(() => Organization)
   @ManyToOne({

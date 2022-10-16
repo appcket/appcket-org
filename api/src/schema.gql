@@ -46,6 +46,8 @@ type User {
 type Organization {
   id: String!
   name: String!
+  projects: [Project!]!
+  teams: [Team!]!
   users: [User!]!
 }
 
@@ -64,7 +66,7 @@ type Task {
 }
 
 type Query {
-  organizationById(id: String!): Organization
+  getOrganization(id: String!): Organization
   hasPermission(permissions: [String!]!): Boolean!
   getProject(id: String!): Project
   searchProjects(searchString: String, limit: Float, offset: Float, orderBy: ProjectOrderByUpdatedAtInput): [Project!]!
@@ -104,42 +106,55 @@ input TeamOrderByUpdatedAtInput {
 type Mutation {
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   createProject(createProjectInput: CreateProjectInput!): Project!
+  createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
-  updateTeam(updateTeamInput: UpdateTeamInputDto!): Team!
-  createTeam(createTeamInput: CreateTeamInputDto!): Team!
+  updateTeam(updateTeamInput: UpdateTeamInput!): Team!
+  createTeam(createTeamInput: CreateTeamInput!): Team!
 }
 
 input UpdateProjectInput {
   name: String!
+  description: String
   organizationId: String!
   userIds: [String!]!
-  projectId: String!
+  id: String!
 }
 
 input CreateProjectInput {
   name: String!
+  description: String
   organizationId: String!
   userIds: [String!]!
 }
 
-input UpdateTaskInput {
-  taskId: String!
+input CreateTaskInput {
   taskStatusTypeId: String!
   name: String!
-  description: String!
+  description: String
   projectId: String!
   assignedTo: String!
 }
 
-input UpdateTeamInputDto {
-  teamId: String!
+input UpdateTaskInput {
+  taskStatusTypeId: String!
   name: String!
-  organizationId: String!
-  userIds: [String!]!
+  description: String
+  projectId: String!
+  assignedTo: String!
+  id: String!
 }
 
-input CreateTeamInputDto {
+input UpdateTeamInput {
   name: String!
+  description: String
+  organizationId: String!
+  userIds: [String!]!
+  id: String!
+}
+
+input CreateTeamInput {
+  name: String!
+  description: String
   organizationId: String!
   userIds: [String!]!
 }

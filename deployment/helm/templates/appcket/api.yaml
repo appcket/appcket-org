@@ -66,7 +66,7 @@ spec:
         - name: DB_SCHEMA
           value: {{ .Values.database.schemaApp }}
         - name: DB_PORT
-          value: {{ .Values.database.port }}
+          value: "{{ .Values.database.port }}"
         - name: KEYCLOAK_CLIENT_SECRET
           valueFrom:
             secretKeyRef:

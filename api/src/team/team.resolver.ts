@@ -4,15 +4,13 @@ import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
 import { Team } from './team.entity';
-import { UpdateTeamInputDto } from './dtos/updateTeam.input';
-import { CreateTeamInputDto } from './dtos/createTeam.input';
-import { PrismaService } from 'src/common/services/prisma.service';
+import { UpdateTeamInput } from './dtos/updateTeam.input';
+import { CreateTeamInput } from './dtos/createTeam.input';
 import { Resources } from 'src/common/enums/resources.enum';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import { SortOrder } from 'src/common/enums/sortOrder.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { UserService } from 'src/user/services/user.service';
 import { GetTeamService } from 'src/team/services/getTeam.service';
 import { UpdateTeamService } from 'src/team/services/updateTeam.service';
 import { CreateTeamService } from 'src/team/services/createTeam.service';
@@ -33,8 +31,6 @@ class TeamOrderByUpdatedAtInput {
 @Resolver(() => Team)
 export class TeamResolver {
   constructor(
-    @Inject(PrismaService) private prismaService: PrismaService,
-    @Inject(UserService) private userService: UserService,
     @Inject(GetTeamService) private getTeamService: GetTeamService,
     @Inject(UpdateTeamService) private updateTeamService: UpdateTeamService,
     @Inject(CreateTeamService) private createTeamService: CreateTeamService,
@@ -63,14 +59,14 @@ export class TeamResolver {
   @Mutation(() => Team)
   @Permissions(`${Resources.Team}#${TeamPermission.update}`)
   @UseGuards(PermissionsGuard)
-  async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInputDto, @Context() ctx) {
+  async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInput, @Context() ctx) {
     return await this.updateTeamService.updateTeam(updateTeamInput, ctx.user.id);
   }
 
   @Mutation(() => Team)
   @Permissions(`${Resources.Team}#${TeamPermission.create}`)
   @UseGuards(PermissionsGuard)
-  async createTeam(@Args('createTeamInput') createTeamInput: CreateTeamInputDto, @Context() ctx) {
+  async createTeam(@Args('createTeamInput') createTeamInput: CreateTeamInput, @Context() ctx) {
     return await this.createTeamService.createTeam(createTeamInput, ctx.user.id);
   }
 }

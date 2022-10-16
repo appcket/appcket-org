@@ -3,6 +3,8 @@ import { HttpModule } from '@nestjs/axios';
 import { Agent } from 'https';
 import { readFileSync } from 'fs';
 
+import { CommonService } from 'src/common/services/common.service';
+
 @Global()
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { readFileSync } from 'fs';
       }),
     }),
   ],
-  exports: [HttpModule],
+  exports: [CommonService, HttpModule],
+  providers: [CommonService],
 })
 export class CommonModule {}

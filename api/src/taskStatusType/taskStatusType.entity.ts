@@ -9,6 +9,6 @@ export class TaskStatusType {
   id!: string;
 
   @Field()
-  @Property({ length: 50, nullable: true })
-  name?: string;
+  @Property({ length: 50 })
+  name!: string;
 }

@@ -8,5 +8,5 @@ export class UpdateProjectInput extends CreateProjectInput {
   @Field()
   @IsUUID()
   @IsNotEmpty()
-  projectId: string;
+  id: string;
 }
