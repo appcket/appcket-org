@@ -49,7 +49,7 @@ spec:
         - name: PROXY_ADDRESS_FORWARDING
           value: "true"
         - name: KC_DB_URL
-          value: jdbc:postgresql://{{ .Values.database.address }}:{{ .Values.database.port }}/{{ .Values.database.database }}?currentSchema={{ .Values.database.schema }}
+          value: jdbc:postgresql://{{ .Values.database.address }}:{{ .Values.database.port }}/{{ .Values.database.name }}?currentSchema={{ .Values.database.schemaAccounts }}
         - name: KC_DB_USERNAME
           valueFrom:
             secretKeyRef:
@@ -61,7 +61,7 @@ spec:
               name: {{ .Values.database.secretName }}
               key: password
         - name: KC_DB_SCHEMA
-          value: {{ .Values.database.schema }}
+          value: {{ .Values.database.schemaAccounts }}
         - name: KC_DB
           value: {{ .Values.database.vendor }}
         - name: KC_HOSTNAME

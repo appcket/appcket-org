@@ -1,23 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
 
-import { PrismaService } from 'src/common/services/prisma.service';
-import { Team } from 'src/team/models/team.model';
+import { CommonService } from 'src/common/services/common.service';
+import { Team } from 'src/team/team.entity';
 
 @Injectable()
 export class GetTeamService {
-  constructor(private prismaService: PrismaService) {}
+  private readonly entityType = 'Team';
+  constructor(
+    @InjectRepository(Team)
+    private readonly teamRepository: EntityRepository<Team>,
+    private commonService: CommonService,
+  ) {}
 
   public async getTeam(id: string): Promise<Team> {
-    return this.prismaService.team.findFirst({
-      where: { team_id: id, deleted_at: null },
-      include: {
-        team_user: {
-          where: {
-            deleted_at: null,
-          },
-        },
-        organization: true,
-      },
+    const team = await this.teamRepository.findOneOrFail(id, {
+      populate: ['organization', 'users'],
     });
+
+    return team;
   }
 }

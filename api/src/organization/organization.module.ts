@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { AuthorizationService } from 'src/common/services/authorization.service';
-import { PrismaService } from 'src/common/services/prisma.service';
 import { CommonModule } from 'src/common/common.module';
 import { OrganizationResolver } from './organization.resolver';
+import { Organization } from './organization.entity';
+import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 
 @Module({
-  imports: [CommonModule],
-  providers: [AuthorizationService, PrismaService, OrganizationResolver],
+  imports: [CommonModule, MikroOrmModule.forFeature({ entities: [Organization] })],
+  providers: [AuthorizationService, GetOrganizationService, OrganizationResolver],
 })
 export class OrganizationModule {}

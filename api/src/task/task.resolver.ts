@@ -1,30 +1,19 @@
 import 'reflect-metadata';
-import {
-  Args,
-  Context,
-  Field,
-  InputType,
-  Mutation,
-  Parent,
-  Query,
-  Resolver,
-  ResolveField,
-} from '@nestjs/graphql';
+import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
-import { find } from 'lodash';
 
-import { Task } from './models/task.model';
+import { Task } from './task.entity';
 import { SearchTasksInput } from 'src/task/dtos/searchTasks.input';
+import { CreateTaskInput } from 'src/task/dtos/createTask.input';
 import { UpdateTaskInput } from 'src/task/dtos/updateTask.input';
-import { PrismaService } from 'src/common/services/prisma.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { TaskPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { UserService } from 'src/user/services/user.service';
 import { SearchTasksService } from 'src/task/services/searchTasks.service';
 import { GetTaskService } from 'src/task/services/getTask.service';
+import { CreateTaskService } from 'src/task/services/createTask.service';
 import { UpdateTaskService } from 'src/task/services/updateTask.service';
 
 @InputType()
@@ -36,11 +25,10 @@ export class TaskCreateInput {
 @Resolver(() => Task)
 export class TaskResolver {
   constructor(
-    @Inject(PrismaService) private prismaService: PrismaService,
-    @Inject(UserService) private userService: UserService,
     @Inject(SearchTasksService) private searchTasksService: SearchTasksService,
     @Inject(GetTaskService) private getTaskService: GetTaskService,
-    @Inject(UpdateTaskService) private updateTaskService: UpdateTaskService, // @Inject(CreateTaskService) private createTaskService: CreateTaskService,
+    @Inject(UpdateTaskService) private updateTaskService: UpdateTaskService,
+    @Inject(CreateTaskService) private createTaskService: CreateTaskService,
   ) {}
 
   @Query(() => [Task])
@@ -58,18 +46,16 @@ export class TaskResolver {
   }
 
   @Mutation(() => Task)
+  @Permissions(`${Resources.Task}#${TaskPermission.create}`)
+  @UseGuards(PermissionsGuard)
+  async createTask(@Args('createTaskInput') createTaskInput: CreateTaskInput, @Context() ctx) {
+    return await this.createTaskService.createTask(createTaskInput, ctx.user.id);
+  }
+
+  @Mutation(() => Task)
   @Permissions(`${Resources.Task}#${TaskPermission.update}`)
   @UseGuards(PermissionsGuard)
   async updateTask(@Args('updateTaskInput') updateTaskInput: UpdateTaskInput, @Context() ctx) {
     return await this.updateTaskService.updateTask(updateTaskInput, ctx.user.id);
-  }
-
-  @ResolveField('assigned_to_user')
-  async assigned_to_user(@Parent() task: Task, @Context() ctx) {
-    const accountsUsers = await this.userService.getUsers(
-      task.project.organization.organization_id,
-      ctx.req.kauth.grant.access_token.token,
-    );
-    return find(accountsUsers, { user_id: task.assigned_to });
   }
 }

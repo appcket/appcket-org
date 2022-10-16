@@ -1,30 +1,18 @@
 import 'reflect-metadata';
-import {
-  Args,
-  Context,
-  Field,
-  InputType,
-  Mutation,
-  Parent,
-  Query,
-  Resolver,
-  ResolveField,
-} from '@nestjs/graphql';
+import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
-import { intersectionBy } from 'lodash';
 
-import { Project } from './models/project.model';
+import { Project } from 'src/project/project.entity';
 import { UpdateProjectInput } from './dtos/updateProject.input';
 import { CreateProjectInput } from './dtos/createProject.input';
-import { PrismaService } from 'src/common/services/prisma.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { SortOrder } from 'src/common/enums/sortOrder.enum';
 import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { UserService } from 'src/user/services/user.service';
 import { GetProjectService } from 'src/project/services/getProject.service';
+import { SearchProjectsService } from 'src/project/services/searchProjects.service';
 import { UpdateProjectService } from 'src/project/services/updateProject.service';
 import { CreateProjectService } from 'src/project/services/createProject.service';
 
@@ -43,9 +31,8 @@ class ProjectOrderByUpdatedAtInput {
 @Resolver(() => Project)
 export class ProjectResolver {
   constructor(
-    @Inject(PrismaService) private prismaService: PrismaService,
-    @Inject(UserService) private userService: UserService,
     @Inject(GetProjectService) private getProjectService: GetProjectService,
+    @Inject(SearchProjectsService) private searchProjectsService: SearchProjectsService,
     @Inject(UpdateProjectService) private updateProjectService: UpdateProjectService,
     @Inject(CreateProjectService) private createProjectService: CreateProjectService,
   ) {}
@@ -60,28 +47,13 @@ export class ProjectResolver {
   @Query(() => [Project])
   @Permissions(`${Resources.Project}#${ProjectPermission.read}`)
   @UseGuards(PermissionsGuard)
-  searchProjects(
+  async searchProjects(
     @Args('searchString', { nullable: true }) searchString: string,
-    @Args('skip', { nullable: true }) skip: number,
-    @Args('take', { nullable: true }) take: number,
+    @Args('limit', { nullable: true }) limit: number,
+    @Args('offset', { nullable: true }) offset: number,
     @Args('orderBy', { nullable: true }) orderBy: ProjectOrderByUpdatedAtInput,
   ) {
-    const or = searchString
-      ? {
-          OR: [{ name: { contains: searchString } }],
-        }
-      : {};
-
-    // TODO: move to searchProjects.service
-    return this.prismaService.project.findMany({
-      where: {
-        deleted_at: null,
-        ...or,
-      },
-      take: take || undefined,
-      skip: skip || undefined,
-      orderBy: orderBy || undefined,
-    });
+    return await this.searchProjectsService.searchProjects(searchString, limit, offset);
   }
 
   @Mutation(() => Project)
@@ -102,14 +74,5 @@ export class ProjectResolver {
     @Context() ctx,
   ) {
     return await this.createProjectService.createProject(createProjectInput, ctx.user.id);
-  }
-
-  @ResolveField('users')
-  async users(@Parent() project: Project, @Context() ctx) {
-    const accountsUsers = await this.userService.getUsers(
-      project.organization.organization_id,
-      ctx.req.kauth.grant.access_token.token,
-    );
-    return intersectionBy(accountsUsers, project.project_user, 'user_id');
   }
 }

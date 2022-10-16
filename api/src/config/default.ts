@@ -6,6 +6,15 @@ const adminEndpointUrl = `${authServerUrl}/admin/realms/${realm}`;
 
 export const config = {
   appUrl: process.env.APP_URL,
+  orm: {
+    dbName: process.env.DB_NAME,
+    schema: process.env.DB_SCHEMA,
+    type: 'postgresql',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_ADDR,
+    port: process.env.DB_PORT,
+  },
   keycloak: {
     realm,
     'bearer-only': true,

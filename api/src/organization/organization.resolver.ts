@@ -3,23 +3,23 @@ import { Resolver, Query, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { Organization } from './models/organization.model';
-import { PrismaService } from 'src/common/services/prisma.service';
+import { Organization } from 'src/organization/organization.entity';
 import { Resources } from 'src/common/enums/resources.enum';
 import { OrganizationPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
+import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 
 @Resolver(Organization)
 export class OrganizationResolver {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+  constructor(
+    @Inject(GetOrganizationService) private getOrganizationService: GetOrganizationService,
+  ) {}
 
-  @Query((returns) => Organization, { nullable: true })
+  @Query(() => Organization, { nullable: true })
   @Permissions(`${Resources.Organization}#${OrganizationPermission.read}`)
   @UseGuards(PermissionsGuard)
-  organizationById(@Args('id') id: string) {
-    return this.prismaService.organization.findUnique({
-      where: { organization_id: id },
-    });
+  async getOrganization(@Args('id') id: string) {
+    return await this.getOrganizationService.getOrganization(id);
   }
 }

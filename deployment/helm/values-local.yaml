@@ -35,8 +35,9 @@ database:
   address: 172.17.0.1
   port: 5432
   secretName: database-secret
-  database: appcket
-  schema: keycloak
+  name: appcket
+  schemaAccounts: keycloak
+  schemaApp: appcket
   vendor: postgres
 
 marketing:

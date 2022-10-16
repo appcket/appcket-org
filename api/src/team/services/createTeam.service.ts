@@ -1,85 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { findIndex } from 'lodash';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
+import { Logger } from '@nestjs/common';
 
-import { Team } from 'src/team/models/team.model';
+import { Team } from 'src/team/team.entity';
 import { CreateTeamInput } from 'src/team/dtos/createTeam.input';
-import { PrismaService } from 'src/common/services/prisma.service';
 import { GetTeamService } from 'src/team/services/getTeam.service';
 
 @Injectable()
 export class CreateTeamService {
-  constructor(private prismaService: PrismaService, private getTeamService: GetTeamService) {}
+  private readonly logger = new Logger(CreateTeamService.name);
+
+  constructor(
+    @InjectRepository(Team)
+    private readonly teamRepository: EntityRepository<Team>,
+    private getTeamService: GetTeamService,
+  ) {}
 
   public async createTeam(data: CreateTeamInput, userId: string): Promise<Team> {
-    const createdTeam = await this.prismaService.team.create({
-      data: {
-        name: data.name,
-        // TODO: validate this user is associated with this organization
-        // TODO: validate this team is associated with this organization
-        organization_id: data.organizationId,
-        updated_at: new Date(),
-        updated_by: userId,
-        created_by: userId,
-      },
+    // TODO: validate userId is associated with data.organizationId
+    // TODO: validate data.userIds are associated with data.organizationId
+
+    const newTeam = this.teamRepository.create({
+      name: data.name,
+      description: data.description,
+      organization: data.organizationId,
+      users: data.userIds,
     });
 
-    const teamUsersToDelete = await this.prismaService.team_user.findMany({
-      where: {
-        team_id: createdTeam.team_id,
-        deleted_at: null,
-        user_id: {
-          notIn: data.userIds,
-        },
-      },
-      select: {
-        team_user_id: true,
-      },
-    });
+    await this.teamRepository.persist(newTeam).flush();
 
-    for (let teamUser of teamUsersToDelete) {
-      await this.prismaService.team_user.update({
-        where: {
-          team_user_id: teamUser.team_user_id,
-        },
-        data: {
-          deleted_at: new Date(),
-          deleted_by: userId,
-        },
-      });
-    }
+    const createdTeam = await this.getTeamService.getTeam(newTeam.id);
 
-    let existingTeamUsers = await this.prismaService.team_user.findMany({
-      where: {
-        team_id: createdTeam.team_id,
-        deleted_at: null,
-        user_id: {
-          in: data.userIds,
-        },
-      },
-      select: {
-        user_id: true,
-      },
-    });
-
-    let teamUserIdsToCreate: string[] = [];
-
-    data.userIds.forEach((inputDataUserId) => {
-      const foundIndex = findIndex(existingTeamUsers, { user_id: inputDataUserId });
-      if (foundIndex === -1) {
-        // this inputData userId was not found in the database for this team so we need to create the record
-        teamUserIdsToCreate.push(inputDataUserId);
-      }
-    });
-
-    for (let teamUserId of teamUserIdsToCreate) {
-      await this.prismaService.team_user.create({
-        data: {
-          team_id: createdTeam.team_id,
-          user_id: teamUserId,
-          created_by: userId,
-        },
-      });
-    }
+    this.logger.log(`${Team.name} created successfully. id: ${createdTeam.id}`);
 
     return createdTeam;
   }

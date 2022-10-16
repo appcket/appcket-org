@@ -1,38 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
 
-import { PrismaService } from 'src/common/services/prisma.service';
+import { Task } from 'src/task/task.entity';
 import { SearchTasksInput } from 'src/task/dtos/searchTasks.input';
 
 @Injectable()
 export class SearchTasksService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    @InjectRepository(Task)
+    private readonly taskRepository: EntityRepository<Task>,
+  ) {}
 
-  public async searchTasks(input: SearchTasksInput) {
-    const or = input.searchString
+  public async searchTasks(input: SearchTasksInput): Promise<Task[]> {
+    const where = input.searchString
       ? {
-          OR: [{ name: { contains: input.searchString } }],
+          name: { $like: `%${input.searchString}%` },
+          project: { $in: input.projectIds },
         }
       : {};
 
-    return this.prismaService.task.findMany({
-      where: {
-        deleted_at: null,
-        ...or,
-        project_id: {
-          in: input.projectIds,
-        },
-      },
-      include: {
-        project: {
-          include: {
-            organization: true,
-          },
-        },
-        task_status_type: true,
-      },
-      take: input.take || undefined,
-      skip: input.skip || undefined,
-      orderBy: input.orderBy || undefined,
+    const tasks = await this.taskRepository.find(where, {
+      populate: ['project', 'taskStatusType', 'assignedTo'],
+      limit: input.limit,
+      offset: input.offset,
     });
+
+    return tasks;
   }
 }
