@@ -10,7 +10,7 @@ services:
     volumes:
       - ./registry:/var/lib/registry
   database:
-    image: postgres:14
+    image: postgres:15
     environment:
       - POSTGRES_DB=appcket
       - POSTGRES_ROOT_PASSWORD=Ch@ng3To@StrongP@ssw0rd

@@ -1,5 +1,5 @@
 import User from 'src/common/models/User';
 
-export default interface UserInfoQueryResponse extends User {
+export default interface UserInfoResponse extends User {
   userInfo: User;
 }

@@ -13,7 +13,7 @@ import { useGetProject } from 'src/common/api/project';
 import hasPermission from 'src/common/utils/hasPermission';
 import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 import Loading from 'src/common/components/Loading';
@@ -21,7 +21,7 @@ import Loading from 'src/common/components/Loading';
 const Project = () => {
   const params = useParams();
   const projectId = params.projectId || '';
-  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
+  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
 
   const updateProjectPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
@@ -52,7 +52,7 @@ const Project = () => {
         </Typography>
         <List>
           {data?.users.map((user) => (
-            <ListItem key={user.user_id}>
+            <ListItem key={user.id}>
               <ListItemText primary={user.firstName} />
             </ListItem>
           ))}
@@ -70,6 +70,7 @@ const Project = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1">Organization: {data?.organization.name}</Typography>
+            <Typography variant="body1">Description: {data?.description}</Typography>
             <Typography variant="body1">
               <NavLink to={`tasks`}>View Tasks</NavLink>
             </Typography>

@@ -18,7 +18,7 @@ export class CreateTaskInput {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(5000)
   description: string;
 
   @Field()

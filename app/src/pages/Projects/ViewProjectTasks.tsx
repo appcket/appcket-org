@@ -10,12 +10,11 @@ import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import { useSearchTasks } from 'src/common/api/task';
 import { useGetProject } from 'src/common/api/project';
-import Task from 'src/common/models/Task';
 import Loading from 'src/common/components/Loading';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TaskPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 
 const ViewProjectTasks = () => {
@@ -27,7 +26,7 @@ const ViewProjectTasks = () => {
   const { status, data, error } = useSearchTasks([projectId]);
   const getProjectResult = useGetProject(projectId);
 
-  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
+  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
   const createTaskPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
     Resources.Task,
@@ -61,25 +60,8 @@ const ViewProjectTasks = () => {
       headerName: 'Name',
       flex: 0.5,
       renderCell: (cellValues) => {
-        return <NavLink to={`/tasks/${cellValues.row.task_id}`}>{cellValues.row.name}</NavLink>;
+        return <NavLink to={`/tasks/${cellValues.row.id}`}>{cellValues.row.name}</NavLink>;
       },
-    },
-    {
-      field: 'updated_at',
-      headerName: 'Updated',
-      flex: 0.5,
-      type: 'dateTime',
-      valueGetter: ({ value }) =>
-        value &&
-        new Intl.DateTimeFormat('en-US', {
-          weekday: 'short',
-          year: 'numeric',
-          month: 'short',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true,
-        }).format(new Date(value)),
     },
   ];
 
@@ -88,11 +70,6 @@ const ViewProjectTasks = () => {
   } else if (status === 'error' && error instanceof Error) {
     tasksComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
-    // convert api data to mui grid-compatible data
-    data?.forEach((task: Task) => {
-      task.id = task.task_id;
-    });
-
     const rows: GridRowsProp = data ? data : [];
 
     tasksComponent = (

@@ -34,6 +34,8 @@ import { AppService } from './app.service';
         return {
           user: {
             id: req.kauth.grant.access_token.content.sub,
+            firstName: req.kauth.grant.access_token.content.firstName,
+            lastName: req.kauth.grant.access_token.content.lastName,
             email: req.kauth.grant.access_token.content.email,
             username: req.kauth.grant.access_token.content.preferred_username,
             roles: req.kauth.grant.access_token.content.realm_access.roles,
@@ -46,8 +48,8 @@ import { AppService } from './app.service';
     LoggerModule.forRoot({
       pinoHttp: {
         // don't log the authorization Bearer token
-        redact: ['req.headers.authorization']
-      }
+        redact: ['req.headers.authorization'],
+      },
     }),
     MikroOrmModule.forRootAsync({
       imports: [ConfigModule],

@@ -17,7 +17,7 @@ export class Project {
   @Property({ length: 50 })
   name!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Property({ columnType: 'text', length: 500, nullable: true })
   description: string;
 

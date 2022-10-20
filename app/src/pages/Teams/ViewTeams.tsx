@@ -12,7 +12,7 @@ import { useSearchTeams } from 'src/common/api/team';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import Loading from 'src/common/components/Loading';
 
@@ -20,7 +20,7 @@ const ViewTeams = () => {
   // TODO: user input from Team name filter input field should drive table results
   const { status, data, error } = useSearchTeams('');
 
-  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
+  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
   const createTeamPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
     Resources.Team,
@@ -54,25 +54,8 @@ const ViewTeams = () => {
       headerName: 'Name',
       flex: 0.25,
       renderCell: (cellValues) => {
-        return <NavLink to={`/teams/${cellValues.row.team_id}`}>{cellValues.row.name}</NavLink>;
+        return <NavLink to={`/teams/${cellValues.row.id}`}>{cellValues.row.name}</NavLink>;
       },
-    },
-    {
-      field: 'updated_at',
-      headerName: 'Updated',
-      flex: 0.75,
-      type: 'dateTime',
-      valueGetter: ({ value }) =>
-        value &&
-        new Intl.DateTimeFormat('en-US', {
-          weekday: 'short',
-          year: 'numeric',
-          month: 'short',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true,
-        }).format(new Date(value)),
     },
   ];
 
@@ -81,12 +64,7 @@ const ViewTeams = () => {
   } else if (status === 'error' && error instanceof Error) {
     teamsComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
-    // convert api data to mui grid-compatible data
-    data?.forEach((team) => {
-      team.id = team.team_id;
-    });
-
-    const rows: GridRowsProp = data!;
+    const rows: GridRowsProp = data ? data : [];
 
     teamsComponent = (
       <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} autoHeight={true} />

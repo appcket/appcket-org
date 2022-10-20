@@ -20,7 +20,12 @@ export class UpdateTeamService {
   public async updateTeam(data: UpdateTeamInput, userId: string): Promise<Team> {
     const team = await this.getTeamService.getTeam(data.id);
 
-    wrap(team).assign(data);
+    wrap(team).assign({
+      name: data.name,
+      description: data.description,
+      organization: data.organizationId,
+      users: data.userIds,
+    });
     await this.teamRepository.persist(team);
 
     const updatedTeam = await this.getTeamService.getTeam(data.id);

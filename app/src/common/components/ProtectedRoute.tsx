@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import hasPermission from 'src/common/utils/hasPermission';
 
@@ -12,7 +12,7 @@ const ProtectedRoute = ({
   children: JSX.Element;
   permission: string[];
 }) => {
-  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
+  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
 
   if (userInfoQuery.status === 'success') {
     if (

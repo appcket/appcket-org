@@ -3,13 +3,10 @@ import User from 'src/common/models/User';
 import TaskStatusType from 'src/common/models/TaskStatusType';
 
 export default interface Task {
-  id?: string;
-  task_id: string;
+  id: string;
   name: string;
   description: string;
-  created_at: Date;
-  updated_at: Date;
   project: Project;
-  task_status_type: TaskStatusType;
-  assigned_to_user: User;
+  taskStatusType: TaskStatusType;
+  assignedTo: User;
 }

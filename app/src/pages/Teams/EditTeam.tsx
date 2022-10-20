@@ -10,7 +10,7 @@ import { get } from 'lodash';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import UpdateTeamMutationInput from 'src/common/models/inputs/UpdateTeamMutationInput';
+import UpdateTeamInput from 'src/common/models/inputs/UpdateTeamInput';
 import { useGetTeam, useUpdateTeam } from 'src/common/api/team';
 import Team from 'src/common/models/Team';
 import User from 'src/common/models/User';
@@ -33,7 +33,7 @@ const EditTeam = () => {
     handleSubmit,
     reset,
     control,
-  } = useForm<UpdateTeamMutationInput>({
+  } = useForm<UpdateTeamInput>({
     mode: 'all',
     defaultValues: {
       name: '',
@@ -56,11 +56,14 @@ const EditTeam = () => {
   };
 
   useEffect(() => {
-    reset({ name: getTeamQuery?.data?.name ?? '' });
+    reset({
+      name: getTeamQuery?.data?.name ?? '',
+      description: getTeamQuery?.data?.description ?? '',
+    });
     useStore.setState((state) => ({
       resourceUsers: {
         ...state.resourceUsers,
-        selectedUserIds: initialSelectedItemIds(getTeamQuery?.data?.users as User[], 'user_id'),
+        selectedUserIds: initialSelectedItemIds(getTeamQuery?.data?.users as User[], 'id'),
       },
     }));
   }, [reset, getTeamQuery.data]);
@@ -69,10 +72,7 @@ const EditTeam = () => {
     useStore.setState((state) => ({
       resourceUsers: {
         ...state.resourceUsers,
-        initialSelectedUserIds: initialSelectedItemIds(
-          getTeamQuery?.data?.users as User[],
-          'user_id',
-        ),
+        initialSelectedUserIds: initialSelectedItemIds(getTeamQuery?.data?.users as User[], 'id'),
       },
     }));
   }, [getTeamQuery?.data?.users]);
@@ -86,9 +86,9 @@ const EditTeam = () => {
   } else if (getTeamQuery.isSuccess) {
     editTeamComponent = <Typography paragraph>Unable to view Team</Typography>;
 
-    const onSubmit = async (updateTeamInput: UpdateTeamMutationInput) => {
-      updateTeamInput.organizationId = getTeamQuery.data.organization.organization_id;
-      updateTeamInput.teamId = getTeamQuery.data.team_id;
+    const onSubmit = async (updateTeamInput: UpdateTeamInput) => {
+      updateTeamInput.organizationId = getTeamQuery.data.organization.id;
+      updateTeamInput.id = getTeamQuery.data.id ? getTeamQuery.data.id : '';
       updateTeamInput.userIds = selectedUserIds;
 
       updateTeam.mutate(
@@ -128,10 +128,19 @@ const EditTeam = () => {
           />
         </Grid>
 
+        <FormTextField
+          name="description"
+          control={control}
+          label="Description"
+          rules={{
+            maxLength: { value: 500, message: 'This field must be less than 500 characters' },
+          }}
+        />
+
         {/* instead of passing selectedUsers prop to child components, we use zustand to hold local state.
             In this case, it tracks initially selected users and user-selected users so the 
             parent component can have this data and send it back to the api onSubmit*/}
-        <ResourceUsersGrid organizationId={getTeamQuery.data.organization.organization_id} />
+        <ResourceUsersGrid organizationId={getTeamQuery.data.organization.id} />
 
         <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
           <Grid item>

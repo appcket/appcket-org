@@ -16,7 +16,7 @@ export class Task {
   name!: string;
 
   @Field()
-  @Property({ columnType: 'text', length: 500, nullable: true })
+  @Property({ columnType: 'text', length: 5000, nullable: true })
   description?: string;
 
   @Field()

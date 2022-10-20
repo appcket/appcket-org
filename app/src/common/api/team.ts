@@ -2,15 +2,15 @@ import { gql } from 'graphql-request';
 import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import { useApiMutation, useApiQuery } from 'src/common/api';
-import SearchTeamsQueryResponse from 'src/common/models/responses/SearchTeamsQueryResponse';
-import GetTeamQueryResponse from 'src/common/models/responses/GetTeamQueryResponse';
+import SearchTeamsResponse from 'src/common/models/responses/SearchTeamsResponse';
+import GetTeamResponse from 'src/common/models/responses/GetTeamResponse';
 import UpdateTeamResponse from 'src/common/models/responses/UpdateTeamResponse';
 import CreateTeamResponse from 'src/common/models/responses/CreateTeamResponse';
 import Team from 'src/common/models/Team';
 
 export const useSearchTeams = (searchString: string): UseQueryResult<Team[]> => {
   const queryKey = ['searchTeams'];
-  const processData = (data: SearchTeamsQueryResponse): Team[] => {
+  const processData = (data: SearchTeamsResponse): Team[] => {
     return data.searchTeams;
   };
 
@@ -19,10 +19,8 @@ export const useSearchTeams = (searchString: string): UseQueryResult<Team[]> => 
     gql`
       {
         ${queryKey}(searchString: "${searchString}") {
-          team_id
+          id
           name
-          created_at
-          updated_at
         }
       }
     `,
@@ -32,7 +30,7 @@ export const useSearchTeams = (searchString: string): UseQueryResult<Team[]> => 
 
 export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
   const queryKey = ['getTeam'];
-  const processData = (data: GetTeamQueryResponse): Team => {
+  const processData = (data: GetTeamResponse): Team => {
     return data.getTeam;
   };
 
@@ -41,20 +39,22 @@ export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
     gql`
       {
         ${queryKey}(id: "${teamId}") {
-          team_id
+          id
           name
-          created_at
-          updated_at
+          description
           organization {
-            organization_id
+            id
             name
           }
           users {
-            user_id
-            username
+            id
+            email
             firstName
             lastName
-            jobTitle
+            attributes {
+              id
+              name
+            }
           }
         }
       }

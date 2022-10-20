@@ -1,4 +1,4 @@
 export default interface TaskStatusType {
-  task_status_type_id: string;
+  id: string;
   name: string;
 }

@@ -64,6 +64,8 @@ mv ../deployment/database/dot.env.local ../deployment/database/.env.local
 mv ../api/dot.env ../api/.env
 mv ../app/dot.env.local ../app/.env.local
 mv ../app/dot.env.production ../app/.env.production
+mv ../marketing/dot.env.local ../marketing/.env.local
+mv ../marketing/dot.env.production ../marketing/.env.production
 
 # Docker setup
 echo '---------------------'

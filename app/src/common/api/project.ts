@@ -2,15 +2,15 @@ import { gql } from 'graphql-request';
 import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import { useApiMutation, useApiQuery } from 'src/common/api';
-import SearchProjectsQueryResponse from 'src/common/models/responses/SearchProjectsQueryResponse';
-import GetProjectQueryResponse from 'src/common/models/responses/GetProjectQueryResponse';
+import SearchProjectsResponse from 'src/common/models/responses/SearchProjectsResponse';
+import GetProjectResponse from 'src/common/models/responses/GetProjectResponse';
 import UpdateProjectResponse from 'src/common/models/responses/UpdateProjectResponse';
 import CreateProjectResponse from 'src/common/models/responses/CreateProjectResponse';
 import Project from 'src/common/models/Project';
 
 export const useSearchProjects = (searchString: string): UseQueryResult<Project[]> => {
   const queryKey = ['searchProjects'];
-  const processData = (data: SearchProjectsQueryResponse): Project[] => {
+  const processData = (data: SearchProjectsResponse): Project[] => {
     return data.searchProjects;
   };
 
@@ -19,10 +19,8 @@ export const useSearchProjects = (searchString: string): UseQueryResult<Project[
     gql`
       {
         ${queryKey}(searchString: "${searchString}") {
-          project_id
+          id
           name
-          created_at
-          updated_at
         }
       }
     `,
@@ -32,7 +30,7 @@ export const useSearchProjects = (searchString: string): UseQueryResult<Project[
 
 export const useGetProject = (projectId: string): UseQueryResult<Project> => {
   const queryKey = ['getProject'];
-  const processData = (data: GetProjectQueryResponse): Project => {
+  const processData = (data: GetProjectResponse): Project => {
     return data.getProject;
   };
 
@@ -41,20 +39,23 @@ export const useGetProject = (projectId: string): UseQueryResult<Project> => {
     gql`
       {
         ${queryKey}(id: "${projectId}") {
-          project_id
+          id
           name
-          created_at
-          updated_at
+          description
           organization {
-            organization_id
+            id
             name
           }
           users {
-            user_id
+            id
+            email
             username
             firstName
             lastName
-            jobTitle
+            attributes {
+              name
+              value
+            }
           }
         }
       }

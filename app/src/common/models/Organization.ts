@@ -1,4 +1,4 @@
 export default interface Organization {
-  organization_id: string;
+  id: string;
   name: string;
 }

@@ -11,7 +11,7 @@ import { get } from 'lodash';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import CreateTeamMutationInput from 'src/common/models/inputs/CreateTeamMutationInput';
+import CreateTeamInput from 'src/common/models/inputs/CreateTeamInput';
 import { useCreateTeam } from 'src/common/api/team';
 import Team from 'src/common/models/Team';
 import Organization from 'src/common/models/Organization';
@@ -20,7 +20,7 @@ import { FormTextField } from 'src/common/components/form/FormTextField';
 import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import { resourcesToSelectMenuOptions } from 'src/common/utils/form';
 import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
@@ -34,7 +34,7 @@ const CreateTeam = () => {
     handleSubmit,
     reset,
     control,
-  } = useForm<CreateTeamMutationInput>({
+  } = useForm<CreateTeamInput>({
     mode: 'all',
     defaultValues: {
       name: '',
@@ -46,7 +46,7 @@ const CreateTeam = () => {
   const createTeam = useCreateTeam();
   const resetSelectedUserIds = useStore((state) => state.resourceUsers.resetSelectedUserIds);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
-  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
+  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
 
   const initialSelectedItemIds: <T>(items: T[], key: string) => string[] = (
     items,
@@ -68,7 +68,7 @@ const CreateTeam = () => {
     }));
   }, [reset]);
 
-  const onSubmit = async (createTeamInput: CreateTeamMutationInput) => {
+  const onSubmit = async (createTeamInput: CreateTeamInput) => {
     createTeamInput.userIds = selectedUserIds;
 
     createTeam.mutate(
@@ -98,7 +98,7 @@ const CreateTeam = () => {
   } else if (userInfoQuery.isSuccess) {
     const options = resourcesToSelectMenuOptions<Organization>(
       userInfoQuery.data.userInfo.organizations,
-      'organization_id',
+      'id',
       'name',
     );
     organizationSelectMenu = (

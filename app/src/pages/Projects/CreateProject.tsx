@@ -11,7 +11,7 @@ import { get } from 'lodash';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import CreateProjectMutationInput from 'src/common/models/inputs/CreateProjectMutationInput';
+import CreateProjectInput from 'src/common/models/inputs/CreateProjectInput';
 import { useCreateProject } from 'src/common/api/project';
 import Project from 'src/common/models/Project';
 import Organization from 'src/common/models/Organization';
@@ -20,7 +20,7 @@ import { FormTextField } from 'src/common/components/form/FormTextField';
 import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import { resourcesToSelectMenuOptions } from 'src/common/utils/form';
 import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
@@ -34,7 +34,7 @@ const CreateProject = () => {
     handleSubmit,
     reset,
     control,
-  } = useForm<CreateProjectMutationInput>({
+  } = useForm<CreateProjectInput>({
     mode: 'all',
     defaultValues: {
       name: '',
@@ -46,7 +46,7 @@ const CreateProject = () => {
   const createProject = useCreateProject();
   const resetSelectedUserIds = useStore((state) => state.resourceUsers.resetSelectedUserIds);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
-  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
+  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
 
   const initialSelectedItemIds: <T>(items: T[], key: string) => string[] = (
     items,
@@ -63,12 +63,12 @@ const CreateProject = () => {
     useStore.setState((state) => ({
       resourceUsers: {
         ...state.resourceUsers,
-        selectedUserIds: initialSelectedItemIds([] as User[], 'user_id'),
+        selectedUserIds: initialSelectedItemIds([] as User[], 'id'),
       },
     }));
   }, [reset]);
 
-  const onSubmit = async (createProjectInput: CreateProjectMutationInput) => {
+  const onSubmit = async (createProjectInput: CreateProjectInput) => {
     createProjectInput.userIds = selectedUserIds;
 
     createProject.mutate(
@@ -98,7 +98,7 @@ const CreateProject = () => {
   } else if (userInfoQuery.isSuccess) {
     const options = resourcesToSelectMenuOptions<Organization>(
       userInfoQuery.data.userInfo.organizations,
-      'organization_id',
+      'id',
       'name',
     );
     organizationSelectMenu = (

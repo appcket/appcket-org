@@ -18,7 +18,9 @@ export class SearchTasksService {
           name: { $like: `%${input.searchString}%` },
           project: { $in: input.projectIds },
         }
-      : {};
+      : {
+          project: { $in: input.projectIds },
+        };
 
     const tasks = await this.taskRepository.find(where, {
       populate: ['project', 'taskStatusType', 'assignedTo'],

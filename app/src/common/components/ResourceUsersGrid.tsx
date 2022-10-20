@@ -2,7 +2,6 @@ import Typography from '@mui/material/Typography';
 import { DataGrid, GridRowsProp, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 
-import User from 'src/common/models/User';
 import { useSearchUsers } from 'src/common/api/user';
 import { useStore } from 'src/common/store';
 
@@ -30,11 +29,6 @@ const ResourceUsersGrid = ({ organizationId }: Props) => {
 
   if (searchUsersQuery.isSuccess) {
     const rows: GridRowsProp = searchUsersQuery.data;
-
-    // convert api data to mui grid-compatible data
-    searchUsersQuery.data.forEach((user: User) => {
-      user.id = user.user_id;
-    });
 
     return (
       <div style={{ height: 400, width: '100%' }}>

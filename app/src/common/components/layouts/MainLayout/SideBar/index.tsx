@@ -12,6 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { find } from 'lodash';
 
 import { grey } from '@mui/material/colors';
 import theme from 'src/common/theme';
@@ -110,7 +111,7 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth }: Props) => {
             {data?.firstName} {data?.lastName}
           </Typography>
           <Typography className="text-slate-200" variant="body2">
-            {data?.jobTitle}
+            {find(data?.attributes, { name: 'jobTitle' })?.value}
           </Typography>
         </Box>
         <Divider />

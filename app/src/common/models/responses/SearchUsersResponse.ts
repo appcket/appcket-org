@@ -1,5 +1,5 @@
 import User from 'src/common/models/User';
 
-export default interface SearchUsersQueryResponse extends User {
+export default interface SearchUsersResponse extends User {
   searchUsers: User[];
 }

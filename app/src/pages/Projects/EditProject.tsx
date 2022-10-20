@@ -10,7 +10,7 @@ import { get } from 'lodash';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import UpdateProjectMutationInput from 'src/common/models/inputs/UpdateProjectMutationInput';
+import UpdateProjectInput from 'src/common/models/inputs/UpdateProjectInput';
 import { useGetProject, useUpdateProject } from 'src/common/api/project';
 import Project from 'src/common/models/Project';
 import User from 'src/common/models/User';
@@ -34,10 +34,11 @@ const EditProject = () => {
     handleSubmit,
     reset,
     control,
-  } = useForm<UpdateProjectMutationInput>({
+  } = useForm<UpdateProjectInput>({
     mode: 'all',
     defaultValues: {
       name: '',
+      description: '',
     },
   });
 
@@ -57,11 +58,14 @@ const EditProject = () => {
   };
 
   useEffect(() => {
-    reset({ name: getProjectQuery?.data?.name ?? '' });
+    reset({
+      name: getProjectQuery?.data?.name ?? '',
+      description: getProjectQuery?.data?.description ?? '',
+    });
     useStore.setState((state) => ({
       resourceUsers: {
         ...state.resourceUsers,
-        selectedUserIds: initialSelectedItemIds(getProjectQuery?.data?.users as User[], 'user_id'),
+        selectedUserIds: initialSelectedItemIds(getProjectQuery?.data?.users as User[], 'id'),
       },
     }));
   }, [reset, getProjectQuery.data]);
@@ -72,7 +76,7 @@ const EditProject = () => {
         ...state.resourceUsers,
         initialSelectedUserIds: initialSelectedItemIds(
           getProjectQuery?.data?.users as User[],
-          'user_id',
+          'id',
         ),
       },
     }));
@@ -89,9 +93,9 @@ const EditProject = () => {
   } else if (getProjectQuery.isSuccess) {
     editProjectComponent = <Typography paragraph>Unable to view Project</Typography>;
 
-    const onSubmit = async (updateProjectInput: UpdateProjectMutationInput) => {
-      updateProjectInput.organizationId = getProjectQuery.data.organization.organization_id;
-      updateProjectInput.projectId = getProjectQuery.data.project_id;
+    const onSubmit = async (updateProjectInput: UpdateProjectInput) => {
+      updateProjectInput.organizationId = getProjectQuery.data.organization.id;
+      updateProjectInput.id = getProjectQuery.data.id ? getProjectQuery.data.id : '';
       updateProjectInput.userIds = selectedUserIds;
 
       updateProject.mutate(
@@ -131,7 +135,16 @@ const EditProject = () => {
           />
         </Grid>
 
-        <ResourceUsersGrid organizationId={getProjectQuery.data.organization.organization_id} />
+        <FormTextField
+          name="description"
+          control={control}
+          label="Description"
+          rules={{
+            maxLength: { value: 500, message: 'This field must be less than 500 characters' },
+          }}
+        />
+
+        <ResourceUsersGrid organizationId={getProjectQuery.data.organization.id} />
 
         <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
           <Grid item>

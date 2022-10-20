@@ -1,16 +1,16 @@
 import { gql } from 'graphql-request';
-import { UseQueryResult } from '@tanstack/react-query';
+import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
-import { useApiQuery } from 'src/common/api';
-import SearchTasksQueryResponse from 'src/common/models/responses/SearchTasksQueryResponse';
-import GetTaskQueryResponse from 'src/common/models/responses/GetTaskQueryResponse';
-// import UpdateTaskResponse from 'src/common/models/responses/UpdateTaskResponse';
+import { useApiMutation, useApiQuery } from 'src/common/api';
+import SearchTasksResponse from 'src/common/models/responses/SearchTasksResponse';
+import GetTaskResponse from 'src/common/models/responses/GetTaskResponse';
+import UpdateTaskResponse from 'src/common/models/responses/UpdateTaskResponse';
 // import CreateTaskResponse from 'src/common/models/responses/CreateTaskResponse';
 import Task from 'src/common/models/Task';
 
 export const useSearchTasks = (projectIds: string[]): UseQueryResult<Task[]> => {
   const queryKey = ['searchTasks'];
-  const processData = (data: SearchTasksQueryResponse): Task[] => {
+  const processData = (data: SearchTasksResponse): Task[] => {
     return data.searchTasks;
   };
 
@@ -19,17 +19,14 @@ export const useSearchTasks = (projectIds: string[]): UseQueryResult<Task[]> => 
     gql`
     {
       ${queryKey}(searchTasksInput: {projectIds: ["${projectIds}"]}) {
-        task_id
+        id
         name
-        created_at
-        updated_at
-        task_status_type_id
-        project {
-          project_id
+        taskStatusType {
+          id
           name
         }
-        task_status_type {
-          task_status_type_id
+        project {
+          id
           name
         }
       }
@@ -41,7 +38,7 @@ export const useSearchTasks = (projectIds: string[]): UseQueryResult<Task[]> => 
 
 export const useGetTask = (taskId: string): UseQueryResult<Task> => {
   const queryKey = ['getTask'];
-  const processData = (data: GetTaskQueryResponse): Task => {
+  const processData = (data: GetTaskResponse): Task => {
     return data.getTask;
   };
 
@@ -50,22 +47,25 @@ export const useGetTask = (taskId: string): UseQueryResult<Task> => {
     gql`
       {
         ${queryKey}(id: "${taskId}") {
-          task_id
+          id
           name
           description
-          created_at
-          updated_at
-          task_status_type_id
+          taskStatusType {
+            id
+            name
+          }
           project {
-            project_id
+            id
             name
+            users {
+              id
+              firstName
+              lastName
+            }
           }
-          task_status_type {
-            task_status_type_id
-            name
-          }
-          assigned_to_user {
-            user_id
+          assignedTo {
+            id
+            email
             username
             firstName
             lastName
@@ -77,24 +77,35 @@ export const useGetTask = (taskId: string): UseQueryResult<Task> => {
   );
 };
 
-// export const useUpdateTask = (): UseMutationResult => {
-//   const mutationKey = 'updateTask';
+export const useUpdateTask = (): UseMutationResult => {
+  const mutationKey = 'updateTask';
 
-//   const processData = (data: UpdateTaskResponse): Task => {
-//     return data.updateTask;
-//   };
+  const processData = (data: UpdateTaskResponse): Task => {
+    return data.updateTask;
+  };
 
-//   return useApiMutation(
-//     gql`
-//       mutation ${mutationKey}($updateTaskInput: UpdateTaskInput!) {
-//         updateTask(updateTaskInput: $updateTaskInput) {
-//           name
-//         }
-//       }
-//     `,
-//     processData,
-//   );
-// };
+  return useApiMutation(
+    gql`
+      mutation ${mutationKey}($updateTaskInput: UpdateTaskInput!) {
+        updateTask(updateTaskInput: $updateTaskInput) {
+          id
+          name
+          project {
+            id
+            name
+          }
+          assignedTo {
+            id
+            email
+            firstName
+            lastName
+          }
+        }
+      }
+    `,
+    processData,
+  );
+};
 
 // export const useCreateTask = (): UseMutationResult => {
 //   const mutationKey = 'createTask';

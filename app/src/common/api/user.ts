@@ -3,12 +3,12 @@ import { UseQueryResult } from '@tanstack/react-query';
 
 import { useApiQuery } from 'src/common/api';
 import User from 'src/common/models/User';
-import SearchUsersQueryResponse from 'src/common/models/responses/SearchUsersQueryResponse';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import SearchUsersResponse from 'src/common/models/responses/SearchUsersResponse';
+import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 
 export const useUserInfo = (): UseQueryResult<User> => {
   const queryKey = ['userInfo'];
-  const processData = (data: UserInfoQueryResponse): User => {
+  const processData = (data: UserInfoResponse): User => {
     return data.userInfo;
   };
 
@@ -17,18 +17,21 @@ export const useUserInfo = (): UseQueryResult<User> => {
     gql`
       {
         ${queryKey} {
-          user_id
+          id
           username
           email
           firstName
           lastName
-          jobTitle
+          attributes {
+            name
+            value
+          }
           permissions {
             rsname
             scopes
           }
           organizations {
-            organization_id
+            id
             name
           }
         }
@@ -40,7 +43,7 @@ export const useUserInfo = (): UseQueryResult<User> => {
 
 export const useSearchUsers = (organizationId: string): UseQueryResult<User[]> => {
   const queryKey = ['searchUsers', organizationId];
-  const processData = (data: SearchUsersQueryResponse): User[] => {
+  const processData = (data: SearchUsersResponse): User[] => {
     return data.searchUsers;
   };
 
@@ -49,12 +52,15 @@ export const useSearchUsers = (organizationId: string): UseQueryResult<User[]> =
     gql`
       {
         ${queryKey[0]}(organizationId: "${organizationId}") {
-          user_id
+          id
           username
           email
           firstName
           lastName
-          jobTitle
+          attributes {
+            name
+            value
+          }
         }
       }
     `,

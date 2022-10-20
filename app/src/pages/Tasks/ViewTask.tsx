@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -11,14 +11,14 @@ import { useGetTask } from 'src/common/api/task';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TaskPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 
 const Task = () => {
   const params = useParams();
   const taskId = params.taskId || '';
-  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
+  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
 
   const updateTaskPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
@@ -48,8 +48,11 @@ const Task = () => {
           <Grid item>{updateTaskButton}</Grid>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Typography variant="body1">Status: {data?.task_status_type.name}</Typography>
-          <Typography variant="body1">Assigned to: {data?.assigned_to_user.username}</Typography>
+          <Typography variant="body1" sx={{ mb: 3 }}>
+            Project: <NavLink to={`/projects/${data?.project.id}`}>{data?.project.name}</NavLink>
+          </Typography>
+          <Typography variant="body1">Status: {data?.taskStatusType.name}</Typography>
+          <Typography variant="body1">Assigned to: {data?.assignedTo.username}</Typography>
           <Typography variant="body1">Description: {data?.description}</Typography>
         </Grid>
       </Paper>

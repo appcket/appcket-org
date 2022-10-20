@@ -14,14 +14,14 @@ import { useGetTeam } from 'src/common/api/team';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoQueryResponse from 'src/common/models/responses/UserInfoQueryResponse';
+import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 
 const Team = () => {
   const params = useParams();
   const teamId = params.teamId || '';
-  const userInfoQuery = useQuery<UserInfoQueryResponse>(['userInfo']);
+  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
 
   const updateTeamPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
@@ -52,7 +52,7 @@ const Team = () => {
         </Typography>
         <List>
           {data?.users.map((user) => (
-            <ListItem key={user.user_id}>
+            <ListItem key={user.id}>
               <ListItemText primary={user.firstName} />
             </ListItem>
           ))}
@@ -66,6 +66,7 @@ const Team = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography variant="body1">Organization: {data?.organization.name}</Typography>
+          <Typography variant="body1">Description: {data?.description}</Typography>
           {usersComponent}
         </Grid>
       </Paper>
