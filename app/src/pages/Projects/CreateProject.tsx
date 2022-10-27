@@ -95,12 +95,13 @@ const CreateProject = () => {
     organizationSelectMenu = (
       <Typography paragraph>Error: {userInfoQuery.error.message}</Typography>
     );
-  } else if (userInfoQuery.isSuccess) {
+  } else if (userInfoQuery.isSuccess && userInfoQuery.data.userInfo.organizations) {
     const options = resourcesToSelectMenuOptions<Organization>(
       userInfoQuery.data.userInfo.organizations,
       'id',
       'name',
     );
+
     organizationSelectMenu = (
       <FormSelectMenu
         name="organizationId"

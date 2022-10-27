@@ -20,7 +20,13 @@ export class UpdateTaskService {
   public async updateTask(data: UpdateTaskInput, userId: string): Promise<Task> {
     const task = await this.getTaskService.getTask(data.id);
 
-    wrap(task).assign(data);
+    wrap(task).assign({
+      name: data.name,
+      description: data.description,
+      project: data.projectId,
+      taskStatusType: data.taskStatusTypeId,
+      assignedTo: data.assignedTo,
+    });
     await this.taskRepository.persistAndFlush(task);
 
     const updatedTask = await this.getTaskService.getTask(data.id);

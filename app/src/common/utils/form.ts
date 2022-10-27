@@ -1,11 +1,11 @@
 export const resourcesToSelectMenuOptions = <T>(
   resources: T[],
-  valueName: keyof T,
+  idName: keyof T,
   labelName: keyof T,
 ) => {
   return resources.map((resource) => {
     return {
-      value: resource[valueName],
+      id: resource[idName],
       label: resource[labelName],
     };
   });

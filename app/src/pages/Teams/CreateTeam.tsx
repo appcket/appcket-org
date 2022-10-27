@@ -14,14 +14,12 @@ import PageHeader from 'src/common/components/PageHeader';
 import CreateTeamInput from 'src/common/models/inputs/CreateTeamInput';
 import { useCreateTeam } from 'src/common/api/team';
 import Team from 'src/common/models/Team';
-import Organization from 'src/common/models/Organization';
 import User from 'src/common/models/User';
 import { FormTextField } from 'src/common/components/form/FormTextField';
 import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
 import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
-import { resourcesToSelectMenuOptions } from 'src/common/utils/form';
 import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
 
@@ -96,11 +94,9 @@ const CreateTeam = () => {
       <Typography paragraph>Error: {userInfoQuery.error.message}</Typography>
     );
   } else if (userInfoQuery.isSuccess) {
-    const options = resourcesToSelectMenuOptions<Organization>(
-      userInfoQuery.data.userInfo.organizations,
-      'id',
-      'name',
-    );
+    const options = userInfoQuery.data.userInfo.organizations?.map((organization) => {
+      return { id: organization.id, label: organization.name };
+    });
     organizationSelectMenu = (
       <FormSelectMenu
         name="organizationId"

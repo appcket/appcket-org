@@ -28,7 +28,7 @@ const ViewTeams = () => {
   );
 
   let createTeamButton = (
-    <Button variant="outlined" disabled>
+    <Button variant="outlined" startIcon={<AddCircleOutlineOutlinedIcon />} disabled>
       Create Team
     </Button>
   );

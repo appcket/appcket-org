@@ -27,8 +27,8 @@ const ViewProjects = () => {
   );
 
   let createProjectButton = (
-    <Button variant="outlined" disabled>
-      Create
+    <Button variant="outlined" startIcon={<AddCircleOutlineOutlinedIcon />} disabled>
+      Create Project
     </Button>
   );
 

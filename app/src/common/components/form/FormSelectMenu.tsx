@@ -3,14 +3,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { FormInputProps } from 'src/common/components/form/FormInputProps';
 
-const FormSelectMenu = ({
-  name,
-  className = null,
-  control,
-  label,
-  rules,
-  options,
-}: FormInputProps) => {
+const FormSelectMenu = ({ name, className, control, label, rules, options }: FormInputProps) => {
   return (
     <Controller
       name={name}
@@ -31,7 +24,7 @@ const FormSelectMenu = ({
           variant="outlined"
         >
           {options?.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
+            <MenuItem key={option.id} value={option.id}>
               {option.label}
             </MenuItem>
           ))}

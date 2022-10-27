@@ -36,10 +36,10 @@ export const useSearchTasks = (projectIds: string[]): UseQueryResult<Task[]> => 
   );
 };
 
-export const useGetTask = (taskId: string): UseQueryResult<Task> => {
+export const useGetTask = (taskId: string): UseQueryResult<GetTaskResponse> => {
   const queryKey = ['getTask'];
-  const processData = (data: GetTaskResponse): Task => {
-    return data.getTask;
+  const processData = (data: GetTaskResponse) => {
+    return data;
   };
 
   return useApiQuery(
@@ -71,6 +71,10 @@ export const useGetTask = (taskId: string): UseQueryResult<Task> => {
             lastName
           }
         }
+        getTaskStatusTypes {
+          id
+          name
+        }
       }
     `,
     processData,
@@ -90,6 +94,10 @@ export const useUpdateTask = (): UseMutationResult => {
         updateTask(updateTaskInput: $updateTaskInput) {
           id
           name
+          taskStatusType {
+            id
+            name
+          }
           project {
             id
             name

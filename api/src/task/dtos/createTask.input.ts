@@ -6,11 +6,6 @@ export class CreateTaskInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  taskStatusTypeId: string;
-
-  @Field()
-  @IsString()
-  @IsNotEmpty()
   @MaxLength(100)
   @MinLength(1)
   name: string;
@@ -20,6 +15,11 @@ export class CreateTaskInput {
   @IsString()
   @MaxLength(5000)
   description: string;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  taskStatusTypeId: string;
 
   @Field()
   @IsUUID()

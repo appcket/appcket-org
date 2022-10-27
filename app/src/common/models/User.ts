@@ -2,13 +2,13 @@ import Permission from 'src/common/models/Permission';
 import Organization from 'src/common/models/Organization';
 
 export default interface User {
-  id?: string;
+  id: string;
   username: string;
   email: string;
   firstName: string;
   lastName: string;
-  permissions: Permission[];
-  organizations: Organization[];
+  permissions?: Permission[];
+  organizations?: Organization[];
   attributes: [
     {
       name: string;

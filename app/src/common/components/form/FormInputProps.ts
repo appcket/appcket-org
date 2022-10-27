@@ -1,14 +1,15 @@
 export interface FormSelectMenuOption {
   label: string;
-  value: string;
+  id: string;
 }
 
 export interface FormInputProps {
   name: string;
-  className?: string | string[] | null;
+  className?: string;
   control: any;
   label: string;
   rules?: any;
+  value?: any;
   setValue?: any;
   options?: FormSelectMenuOption[];
 }

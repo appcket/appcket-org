@@ -49,19 +49,22 @@ const Task = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography variant="body1" sx={{ mb: 3 }}>
-            Project: <NavLink to={`/projects/${data?.project.id}`}>{data?.project.name}</NavLink>
+            Project:{' '}
+            <NavLink to={`/projects/${data?.getTask?.project.id}`}>
+              {data?.getTask?.project.name}
+            </NavLink>
           </Typography>
-          <Typography variant="body1">Status: {data?.taskStatusType.name}</Typography>
-          <Typography variant="body1">Assigned to: {data?.assignedTo.username}</Typography>
-          <Typography variant="body1">Description: {data?.description}</Typography>
+          <Typography variant="body1">Status: {data?.getTask?.taskStatusType.name}</Typography>
+          <Typography variant="body1">Assigned to: {data?.getTask?.assignedTo.username}</Typography>
+          <Typography variant="body1">Description: {data?.getTask?.description}</Typography>
         </Grid>
       </Paper>
     );
   }
 
   return (
-    <Page title={`Task - ${data?.name}`}>
-      <PageHeader title={data?.name} subTitle="Task details" />
+    <Page title={`Task - ${data?.getTask?.name}`}>
+      <PageHeader title={data?.getTask?.name} subTitle="Task details" />
       {taskComponent}
     </Page>
   );

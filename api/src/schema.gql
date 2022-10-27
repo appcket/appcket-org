@@ -72,6 +72,7 @@ type Query {
   searchProjects(searchString: String, limit: Float, offset: Float, orderBy: ProjectOrderByUpdatedAtInput): [Project!]!
   searchTasks(searchTasksInput: SearchTasksInput!): [Task!]!
   getTask(id: String!): Task
+  getTaskStatusTypes: [TaskStatusType!]!
   getTeam(id: String!): Team
   searchTeams(searchString: String, limit: Float, offset: Float, orderBy: TeamOrderByUpdatedAtInput): [Team!]!
   userInfo: User!
@@ -128,17 +129,17 @@ input CreateProjectInput {
 }
 
 input CreateTaskInput {
-  taskStatusTypeId: String!
   name: String!
   description: String
+  taskStatusTypeId: String!
   projectId: String!
   assignedTo: String!
 }
 
 input UpdateTaskInput {
-  taskStatusTypeId: String!
   name: String!
   description: String
+  taskStatusTypeId: String!
   projectId: String!
   assignedTo: String!
   id: String!

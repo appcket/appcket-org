@@ -6,8 +6,6 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
@@ -15,6 +13,7 @@ import UpdateTaskInput from 'src/common/models/inputs/UpdateTaskInput';
 import { useGetTask, useUpdateTask } from 'src/common/api/task';
 import Task from 'src/common/models/Task';
 import { FormTextField } from 'src/common/components/form/FormTextField';
+import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
 import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
 
@@ -35,6 +34,8 @@ const EditTask = () => {
     mode: 'all',
     defaultValues: {
       name: '',
+      description: '',
+      assignedTo: '',
     },
   });
 
@@ -43,12 +44,15 @@ const EditTask = () => {
 
   useEffect(() => {
     reset({
-      name: getTaskQuery?.data?.name ?? '',
-      description: getTaskQuery?.data?.description ?? '',
-      assignedTo: getTaskQuery?.data?.assignedTo.id ?? '',
+      name: getTaskQuery?.data?.getTask?.name ?? '',
+      description: getTaskQuery?.data?.getTask?.description ?? '',
+      taskStatusTypeId: getTaskQuery?.data?.getTask?.taskStatusType.id ?? '',
+      assignedTo: getTaskQuery?.data?.getTask?.assignedTo.id ?? '',
     });
-  }, [reset, getTaskQuery.data]);
+  }, [reset, getTaskQuery?.data?.getTask]);
 
+  let taskStatusTypeFormField;
+  let assignedToFormField;
   let editTaskComponent;
 
   if (getTaskQuery.status === 'loading' || getTaskQuery.isFetching) {
@@ -58,9 +62,46 @@ const EditTask = () => {
   } else if (getTaskQuery.isSuccess) {
     editTaskComponent = <Typography paragraph>Unable to view Task</Typography>;
 
+    const taskStatusTypeOptions = getTaskQuery.data.getTaskStatusTypes.map((taskStatusType) => {
+      return { id: taskStatusType.id, label: taskStatusType.name };
+    });
+    taskStatusTypeFormField = (
+      <FormSelectMenu
+        name="taskStatusTypeId"
+        className="mb-4"
+        control={control}
+        label="Status"
+        options={taskStatusTypeOptions}
+      />
+    );
+
+    const projectUserOptions = getTaskQuery.data.getTask.project.users.map((user) => {
+      return { id: user.id, label: `${user.firstName} ${user.lastName ? user.lastName : ''}` };
+    });
+    assignedToFormField = (
+      // <FormAutocomplete
+      //   name="assignedTo"
+      //   control={control}
+      //   label="Assigned To"
+      //   value={{
+      //     id: getTaskQuery.data.getTask.assignedTo.id,
+      //     label: getTaskQuery.data.getTask.assignedTo.firstName,
+      //   }}
+      //   options={projectUserOptions}
+      // />
+
+      <FormSelectMenu
+        name="assignedTo"
+        className="mb-4"
+        control={control}
+        label="Assigned To"
+        options={projectUserOptions}
+      />
+    );
+
     const onSubmit = async (updateTaskInput: UpdateTaskInput) => {
-      updateTaskInput.projectId = getTaskQuery.data.project.id;
-      updateTaskInput.id = getTaskQuery.data.id;
+      updateTaskInput.projectId = getTaskQuery.data.getTask.project.id;
+      updateTaskInput.id = getTaskQuery.data.getTask.id;
 
       updateTask.mutate(
         { updateTaskInput },
@@ -70,7 +111,7 @@ const EditTask = () => {
             enqueueSnackbar(`Updated Task successfully: ${updatedTask.name}`, {
               variant: 'success',
             });
-            navigate('/tasks');
+            navigate(`/tasks/${updatedTask.id}`);
           },
         },
       );
@@ -85,8 +126,8 @@ const EditTask = () => {
         </Grid>
         <Typography variant="body1" sx={{ mb: 3 }}>
           Project:{' '}
-          <NavLink to={`/projects/${getTaskQuery.data.project.id}`}>
-            {getTaskQuery.data.project.name}
+          <NavLink to={`/projects/${getTaskQuery.data.getTask.project.id}`}>
+            {getTaskQuery.data.getTask.project.name}
           </NavLink>
         </Typography>
         <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
@@ -104,6 +145,7 @@ const EditTask = () => {
 
         <FormTextField
           name="description"
+          className="mb-4"
           control={control}
           label="Description"
           rules={{
@@ -111,14 +153,9 @@ const EditTask = () => {
           }}
         />
 
-        <Autocomplete
-          disablePortal
-          options={getTaskQuery?.data?.project.users}
-          getOptionLabel={(option) =>
-            `${option.firstName} ${option.lastName ? option.lastName : ''}`
-          }
-          renderInput={(params) => <TextField {...params} label="Assigned to" />}
-        />
+        {taskStatusTypeFormField}
+
+        {assignedToFormField}
 
         <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
           <Grid item>
@@ -145,8 +182,8 @@ const EditTask = () => {
   }
 
   return (
-    <Page title={`Edit Task - ${getTaskQuery.data?.name}`}>
-      <PageHeader title={getTaskQuery.data?.name} subTitle="Edit Task details" />
+    <Page title={`Edit Task - ${getTaskQuery?.data?.getTask?.name}`}>
+      <PageHeader title={getTaskQuery?.data?.getTask?.name} subTitle="Edit Task details" />
       <div>{editTaskComponent}</div>
     </Page>
   );
