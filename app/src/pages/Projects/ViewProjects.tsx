@@ -56,6 +56,12 @@ const ViewProjects = () => {
         return <NavLink to={`/projects/${cellValues.row.id}`}>{cellValues.row.name}</NavLink>;
       },
     },
+    {
+      field: 'organization',
+      headerName: 'Organization',
+      flex: 0.75,
+      renderCell: (cellValues) => cellValues.row.organization.name,
+    },
   ];
 
   if (status === 'loading') {

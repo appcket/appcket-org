@@ -115,7 +115,7 @@ type Mutation {
 
 input UpdateProjectInput {
   name: String!
-  description: String!
+  description: String
   organizationId: String!
   userIds: [String!]!
   id: String!
@@ -123,7 +123,7 @@ input UpdateProjectInput {
 
 input CreateProjectInput {
   name: String!
-  description: String!
+  description: String
   organizationId: String!
   userIds: [String!]!
 }

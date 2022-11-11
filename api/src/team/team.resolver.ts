@@ -40,8 +40,8 @@ export class TeamResolver {
   @Query(() => Team, { nullable: true })
   @Permissions(`${Resources.Team}#${TeamPermission.read}`)
   @UseGuards(PermissionsGuard)
-  async getTeam(@Args('id') id: string) {
-    return await this.getTeamService.getTeam(id);
+  async getTeam(@Args('id') id: string, @Context() ctx) {
+    return await this.getTeamService.getTeam(id, ctx.user.id);
   }
 
   @Query(() => [Team])
@@ -52,8 +52,9 @@ export class TeamResolver {
     @Args('limit', { nullable: true }) limit: number,
     @Args('offset', { nullable: true }) offset: number,
     @Args('orderBy', { nullable: true }) orderBy: TeamOrderByUpdatedAtInput,
+    @Context() ctx,
   ) {
-    return await this.searchTeamsService.searchTeams(searchString, limit, offset);
+    return await this.searchTeamsService.searchTeams(searchString, limit, offset, ctx.user.id);
   }
 
   @Mutation(() => Team)

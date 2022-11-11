@@ -2,7 +2,15 @@ import { Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { FormInputProps } from './FormInputProps';
 
-export const FormTextField = ({ name, className, control, label, rules }: FormInputProps) => {
+export const FormTextField = ({
+  name,
+  className,
+  control,
+  label,
+  multiline = false,
+  rows = 4,
+  rules,
+}: FormInputProps) => {
   return (
     <Controller
       name={name}
@@ -19,6 +27,8 @@ export const FormTextField = ({ name, className, control, label, rules }: FormIn
           value={value}
           fullWidth
           label={label}
+          multiline={multiline}
+          rows={rows}
           variant="outlined"
         />
       )}

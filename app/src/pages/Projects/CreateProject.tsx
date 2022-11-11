@@ -38,6 +38,7 @@ const CreateProject = () => {
     mode: 'all',
     defaultValues: {
       name: '',
+      description: '',
       organizationId: '',
     },
   });
@@ -59,7 +60,7 @@ const CreateProject = () => {
   };
 
   useEffect(() => {
-    reset({ name: '', organizationId: '' });
+    reset({ name: '', description: '', organizationId: '' });
     useStore.setState((state) => ({
       resourceUsers: {
         ...state.resourceUsers,
@@ -135,6 +136,17 @@ const CreateProject = () => {
         />
       </Grid>
 
+      <FormTextField
+        name="description"
+        control={control}
+        label="Description"
+        multiline
+        rows={3}
+        rules={{
+          maxLength: { value: 500, message: 'This field must be less than 500 characters' },
+        }}
+      />
+
       {watchOrganizationId && organizationUsersGrid}
 
       <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
@@ -163,7 +175,7 @@ const CreateProject = () => {
 
   return (
     <Page title="Create New Project">
-      <PageHeader title="New Project" subTitle="Create a new project for your organization">
+      <PageHeader title="New Project" subTitle="Create a new project for an organization">
         <Grid container justifyContent="flex-end">
           <Grid>
             <CancelButton linkTo="../" />

@@ -21,6 +21,10 @@ export const useSearchProjects = (searchString: string): UseQueryResult<Project[
         ${queryKey}(searchString: "${searchString}") {
           id
           name
+          organization {
+            id
+            name
+          }
         }
       }
     `,

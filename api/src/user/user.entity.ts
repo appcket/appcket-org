@@ -15,7 +15,7 @@ import { UserAttribute } from 'src/user/userAttribute.entity';
 @Entity({ schema: 'keycloak', tableName: 'user_entity' })
 export class User {
   @Field()
-  @PrimaryKey({ columnType: 'uuid' })
+  @PrimaryKey({ length: 36 })
   id: string;
 
   @Field()
@@ -39,6 +39,7 @@ export class User {
     entity: () => Organization,
     pivotEntity: () => OrganizationUser,
     pivotTable: 'appcket.organization_user',
+    inversedBy: 'users',
   })
   organizations = new Collection<Organization>(this);
 

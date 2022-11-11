@@ -16,11 +16,11 @@
     "postcss": "^8.4.16"
   },
   "dependencies": {
-    "astro": "^1.2.2",
-    "astro-icon": "^0.7.3",
-    "daisyui": "^2.27.0",
-    "luxon": "^3.0.3",
-    "prettier-plugin-astro": "^0.5.4",
+    "astro": "^1.6.5",
+    "astro-icon": "^0.8.0",
+    "daisyui": "^2.39.0",
+    "luxon": "^3.1.0",
+    "prettier-plugin-astro": "^0.7.0",
     "theme-change": "^2.2.0"
   }
 }

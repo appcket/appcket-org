@@ -1,4 +1,4 @@
-import { Entity, Index, ManyToOne, OptionalProps, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, PrimaryKey } from '@mikro-orm/core';
 import { Organization } from './organization.entity';
 import { User } from 'src/user/user.entity';
 

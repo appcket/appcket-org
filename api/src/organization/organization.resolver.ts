@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Context, Resolver, Query, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
@@ -19,7 +19,7 @@ export class OrganizationResolver {
   @Query(() => Organization, { nullable: true })
   @Permissions(`${Resources.Organization}#${OrganizationPermission.read}`)
   @UseGuards(PermissionsGuard)
-  async getOrganization(@Args('id') id: string) {
-    return await this.getOrganizationService.getOrganization(id);
+  async getOrganization(@Args('id') id: string, @Context() ctx) {
+    return await this.getOrganizationService.getOrganization(id, ctx.user.id);
   }
 }

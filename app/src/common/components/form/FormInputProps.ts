@@ -12,4 +12,6 @@ export interface FormInputProps {
   value?: any;
   setValue?: any;
   options?: FormSelectMenuOption[];
+  multiline?: boolean;
+  rows?: number;
 }

@@ -4,6 +4,7 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 
 import { CommonService } from 'src/common/services/common.service';
 import { Team } from 'src/team/team.entity';
+import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 
 @Injectable()
 export class GetTeamService {
@@ -12,12 +13,18 @@ export class GetTeamService {
     @InjectRepository(Team)
     private readonly teamRepository: EntityRepository<Team>,
     private commonService: CommonService,
+    private getOrganizationService: GetOrganizationService,
   ) {}
 
-  public async getTeam(id: string): Promise<Team> {
-    const team = await this.teamRepository.findOneOrFail(id, {
-      populate: ['organization', 'users'],
-    });
+  public async getTeam(id: string, userId: string): Promise<Team> {
+    const userOrganizationIds = await this.getOrganizationService.getUserOrganizationIds(userId);
+    const organizationWhere = { $in: userOrganizationIds };
+    const team = await this.teamRepository.findOneOrFail(
+      { id, organization: organizationWhere },
+      {
+        populate: ['organization', 'users'],
+      },
+    );
 
     return team;
   }

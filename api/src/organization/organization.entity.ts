@@ -31,6 +31,7 @@ export class Organization {
     entity: () => User,
     pivotEntity: () => OrganizationUser,
     pivotTable: 'organization_user',
+    mappedBy: 'organizations',
   })
   users = new Collection<User>(this);
 }

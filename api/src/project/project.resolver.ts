@@ -24,7 +24,7 @@ export class ProjectCreateInput {
 
 @InputType()
 class ProjectOrderByUpdatedAtInput {
-  @Field((type) => SortOrder)
+  @Field(() => SortOrder)
   updated_at: SortOrder;
 }
 
@@ -40,8 +40,8 @@ export class ProjectResolver {
   @Query(() => Project, { nullable: true })
   @Permissions(`${Resources.Project}#${ProjectPermission.read}`)
   @UseGuards(PermissionsGuard)
-  async getProject(@Args('id') id: string) {
-    return await this.getProjectService.getProject(id);
+  async getProject(@Args('id') id: string, @Context() ctx) {
+    return await this.getProjectService.getProject(id, ctx.user.id);
   }
 
   @Query(() => [Project])
@@ -52,8 +52,14 @@ export class ProjectResolver {
     @Args('limit', { nullable: true }) limit: number,
     @Args('offset', { nullable: true }) offset: number,
     @Args('orderBy', { nullable: true }) orderBy: ProjectOrderByUpdatedAtInput,
+    @Context() ctx,
   ) {
-    return await this.searchProjectsService.searchProjects(searchString, limit, offset);
+    return await this.searchProjectsService.searchProjects(
+      searchString,
+      limit,
+      offset,
+      ctx.user.id,
+    );
   }
 
   @Mutation(() => Project)

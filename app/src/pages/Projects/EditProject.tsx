@@ -139,6 +139,8 @@ const EditProject = () => {
           name="description"
           control={control}
           label="Description"
+          multiline
+          rows={3}
           rules={{
             maxLength: { value: 500, message: 'This field must be less than 500 characters' },
           }}

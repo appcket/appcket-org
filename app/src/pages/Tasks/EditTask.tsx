@@ -148,6 +148,8 @@ const EditTask = () => {
           className="mb-4"
           control={control}
           label="Description"
+          multiline
+          rows={3}
           rules={{
             maxLength: { value: 5000, message: 'This field must be less than 5000 characters' },
           }}

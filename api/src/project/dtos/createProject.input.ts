@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsString, IsNotEmpty, IsUUID, MaxLength, MinLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsUUID, MaxLength, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateProjectInput {
@@ -10,7 +10,8 @@ export class CreateProjectInput {
   @MinLength(1)
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
+  @IsOptional()
   @IsString()
   @MaxLength(500)
   description: string;

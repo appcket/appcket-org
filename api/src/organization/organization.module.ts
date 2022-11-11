@@ -6,9 +6,13 @@ import { CommonModule } from 'src/common/common.module';
 import { OrganizationResolver } from './organization.resolver';
 import { Organization } from './organization.entity';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
+import { OrganizationUser } from 'src/organization/organizationUser.entity';
 
 @Module({
-  imports: [CommonModule, MikroOrmModule.forFeature({ entities: [Organization] })],
+  imports: [
+    CommonModule,
+    MikroOrmModule.forFeature({ entities: [Organization, OrganizationUser] }),
+  ],
   providers: [AuthorizationService, GetOrganizationService, OrganizationResolver],
 })
 export class OrganizationModule {}
