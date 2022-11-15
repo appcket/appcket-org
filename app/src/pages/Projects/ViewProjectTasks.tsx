@@ -80,9 +80,9 @@ const ViewProjectTasks = () => {
   }
 
   return (
-    <Page title={`${getProjectResult.data?.name} Tasks`}>
+    <Page title={`${getProjectResult.data?.getProject.name} Tasks`}>
       <PageHeader
-        title={`${getProjectResult.data?.name} Tasks`}
+        title={`${getProjectResult.data?.getProject.name} Tasks`}
         subTitle="Manage tasks for a project"
       >
         <Grid container justifyContent="flex-end">

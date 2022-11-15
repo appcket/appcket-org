@@ -54,8 +54,16 @@ const Task = () => {
               {data?.getTask?.project.name}
             </NavLink>
           </Typography>
-          <Typography variant="body1">Status: {data?.getTask?.taskStatusType.name}</Typography>
-          <Typography variant="body1">Assigned to: {data?.getTask?.assignedTo.username}</Typography>
+          <Typography variant="body1">
+            Status:{' '}
+            {data?.getTask?.taskStatusType ? data?.getTask?.taskStatusType?.name : 'Status Not Set'}
+          </Typography>
+          <Typography variant="body1">
+            Assigned to:{' '}
+            {data?.getTask?.assignedTo?.username
+              ? data?.getTask?.assignedTo?.username
+              : 'Unassigned'}
+          </Typography>
           <Typography variant="body1">Description: {data?.getTask?.description}</Typography>
         </Grid>
       </Paper>

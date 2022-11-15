@@ -41,8 +41,8 @@ export class TaskResolver {
   @Query(() => Task, { nullable: true })
   @Permissions(`${Resources.Task}#${TaskPermission.read}`)
   @UseGuards(PermissionsGuard)
-  async getTask(@Args('id') id: string) {
-    return await this.getTaskService.getTask(id);
+  async getTask(@Args('id') id: string, @Context() ctx) {
+    return await this.getTaskService.getTask(id, ctx.user.id);
   }
 
   @Mutation(() => Task)

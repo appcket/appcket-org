@@ -9,19 +9,20 @@ import { useSnackbar } from 'notistack';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import UpdateTaskInput from 'src/common/models/inputs/UpdateTaskInput';
-import { useGetTask, useUpdateTask } from 'src/common/api/task';
+import CreateTaskInput from 'src/common/models/inputs/CreateTaskInput';
+import { useCreateTask } from 'src/common/api/task';
+import { useGetProject } from 'src/common/api/project';
 import Task from 'src/common/models/Task';
 import { FormTextField } from 'src/common/components/form/FormTextField';
 import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
 import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
 
-const EditTask = () => {
+const CreateTask = () => {
   const params = useParams();
-  let taskId = '';
-  if (params.taskId) {
-    taskId = params.taskId;
+  let projectId = '';
+  if (params.projectId) {
+    projectId = params.projectId;
   }
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -30,7 +31,7 @@ const EditTask = () => {
     handleSubmit,
     reset,
     control,
-  } = useForm<UpdateTaskInput>({
+  } = useForm<CreateTaskInput>({
     mode: 'all',
     defaultValues: {
       name: '',
@@ -39,30 +40,30 @@ const EditTask = () => {
     },
   });
 
-  const getTaskQuery = useGetTask(taskId);
-  const updateTask = useUpdateTask();
+  const createTask = useCreateTask();
+  const getProjectQuery = useGetProject(projectId);
 
   useEffect(() => {
     reset({
-      name: getTaskQuery?.data?.getTask?.name ?? '',
-      description: getTaskQuery?.data?.getTask?.description ?? '',
-      taskStatusTypeId: getTaskQuery?.data?.getTask?.taskStatusType?.id ?? '',
-      assignedTo: getTaskQuery?.data?.getTask?.assignedTo?.id ?? '',
+      name: '',
+      description: '',
+      taskStatusTypeId: '',
+      assignedTo: '',
     });
-  }, [reset, getTaskQuery?.data?.getTask]);
+  }, [reset]);
 
   let taskStatusTypeFormField;
   let assignedToFormField;
-  let editTaskComponent;
+  let createTaskComponent;
 
-  if (getTaskQuery.status === 'loading' || getTaskQuery.isFetching) {
-    editTaskComponent = <Loading />;
-  } else if (getTaskQuery.status === 'error' && getTaskQuery.error instanceof Error) {
-    editTaskComponent = <Typography paragraph>Error: {getTaskQuery.error.message}</Typography>;
-  } else if (getTaskQuery.isSuccess) {
-    editTaskComponent = <Typography paragraph>Unable to view Task</Typography>;
+  if (getProjectQuery.status === 'loading' || getProjectQuery.isFetching) {
+    createTaskComponent = <Loading />;
+  } else if (getProjectQuery.status === 'error' && getProjectQuery.error instanceof Error) {
+    createTaskComponent = <Typography paragraph>Error: {getProjectQuery.error.message}</Typography>;
+  } else if (getProjectQuery.isSuccess) {
+    createTaskComponent = <Typography paragraph>Unable to get Project</Typography>;
 
-    const taskStatusTypeOptions = getTaskQuery.data.getTaskStatusTypes.map((taskStatusType) => {
+    const taskStatusTypeOptions = getProjectQuery.data.getTaskStatusTypes.map((taskStatusType) => {
       return { id: taskStatusType.id, label: taskStatusType.name };
     });
     taskStatusTypeFormField = (
@@ -75,21 +76,10 @@ const EditTask = () => {
       />
     );
 
-    const projectUserOptions = getTaskQuery.data.getTask.project.users.map((user) => {
+    const projectUserOptions = getProjectQuery.data.getProject.users.map((user) => {
       return { id: user.id, label: `${user.firstName} ${user.lastName ? user.lastName : ''}` };
     });
     assignedToFormField = (
-      // <FormAutocomplete
-      //   name="assignedTo"
-      //   control={control}
-      //   label="Assigned To"
-      //   value={{
-      //     id: getTaskQuery.data.getTask.assignedTo.id,
-      //     label: getTaskQuery.data.getTask.assignedTo.firstName,
-      //   }}
-      //   options={projectUserOptions}
-      // />
-
       <FormSelectMenu
         name="assignedTo"
         className="mb-4"
@@ -99,35 +89,34 @@ const EditTask = () => {
       />
     );
 
-    const onSubmit = async (updateTaskInput: UpdateTaskInput) => {
-      updateTaskInput.projectId = getTaskQuery.data.getTask.project.id;
-      updateTaskInput.id = getTaskQuery.data.getTask.id;
+    const onSubmit = async (createTaskInput: CreateTaskInput) => {
+      createTaskInput.projectId = getProjectQuery.data.getProject.id;
 
-      updateTask.mutate(
-        { updateTaskInput },
+      createTask.mutate(
+        { createTaskInput },
         {
           onSuccess: (data) => {
-            const updatedTask = data as Task;
-            enqueueSnackbar(`Updated Task successfully: ${updatedTask.name}`, {
+            const createdTask = data as Task;
+            enqueueSnackbar(`Created Task successfully: ${createdTask.name}`, {
               variant: 'success',
             });
-            navigate(`/tasks/${updatedTask.id}`);
+            navigate(`/tasks/${createdTask.id}`);
           },
         },
       );
     };
 
-    editTaskComponent = (
+    createTaskComponent = (
       <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <CancelButton linkTo={`../${taskId}`} />
+            <CancelButton linkTo={`../${projectId}`} />
           </Grid>
         </Grid>
         <Typography variant="body1" sx={{ mb: 3 }}>
           Project:{' '}
-          <NavLink to={`/projects/${getTaskQuery.data.getTask.project.id}`}>
-            {getTaskQuery.data.getTask.project.name}
+          <NavLink to={`/projects/${getProjectQuery.data.getProject.id}`}>
+            {getProjectQuery.data.getProject.name}
           </NavLink>
         </Typography>
         <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
@@ -184,11 +173,11 @@ const EditTask = () => {
   }
 
   return (
-    <Page title={`Edit Task - ${getTaskQuery?.data?.getTask?.name}`}>
-      <PageHeader title={getTaskQuery?.data?.getTask?.name} subTitle="Edit Task details" />
-      <div>{editTaskComponent}</div>
+    <Page title="Create New Task">
+      <PageHeader title="New Task" subTitle="Create a new task for a project" />
+      <div>{createTaskComponent}</div>
     </Page>
   );
 };
 
-export default EditTask;
+export default CreateTask;

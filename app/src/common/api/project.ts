@@ -32,10 +32,10 @@ export const useSearchProjects = (searchString: string): UseQueryResult<Project[
   );
 };
 
-export const useGetProject = (projectId: string): UseQueryResult<Project> => {
+export const useGetProject = (projectId: string): UseQueryResult<GetProjectResponse> => {
   const queryKey = ['getProject'];
-  const processData = (data: GetProjectResponse): Project => {
-    return data.getProject;
+  const processData = (data: GetProjectResponse): GetProjectResponse => {
+    return data;
   };
 
   return useApiQuery(
@@ -61,6 +61,10 @@ export const useGetProject = (projectId: string): UseQueryResult<Project> => {
               value
             }
           }
+        }
+        getTaskStatusTypes {
+          id
+          name
         }
       }
     `,

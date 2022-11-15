@@ -142,7 +142,7 @@ const EditTeam = () => {
         {/* instead of passing selectedUsers prop to child components, we use zustand to hold local state.
             In this case, it tracks initially selected users and user-selected users so the 
             parent component can have this data and send it back to the api onSubmit*/}
-        <ResourceUsersGrid organizationId={getTeamQuery.data.organization.id} />
+        <ResourceUsersGrid resourceType="Team" organizationId={getTeamQuery.data.organization.id} />
 
         <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
           <Grid item>

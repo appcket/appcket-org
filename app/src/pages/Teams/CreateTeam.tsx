@@ -111,7 +111,9 @@ const CreateTeam = () => {
       />
     );
 
-    organizationUsersGrid = <ResourceUsersGrid organizationId={watchOrganizationId} />;
+    organizationUsersGrid = (
+      <ResourceUsersGrid resourceType="Team" organizationId={watchOrganizationId} />
+    );
   }
 
   const createTeamComponent = (

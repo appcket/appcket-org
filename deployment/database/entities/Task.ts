@@ -13,10 +13,10 @@ export class Task {
   @Property({ columnType: 'text', length: 500, nullable: true })
   description?: string;
 
-  @Property({ length: 36 })
+  @Property({ length: 36, nullable: true })
   assignedTo?: string;
 
-  @ManyToOne({ entity: () => TaskStatusType, fieldName: 'task_status_type_id', onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => TaskStatusType, fieldName: 'task_status_type_id', onUpdateIntegrity: 'cascade', nullable: true })
   taskStatusTypeId!: TaskStatusType;
 
   @ManyToOne({ entity: () => Project, fieldName: 'project_id', onUpdateIntegrity: 'cascade' })

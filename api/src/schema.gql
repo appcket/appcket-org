@@ -59,9 +59,9 @@ type TaskStatusType {
 type Task {
   id: String!
   name: String!
-  description: String!
-  assignedTo: User!
-  taskStatusType: TaskStatusType!
+  description: String
+  assignedTo: User
+  taskStatusType: TaskStatusType
   project: Project!
 }
 
@@ -129,19 +129,19 @@ input CreateProjectInput {
 }
 
 input CreateTaskInput {
+  projectId: String!
   name: String!
   description: String
-  taskStatusTypeId: String!
-  projectId: String!
-  assignedTo: String!
+  taskStatusTypeId: String
+  assignedTo: String
 }
 
 input UpdateTaskInput {
+  projectId: String!
   name: String!
   description: String
-  taskStatusTypeId: String!
-  projectId: String!
-  assignedTo: String!
+  taskStatusTypeId: String
+  assignedTo: String
   id: String!
 }
 

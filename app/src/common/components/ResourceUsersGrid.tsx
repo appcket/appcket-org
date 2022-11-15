@@ -6,6 +6,7 @@ import { useSearchUsers } from 'src/common/api/user';
 import { useStore } from 'src/common/store';
 
 type Props = {
+  resourceType: string;
   organizationId: string;
 };
 
@@ -13,7 +14,7 @@ function getFullName(params: GridValueGetterParams) {
   return `${params.row.firstName || ''} ${params.row.lastName || ''}`;
 }
 
-const ResourceUsersGrid = ({ organizationId }: Props) => {
+const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
   const searchUsersQuery = useSearchUsers(organizationId);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
 
@@ -33,7 +34,7 @@ const ResourceUsersGrid = ({ organizationId }: Props) => {
     return (
       <div style={{ height: 400, width: '100%' }}>
         <Typography variant="body1" sx={{ mb: 2 }}>
-          Team Users:
+          {resourceType} Users:
         </Typography>
         <DataGrid
           rows={rows}

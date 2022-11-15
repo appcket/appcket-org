@@ -8,7 +8,6 @@ import { GetOrganizationService } from 'src/organization/services/getOrganizatio
 
 @Injectable()
 export class GetTeamService {
-  private readonly entityType = 'Team';
   constructor(
     @InjectRepository(Team)
     private readonly teamRepository: EntityRepository<Team>,

@@ -48,10 +48,11 @@ const Project = () => {
     const usersComponent = (
       <div>
         <Typography variant="body1">
-          Users: {data?.users.length === 0 ? 'No users associated with this project' : null}
+          Users:{' '}
+          {data?.getProject.users.length === 0 ? 'No users associated with this project' : null}
         </Typography>
         <List>
-          {data?.users.map((user) => (
+          {data?.getProject.users.map((user) => (
             <ListItem key={user.id}>
               <ListItemText primary={user.firstName} />
             </ListItem>
@@ -62,15 +63,17 @@ const Project = () => {
 
     projectComponent = (
       <div>
-        <PageHeader title={data?.name} subTitle="Project details" />
+        <PageHeader title={data?.getProject.name} subTitle="Project details" />
 
         <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
           <Grid container justifyContent="flex-end">
             <Grid item>{updateProjectButton}</Grid>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Typography variant="body1">Organization: {data?.organization.name}</Typography>
-            <Typography variant="body1">Description: {data?.description}</Typography>
+            <Typography variant="body1">
+              Organization: {data?.getProject.organization.name}
+            </Typography>
+            <Typography variant="body1">Description: {data?.getProject.description}</Typography>
             <Typography variant="body1">
               <NavLink to={`tasks`}>View Tasks</NavLink>
             </Typography>
@@ -82,7 +85,7 @@ const Project = () => {
   }
 
   return (
-    <Page title={`Project - ${data?.name}`}>
+    <Page title={`Project - ${data?.getProject.name}`}>
       <div>{projectComponent}</div>
     </Page>
   );

@@ -7,8 +7,6 @@ import { TaskStatusType } from 'src/taskStatusType/taskStatusType.entity';
 
 @Injectable()
 export class GetTaskStatusTypesService {
-  private readonly entityType = 'TaskStatusType';
-
   constructor(
     @InjectRepository(TaskStatusType)
     private readonly taskStatusTypeRepository: EntityRepository<TaskStatusType>,

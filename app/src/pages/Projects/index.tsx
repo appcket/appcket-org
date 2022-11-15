@@ -8,6 +8,7 @@ import ViewProject from 'src/pages/Projects/ViewProject';
 import EditProject from 'src/pages/Projects/EditProject';
 import CreateProject from 'src/pages/Projects/CreateProject';
 import ViewProjectTasks from 'src/pages/Projects/ViewProjectTasks';
+import CreateTask from 'src/pages/Tasks/CreateTask';
 
 const Projects = () => {
   return (
@@ -49,6 +50,14 @@ const Projects = () => {
         element={
           <ProtectedRoute permission={[Resources.Task, TaskPermission.read]}>
             <ViewProjectTasks />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/:projectId/tasks/create"
+        element={
+          <ProtectedRoute permission={[Resources.Task, TaskPermission.create]}>
+            <CreateTask />
           </ProtectedRoute>
         }
       />

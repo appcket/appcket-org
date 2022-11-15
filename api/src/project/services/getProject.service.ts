@@ -18,6 +18,7 @@ export class GetProjectService {
   public async getProject(id: string, userId: string): Promise<Project> {
     const userOrganizationIds = await this.getOrganizationService.getUserOrganizationIds(userId);
     const organizationWhere = { $in: userOrganizationIds };
+
     const project = await this.projectRepository.findOneOrFail(
       { id, organization: organizationWhere },
       {

@@ -5,7 +5,7 @@ import { useApiMutation, useApiQuery } from 'src/common/api';
 import SearchTasksResponse from 'src/common/models/responses/SearchTasksResponse';
 import GetTaskResponse from 'src/common/models/responses/GetTaskResponse';
 import UpdateTaskResponse from 'src/common/models/responses/UpdateTaskResponse';
-// import CreateTaskResponse from 'src/common/models/responses/CreateTaskResponse';
+import CreateTaskResponse from 'src/common/models/responses/CreateTaskResponse';
 import Task from 'src/common/models/Task';
 
 export const useSearchTasks = (projectIds: string[]): UseQueryResult<Task[]> => {
@@ -115,21 +115,22 @@ export const useUpdateTask = (): UseMutationResult => {
   );
 };
 
-// export const useCreateTask = (): UseMutationResult => {
-//   const mutationKey = 'createTask';
+export const useCreateTask = (): UseMutationResult => {
+  const mutationKey = 'createTask';
 
-//   const processData = (data: CreateTaskResponse): Task => {
-//     return data.createTask;
-//   };
+  const processData = (data: CreateTaskResponse): Task => {
+    return data.createTask;
+  };
 
-//   return useApiMutation(
-//     gql`
-//       mutation ${mutationKey}($createTaskInput: CreateTaskInput!) {
-//         createTask(createTaskInput: $createTaskInput) {
-//           name
-//         }
-//       }
-//     `,
-//     processData,
-//   );
-// };
+  return useApiMutation(
+    gql`
+      mutation ${mutationKey}($createTaskInput: CreateTaskInput!) {
+        createTask(createTaskInput: $createTaskInput) {
+          id
+          name
+        }
+      }
+    `,
+    processData,
+  );
+};

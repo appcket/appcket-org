@@ -15,15 +15,15 @@ export class Task {
   @Property({ length: 100 })
   name!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Property({ columnType: 'text', length: 5000, nullable: true })
   description?: string;
 
-  @Field()
-  @OneToOne({ entity: () => User, fieldName: 'assigned_to', onUpdateIntegrity: 'cascade' })
+  @Field({ nullable: true })
+  @OneToOne({ entity: () => User, fieldName: 'assigned_to', onUpdateIntegrity: 'cascade', nullable: true })
   assignedTo!: User;
 
-  @Field()
+  @Field({ nullable: true })
   @ManyToOne({
     entity: () => TaskStatusType,
     fieldName: 'task_status_type_id',

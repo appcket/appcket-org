@@ -4,6 +4,10 @@ import { IsString, IsNotEmpty, IsOptional, IsUUID, MaxLength, MinLength } from '
 @InputType()
 export class CreateTaskInput {
   @Field()
+  @IsUUID()
+  projectId: string;
+
+  @Field()
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
@@ -16,16 +20,12 @@ export class CreateTaskInput {
   @MaxLength(5000)
   description: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
   @IsNotEmpty()
   taskStatusTypeId: string;
 
-  @Field()
-  @IsUUID()
-  projectId: string;
-
-  @Field()
-  @IsUUID()
+  @Field({ nullable: true })
+  @IsString()
   assignedTo: string;
 }

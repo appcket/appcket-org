@@ -59,28 +59,31 @@ const EditProject = () => {
 
   useEffect(() => {
     reset({
-      name: getProjectQuery?.data?.name ?? '',
-      description: getProjectQuery?.data?.description ?? '',
+      name: getProjectQuery?.data?.getProject.name ?? '',
+      description: getProjectQuery?.data?.getProject.description ?? '',
     });
     useStore.setState((state) => ({
       resourceUsers: {
         ...state.resourceUsers,
-        selectedUserIds: initialSelectedItemIds(getProjectQuery?.data?.users as User[], 'id'),
+        selectedUserIds: initialSelectedItemIds(
+          getProjectQuery?.data?.getProject.users as User[],
+          'id',
+        ),
       },
     }));
-  }, [reset, getProjectQuery.data]);
+  }, [reset, getProjectQuery?.data?.getProject]);
 
   useEffect(() => {
     useStore.setState((state) => ({
       resourceUsers: {
         ...state.resourceUsers,
         initialSelectedUserIds: initialSelectedItemIds(
-          getProjectQuery?.data?.users as User[],
+          getProjectQuery?.data?.getProject.users as User[],
           'id',
         ),
       },
     }));
-  }, [getProjectQuery?.data?.users]);
+  }, [getProjectQuery?.data?.getProject.users]);
 
   let editProjectComponent;
 
@@ -94,8 +97,10 @@ const EditProject = () => {
     editProjectComponent = <Typography paragraph>Unable to view Project</Typography>;
 
     const onSubmit = async (updateProjectInput: UpdateProjectInput) => {
-      updateProjectInput.organizationId = getProjectQuery.data.organization.id;
-      updateProjectInput.id = getProjectQuery.data.id ? getProjectQuery.data.id : '';
+      updateProjectInput.organizationId = getProjectQuery.data.getProject.organization.id;
+      updateProjectInput.id = getProjectQuery.data.getProject.id
+        ? getProjectQuery.data.getProject.id
+        : '';
       updateProjectInput.userIds = selectedUserIds;
 
       updateProject.mutate(
@@ -120,7 +125,7 @@ const EditProject = () => {
           </Grid>
         </Grid>
         <Typography variant="body1" sx={{ mb: 3 }}>
-          Organization: {getProjectQuery.data.organization.name}
+          Organization: {getProjectQuery.data.getProject.organization.name}
         </Typography>
         <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
           <FormTextField
@@ -146,7 +151,10 @@ const EditProject = () => {
           }}
         />
 
-        <ResourceUsersGrid organizationId={getProjectQuery.data.organization.id} />
+        <ResourceUsersGrid
+          resourceType="Project"
+          organizationId={getProjectQuery.data.getProject.organization.id}
+        />
 
         <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
           <Grid item>
@@ -174,8 +182,8 @@ const EditProject = () => {
   }
 
   return (
-    <Page title={`Edit Project - ${getProjectQuery.data?.name}`}>
-      <PageHeader title={getProjectQuery.data?.name} subTitle="Edit project details" />
+    <Page title={`Edit Project - ${getProjectQuery?.data?.getProject?.name}`}>
+      <PageHeader title={getProjectQuery?.data?.getProject?.name} subTitle="Edit project details" />
       <div>{editProjectComponent}</div>
     </Page>
   );

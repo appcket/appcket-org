@@ -116,7 +116,9 @@ const CreateProject = () => {
       />
     );
 
-    organizationUsersGrid = <ResourceUsersGrid organizationId={watchOrganizationId} />;
+    organizationUsersGrid = (
+      <ResourceUsersGrid resourceType="Project" organizationId={watchOrganizationId} />
+    );
   }
 
   const createProjectComponent = (
