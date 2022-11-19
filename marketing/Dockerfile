@@ -7,9 +7,9 @@ WORKDIR /src
 
 COPY . /src
 
-RUN npm install
+RUN yarn install
 
-RUN npm run build
+RUN yarn build
 
 FROM nginx:stable-alpine
 
@@ -19,6 +19,6 @@ COPY --from=node /src/nginx.conf /etc/nginx/nginx.conf
 COPY --from=node /src/certs/tls.crt /etc/nginx/certs/tls.crt
 COPY --from=node /src/certs/tls.key /etc/nginx/certs/tls.key
 
-COPY --from=node /src/public/ /usr/share/nginx/html
+COPY --from=node /src/dist/ /usr/share/nginx/html
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

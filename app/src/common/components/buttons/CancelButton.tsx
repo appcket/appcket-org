@@ -1,16 +1,17 @@
-import Button from '@mui/material/Button';
+import Button, { ButtonPropsVariantOverrides } from '@mui/material/Button';
+import { OverridableStringUnion } from '@mui/types';
 import PropTypes from 'prop-types';
 import UndoIcon from '@mui/icons-material/Undo';
 
 import { Link } from 'react-router-dom';
 
 type Props = {
-  variant?: string;
+  variant?: OverridableStringUnion<'text' | 'outlined' | 'contained', ButtonPropsVariantOverrides>;
   isDisabled?: boolean;
   linkTo: string;
 };
 
-const CancelButton = ({ variant, linkTo, isDisabled }: Props) => {
+const CancelButton = ({ variant = 'contained', linkTo, isDisabled }: Props) => {
   return (
     <Button
       variant={variant}

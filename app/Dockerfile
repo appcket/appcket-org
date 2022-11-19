@@ -7,9 +7,9 @@ WORKDIR /src
 
 COPY . /src
 
-RUN npm install --legacy-peer-deps
+RUN yarn install
 
-RUN npm run build
+RUN yarn build
 
 FROM nginx:stable-alpine
 

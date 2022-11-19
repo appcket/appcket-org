@@ -1,9 +1,16 @@
-import React from 'react';
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import Home from './index';
+import { HelmetProvider } from 'react-helmet-async';
 
-test('renders Home heading', () => {
-  render(<Home />);
-  const h1Element = screen.getByText(/Home/i);
-  expect(h1Element).toBeInTheDocument();
+import Home from 'src/pages/Home/index';
+
+test('simple render', () => {
+  render(
+    <HelmetProvider>
+      <Home />
+    </HelmetProvider>,
+  );
+
+  expect(screen.getByText('Home')).toBeInTheDocument();
+  expect(screen.getByText('Welcome to the Appcket home page')).toBeInTheDocument();
 });

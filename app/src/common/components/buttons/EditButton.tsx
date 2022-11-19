@@ -1,4 +1,5 @@
-import Button from '@mui/material/Button';
+import Button, { ButtonPropsVariantOverrides } from '@mui/material/Button';
+import { OverridableStringUnion } from '@mui/types';
 import PropTypes from 'prop-types';
 import { HiOutlinePencil } from 'react-icons/hi';
 
@@ -6,12 +7,12 @@ import { Link } from 'react-router-dom';
 
 type Props = {
   entityType?: string;
-  variant?: string;
+  variant?: OverridableStringUnion<'text' | 'outlined' | 'contained', ButtonPropsVariantOverrides>;
   isDisabled?: boolean;
   linkTo: string;
 };
 
-const EditButton = ({ entityType, variant, linkTo, isDisabled }: Props) => {
+const EditButton = ({ entityType, variant = 'contained', linkTo, isDisabled }: Props) => {
   return (
     <Button
       variant={variant}
