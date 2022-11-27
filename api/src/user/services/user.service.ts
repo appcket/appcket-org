@@ -40,11 +40,17 @@ export class UserService {
       const userPermissionsResponse = await lastValueFrom(userPermissionsResponse$);
 
       if (response.data) {
+        const userRoleResponse = await this.authorizationService.getUserRole(
+          token,
+          response.data.id,
+        );
+
         const dbUser = await this.userRepository.findOne(response.data.id, {
           populate: ['organizations', 'projects', 'teams', 'attributes'],
         });
 
         dbUser.permissions = userPermissionsResponse.data;
+        dbUser.role = userRoleResponse;
 
         return dbUser;
       }
@@ -54,7 +60,7 @@ export class UserService {
     }
   }
 
-  public async getUsers(organizationId: string, token: string): Promise<User[]> {
+  public async getUsers(organizationId: string): Promise<User[]> {
     const dbUsers = await this.userRepository.find(
       { organizations: { id: organizationId } },
       {

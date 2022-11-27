@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import { useAuth } from 'react-oidc-context';
@@ -12,6 +13,8 @@ import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
+import { FaUserShield } from 'react-icons/fa';
+import { useUserInfo } from 'src/common/api/user';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -43,6 +46,7 @@ type Props = {
 
 const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
   const auth = useAuth();
+  const { data } = useUserInfo();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -98,8 +102,17 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <MenuItem key="role">
+                <FaUserShield title="Role" />
+                <Typography sx={{ ml: '5px' }} textAlign="center">
+                  {data?.role}
+                </Typography>
+              </MenuItem>
               <MenuItem key="logout" onClick={() => auth.signoutRedirect()}>
-                <Typography textAlign="center">Logout</Typography>
+                <LogoutOutlinedIcon />
+                <Typography sx={{ ml: '5px' }} textAlign="center">
+                  Logout
+                </Typography>
               </MenuItem>
             </Menu>
           </Box>

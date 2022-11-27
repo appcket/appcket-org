@@ -1,5 +1,5 @@
 export const config = {
   orm: {
-    debug: true
-  }
+    debug: true,
+  },
 };

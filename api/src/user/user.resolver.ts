@@ -16,7 +16,7 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  searchUsers(@Args('organizationId') organizationId: string, @Context() ctx) {
-    return this.userService.getUsers(organizationId, ctx.req.kauth.grant.access_token.token);
+  searchUsers(@Args('organizationId') organizationId: string) {
+    return this.userService.getUsers(organizationId);
   }
 }

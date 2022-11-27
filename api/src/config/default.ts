@@ -2,6 +2,7 @@ const realm = process.env.KEYCLOAK_REALM;
 const authServerUrl = `${process.env.ACCOUNTS_URL}`;
 const tokenEndpointUrl = `${authServerUrl}/realms/${realm}/protocol/openid-connect/token`;
 const userAccountEndpointUrl = `${authServerUrl}/realms/${realm}/account`;
+const userRoleMappingsEndpointUrl = `${authServerUrl}/admin/realms/${realm}/users/__USER_ID__/role-mappings`;
 const adminEndpointUrl = `${authServerUrl}/admin/realms/${realm}`;
 
 export const config = {
@@ -29,6 +30,7 @@ export const config = {
     // custom keycloak config needed for authorization endpoint
     tokenEndpointUrl,
     userAccountEndpointUrl,
+    userRoleMappingsEndpointUrl,
     adminEndpointUrl,
   },
 };

@@ -34,6 +34,10 @@ export class User {
   @Property({ length: 255 })
   username: string;
 
+  @Field()
+  @Property({ length: 255 })
+  role: string;
+
   @Field(() => [Organization])
   @ManyToMany({
     entity: () => Organization,

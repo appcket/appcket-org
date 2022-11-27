@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { URLSearchParams } from 'url';
 import { lastValueFrom, Observable } from 'rxjs';
-import * as _ from 'lodash';
+import { each, find } from 'lodash';
 
 import UserPermissionsResponse from 'src/common/models/responses/userPermissionsResponse';
 
@@ -25,7 +25,7 @@ export class AuthorizationService {
     formData.append('grant_type', 'urn:ietf:params:oauth:grant-type:uma-ticket');
     formData.append('audience', 'appcket_api');
     formData.append('response_mode', 'decision');
-    _.each(permissions, (perm: string) => {
+    each(permissions, (perm: string) => {
       formData.append('permission', perm);
     });
 
@@ -68,5 +68,35 @@ export class AuthorizationService {
     );
 
     return response$;
+  }
+
+  public async getUserRole(token: string, userId: string): Promise<string> {
+    const config: AxiosRequestConfig = {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: 'json',
+    };
+
+    const response$ = this.httpService.get(
+      this.configService.get('keycloak.userRoleMappingsEndpointUrl').replace('__USER_ID__', userId),
+      config,
+    );
+
+    const response = await lastValueFrom(response$);
+    let role = null;
+
+    if (response.data.realmMappings) {
+      role = find(response.data.realmMappings, (roleMapping) => {
+        return ['Manager', 'Captain', 'Teammate', 'Spectator'].includes(roleMapping.name);
+      });
+
+      if (role) {
+        role = role.name;
+      }
+    }
+
+    return role;
   }
 }

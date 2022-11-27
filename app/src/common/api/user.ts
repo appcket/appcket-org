@@ -22,6 +22,7 @@ export const useUserInfo = (): UseQueryResult<User> => {
           email
           firstName
           lastName
+          role
           attributes {
             name
             value
