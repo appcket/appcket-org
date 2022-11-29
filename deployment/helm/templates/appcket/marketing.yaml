@@ -37,13 +37,12 @@ spec:
         command: ["/bin/sh"]
         {{- end }}
         env:
-        {{- if eq .Values.env "local" }}
         - name: NODE_ENV
+          {{- if eq .Values.env "local" }}
           value: development
-        {{ else }}
-        - name: NODE_ENV
+          {{ else }}
           value: {{ .Values.env }}
-        {{- end }}
+          {{- end }}
         - name: PORT
           value: "3000"
         stdin: true

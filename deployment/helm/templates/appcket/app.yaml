@@ -37,7 +37,11 @@ spec:
         {{- end }}
         env:
         - name: NODE_ENV
+          {{- if eq .Values.env "local" }}
+          value: development
+          {{ else }}
           value: {{ .Values.env }}
+          {{- end }}
         - name: PORT
           value: "3000"
         - name: WDS_SOCKET_PORT
