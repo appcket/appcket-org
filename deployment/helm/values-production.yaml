@@ -42,6 +42,9 @@ marketing:
   tag: v0.0.1
   image: appcket_marketing
 
+loadbalancer:
+  name: loadbalancer
+
 replicaCount: 1
 
 image:

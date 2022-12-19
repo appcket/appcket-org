@@ -8,6 +8,11 @@
 **.crt
 **.key
 node_modules
+**.terraform
+**.terraform.lock.hcl
+**.tfplan
+**.tfstate
+**.tfstate.backup
 # Keep environment variables out of version control
 .env
 .env*
