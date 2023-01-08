@@ -9,18 +9,16 @@
     "preview": "astro preview",
     "astro": "astro"
   },
-  "devDependencies": {
-    "@astrojs/sitemap": "^1.0.0",
-    "@astrojs/tailwind": "^1.0.0",
-    "@tailwindcss/typography": "^0.5.7",
-    "postcss": "^8.4.16"
-  },
   "dependencies": {
     "astro": "^1.6.5",
     "astro-icon": "^0.8.0",
     "daisyui": "^2.39.0",
     "luxon": "^3.1.0",
     "prettier-plugin-astro": "^0.7.0",
-    "theme-change": "^2.2.0"
+    "theme-change": "^2.2.0",
+    "@astrojs/sitemap": "^1.0.0",
+    "@astrojs/tailwind": "^1.0.0",
+    "@tailwindcss/typography": "^0.5.7",
+    "postcss": "^8.4.16"
   }
 }

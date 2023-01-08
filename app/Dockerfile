@@ -16,9 +16,9 @@ FROM nginx:stable-alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=node /src/nginx.conf /etc/nginx/nginx.conf
-COPY --from=node /src/certs/tls.crt /etc/nginx/certs/tls.crt
-COPY --from=node /src/certs/tls.key /etc/nginx/certs/tls.key
+COPY --from=node /src/certs/app.tls.crt /etc/nginx/certs/app.tls.crt
+COPY --from=node /src/certs/app.tls.key /etc/nginx/certs/app.tls.key
 
-COPY --from=node /src/build/ /usr/share/nginx/html
+COPY --from=node /src/dist/ /usr/share/nginx/html
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

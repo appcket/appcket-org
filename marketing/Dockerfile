@@ -7,7 +7,7 @@ WORKDIR /src
 
 COPY . /src
 
-RUN yarn install
+RUN yarn
 
 RUN yarn build
 

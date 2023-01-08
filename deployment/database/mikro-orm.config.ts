@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { Options } from '@mikro-orm/core';
 
 import { Organization } from './entities/Organization';
@@ -26,6 +27,17 @@ const config: Options = {
     emit: 'ts', // seeder generation mode
     fileName: (className: string) => className, // seeder file naming convention
   },
+  schemaGenerator: {
+    disableForeignKeys: false,
+  },
+  // you may need to enable ssl for your production connection
+  // driverOptions: {
+  //   connection: {
+  //     ssl: {
+  //       ca: fs.readFileSync('./ca-certificate.crt'),
+  //     }
+  //   }
+  // }
 };
 
 export default config;

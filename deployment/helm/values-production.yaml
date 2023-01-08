@@ -21,7 +21,7 @@ api:
   tag: v0.0.1
   image: appcket_api
   keycloakClientSecretName: api-keycloak-client-secret
-  keycloakClientPublicKey: MIIBI...YourKeycloakClientPublicKey
+  keycloakClientPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwVYWh7Jl6T9eyWNMfMX4L10KQu6Ulr0qqkEYKtw3GsOHOTRp0Q0C8OIN2HEwSV0/Fc00ToKIsyK6TC0PgSsWIZqQDTDyJ3rVENFck1rmsayBFVf53dcTcE6g/zA/TTrb2wD0k1FgLS66Irv/4+eYQITXC/LRmllpYTB2IVacZEhD7N5WXl70j7vxPsPerRGweDWHiTaGGTAZP83NEO7Hyec6Ko89nuyewsGr2ZnMrzTxgV9vurZ9QL6yGIs635RaM4Xf9ZCDK9gEVCU1X1nfALNr/0UiFheFJ9tTWhiqWXUbasD4dQd5lpuX8Ihw1pzSsFAIe/G9gOgqDH92v14JNQIDAQAB
 
 app:
   name: app
@@ -41,9 +41,6 @@ marketing:
   name: marketing
   tag: v0.0.1
   image: appcket_marketing
-
-loadbalancer:
-  name: loadbalancer
 
 replicaCount: 1
 
@@ -82,19 +79,6 @@ securityContext: {}
 service:
   type: ClusterIP
   port: 80
-
-ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths: []
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

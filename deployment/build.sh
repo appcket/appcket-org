@@ -32,22 +32,30 @@ echo '---------------------'
 echo 'Building api image...'
 cd ../api
 docker build --build-arg env=${ENV} -t localhost:5000/appcket_api:v0.0.1 .
-docker push localhost:5000/appcket_api:v0.0.1
+if [[ "$ENV" = "local" ]]; then
+    docker push localhost:5000/appcket_api:v0.0.1
+fi
 
 echo '---------------------'
 echo 'Building app image...'
 cd ../app
 docker build --build-arg env=${ENV} -t localhost:5000/appcket_app:v0.0.1 .
-docker push localhost:5000/appcket_app:v0.0.1
+if [[ "$ENV" = "local" ]]; then
+    docker push localhost:5000/appcket_app:v0.0.1
+fi
 
 echo '---------------------'
 echo 'Building marketing image...'
 cd ../marketing
 docker build --build-arg env=${ENV} -t localhost:5000/appcket_marketing:v0.0.1 .
-docker push localhost:5000/appcket_marketing:v0.0.1
+if [[ "$ENV" = "local" ]]; then
+    docker push localhost:5000/appcket_marketing:v0.0.1
+fi
 
 echo '---------------------'
 echo 'Building accounts image...'
 cd ../accounts
 docker build -t localhost:5000/appcket_accounts:v0.0.1 .
-docker push localhost:5000/appcket_accounts:v0.0.1
+if [[ "$ENV" = "local" ]]; then
+    docker push localhost:5000/appcket_accounts:v0.0.1
+fi

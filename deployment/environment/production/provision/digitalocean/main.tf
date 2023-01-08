@@ -1,3 +1,7 @@
+# Terraform DO Provider Docs: https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs
+
+# Change the domain name to your app's in the Domain section below
+
 #------ Data ------#
 # Use the name of your Personal Access Token
 data "digitalocean_ssh_key" "terraform-digitalocean-key" {
@@ -28,7 +32,7 @@ provider "digitalocean" {
 #------ Database ------#
 resource "digitalocean_database_db" "appcket-database" {
   cluster_id = digitalocean_database_cluster.appcket-database-cluster.id
-  name       = "appcket-database"
+  name       = "appcket"
 }
 
 resource "digitalocean_database_cluster" "appcket-database-cluster" {
@@ -66,9 +70,14 @@ resource "digitalocean_kubernetes_cluster" "appcket-k8s-cluster" {
 
   node_pool {
     name       = "default"
-    size       = "s-1vcpu-2gb"
-    node_count = 1
+    size       = "s-2vcpu-4gb"
+    node_count = 2
   }
+}
+
+#------ Domain ------#
+resource "digitalocean_domain" "appcket-domain" {
+  name       = "appcket.com"
 }
 
 #------ Project ------#
@@ -79,6 +88,7 @@ resource "digitalocean_project" "production-appcket" {
   environment = "Production"
   resources = [
     digitalocean_database_cluster.appcket-database-cluster.urn,
-    digitalocean_kubernetes_cluster.appcket-k8s-cluster.urn
+    digitalocean_kubernetes_cluster.appcket-k8s-cluster.urn,
+    digitalocean_domain.appcket-domain.urn
   ]
 }
