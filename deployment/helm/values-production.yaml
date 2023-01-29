@@ -10,7 +10,6 @@ env: production
 accounts:
   name: accounts
   subdomain: accounts
-  secretName: accounts-secret
   logLevel: DEBUG
   tag: v0.0.1
   image: appcket_accounts
@@ -33,9 +32,10 @@ database:
   address: 172.17.0.1
   port: 5432
   secretName: database-secret
-  database: appcket
-  schema: keycloak
-  vendor: POSTGRES
+  name: appcket
+  schemaAccounts: keycloak
+  schemaApp: appcket
+  vendor: postgres
 
 marketing:
   name: marketing

@@ -4,16 +4,12 @@
   "description": "",
   "license": "MIT",
   "author": "",
-  "dependencies": {
-    "@prisma/client": "^3.8.1"
-  },
   "devDependencies": {
     "@types/node": "^14.18.30",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "dotenv-cli": "^6.0.0",
     "prettier": "^2.5.1",
-    "prisma": "^3.8.1",
     "@mikro-orm/cli": "^5.4.3-dev.24",
     "@mikro-orm/core": "^5.4.3-dev.24",
     "@mikro-orm/entity-generator": "^5.4.3-dev.24",

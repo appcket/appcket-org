@@ -13,4 +13,4 @@ WORKDIR /opt/keycloak
 COPY tls.crt /etc/x509/https/tls.crt
 COPY tls.key /etc/x509/https/tls.key
 
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start --https-port=443 --https-certificate-file=/etc/x509/https/tls.crt --https-certificate-key-file=/etc/x509/https/tls.key"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start --proxy edge --https-certificate-file=/etc/x509/https/tls.crt --https-certificate-key-file=/etc/x509/https/tls.key"]
