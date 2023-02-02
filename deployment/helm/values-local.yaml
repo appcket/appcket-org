@@ -38,6 +38,7 @@ database:
   schemaAccounts: keycloak
   schemaApp: appcket
   vendor: postgres
+  sslMode: false
 
 marketing:
   name: marketing

@@ -16,7 +16,7 @@ data:
             fallthrough in-addr.arpa ip6.arpa
             ttl 30
         }
-        rewrite name {{ .Values.accounts.name }}.{{ .Values.domain }}.localhost {{ .Values.accounts.name }}.{{ .Values.namespace }}.svc.cluster.local
+        rewrite name {{ .Values.accounts.name }}.{{ .Values.domain }}.{{ .Values.tld }} {{ .Values.accounts.name }}.{{ .Values.namespace }}.svc.cluster.local
         prometheus :9153
         forward . /etc/resolv.conf
         cache 30

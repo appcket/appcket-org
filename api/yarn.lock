@@ -2473,6 +2473,11 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
+ca-append@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ca-append/-/ca-append-0.1.0.tgz#72e1a3b4498511510df7e2df3d62e03f27a23256"
+  integrity sha512-6upxE5V+e34LE8eJeGciGGP5BiRkUqDns7AQyiM5C33FmSPn/U9TdfPb2dddQlu8mthHqPjxXMaKpqjCsj4DKg==
+
 call-bind@^1.0.0:
   version "1.0.2"
   resolved "https://registry.npmjs.org/call-bind/-/call-bind-1.0.2.tgz"

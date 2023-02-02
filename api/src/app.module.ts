@@ -7,6 +7,8 @@ import * as Keycloak from 'keycloak-connect';
 import * as session from 'express-session';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { LoggerModule } from 'nestjs-pino';
+import * as caAppend from 'ca-append';
+import { readFileSync } from 'fs';
 
 import { configuration } from 'src/config';
 import { CommonModule } from 'src/common/common.module';
@@ -19,6 +21,8 @@ import { TeamModule } from './team/team.module';
 import { UserModule } from './user/user.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+caAppend.monkeyPatch();
 
 @Module({
   imports: [
@@ -54,17 +58,31 @@ import { AppService } from './app.service';
     }),
     MikroOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        autoLoadEntities: true,
-        dbName: configService.get('orm.dbName'),
-        schema: configService.get('orm.schema'),
-        type: configService.get('orm.type'),
-        user: configService.get('orm.user'),
-        password: configService.get('orm.password'),
-        host: configService.get('orm.host'),
-        port: configService.get('orm.port'),
-        debug: configService.get('orm.debug'),
-      }),
+      useFactory: (configService: ConfigService) => {
+        const options = {
+          autoLoadEntities: true,
+          dbName: configService.get('orm.dbName'),
+          schema: configService.get('orm.schema'),
+          type: configService.get('orm.type'),
+          user: configService.get('orm.user'),
+          password: configService.get('orm.password'),
+          host: configService.get('orm.host'),
+          port: configService.get('orm.port'),
+          debug: configService.get('orm.debug'),
+        };
+
+        if (configService.get('orm.sslMode') === true) {
+          options['driverOptions'] = {
+            connection: {
+              ssl: {
+                caAppend: readFileSync('certs/ca-certificate.crt'),
+              }
+            }
+          };
+        }
+
+        return options;
+      },
       inject: [ConfigService],
     }),
     OrganizationModule,

@@ -15,6 +15,7 @@ export const config = {
     password: process.env.DB_PASSWORD,
     host: process.env.DB_ADDR,
     port: process.env.DB_PORT,
+    sslMode: process.env.DB_SSL_MODE === 'true' ? true : false,
   },
   keycloak: {
     realm,

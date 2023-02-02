@@ -67,6 +67,8 @@ spec:
           value: {{ .Values.database.schemaApp }}
         - name: DB_PORT
           value: "{{ .Values.database.port }}"
+        - name: DB_SSL_MODE
+          value: "{{ .Values.database.sslMode }}"
         - name: KEYCLOAK_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
