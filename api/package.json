@@ -38,7 +38,7 @@
     "class-transformer": "^0.5.1",
     "express-session": "^1.17.3",
     "graphql": "^16.6.0",
-    "keycloak-connect": "^20.0.2",
+    "keycloak-connect": "^20.0.3",
     "lodash": "^4.17.21",
     "nestjs-pino": "^3.1.1",
     "pino-http": "^8.2.1",
