@@ -11,6 +11,6 @@
   },
   "moduleDirectories": [
     "node_modules",
-    "."
+    "<rootDir>"
   ]
 }

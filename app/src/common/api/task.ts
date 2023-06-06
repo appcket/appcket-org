@@ -21,6 +21,13 @@ export const useSearchTasks = (projectIds: string[]): UseQueryResult<Task[]> => 
       ${queryKey}(searchTasksInput: {projectIds: ["${projectIds}"]}) {
         id
         name
+        assignedTo {
+          id
+          email
+          username
+          firstName
+          lastName
+        }
         taskStatusType {
           id
           name

@@ -3,5 +3,8 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
   "prettier.jsxSingleQuote": false,
-  "prettier.singleQuote": true
+  "prettier.singleQuote": true,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

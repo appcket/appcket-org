@@ -79,6 +79,8 @@ const EditTask = () => {
       return { id: user.id, label: `${user.firstName} ${user.lastName ? user.lastName : ''}` };
     });
     assignedToFormField = (
+      // TODO: validate that you can't remove a user from a project if that user is currently assigned to any of the project's tasks
+      // TODO: potentially use an autocomplete of Project's users here instead of a select menu
       // <FormAutocomplete
       //   name="assignedTo"
       //   control={control}

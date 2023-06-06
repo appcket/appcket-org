@@ -21,7 +21,7 @@ export class GetTeamService {
     const team = await this.teamRepository.findOneOrFail(
       { id, organization: organizationWhere },
       {
-        populate: ['organization', 'users'],
+        populate: ['organization.id', 'organization.name', 'users'],
       },
     );
 

@@ -14,7 +14,7 @@ const httpsOptions = {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     httpsOptions,
-    bufferLogs: true
+    bufferLogs: true,
   });
   const config = app.get(ConfigService);
   app.enableCors({

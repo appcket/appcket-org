@@ -3,8 +3,8 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { AuthorizationService } from 'src/common/services/authorization.service';
 import { CommonModule } from 'src/common/common.module';
-import { OrganizationResolver } from './organization.resolver';
-import { Organization } from './organization.entity';
+import { OrganizationResolver } from 'src/organization/organization.resolver';
+import { Organization } from 'src/organization/organization.entity';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 import { OrganizationUser } from 'src/organization/organizationUser.entity';
 

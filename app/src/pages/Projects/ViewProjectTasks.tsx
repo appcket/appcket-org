@@ -16,6 +16,7 @@ import { TaskPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
 import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
+import { displayUser } from 'src/common/utils/general';
 
 const ViewProjectTasks = () => {
   const params = useParams();
@@ -61,6 +62,14 @@ const ViewProjectTasks = () => {
       flex: 0.5,
       renderCell: (cellValues) => {
         return <NavLink to={`/tasks/${cellValues.row.id}`}>{cellValues.row.name}</NavLink>;
+      },
+    },
+    {
+      field: 'assignedTo',
+      headerName: 'Assigned To',
+      flex: 0.5,
+      renderCell: (cellValues) => {
+        return `${displayUser(cellValues.row.assignedTo)}`;
       },
     },
   ];

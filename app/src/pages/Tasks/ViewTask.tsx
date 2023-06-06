@@ -14,6 +14,7 @@ import Resources from 'src/common/enums/resources.enum';
 import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
+import { displayUser } from 'src/common/utils/general';
 
 const Task = () => {
   const params = useParams();
@@ -42,6 +43,8 @@ const Task = () => {
       updateTaskButton = <EditButton variant="contained" isDisabled={false} linkTo="edit" />;
     }
 
+    const displayedUser = displayUser(data?.getTask?.assignedTo);
+
     taskComponent = (
       <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Grid container justifyContent="flex-end">
@@ -59,10 +62,7 @@ const Task = () => {
             {data?.getTask?.taskStatusType ? data?.getTask?.taskStatusType?.name : 'Status Not Set'}
           </Typography>
           <Typography variant="body1">
-            Assigned to:{' '}
-            {data?.getTask?.assignedTo?.username
-              ? data?.getTask?.assignedTo?.username
-              : 'Unassigned'}
+            Assigned to: {displayedUser ? `${displayedUser}` : 'Unassigned'}
           </Typography>
           <Typography variant="body1">Description: {data?.getTask?.description}</Typography>
         </Grid>

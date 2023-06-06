@@ -17,6 +17,7 @@ import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 import Loading from 'src/common/components/Loading';
+import { displayUser } from 'src/common/utils/general';
 
 const Project = () => {
   const params = useParams();
@@ -54,7 +55,7 @@ const Project = () => {
         <List>
           {data?.getProject.users.map((user) => (
             <ListItem key={user.id}>
-              <ListItemText primary={user.firstName} />
+              <ListItemText primary={displayUser(user)} />
             </ListItem>
           ))}
         </List>

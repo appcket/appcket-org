@@ -17,6 +17,7 @@ import Resources from 'src/common/enums/resources.enum';
 import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
+import { displayUser } from 'src/common/utils/general';
 
 const Team = () => {
   const params = useParams();
@@ -53,7 +54,7 @@ const Team = () => {
         <List>
           {data?.users.map((user) => (
             <ListItem key={user.id}>
-              <ListItemText primary={user.firstName} />
+              <ListItemText primary={displayUser(user)} />
             </ListItem>
           ))}
         </List>

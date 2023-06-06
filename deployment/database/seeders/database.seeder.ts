@@ -1,6 +1,8 @@
 import { EntityManager, wrap } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 
+import { ChangeAuditApp } from '../entities/ChangeAuditApp';
+import { ChangeAuditOperationType } from '../entities/ChangeAuditOperationType';
 import { Organization } from '../entities/Organization';
 import { OrganizationUser } from '../entities/OrganizationUser';
 import { Project } from '../entities/Project';
@@ -11,6 +13,25 @@ import { Team } from '../entities/Team';
 import { TeamUser } from '../entities/TeamUser';
 
 export class DatabaseSeeder extends Seeder {
+  private changeAuditOperationTypeData: ChangeAuditOperationType[] = [
+    {
+      id: 'create',
+      name: 'Create',
+    },
+    {
+      id: 'read',
+      name: 'Read',
+    },
+    {
+      id: 'update',
+      name: 'Update',
+    },
+    {
+      id: 'delete',
+      name: 'Delete',
+    },
+  ];
+
   private accountsUsers = {
     art: 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9',
     kel: '7e2e3888-b370-4309-b82c-403b6871a390',
@@ -27,6 +48,14 @@ export class DatabaseSeeder extends Seeder {
     {
       id: '5fb17fd4-9292-4e20-bfa7-809d1a62fcc7',
       name: 'Pennypacker Enterprises',
+    },
+  ];
+
+  private organizationChangeAuditAppData: ChangeAuditApp[] = [
+    {
+      id: 'd1f3593d-aff4-409a-b297-961078a162c7',
+      organizationId: this.organizationData[0],
+      name: 'Appcket'
     },
   ];
 
@@ -201,44 +230,54 @@ export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
     console.log(`Start seeding...`);
 
+    for (const entity of this.changeAuditOperationTypeData) {
+      em.create(ChangeAuditOperationType, entity);
+      console.log(`Created ChangeAuditOperationType with name: ${entity.name}`);
+    }
+
     for (const entity of this.organizationData) {
       em.create(Organization, entity);
-      console.log(`Created organization with name: ${entity.name}`);
+      console.log(`Created Organization with name: ${entity.name}`);
+    }
+
+    for (const entity of this.organizationChangeAuditAppData) {
+      em.create(ChangeAuditApp, entity, { managed: true });
+      console.log(`Created ChangeAuditApp with id: ${entity.id}`);
     }
 
     for (const entity of this.projectData) {
       em.create(Project, entity, { managed: true });
-      console.log(`Created project with name: ${entity.name}`);
+      console.log(`Created Project with name: ${entity.name}`);
     }
 
     for (const entity of this.teamData) {
       em.create(Team, entity, { managed: true });
-      console.log(`Created team with name: ${entity.name}`);
+      console.log(`Created Team with name: ${entity.name}`);
     }
 
     for (const entity of this.taskStatusTypeData) {
       em.create(TaskStatusType, entity);
-      console.log(`Created task status type with name: ${entity.name}`);
+      console.log(`Created TaskStatusType with name: ${entity.name}`);
     }
 
     for (const entity of this.taskData) {
       em.create(Task, entity, { managed: true });
-      console.log(`Created task with name: ${entity.name}`);
+      console.log(`Created Task with name: ${entity.name}`);
     }
 
     for (const entity of this.organizationUserData) {
       em.create(OrganizationUser, entity, { managed: true });
-      console.log(`Created organization_user with id: ${entity.id}`);
+      console.log(`Created OrganizationUser with id: ${entity.id}`);
     }
 
     for (const entity of this.teamUserData) {
       em.create(TeamUser, entity, { managed: true });
-      console.log(`Created team_user with id: ${entity.id}`);
+      console.log(`Created TeamUser with id: ${entity.id}`);
     }
 
     for (const entity of this.projectUserData) {
       em.create(ProjectUser, entity, { managed: true });
-      console.log(`Created project_user with id: ${entity.id}`);
+      console.log(`Created ProjectUser with id: ${entity.id}`);
     }
   }
 }

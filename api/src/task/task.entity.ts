@@ -20,7 +20,12 @@ export class Task {
   description?: string;
 
   @Field({ nullable: true })
-  @OneToOne({ entity: () => User, fieldName: 'assigned_to', onUpdateIntegrity: 'cascade', nullable: true })
+  @OneToOne({
+    entity: () => User,
+    fieldName: 'assigned_to',
+    onUpdateIntegrity: 'cascade',
+    nullable: true,
+  })
   assignedTo!: User;
 
   @Field({ nullable: true })
