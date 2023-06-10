@@ -1,5 +1,11 @@
 import Typography from '@mui/material/Typography';
-import { DataGrid, GridRowsProp, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridRowsProp,
+  GridColDef,
+  GridValueGetterParams,
+  GRID_CHECKBOX_SELECTION_COL_DEF,
+} from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 
 import { useSearchUsers } from 'src/common/api/user';
@@ -20,6 +26,10 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
 
   const columns: GridColDef[] = [
     {
+      ...GRID_CHECKBOX_SELECTION_COL_DEF,
+      width: 110,
+    },
+    {
       field: 'name',
       headerName: 'Name',
       flex: 1,
@@ -32,7 +42,7 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
     const rows: GridRowsProp = searchUsersQuery.data;
 
     return (
-      <div style={{ height: 400, width: '100%' }}>
+      <div>
         <Typography variant="body1" sx={{ mb: 2 }}>
           {resourceType} Users:
         </Typography>
@@ -40,8 +50,9 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
           rows={rows}
           columns={columns}
           checkboxSelection
-          selectionModel={selectedUserIds}
-          onSelectionModelChange={(userIds) => {
+          disableRowSelectionOnClick
+          rowSelectionModel={selectedUserIds}
+          onRowSelectionModelChange={(userIds) => {
             useStore.setState((state) => ({
               resourceUsers: {
                 ...state.resourceUsers,

@@ -5,7 +5,7 @@ import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import { useSearchProjects } from 'src/common/api/project';
@@ -27,7 +27,7 @@ const ViewProjects = () => {
   );
 
   let createProjectButton = (
-    <Button variant="outlined" startIcon={<AddCircleOutlineOutlinedIcon />} disabled>
+    <Button variant="outlined" startIcon={<AddCircleOutlineOutlined />} disabled>
       Create Project
     </Button>
   );
@@ -38,7 +38,7 @@ const ViewProjects = () => {
         variant="contained"
         component={Link}
         to="create"
-        startIcon={<AddCircleOutlineOutlinedIcon />}
+        startIcon={<AddCircleOutlineOutlined />}
       >
         Create Project
       </Button>
@@ -72,7 +72,7 @@ const ViewProjects = () => {
     const rows: GridRowsProp = data ? data : [];
 
     projectsComponent = (
-      <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} autoHeight={true} />
+      <DataGrid disableRowSelectionOnClick rows={rows} columns={columns} autoHeight={true} />
     );
   }
 

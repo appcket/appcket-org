@@ -5,7 +5,7 @@ import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import { useSearchTasks } from 'src/common/api/task';
@@ -46,7 +46,7 @@ const ViewProjectTasks = () => {
         variant="contained"
         component={Link}
         to="create"
-        startIcon={<AddCircleOutlineOutlinedIcon />}
+        startIcon={<AddCircleOutlineOutlined />}
       >
         Create Task
       </Button>
@@ -83,7 +83,7 @@ const ViewProjectTasks = () => {
 
     tasksComponent = (
       <div style={{ height: 300, width: '100%' }}>
-        <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} />
+        <DataGrid disableRowSelectionOnClick rows={rows} columns={columns} />
       </div>
     );
   }
