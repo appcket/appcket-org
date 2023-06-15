@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EntityManager } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
@@ -14,6 +15,7 @@ export class CreateChangeAuditChangeService {
   private entityChangesUtil = new EntityChangesUtil();
 
   constructor(
+    private readonly em: EntityManager,
     @InjectRepository(ChangeAuditChange)
     private readonly changeAuditChangeRepository: EntityRepository<ChangeAuditChange>,
     @InjectRepository(ChangeAuditEntity)
@@ -53,14 +55,15 @@ export class CreateChangeAuditChangeService {
       // external users pass in entity.id, but internally store this in the entityId column
       entityId: data.entity.id,
       appId: data.appId,
+      operationType: data.operationType.toLowerCase(),
       userId: data.user.id,
       userEmail: data.user.email,
       userDisplayName: data.user.displayName,
-      entity: JSON.stringify(data.entity),
+      entity: data.entity,
       diff: diffResult.diffs,
     });
 
-    await this.changeAuditEntityRepository.persistAndFlush(entity);
+    await this.em.persistAndFlush(entity);
 
     // if changes are found from a previous version of this entity, then foreach diffResult.changes, insert a new record into change_audit_change
     if (diffResult.changes.length > 0) {
@@ -74,8 +77,7 @@ export class CreateChangeAuditChangeService {
 
         const newChange = this.changeAuditChangeRepository.create({
           entityId: entity.entityId,
-          changeAuditEntityId: entity.id,
-          operationTypeId: data.operationType.toLowerCase(),
+          changeAuditEntity: entity.id,
           userId: data.user.id,
           userEmail: data.user.email,
           userDisplayName: data.user.displayName,
@@ -84,10 +86,10 @@ export class CreateChangeAuditChangeService {
           newValue,
         });
 
-        this.changeAuditChangeRepository.persist(newChange);
+        this.em.persist(newChange);
       });
 
-      await this.changeAuditChangeRepository.flush();
+      await this.em.flush();
     }
   }
 }

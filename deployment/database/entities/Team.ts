@@ -12,6 +12,6 @@ export class Team {
   @Property({ columnType: 'text', length: 500, nullable: true })
   description?: string;
 
-  @ManyToOne({ entity: () => Organization, fieldName: 'organization_id', onUpdateIntegrity: 'cascade' })
-  organizationId!: Organization;
+  @ManyToOne({ entity: () => Organization, onUpdateIntegrity: 'cascade' })
+  organization!: Organization;
 }

@@ -10,12 +10,12 @@
     "eslint-plugin-prettier": "^4.0.0",
     "dotenv-cli": "^6.0.0",
     "prettier": "^2.5.1",
-    "@mikro-orm/cli": "^5.4.3-dev.24",
-    "@mikro-orm/core": "^5.4.3-dev.24",
-    "@mikro-orm/entity-generator": "^5.4.3-dev.24",
-    "@mikro-orm/migrations": "^5.4.3-dev.24",
-    "@mikro-orm/postgresql": "^5.4.3-dev.24",
-    "@mikro-orm/seeder": "^5.4.3-dev.24",
+    "@mikro-orm/cli": "^5.7.12",
+    "@mikro-orm/core": "^5.7.12",
+    "@mikro-orm/entity-generator": "^5.7.12",
+    "@mikro-orm/migrations": "^5.7.12",
+    "@mikro-orm/postgresql": "^5.7.12",
+    "@mikro-orm/seeder": "^5.7.12",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
@@ -23,7 +23,8 @@
   },
   "scripts": {
     "schema-seed": "mikro-orm schema:fresh --run --seed",
-    "post-seed": "ts-node ./postSeed"
+    "post-seed": "ts-node ./postSeed",
+    "generate-entities": "ts-node generate-entities"
   },
   "mikro-orm": {
     "useTsNode": true,

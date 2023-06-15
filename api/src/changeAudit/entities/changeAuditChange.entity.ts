@@ -1,6 +1,5 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { ChangeAuditEntity } from 'src/changeAudit/entities/changeAuditEntity.entity';
-import { ChangeAuditOperationType } from 'src/changeAudit/entities/changeAuditOperationType.entity';
 
 @Entity({ schema: 'appcket' })
 export class ChangeAuditChange {
@@ -12,20 +11,12 @@ export class ChangeAuditChange {
 
   @ManyToOne({
     entity: () => ChangeAuditEntity,
-    fieldName: 'change_audit_entity_id',
     onUpdateIntegrity: 'cascade',
   })
-  changeAuditEntityId!: ChangeAuditEntity;
+  changeAuditEntity!: ChangeAuditEntity;
 
   @Property({ length: 36 })
   entityId!: string;
-
-  @ManyToOne({
-    entity: () => ChangeAuditOperationType,
-    fieldName: 'operation_type_id',
-    onUpdateIntegrity: 'cascade',
-  })
-  operationTypeId!: ChangeAuditOperationType;
 
   @Property({ length: 36 })
   userId!: string;

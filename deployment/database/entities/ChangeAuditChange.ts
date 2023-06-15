@@ -1,20 +1,19 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { ChangeAuditEntity } from './ChangeAuditEntity';
-import { ChangeAuditOperationType } from './ChangeAuditOperationType';
  
 @Entity({ schema: 'appcket' })
 export class ChangeAuditChange {
   @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
   id!: string;
 
-  @ManyToOne({ entity: () => ChangeAuditEntity, fieldName: 'change_audit_entity_id', onUpdateIntegrity: 'cascade' })
-  changeAuditEntityId!: ChangeAuditEntity;
+  @Property()
+  createdAt: Date = new Date();
+
+  @ManyToOne({ entity: () => ChangeAuditEntity, onUpdateIntegrity: 'cascade' })
+  changeAuditEntity!: ChangeAuditEntity;
 
   @Property({ length: 36 })
   entityId!: string;
-
-  @ManyToOne({ entity: () => ChangeAuditOperationType, fieldName: 'operation_type_id', onUpdateIntegrity: 'cascade' })
-  operationTypeId!: ChangeAuditOperationType;
 
   @Property({ length: 36 })
   userId!: string;
@@ -33,7 +32,4 @@ export class ChangeAuditChange {
 
   @Property({ columnType: 'text', nullable: true })
   newValue!: string;
-
-  @Property()
-  createdAt: Date = new Date();
 }

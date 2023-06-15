@@ -1,4 +1,4 @@
-import { Entity, OptionalProps, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 
 @Entity({ schema: 'appcket' })
 export class Organization {

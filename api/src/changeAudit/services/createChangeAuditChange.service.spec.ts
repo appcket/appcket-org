@@ -70,6 +70,10 @@ describe('CreateChangeAuditChangeService', () => {
     id: ENTITY_ID,
     entityId: changeInitial.entity.id,
     appId: new ChangeAuditApp(),
+    operationType: {
+      id: changeInitial.operationType.toLowerCase(),
+      name: changeInitial.operationType,
+    },
     userId: changeInitial.user.id,
     userEmail: changeInitial.user.email,
     userDisplayName: changeInitial.user.displayName,
@@ -91,6 +95,10 @@ describe('CreateChangeAuditChangeService', () => {
     id: ENTITY_ID,
     entityId: changeUpdated.entity.id,
     appId: new ChangeAuditApp(),
+    operationType: {
+      id: changeUpdated.operationType.toLowerCase(),
+      name: changeUpdated.operationType,
+    },
     userId: changeUpdated.user.id,
     userEmail: changeUpdated.user.email,
     userDisplayName: changeUpdated.user.displayName,
@@ -109,8 +117,8 @@ describe('CreateChangeAuditChangeService', () => {
 
   const CHANGES = [
     {
-      entityId: ENTITY_ID,
-      operationTypeId: ChangeAuditOperationTypes.update.toLowerCase(),
+      changeAuditEntity: ENTITY_ID,
+      entityId: changeUpdated.entity.id,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -119,8 +127,8 @@ describe('CreateChangeAuditChangeService', () => {
       newValue: changeUpdated.entity.data.title,
     },
     {
-      entityId: ENTITY_ID,
-      operationTypeId: ChangeAuditOperationTypes.update.toLowerCase(),
+      changeAuditEntity: ENTITY_ID,
+      entityId: changeUpdated.entity.id,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -129,8 +137,8 @@ describe('CreateChangeAuditChangeService', () => {
       newValue: changeUpdated.entity.data.description,
     },
     {
-      entityId: ENTITY_ID,
-      operationTypeId: ChangeAuditOperationTypes.update.toLowerCase(),
+      changeAuditEntity: ENTITY_ID,
+      entityId: changeUpdated.entity.id,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -139,8 +147,8 @@ describe('CreateChangeAuditChangeService', () => {
       newValue: changeUpdated.entity.data.status,
     },
     {
-      entityId: ENTITY_ID,
-      operationTypeId: ChangeAuditOperationTypes.update.toLowerCase(),
+      changeAuditEntity: ENTITY_ID,
+      entityId: changeUpdated.entity.id,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -149,8 +157,8 @@ describe('CreateChangeAuditChangeService', () => {
       newValue: changeUpdated.entity.data.assignedTo,
     },
     {
-      entityId: ENTITY_ID,
-      operationTypeId: ChangeAuditOperationTypes.update.toLowerCase(),
+      changeAuditEntity: ENTITY_ID,
+      entityId: changeUpdated.entity.id,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -159,8 +167,8 @@ describe('CreateChangeAuditChangeService', () => {
       newValue: changeUpdated.entity.data.priority,
     },
     {
-      entityId: ENTITY_ID,
-      operationTypeId: ChangeAuditOperationTypes.update.toLowerCase(),
+      changeAuditEntity: ENTITY_ID,
+      entityId: changeUpdated.entity.id,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -171,6 +179,12 @@ describe('CreateChangeAuditChangeService', () => {
   ];
 
   const mockEntityManager = {
+    flush: jest.fn().mockImplementation(() => {
+      return Promise.resolve();
+    }),
+    persist: jest.fn().mockImplementation(() => {
+      return Promise.resolve();
+    }),
     persistAndFlush: jest.fn().mockImplementation(() => {
       return Promise.resolve();
     }),
@@ -181,18 +195,10 @@ describe('CreateChangeAuditChangeService', () => {
       return createdEntity;
     }),
     findOne: jest.fn(),
-    persistAndFlush: jest.fn().mockImplementation(() => {
-      return Promise.resolve();
-    }),
-    persist: jest.fn(() => ({
-      flush: jest.fn(),
-    })),
   };
 
   const mockChangeAuditChangeRepository = {
     create: jest.fn(),
-    persist: jest.fn(),
-    flush: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -246,7 +252,7 @@ describe('CreateChangeAuditChangeService', () => {
 
     expect(mockChangeAuditEntityRepository.findOne).toBeCalledTimes(1);
     expect(mockChangeAuditEntityRepository.create).toBeCalledTimes(1);
-    expect(mockChangeAuditEntityRepository.persistAndFlush).toBeCalledTimes(1);
+    expect(mockEntityManager.persistAndFlush).toBeCalledTimes(1);
   });
 
   it('should not create changes for the initial version of an entity', async () => {
@@ -273,8 +279,8 @@ describe('CreateChangeAuditChangeService', () => {
     await service.createChange(changeInitial);
 
     expect(mockChangeAuditChangeRepository.create).toBeCalledTimes(0);
-    expect(mockChangeAuditChangeRepository.persist).toBeCalledTimes(0);
-    expect(mockChangeAuditChangeRepository.flush).toBeCalledTimes(0);
+    expect(mockEntityManager.persist).toBeCalledTimes(0);
+    expect(mockEntityManager.flush).toBeCalledTimes(0);
   });
 
   it('should insert correct changes for an updated entity', async () => {
@@ -310,7 +316,7 @@ describe('CreateChangeAuditChangeService', () => {
     expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[3]);
     expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[4]);
     expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[5]);
-    expect(mockChangeAuditChangeRepository.persist).toBeCalledTimes(6);
-    expect(mockChangeAuditChangeRepository.flush).toBeCalledTimes(1);
+    expect(mockEntityManager.persist).toBeCalledTimes(6);
+    expect(mockEntityManager.flush).toBeCalledTimes(1);
   });
 });

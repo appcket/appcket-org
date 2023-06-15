@@ -43,7 +43,7 @@ export class User {
     entity: () => Organization,
     pivotEntity: () => OrganizationUser,
     pivotTable: 'appcket.organization_user',
-    inversedBy: 'users',
+    mappedBy: 'users',
   })
   organizations = new Collection<Organization>(this);
 
@@ -52,6 +52,7 @@ export class User {
     entity: () => Project,
     pivotEntity: () => ProjectUser,
     pivotTable: 'appcket.project_user',
+    mappedBy: 'users',
   })
   projects = new Collection<Project>(this);
 
@@ -60,6 +61,7 @@ export class User {
     entity: () => Team,
     pivotEntity: () => TeamUser,
     pivotTable: 'appcket.team_user',
+    mappedBy: 'users',
   })
   teams = new Collection<Team>(this);
 

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EntityManager } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
@@ -17,6 +18,7 @@ export class CreateTeamService {
   private readonly logger = new Logger(CreateTeamService.name);
 
   constructor(
+    private readonly em: EntityManager,
     @InjectRepository(Team)
     private readonly teamRepository: EntityRepository<Team>,
     private getTeamService: GetTeamService,
@@ -39,7 +41,7 @@ export class CreateTeamService {
       users: data.userIds,
     });
 
-    await this.teamRepository.persist(newTeam).flush();
+    await this.em.persistAndFlush(newTeam);
 
     const createdTeam = await this.getTeamService.getTeam(newTeam.id, userId);
 
@@ -47,7 +49,7 @@ export class CreateTeamService {
 
     const teamChangeAudit = {
       appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.update,
+      operationType: ChangeAuditOperationTypes.create,
       entity: {
         id: createdTeam.id.toString(),
         type: Resources.Team,

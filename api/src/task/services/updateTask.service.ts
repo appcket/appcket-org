@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EntityManager } from '@mikro-orm/core';
 import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Logger } from '@nestjs/common';
@@ -17,6 +18,7 @@ export class UpdateTaskService {
   private readonly logger = new Logger(UpdateTaskService.name);
 
   constructor(
+    private readonly em: EntityManager,
     @InjectRepository(Task)
     private readonly taskRepository: EntityRepository<Task>,
     private getTaskService: GetTaskService,
@@ -41,7 +43,7 @@ export class UpdateTaskService {
       taskStatusType: data.taskStatusTypeId ? data.taskStatusTypeId : null,
       assignedTo: data.assignedTo ? data.assignedTo : null,
     });
-    await this.taskRepository.persistAndFlush(task);
+    await this.em.persistAndFlush(task);
 
     const updatedTask = await this.getTaskService.getTask(data.id, userId);
 

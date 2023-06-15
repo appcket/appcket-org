@@ -7,8 +7,8 @@ export class OrganizationUser {
   @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
   id!: string;
 
-  @ManyToOne({ entity: () => Organization, fieldName: 'organization_id', onUpdateIntegrity: 'cascade' })
-  organizationId!: Organization;
+  @ManyToOne({ entity: () => Organization, onUpdateIntegrity: 'cascade' })
+  organization!: Organization;
 
   @Property({ length: 36 })
   userId!: string;

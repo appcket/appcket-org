@@ -1,5 +1,6 @@
 import { Entity, ManyToOne, PrimaryKey, Property, Index } from '@mikro-orm/core';
 import { ChangeAuditApp } from './ChangeAuditApp';
+import { ChangeAuditOperationType } from './ChangeAuditOperationType';
 
 @Entity({ schema: 'appcket' })
 @Index({ properties: ['entityId', 'appId'] })
@@ -16,6 +17,9 @@ export class ChangeAuditEntity {
   @ManyToOne({ entity: () => ChangeAuditApp, fieldName: 'app_id', onUpdateIntegrity: 'cascade' })
   appId!: ChangeAuditApp;
 
+  @ManyToOne({ entity: () => ChangeAuditOperationType, onUpdateIntegrity: 'cascade' })
+  operationType!: ChangeAuditOperationType;
+
   @Property({ length: 36 })
   userId!: string;
 
@@ -26,8 +30,8 @@ export class ChangeAuditEntity {
   userDisplayName?: string;
 
   @Property({ columnType: 'jsonb' })
-  entity!: string;
+  entity!: any;
 
   @Property({ columnType: 'jsonb', nullable: true })
-  diff?: string;
+  diff?: any;
 }

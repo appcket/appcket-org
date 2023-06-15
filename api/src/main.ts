@@ -22,6 +22,7 @@ async function bootstrap() {
   });
   app.useGlobalPipes(new ValidationPipe());
   app.useLogger(app.get(Logger));
+  app.enableShutdownHooks();
   await app.listen(3000);
 }
 bootstrap();

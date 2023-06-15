@@ -19,8 +19,8 @@ export class GetOrganizationService {
   public async getOrganization(id: string, userId: string): Promise<Organization> {
     // fail if the requesting userId is not associated with the organizationId
     await this.organizationUserRepository.findOneOrFail({
-      organizationId: id,
-      userId: userId,
+      organization: id,
+      user: userId,
     });
 
     const organization = await this.organizationRepository.findOneOrFail(id, {
@@ -31,8 +31,8 @@ export class GetOrganizationService {
   }
 
   public async getUserOrganizationIds(userId: string) {
-    const userOrganizationIds = (await this.organizationUserRepository.find({ userId })).map(
-      (entity) => entity.organizationId,
+    const userOrganizationIds = (await this.organizationUserRepository.find({ user: userId })).map(
+      (entity) => entity.organization,
     );
 
     return userOrganizationIds;
@@ -40,16 +40,16 @@ export class GetOrganizationService {
 
   public async getOrganizationUsers(id: string, userIds: string[]) {
     const organizationUsers = await this.organizationUserRepository.find(
-      { organizationId: id, userId: { $in: userIds } },
+      { organization: id, user: { $in: userIds } },
       {
-        populate: ['userId'],
-        fields: ['userId'],
+        populate: ['user'],
+        fields: ['user'],
       },
     );
 
     const organizationUserIds = [];
     organizationUsers.forEach((organizationUser) => {
-      organizationUserIds.push(organizationUser.userId.id);
+      organizationUserIds.push(organizationUser.user.id);
     });
 
     const notAssociatedUserIds = userIds.filter((userId) => !organizationUserIds.includes(userId));

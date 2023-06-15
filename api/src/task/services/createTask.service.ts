@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EntityManager } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
@@ -18,6 +19,7 @@ export class CreateTaskService {
   private readonly logger = new Logger(CreateTaskService.name);
 
   constructor(
+    private readonly em: EntityManager,
     @InjectRepository(Task)
     private readonly taskRepository: EntityRepository<Task>,
     private getTaskService: GetTaskService,
@@ -46,7 +48,7 @@ export class CreateTaskService {
       assignedTo: data.assignedTo ? data.assignedTo : null,
     });
 
-    await this.taskRepository.persist(newTask).flush();
+    await this.em.persistAndFlush(newTask);
 
     const createdTask = await this.getTaskService.getTask(newTask.id, userId);
 
@@ -54,7 +56,7 @@ export class CreateTaskService {
 
     const taskChangeAudit = {
       appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.update,
+      operationType: ChangeAuditOperationTypes.create,
       entity: {
         id: createdTask.id.toString(),
         type: Resources.Task,

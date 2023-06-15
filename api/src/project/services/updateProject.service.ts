@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EntityManager } from '@mikro-orm/core';
 import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Logger } from '@nestjs/common';
@@ -17,6 +18,7 @@ export class UpdateProjectService {
   private readonly logger = new Logger(UpdateProjectService.name);
 
   constructor(
+    private readonly em: EntityManager,
     @InjectRepository(Project)
     private readonly projectRepository: EntityRepository<Project>,
     private getProjectService: GetProjectService,
@@ -40,7 +42,7 @@ export class UpdateProjectService {
       organization: data.organizationId,
       users: data.userIds,
     });
-    await this.projectRepository.persist(project);
+    await this.em.persist(project);
 
     const updatedProject = await this.getProjectService.getProject(data.id, userId);
 
