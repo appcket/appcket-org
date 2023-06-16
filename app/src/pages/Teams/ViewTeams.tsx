@@ -3,8 +3,8 @@ import Typography from '@mui/material/Typography';
 import { Link, NavLink } from 'react-router-dom';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Unstable_Grid2';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { AddCircleOutlineOutlined } from '@mui/icons-material';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
@@ -28,7 +28,7 @@ const ViewTeams = () => {
   );
 
   let createTeamButton = (
-    <Button variant="outlined" startIcon={<AddCircleOutlineOutlinedIcon />} disabled>
+    <Button variant="outlined" startIcon={<AddCircleOutlineOutlined />} disabled>
       Create Team
     </Button>
   );
@@ -39,7 +39,7 @@ const ViewTeams = () => {
         variant="contained"
         component={Link}
         to="create"
-        startIcon={<AddCircleOutlineOutlinedIcon />}
+        startIcon={<AddCircleOutlineOutlined />}
       >
         Create Team
       </Button>
@@ -67,7 +67,7 @@ const ViewTeams = () => {
     const rows: GridRowsProp = data ? data : [];
 
     teamsComponent = (
-      <DataGrid disableSelectionOnClick={true} rows={rows} columns={columns} autoHeight={true} />
+      <DataGrid disableRowSelectionOnClick rows={rows} columns={columns} autoHeight={true} />
     );
   }
 

@@ -23,7 +23,6 @@ export class Team {
   @Field(() => Organization)
   @ManyToOne({
     entity: () => Organization,
-    fieldName: 'organization_id',
     onUpdateIntegrity: 'cascade',
   })
   organization!: Organization;

@@ -10,11 +10,10 @@ export class OrganizationUser {
 
   @ManyToOne({
     entity: () => Organization,
-    fieldName: 'organization_id',
     onUpdateIntegrity: 'cascade',
   })
-  organizationId!: Organization;
+  organization!: Organization;
 
-  @ManyToOne({ entity: () => User, fieldName: 'user_id', onUpdateIntegrity: 'cascade' })
-  userId!: User;
+  @ManyToOne()
+  user!: User;
 }

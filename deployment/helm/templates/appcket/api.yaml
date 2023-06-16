@@ -82,6 +82,8 @@ spec:
           value: https://{{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
         - name: ACCOUNTS_URL
           value: https://{{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+        - name: APP_ID
+          value: {{ .Values.api.appId }}
         stdin: true
         tty: true
         workingDir: /src

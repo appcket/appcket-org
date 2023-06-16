@@ -2,8 +2,8 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import { LogoutOutlined } from '@mui/icons-material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import { useAuth } from 'react-oidc-context';
@@ -109,7 +109,7 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
                 </Typography>
               </MenuItem>
               <MenuItem key="logout" onClick={() => auth.signoutRedirect()}>
-                <LogoutOutlinedIcon />
+                <LogoutOutlined />
                 <Typography sx={{ ml: '5px' }} textAlign="center">
                   Logout
                 </Typography>

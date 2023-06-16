@@ -24,7 +24,6 @@ export class Project {
   @Field(() => Organization)
   @ManyToOne({
     entity: () => Organization,
-    fieldName: 'organization_id',
     onUpdateIntegrity: 'cascade',
   })
   organization!: Organization;
@@ -34,6 +33,7 @@ export class Project {
     entity: () => User,
     pivotEntity: () => ProjectUser,
     pivotTable: 'project_user',
+    inversedBy: 'projects',
   })
   users = new Collection<User>(this);
 }

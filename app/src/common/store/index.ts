@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 
 import { ResourceUsersSlice, createResourceUsersSlice } from './resourceUsersSlice';

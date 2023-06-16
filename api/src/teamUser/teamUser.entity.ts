@@ -1,14 +1,18 @@
-import { Entity, ManyToOne, OptionalProps, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey } from '@mikro-orm/core';
 import { Team } from 'src/team/team.entity';
+import { User } from 'src/user/user.entity';
 
 @Entity({ schema: 'appcket' })
 export class TeamUser {
   @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
   id!: string;
 
-  @ManyToOne({ entity: () => Team, fieldName: 'team_id', onUpdateIntegrity: 'cascade' })
-  teamId!: Team;
+  @ManyToOne({
+    entity: () => Team,
+    onUpdateIntegrity: 'cascade',
+  })
+  team!: Team;
 
-  @Property({ columnType: 'uuid' })
-  userId!: string;
+  @ManyToOne({ entity: () => User, onUpdateIntegrity: 'cascade' })
+  user!: User;
 }

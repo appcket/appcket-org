@@ -69,6 +69,7 @@ caAppend.monkeyPatch();
           host: configService.get('orm.host'),
           port: configService.get('orm.port'),
           debug: configService.get('orm.debug'),
+          forceUtcTimezone: configService.get('orm.forceUtcTimezone'),
         };
 
         if (configService.get('orm.sslMode') === true) {
@@ -76,8 +77,8 @@ caAppend.monkeyPatch();
             connection: {
               ssl: {
                 caAppend: readFileSync('certs/ca-certificate.crt'),
-              }
-            }
+              },
+            },
           };
         }
 

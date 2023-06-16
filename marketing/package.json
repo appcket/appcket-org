@@ -10,15 +10,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^1.0.1",
-    "@astrojs/tailwind": "^3.0.1",
-    "@tailwindcss/typography": "^0.5.9",
-    "astro": "^2.0.5",
+    "@astrojs/sitemap": "^1.3.3",
+    "@astrojs/tailwind": "^3.1.3",
+    "@tailwindcss/typography": "^0.5.7",
+    "astro": "^2.6.0",
     "astro-icon": "^0.8.0",
-    "daisyui": "^2.50.0",
-    "luxon": "^3.2.1",
-    "postcss": "^8.4.21",
-    "prettier-plugin-astro": "^0.8.0",
-    "theme-change": "^2.2.0"
+    "daisyui": "^3.0.3",
+    "luxon": "^3.3.0",
+    "postcss": "^8.4.24",
+    "prettier-plugin-astro": "^0.10.0",
+    "theme-change": "^2.5.0"
   }
 }

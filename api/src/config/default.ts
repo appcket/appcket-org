@@ -7,6 +7,7 @@ const adminEndpointUrl = `${authServerUrl}/admin/realms/${realm}`;
 
 export const config = {
   appUrl: process.env.APP_URL,
+  appId: process.env.APP_ID,
   orm: {
     dbName: process.env.DB_NAME,
     schema: process.env.DB_SCHEMA,
@@ -16,6 +17,7 @@ export const config = {
     host: process.env.DB_ADDR,
     port: process.env.DB_PORT,
     sslMode: process.env.DB_SSL_MODE === 'true' ? true : false,
+    forceUtcTimezone: true,
   },
   keycloak: {
     realm,

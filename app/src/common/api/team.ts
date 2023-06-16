@@ -49,6 +49,7 @@ export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
           users {
             id
             email
+            username
             firstName
             lastName
             attributes {

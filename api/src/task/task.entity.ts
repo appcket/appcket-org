@@ -20,13 +20,17 @@ export class Task {
   description?: string;
 
   @Field({ nullable: true })
-  @OneToOne({ entity: () => User, fieldName: 'assigned_to', onUpdateIntegrity: 'cascade', nullable: true })
+  @OneToOne({
+    entity: () => User,
+    fieldName: 'assigned_to',
+    onUpdateIntegrity: 'cascade',
+    nullable: true,
+  })
   assignedTo!: User;
 
   @Field({ nullable: true })
   @ManyToOne({
     entity: () => TaskStatusType,
-    fieldName: 'task_status_type_id',
     onUpdateIntegrity: 'cascade',
     onDelete: 'set null',
     nullable: true,
@@ -34,6 +38,6 @@ export class Task {
   taskStatusType!: TaskStatusType;
 
   @Field()
-  @ManyToOne({ entity: () => Project, fieldName: 'project_id', onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => Project, onUpdateIntegrity: 'cascade' })
   project!: Project;
 }

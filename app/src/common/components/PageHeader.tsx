@@ -1,7 +1,7 @@
 import { ReactNode, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import Slide from '@mui/material/Slide';
 import PropTypes from 'prop-types';
 

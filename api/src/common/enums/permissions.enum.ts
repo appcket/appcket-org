@@ -1,5 +1,5 @@
 export enum OrganizationPermission {
-  create = `organization:create`,
+  create = 'organization:create',
   read = 'organization:read',
   update = 'organization:update',
   delete = 'organization:delete',

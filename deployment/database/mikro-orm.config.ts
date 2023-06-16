@@ -1,6 +1,10 @@
 import fs from 'fs';
 import { Options } from '@mikro-orm/core';
 
+import { ChangeAuditApp } from './entities/ChangeAuditApp';
+import { ChangeAuditChange } from './entities/ChangeAuditChange';
+import { ChangeAuditEntity } from './entities/ChangeAuditEntity';
+import { ChangeAuditOperationType } from './entities/ChangeAuditOperationType';
 import { Organization } from './entities/Organization';
 import { OrganizationUser } from './entities/OrganizationUser';
 import { Project } from './entities/Project';
@@ -11,7 +15,20 @@ import { Team } from './entities/Team';
 import { TeamUser } from './entities/TeamUser';
 
 const config: Options = {
-  entities: [Organization, OrganizationUser, Project, ProjectUser, Task, TaskStatusType, Team, TeamUser],
+  entities: [
+    ChangeAuditApp,
+    ChangeAuditChange,
+    ChangeAuditEntity,
+    ChangeAuditOperationType,
+    Organization,
+    OrganizationUser,
+    Project,
+    ProjectUser,
+    Task,
+    TaskStatusType,
+    Team,
+    TeamUser
+  ],
   dbName: 'appcket',
   schema: 'appcket',
   type: 'postgresql',

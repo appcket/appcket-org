@@ -15,7 +15,13 @@ export class GetTaskService {
 
   public async getTask(id: string, userId: string): Promise<Task> {
     const task = await this.taskRepository.findOneOrFail(id, {
-      populate: ['project', 'project.users', 'taskStatusType', 'assignedTo', 'project.organization.id'],
+      populate: [
+        'project',
+        'project.users',
+        'taskStatusType',
+        'assignedTo',
+        'project.organization.id',
+      ],
     });
 
     // validate userId is associated with task.project.organization.id
