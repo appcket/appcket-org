@@ -1,4 +1,4 @@
-export default interface CreateChangeAuditChange {
+export interface CreateChangeAuditChange {
   appId: string;
   operationType: string;
   entity: {

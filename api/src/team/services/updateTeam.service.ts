@@ -12,6 +12,7 @@ import { GetOrganizationService } from 'src/organization/services/getOrganizatio
 import { CreateChangeAuditChangeService } from 'src/changeAudit/services/createChangeAuditChange.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
+import { CommonService } from 'src/common/services/common.service';
 
 @Injectable()
 export class UpdateTeamService {
@@ -25,6 +26,7 @@ export class UpdateTeamService {
     private getOrganizationService: GetOrganizationService,
     private createChangeAuditChangeService: CreateChangeAuditChangeService,
     private configService: ConfigService,
+    private commonService: CommonService,
   ) {}
 
   public async updateTeam(data: UpdateTeamInput, userId: string): Promise<Team> {
@@ -48,9 +50,21 @@ export class UpdateTeamService {
 
     this.logger.log(`${Team.name} updated successfully. id: ${updatedTeam.id}`);
 
+    // sort here so change audit diff process doesn't generate a change based on a different order of users
+    const sortedUsers = this.commonService.sortCollection(
+      updatedTeam.users.toArray().map((key) => ({
+        id: key.id,
+        username: key.username,
+        email: key.email,
+        firstName: key.firstName,
+        lastName: key.lastName,
+      })),
+      'id',
+    );
+
     const teamChangeAudit = {
       appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.update,
+      operationType: ChangeAuditOperationTypes.Update,
       entity: {
         id: data.id.toString(),
         type: Resources.Team,
@@ -59,13 +73,7 @@ export class UpdateTeamService {
           name: updatedTeam.name,
           description: updatedTeam.description,
           organizationId: updatedTeam.organization.id,
-          users: updatedTeam.users.toArray().map((key) => ({
-            id: key.id,
-            username: key.username,
-            email: key.email,
-            firstName: key.firstName,
-            lastName: key.lastName,
-          })),
+          users: sortedUsers,
         },
       },
       user: {

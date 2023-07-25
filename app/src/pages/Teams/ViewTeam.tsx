@@ -18,6 +18,7 @@ import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 import { displayUser } from 'src/common/utils/general';
+import EntityHistory from 'src/common/components/EntityHistory';
 
 const Team = () => {
   const params = useParams();
@@ -29,9 +30,15 @@ const Team = () => {
     Resources.Team,
     TeamPermission.update,
   );
+  const readTeamHistoryPermission = hasPermission(
+    userInfoQuery.data?.userInfo.permissions as Permission[],
+    Resources.Team,
+    TeamPermission.readHistory,
+  );
   const { status, data, error, isFetching } = useGetTeam(teamId);
 
   let teamComponent;
+  let entityHistoryComponent;
 
   if (status === 'loading' || isFetching) {
     teamComponent = <Loading />;
@@ -44,6 +51,10 @@ const Team = () => {
 
     if (updateTeamPermission) {
       updateTeamButton = <EditButton variant="contained" isDisabled={false} linkTo="edit" />;
+    }
+
+    if (readTeamHistoryPermission) {
+      entityHistoryComponent = <EntityHistory entityId={teamId} entityType={Resources.Team} />;
     }
 
     const usersComponent = (
@@ -70,6 +81,7 @@ const Team = () => {
           <Typography variant="body1">Description: {data?.description}</Typography>
           {usersComponent}
         </Grid>
+        {entityHistoryComponent}
       </Paper>
     );
   }

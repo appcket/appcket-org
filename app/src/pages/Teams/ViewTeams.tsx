@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Typography from '@mui/material/Typography';
 import { Link, NavLink } from 'react-router-dom';
@@ -15,12 +16,21 @@ import Resources from 'src/common/enums/resources.enum';
 import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import Loading from 'src/common/components/Loading';
+import { getUpdatedDatetime, getCreatedDatetime } from 'src/common/utils/general';
 
 const ViewTeams = () => {
   // TODO: user input from Team name filter input field should drive table results
   const { status, data, error } = useSearchTeams('');
 
   const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+
+  const [rowCountState, setRowCountState] = useState(data?.totalCount);
+  useEffect(() => {
+    setRowCountState((prevRowCountState) =>
+      data?.totalCount !== undefined ? data?.totalCount : prevRowCountState,
+    );
+  }, [data?.totalCount, setRowCountState]);
+
   const createTeamPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
     Resources.Team,
@@ -57,6 +67,28 @@ const ViewTeams = () => {
         return <NavLink to={`/teams/${cellValues.row.id}`}>{cellValues.row.name}</NavLink>;
       },
     },
+    {
+      field: 'updatedAt',
+      headerName: 'Updated',
+      flex: 0.25,
+      sortable: false,
+      renderCell: (cellValues) => {
+        if (data?.history) {
+          return getUpdatedDatetime(cellValues.row.id, data.history);
+        }
+      },
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created',
+      flex: 0.25,
+      sortable: false,
+      renderCell: (cellValues) => {
+        if (data?.history) {
+          return getCreatedDatetime(cellValues.row.id, data.history);
+        }
+      },
+    },
   ];
 
   if (status === 'loading') {
@@ -64,10 +96,16 @@ const ViewTeams = () => {
   } else if (status === 'error' && error instanceof Error) {
     teamsComponent = <Typography paragraph>Error: {error.message}</Typography>;
   } else {
-    const rows: GridRowsProp = data ? data : [];
+    const rows: GridRowsProp = data?.teams ? data.teams : [];
 
     teamsComponent = (
-      <DataGrid disableRowSelectionOnClick rows={rows} columns={columns} autoHeight={true} />
+      <DataGrid
+        disableRowSelectionOnClick
+        rows={rows}
+        rowCount={rowCountState}
+        columns={columns}
+        autoHeight={true}
+      />
     );
   }
 

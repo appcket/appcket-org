@@ -4,5 +4,8 @@
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "modificationsIfAvailable",
   "editor.tabSize": 2,
-  "prettier.documentSelectors": ["*.{tsx,ts}", "*.{jsx,js}"]
+  "prettier.documentSelectors": ["*.{tsx,ts}", "*.{jsx,js}"],
+  "prettier.jsxSingleQuote": false,
+  "prettier.singleQuote": true,
+  "prettier.prettierPath": "./node_modules/prettier"
 }

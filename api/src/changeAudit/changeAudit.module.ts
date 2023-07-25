@@ -7,13 +7,24 @@ import { ChangeAuditApp } from 'src/changeAudit/entities/changeAuditApp.entity';
 import { ChangeAuditChange } from 'src/changeAudit/entities/changeAuditChange.entity';
 import { ChangeAuditEntity } from 'src/changeAudit/entities/changeAuditEntity.entity';
 import { CreateChangeAuditChangeService } from 'src/changeAudit/services/createChangeAuditChange.service';
+import { GetChangeAuditEntityService } from 'src/changeAudit/services/getChangeAuditEntity.service';
+import { GetChangeAuditChangeService } from 'src/changeAudit/services/getChangeAuditChange.service';
 
 @Module({
   imports: [
     CommonModule,
     MikroOrmModule.forFeature({ entities: [ChangeAuditApp, ChangeAuditChange, ChangeAuditEntity] }),
   ],
-  exports: [CreateChangeAuditChangeService],
-  providers: [AuthorizationService, CreateChangeAuditChangeService],
+  exports: [
+    CreateChangeAuditChangeService,
+    GetChangeAuditChangeService,
+    GetChangeAuditEntityService,
+  ],
+  providers: [
+    AuthorizationService,
+    CreateChangeAuditChangeService,
+    GetChangeAuditChangeService,
+    GetChangeAuditEntityService,
+  ],
 })
 export class ChangeAuditModule {}

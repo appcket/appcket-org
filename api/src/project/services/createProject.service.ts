@@ -49,7 +49,7 @@ export class CreateProjectService {
 
     const projectChangeAudit = {
       appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.create,
+      operationType: ChangeAuditOperationTypes.Create,
       entity: {
         id: createdProject.id.toString(),
         type: Resources.Task,

@@ -2,15 +2,15 @@ import { gql } from 'graphql-request';
 import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import { useApiMutation, useApiQuery } from 'src/common/api';
-import SearchTeamsResponse from 'src/common/models/responses/SearchTeamsResponse';
+import { SearchTeamsResponse, TeamsHistory } from 'src/common/models/responses/SearchTeamsResponse';
 import GetTeamResponse from 'src/common/models/responses/GetTeamResponse';
 import UpdateTeamResponse from 'src/common/models/responses/UpdateTeamResponse';
 import CreateTeamResponse from 'src/common/models/responses/CreateTeamResponse';
 import Team from 'src/common/models/Team';
 
-export const useSearchTeams = (searchString: string): UseQueryResult<Team[]> => {
+export const useSearchTeams = (searchString: string): UseQueryResult<TeamsHistory> => {
   const queryKey = ['searchTeams'];
-  const processData = (data: SearchTeamsResponse): Team[] => {
+  const processData = (data: SearchTeamsResponse): TeamsHistory => {
     return data.searchTeams;
   };
 
@@ -19,8 +19,27 @@ export const useSearchTeams = (searchString: string): UseQueryResult<Team[]> => 
     gql`
       {
         ${queryKey}(searchString: "${searchString}") {
-          id
-          name
+          teams {
+            id
+            name
+            organization {
+              id
+              name
+            }
+          }
+          history {
+            id
+            createdAt
+            createdBy {
+              id
+              displayName
+            }
+            updatedAt
+            updatedBy {
+              id
+              displayName
+            }
+          }
         }
       }
     `,

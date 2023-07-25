@@ -122,10 +122,10 @@
   dependencies:
     "@apollographql/graphql-playground-html" "1.6.29"
 
-"@apollo/server@4.7.3":
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/@apollo/server/-/server-4.7.3.tgz#5b1dcc5d5b2da80580d2f3c1914f2110881f431b"
-  integrity sha512-eFCzHHheNHfVALjYJjIghV7kSgO49ZFr8+4g2CKOLShoDmLplQ3blyL5NsONyC0Z5l8kqm62V8yXGoxy2eNGfw==
+"@apollo/server@^4.7.3":
+  version "4.7.4"
+  resolved "https://registry.yarnpkg.com/@apollo/server/-/server-4.7.4.tgz#b2a999b5a1f6bb909ec1749106b0c6704296a622"
+  integrity sha512-7MwEsBR+4JRfjAzrFIOP0m/NdzNCyVOlRWCO/86zs73CC+trr08FklTD7JD0yx5BJDfyzjdhF2BZ1sEYvp/Waw==
   dependencies:
     "@apollo/cache-control-types" "^1.0.2"
     "@apollo/server-gateway-interface" "^1.1.0"
@@ -1337,7 +1337,7 @@
   resolved "https://registry.yarnpkg.com/@lukeed/csprng/-/csprng-1.1.0.tgz#1e3e4bd05c1cc7a0b2ddbd8a03f39f6e4b5e6cfe"
   integrity sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==
 
-"@mikro-orm/core@5.7.12":
+"@mikro-orm/core@^5.7.12":
   version "5.7.12"
   resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-5.7.12.tgz#245a307faa781c38ea0b0d3f0e28c453c3d7bbaa"
   integrity sha512-bd9M4zCzdUGjM2uDGVZmo2ENqa/slzSxOk4knS/LUeAVGgLizidRIT9A41lObILCT1giaVV70n1PhxNSrHe8sA==
@@ -1364,7 +1364,7 @@
   resolved "https://registry.yarnpkg.com/@mikro-orm/nestjs/-/nestjs-5.1.8.tgz#063d33e1dfad8782088b99ec0efb06c593464522"
   integrity sha512-E830nQOvJU25Jn1Chjw4YRIV8swBn4qlVt2HDvmYTrvXsPmcIStcz7Ccpoocu4M/Ulm5gH2EuL8LWVgG6ROOJw==
 
-"@mikro-orm/postgresql@5.7.12":
+"@mikro-orm/postgresql@^5.7.12":
   version "5.7.12"
   resolved "https://registry.yarnpkg.com/@mikro-orm/postgresql/-/postgresql-5.7.12.tgz#f5d8100673af6dc4f02df0d8490fba50bc9c417d"
   integrity sha512-JF89Yf3D/nyA45TzXxclajaDrHXFB/ad3edkF0BA5+sFKsj6it18P/wq0HEk/rhqsHLTlxcmyG0/F+AO3HOPow==

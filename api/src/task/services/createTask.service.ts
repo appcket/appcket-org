@@ -56,7 +56,7 @@ export class CreateTaskService {
 
     const taskChangeAudit = {
       appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.create,
+      operationType: ChangeAuditOperationTypes.Create,
       entity: {
         id: createdTask.id.toString(),
         type: Resources.Task,

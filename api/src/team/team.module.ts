@@ -4,7 +4,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { AuthorizationService } from 'src/common/services/authorization.service';
 import { CommonModule } from 'src/common/common.module';
 import { ChangeAuditModule } from 'src/changeAudit/changeAudit.module';
-import { TeamResolver } from './team.resolver';
+import { TeamResolver } from 'src/team/team.resolver';
 import { UserService } from 'src/user/services/user.service';
 import { UpdateTeamService } from 'src/team/services/updateTeam.service';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';

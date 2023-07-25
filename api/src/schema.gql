@@ -2,6 +2,33 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type EntityHistoryUser {
+  id: String
+  displayName: String
+}
+
+type EntityHistoryChange {
+  changedAt: DateTime
+  fieldName: String
+  oldValue: String
+  newValue: String
+  changedBy: EntityHistoryUser
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type EntityHistory {
+  id: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  createdBy: EntityHistoryUser
+  updatedBy: EntityHistoryUser
+  changes: [EntityHistoryChange!]
+}
+
 type Permission {
   rsid: String!
   rsname: String!
@@ -66,7 +93,14 @@ type Task {
   project: Project!
 }
 
+type SearchTeam {
+  teams: [Team!]!
+  history: [EntityHistory!]!
+  totalCount: Float!
+}
+
 type Query {
+  getEntityHistory(id: String!, orderBy: OrderByInput): EntityHistory
   getOrganization(id: String!): Organization
   hasPermission(permissions: [String!]!): Boolean!
   getProject(id: String!): Project
@@ -75,18 +109,23 @@ type Query {
   getTask(id: String!): Task
   getTaskStatusTypes: [TaskStatusType!]!
   getTeam(id: String!): Team
-  searchTeams(searchString: String, limit: Float, offset: Float, orderBy: TeamOrderByUpdatedAtInput): [Team!]!
+  searchTeams(searchString: String, limit: Float, offset: Float, orderBy: TeamOrderByUpdatedAtInput): SearchTeam!
   userInfo: User!
   searchUsers(organizationId: String!): [User!]!
 }
 
-input ProjectOrderByUpdatedAtInput {
-  updated_at: SortOrder!
+input OrderByInput {
+  fieldName: String!
+  direction: SortOrder!
 }
 
 enum SortOrder {
   asc
   desc
+}
+
+input ProjectOrderByUpdatedAtInput {
+  updated_at: SortOrder!
 }
 
 input SearchTasksInput {
@@ -102,7 +141,7 @@ input OrderByUpdatedAtInput {
 }
 
 input TeamOrderByUpdatedAtInput {
-  updated_at: SortOrder!
+  updatedAt: SortOrder!
 }
 
 type Mutation {

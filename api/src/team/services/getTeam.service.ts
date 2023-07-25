@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 
-import { CommonService } from 'src/common/services/common.service';
 import { Team } from 'src/team/team.entity';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 
@@ -11,7 +10,6 @@ export class GetTeamService {
   constructor(
     @InjectRepository(Team)
     private readonly teamRepository: EntityRepository<Team>,
-    private commonService: CommonService,
     private getOrganizationService: GetOrganizationService,
   ) {}
 

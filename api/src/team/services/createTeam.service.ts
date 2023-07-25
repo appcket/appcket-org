@@ -49,7 +49,7 @@ export class CreateTeamService {
 
     const teamChangeAudit = {
       appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.create,
+      operationType: ChangeAuditOperationTypes.Create,
       entity: {
         id: createdTeam.id.toString(),
         type: Resources.Team,

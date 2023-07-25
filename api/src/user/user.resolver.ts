@@ -17,6 +17,6 @@ export class UserResolver {
 
   @Query(() => [User])
   searchUsers(@Args('organizationId') organizationId: string) {
-    return this.userService.getUsers(organizationId);
+    return this.userService.getOrganizationUsers(organizationId);
   }
 }

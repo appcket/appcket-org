@@ -51,7 +51,7 @@ export class UpdateTaskService {
 
     const taskChangeAudit = {
       appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.update,
+      operationType: ChangeAuditOperationTypes.Update,
       entity: {
         id: data.id.toString(),
         type: Resources.Task,

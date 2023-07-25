@@ -12,6 +12,7 @@ import { readFileSync } from 'fs';
 
 import { configuration } from 'src/config';
 import { CommonModule } from 'src/common/common.module';
+import { EntityHistoryModule } from 'src/entityHistory/entityHistory.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PermissionModule } from './permission/permission.module';
 import { ProjectModule } from './project/project.module';
@@ -86,6 +87,7 @@ caAppend.monkeyPatch();
       },
       inject: [ConfigService],
     }),
+    EntityHistoryModule,
     OrganizationModule,
     PermissionModule,
     ProjectModule,

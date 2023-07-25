@@ -27,8 +27,8 @@ export class ChangeAuditChange {
   @Property({ length: 100, nullable: true })
   userDisplayName?: string;
 
-  @Property({ length: 200 })
-  fieldName!: string;
+  @Property({ length: 200, nullable: true })
+  fieldName?: string;
 
   @Property({ columnType: 'text', nullable: true })
   oldValue!: string;

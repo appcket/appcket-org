@@ -3,10 +3,10 @@ import { getRepositoryToken } from '@mikro-orm/nestjs';
 import { EntityManager } from '@mikro-orm/core';
 import { when } from 'jest-when';
 
-import { CreateChangeAuditChangeService } from './createChangeAuditChange.service';
-import { ChangeAuditChange } from '../entities/changeAuditChange.entity';
-import { ChangeAuditEntity } from '../entities/changeAuditEntity.entity';
-import { ChangeAuditApp } from '../entities/changeAuditApp.entity';
+import { CreateChangeAuditChangeService } from 'src/changeAudit/services/createChangeAuditChange.service';
+import { ChangeAuditChange } from 'src/changeAudit/entities/changeAuditChange.entity';
+import { ChangeAuditEntity } from 'src/changeAudit/entities/changeAuditEntity.entity';
+import { ChangeAuditApp } from 'src/changeAudit/entities/changeAuditApp.entity';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
 
 describe('CreateChangeAuditChangeService', () => {
@@ -17,7 +17,7 @@ describe('CreateChangeAuditChangeService', () => {
 
   const changeInitial = {
     appId: APP_ID,
-    operationType: ChangeAuditOperationTypes.create,
+    operationType: ChangeAuditOperationTypes.Create,
     entity: {
       id: '1234',
       type: 'task',
@@ -41,7 +41,7 @@ describe('CreateChangeAuditChangeService', () => {
 
   const changeUpdated = {
     appId: APP_ID,
-    operationType: ChangeAuditOperationTypes.update,
+    operationType: ChangeAuditOperationTypes.Update,
     entity: {
       id: '1234',
       type: 'task',
@@ -71,7 +71,7 @@ describe('CreateChangeAuditChangeService', () => {
     entityId: changeInitial.entity.id,
     appId: new ChangeAuditApp(),
     operationType: {
-      id: changeInitial.operationType.toLowerCase(),
+      id: changeInitial.operationType,
       name: changeInitial.operationType,
     },
     userId: changeInitial.user.id,
@@ -96,7 +96,7 @@ describe('CreateChangeAuditChangeService', () => {
     entityId: changeUpdated.entity.id,
     appId: new ChangeAuditApp(),
     operationType: {
-      id: changeUpdated.operationType.toLowerCase(),
+      id: changeUpdated.operationType,
       name: changeUpdated.operationType,
     },
     userId: changeUpdated.user.id,
@@ -278,9 +278,9 @@ describe('CreateChangeAuditChangeService', () => {
 
     await service.createChange(changeInitial);
 
-    expect(mockChangeAuditChangeRepository.create).toBeCalledTimes(0);
-    expect(mockEntityManager.persist).toBeCalledTimes(0);
-    expect(mockEntityManager.flush).toBeCalledTimes(0);
+    expect(mockChangeAuditChangeRepository.create).toBeCalledTimes(2);
+    expect(mockEntityManager.persist).toBeCalledTimes(2);
+    expect(mockEntityManager.flush).toBeCalledTimes(2);
   });
 
   it('should insert correct changes for an updated entity', async () => {
@@ -309,14 +309,14 @@ describe('CreateChangeAuditChangeService', () => {
     await service.createChange(changeUpdated);
 
     expect(mockChangeAuditEntityRepository.findOne).toBeCalled();
-    expect(mockChangeAuditChangeRepository.create).toBeCalledTimes(6);
+    expect(mockChangeAuditChangeRepository.create).toBeCalledTimes(8);
     expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[0]);
     expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[1]);
     expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[2]);
     expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[3]);
     expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[4]);
     expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[5]);
-    expect(mockEntityManager.persist).toBeCalledTimes(6);
-    expect(mockEntityManager.flush).toBeCalledTimes(1);
+    expect(mockEntityManager.persist).toBeCalledTimes(8);
+    expect(mockEntityManager.flush).toBeCalledTimes(3);
   });
 });

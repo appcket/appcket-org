@@ -60,7 +60,22 @@ export class UserService {
     }
   }
 
-  public async getUsers(organizationId: string): Promise<User[]> {
+  public async getUser(userId: string): Promise<User> {
+    const dbUser = await this.userRepository.findOneOrFail(
+      { id: userId },
+      {
+        populate: ['projects', 'teams', 'attributes'],
+      },
+    );
+    return dbUser;
+  }
+
+  public async getUsersByIds(userIds: string[]): Promise<User[]> {
+    const dbUsers = await this.userRepository.find({ id: { $in: userIds } });
+    return dbUsers;
+  }
+
+  public async getOrganizationUsers(organizationId: string): Promise<User[]> {
     const dbUsers = await this.userRepository.find(
       { organizations: { id: organizationId } },
       {

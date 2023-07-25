@@ -15,6 +15,8 @@ import { GetTeamService } from 'src/team/services/getTeam.service';
 import { UpdateTeamService } from 'src/team/services/updateTeam.service';
 import { CreateTeamService } from 'src/team/services/createTeam.service';
 import { SearchTeamsService } from 'src/team/services/searchTeams.service';
+import { EntityHistoryService } from 'src/entityHistory/entityHistory.service';
+import { SearchTeam } from 'src/team/searchTeam.entity';
 
 @InputType()
 export class TeamCreateInput {
@@ -25,7 +27,7 @@ export class TeamCreateInput {
 @InputType()
 class TeamOrderByUpdatedAtInput {
   @Field(() => SortOrder)
-  updated_at: SortOrder;
+  updatedAt: SortOrder;
 }
 
 @Resolver(() => Team)
@@ -35,6 +37,7 @@ export class TeamResolver {
     @Inject(UpdateTeamService) private updateTeamService: UpdateTeamService,
     @Inject(CreateTeamService) private createTeamService: CreateTeamService,
     @Inject(SearchTeamsService) private searchTeamsService: SearchTeamsService,
+    @Inject(EntityHistoryService) private entityHistoryService: EntityHistoryService,
   ) {}
 
   @Query(() => Team, { nullable: true })
@@ -44,7 +47,7 @@ export class TeamResolver {
     return await this.getTeamService.getTeam(id, ctx.user.id);
   }
 
-  @Query(() => [Team])
+  @Query(() => SearchTeam)
   @Permissions(`${Resources.Team}#${TeamPermission.read}`)
   @UseGuards(PermissionsGuard)
   async searchTeams(
@@ -54,7 +57,25 @@ export class TeamResolver {
     @Args('orderBy', { nullable: true }) orderBy: TeamOrderByUpdatedAtInput,
     @Context() ctx,
   ) {
-    return await this.searchTeamsService.searchTeams(searchString, limit, offset, ctx.user.id);
+    const { entities, count } = await this.searchTeamsService.searchTeams(
+      searchString,
+      limit,
+      offset,
+      ctx.user.id,
+    );
+    const entityIds = entities.map((team) => team.id);
+
+    const history = await this.entityHistoryService.getEntitiesHistory(
+      entityIds,
+      false,
+      ctx.user.id,
+    );
+
+    return {
+      totalCount: count,
+      teams: entities,
+      history,
+    };
   }
 
   @Mutation(() => Team)

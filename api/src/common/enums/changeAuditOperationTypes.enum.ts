@@ -1,6 +1,6 @@
 export enum ChangeAuditOperationTypes {
-  create = 'Create',
-  read = 'Read',
-  update = 'Update',
-  delete = 'Delete',
+  Create = 'create',
+  Read = 'read',
+  Update = 'update',
+  Delete = 'delete',
 }

@@ -4,10 +4,10 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
 
-import CreateChangeAuditChange from 'src/changeAudit/types/createChangeAuditChange.type';
+import { CreateChangeAuditChange } from 'src/changeAudit/types/createChangeAuditChange.type';
 import { ChangeAuditChange } from 'src/changeAudit/entities/changeAuditChange.entity';
 import { ChangeAuditEntity } from 'src/changeAudit/entities/changeAuditEntity.entity';
-import { EntityChangesUtil } from 'src/common/utils/entityChanges.util';
+import { EntityChangesUtil } from 'src/changeAudit/utils/entityChanges.util';
 
 @Injectable()
 export class CreateChangeAuditChangeService {
@@ -88,8 +88,21 @@ export class CreateChangeAuditChangeService {
 
         this.em.persist(newChange);
       });
+    } else {
+      // if no changes found for this entity, then insert an initial baseline change for the newly created entity
+      const newChange = this.changeAuditChangeRepository.create({
+        entityId: entity.entityId,
+        changeAuditEntity: entity.id,
+        userId: data.user.id,
+        userEmail: data.user.email,
+        userDisplayName: data.user.displayName,
+        fieldName: null,
+        oldValue: null,
+        newValue: JSON.stringify(entity.entity['data']),
+      });
 
-      await this.em.flush();
+      this.em.persist(newChange);
     }
+    await this.em.flush();
   }
 }

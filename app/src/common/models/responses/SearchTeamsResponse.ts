@@ -1,5 +1,12 @@
 import Team from 'src/common/models/Team';
+import { IEntityHistory } from 'src/common/models/EntityHistory';
 
-export default interface SearchTeamsResponse extends Team {
-  searchTeams: Team[];
+export interface TeamsHistory extends Team {
+  teams: Team[];
+  history: IEntityHistory[];
+  totalCount: number;
+}
+
+export interface SearchTeamsResponse extends Team {
+  searchTeams: TeamsHistory;
 }
