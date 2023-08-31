@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { ObjectType, Field } from '@nestjs/graphql';
 
 @ObjectType()
-export class Permission {
+export class PermissionDto {
   @Field()
   rsid: string;
 

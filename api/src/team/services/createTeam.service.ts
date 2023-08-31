@@ -6,6 +6,7 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { Team } from 'src/team/team.entity';
+import { TeamUser } from 'src/team/teamUser.entity';
 import { CreateTeamInput } from 'src/team/dtos/createTeam.input';
 import { GetTeamService } from 'src/team/services/getTeam.service';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
@@ -38,10 +39,19 @@ export class CreateTeamService {
       name: data.name,
       description: data.description,
       organization: data.organizationId,
-      users: data.userIds,
+      createdBy: userId,
     });
 
     await this.em.persistAndFlush(newTeam);
+
+    data.userIds.map((userId) => {
+      this.em.create(TeamUser, {
+        team: newTeam.id,
+        user: userId,
+      });
+    });
+
+    await this.em.flush();
 
     const createdTeam = await this.getTeamService.getTeam(newTeam.id, userId);
 
@@ -58,12 +68,12 @@ export class CreateTeamService {
           name: createdTeam.name,
           description: createdTeam.description,
           organizationId: createdTeam.organization.id,
-          users: createdTeam.users.toArray().map((key) => ({
-            id: key.id,
-            username: key.username,
-            email: key.email,
-            firstName: key.firstName,
-            lastName: key.lastName,
+          users: createdTeam.teamUsers.toArray().map((teamUser) => ({
+            id: teamUser.user.id,
+            username: teamUser.user.username,
+            email: teamUser.user.email,
+            firstName: teamUser.user.firstName,
+            lastName: teamUser.user.lastName,
           })),
         },
       },

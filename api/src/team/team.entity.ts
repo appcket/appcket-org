@@ -1,37 +1,47 @@
-import { ObjectType, Field } from '@nestjs/graphql';
-import { Collection, Entity, ManyToMany, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
-
+import { Collection, Entity, OneToMany, OneToOne, ManyToOne, Property } from '@mikro-orm/core';
+import { BaseEntity } from 'src/common/entities/base.entity';
 import { Organization } from 'src/organization/organization.entity';
-import { TeamUser } from 'src/teamUser/teamUser.entity';
+import { TeamUser } from 'src/team/teamUser.entity';
 import { User } from 'src/user/user.entity';
 
-@ObjectType()
 @Entity({ schema: 'appcket' })
-export class Team {
-  @Field()
-  @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
-  id!: string;
+export class Team extends BaseEntity {
+  @OneToOne({
+    entity: () => User,
+    fieldName: 'created_by',
+    onUpdateIntegrity: 'cascade',
+    nullable: true,
+  })
+  createdBy!: User;
 
-  @Field()
+  @OneToOne({
+    entity: () => User,
+    fieldName: 'updated_by',
+    onUpdateIntegrity: 'cascade',
+    nullable: true,
+  })
+  updatedBy!: User;
+
+  @OneToOne({
+    entity: () => User,
+    fieldName: 'deleted_by',
+    onUpdateIntegrity: 'cascade',
+    nullable: true,
+  })
+  deletedBy!: User;
+
   @Property({ length: 50 })
   name!: string;
 
-  @Field({ nullable: true })
   @Property({ columnType: 'text', length: 500, nullable: true })
   description?: string;
 
-  @Field(() => Organization)
   @ManyToOne({
     entity: () => Organization,
     onUpdateIntegrity: 'cascade',
   })
   organization!: Organization;
 
-  @Field(() => [User])
-  @ManyToMany({
-    entity: () => User,
-    pivotEntity: () => TeamUser,
-    pivotTable: 'team_user',
-  })
-  users = new Collection<User>(this);
+  @OneToMany(() => TeamUser, (teamUser) => teamUser.team)
+  teamUsers = new Collection<TeamUser>(this);
 }

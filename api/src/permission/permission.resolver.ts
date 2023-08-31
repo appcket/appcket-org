@@ -8,7 +8,7 @@ import { AuthorizationService } from 'src/common/services/authorization.service'
 export class PermissionResolver {
   constructor(@Inject(AuthorizationService) private authorizationService: AuthorizationService) {}
 
-  @Query((returns) => Boolean)
+  @Query(() => Boolean)
   hasPermission(
     @Context() ctx,
     @Args({ name: 'permissions', type: () => [String] }) permissions: string[],

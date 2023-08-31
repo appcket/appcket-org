@@ -24,7 +24,7 @@
   "scripts": {
     "schema-seed": "mikro-orm schema:fresh --run --seed",
     "post-seed": "ts-node ./postSeed",
-    "generate-entities": "ts-node generate-entities"
+    "generate-entities": "mikro-orm generate-entities --dump --schema appcket"
   },
   "mikro-orm": {
     "useTsNode": true,

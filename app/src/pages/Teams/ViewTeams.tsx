@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Typography from '@mui/material/Typography';
 import { Link, NavLink } from 'react-router-dom';
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
@@ -16,20 +16,30 @@ import Resources from 'src/common/enums/resources.enum';
 import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import Loading from 'src/common/components/Loading';
-import { getUpdatedDatetime, getCreatedDatetime } from 'src/common/utils/general';
+import { formatDatetime } from 'src/common/utils/general';
+import PaginatedGrid from 'src/common/components/PaginatedGrid';
+
+const PAGE_SIZE = 5;
+const orderByFieldName = 'name';
+const orderByDirection = 'ASC';
 
 const ViewTeams = () => {
-  // TODO: user input from Team name filter input field should drive table results
-  const { status, data, error } = useSearchTeams('');
-
   const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
 
-  const [rowCountState, setRowCountState] = useState(data?.totalCount);
-  useEffect(() => {
-    setRowCountState((prevRowCountState) =>
-      data?.totalCount !== undefined ? data?.totalCount : prevRowCountState,
-    );
-  }, [data?.totalCount, setRowCountState]);
+  const [queryOptions, setQueryOptions] = useState({ pageSize: PAGE_SIZE, cursor: '' });
+
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const mapPageToNextCursor = useRef<{ [page: number]: string }>({});
+
+  // TODO: user input from Team name filter input field should drive table results
+  const { status, data, error } = useSearchTeams(
+    '',
+    queryOptions.pageSize,
+    queryOptions.cursor ? queryOptions.cursor : null,
+    `[{ fieldName: "${orderByFieldName}", orderDirection: ${orderByDirection} }]`,
+    queryOptions.cursor ? queryOptions.cursor : '',
+  );
 
   const createTeamPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
@@ -56,7 +66,7 @@ const ViewTeams = () => {
     );
   }
 
-  let teamsComponent = <Typography paragraph>Unable to view Teams</Typography>;
+  let teamsGrid = <Typography paragraph>Unable to view Teams</Typography>;
 
   const columns: GridColDef[] = [
     {
@@ -64,7 +74,9 @@ const ViewTeams = () => {
       headerName: 'Name',
       flex: 0.25,
       renderCell: (cellValues) => {
-        return <NavLink to={`/teams/${cellValues.row.id}`}>{cellValues.row.name}</NavLink>;
+        return (
+          <NavLink to={`/teams/${cellValues.row.node.id}`}>{cellValues.row.node.name}</NavLink>
+        );
       },
     },
     {
@@ -73,9 +85,7 @@ const ViewTeams = () => {
       flex: 0.25,
       sortable: false,
       renderCell: (cellValues) => {
-        if (data?.history) {
-          return getUpdatedDatetime(cellValues.row.id, data.history);
-        }
+        return formatDatetime(cellValues.row.node.updatedAt);
       },
     },
     {
@@ -84,27 +94,42 @@ const ViewTeams = () => {
       flex: 0.25,
       sortable: false,
       renderCell: (cellValues) => {
-        if (data?.history) {
-          return getCreatedDatetime(cellValues.row.id, data.history);
-        }
+        return formatDatetime(cellValues.row.node.createdAt);
       },
     },
   ];
 
-  if (status === 'loading') {
-    teamsComponent = <Loading />;
-  } else if (status === 'error' && error instanceof Error) {
-    teamsComponent = <Typography paragraph>Error: {error.message}</Typography>;
-  } else {
-    const rows: GridRowsProp = data?.teams ? data.teams : [];
+  const handlePaginate = (pageSize: number, currentPage: number, cursor: string) => {
+    setQueryOptions({ pageSize, cursor });
+    setCurrentPage(currentPage);
+  };
 
-    teamsComponent = (
-      <DataGrid
-        disableRowSelectionOnClick
+  if (status === 'loading') {
+    teamsGrid = <Loading />;
+  } else if (status === 'error' && error instanceof Error) {
+    teamsGrid = <Typography paragraph>Error: {error.message}</Typography>;
+  } else {
+    const rows: GridRowsProp = data?.edges ? data.edges : [];
+
+    const totalCount = data?.totalCount ? data.totalCount : 0;
+    const pageInfo = data?.pageInfo
+      ? data.pageInfo
+      : {
+          endCursor: '',
+          startCursor: '',
+          hasPreviousPage: false,
+          hasNextPage: false,
+        };
+
+    teamsGrid = (
+      <PaginatedGrid
         rows={rows}
-        rowCount={rowCountState}
         columns={columns}
-        autoHeight={true}
+        totalCount={totalCount}
+        pageInfo={pageInfo}
+        currentPage={currentPage}
+        mapPageToNextCursor={mapPageToNextCursor}
+        onPaginate={handlePaginate}
       />
     );
   }
@@ -116,8 +141,7 @@ const ViewTeams = () => {
           <Grid>{createTeamButton}</Grid>
         </Grid>
       </PageHeader>
-
-      {teamsComponent}
+      {teamsGrid}
     </Page>
   );
 };

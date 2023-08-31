@@ -12,7 +12,7 @@ import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
 
 @InputType()
-class OrderByInput {
+class OrderByInput2 {
   @Field(() => String)
   fieldName: string;
 
@@ -29,7 +29,7 @@ export class EntityHistoryResolver {
   @UseGuards(PermissionsGuard)
   async getEntityHistory(
     @Args('id') id: string,
-    @Args('orderBy', { nullable: true }) orderBy: OrderByInput,
+    @Args('orderBy', { nullable: true }) orderBy: OrderByInput2,
     @Context() ctx,
   ) {
     return await this.entityHistoryService.getEntityHistory(

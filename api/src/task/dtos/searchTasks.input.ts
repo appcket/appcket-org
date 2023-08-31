@@ -1,7 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsString, MaxLength, MinLength, IsNumber, IsOptional } from 'class-validator';
 
-import { OrderByUpdatedAtInput } from 'src/common/dtos/orderByUpdatedAt.input';
+// import { OrderByUpdatedAtInput } from 'src/common/dtos/orderByUpdatedAt.input';
 
 @InputType()
 export class SearchTasksInput {
@@ -26,7 +26,7 @@ export class SearchTasksInput {
   @IsNumber()
   offset: number;
 
-  @Field((type) => OrderByUpdatedAtInput, { nullable: true })
-  @IsOptional()
-  orderBy: OrderByUpdatedAtInput;
+  // @Field((type) => OrderByUpdatedAtInput, { nullable: true })
+  // @IsOptional()
+  // orderBy: OrderByUpdatedAtInput;
 }

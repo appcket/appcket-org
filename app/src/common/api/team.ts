@@ -2,15 +2,25 @@ import { gql } from 'graphql-request';
 import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import { useApiMutation, useApiQuery } from 'src/common/api';
-import { SearchTeamsResponse, TeamsHistory } from 'src/common/models/responses/SearchTeamsResponse';
+import {
+  SearchTeamsResponse,
+  PaginatedResponse,
+} from 'src/common/models/responses/SearchTeamsResponse';
 import GetTeamResponse from 'src/common/models/responses/GetTeamResponse';
 import UpdateTeamResponse from 'src/common/models/responses/UpdateTeamResponse';
 import CreateTeamResponse from 'src/common/models/responses/CreateTeamResponse';
 import Team from 'src/common/models/Team';
 
-export const useSearchTeams = (searchString: string): UseQueryResult<TeamsHistory> => {
-  const queryKey = ['searchTeams'];
-  const processData = (data: SearchTeamsResponse): TeamsHistory => {
+export const useSearchTeams = (
+  searchString: string,
+  first: number,
+  after: string | null,
+  orderBy: string,
+  queryKeyId: string,
+): UseQueryResult<PaginatedResponse> => {
+  after = after ? `"${after}"` : null;
+  const queryKey = ['searchTeams', queryKeyId];
+  const processData = (data: SearchTeamsResponse): PaginatedResponse => {
     return data.searchTeams;
   };
 
@@ -18,26 +28,32 @@ export const useSearchTeams = (searchString: string): UseQueryResult<TeamsHistor
     queryKey,
     gql`
       {
-        ${queryKey}(searchString: "${searchString}") {
-          teams {
-            id
-            name
-            organization {
+        ${queryKey[0]}(searchTeamsInput: {
+          searchString: "${searchString}",
+          first: ${first},
+          after: ${after},
+          orderBy: ${orderBy}
+        }) {
+          currentCount
+          previousCount
+          totalCount
+          pageInfo {
+            endCursor
+            startCursor
+            hasPreviousPage
+            hasNextPage
+          }
+          edges {
+            cursor
+            node {
               id
               name
-            }
-          }
-          history {
-            id
-            createdAt
-            createdBy {
-              id
-              displayName
-            }
-            updatedAt
-            updatedBy {
-              id
-              displayName
+              createdAt
+              updatedAt
+              organization {
+                id
+                name
+              }
             }
           }
         }

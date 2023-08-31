@@ -3,7 +3,7 @@ import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nes
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { Task } from './task.entity';
+import { TaskDto } from 'src/task/dtos/task.dto';
 import { SearchTasksInput } from 'src/task/dtos/searchTasks.input';
 import { CreateTaskInput } from 'src/task/dtos/createTask.input';
 import { UpdateTaskInput } from 'src/task/dtos/updateTask.input';
@@ -22,7 +22,7 @@ export class TaskCreateInput {
   name: string;
 }
 
-@Resolver(() => Task)
+@Resolver(() => TaskDto)
 export class TaskResolver {
   constructor(
     @Inject(SearchTasksService) private searchTasksService: SearchTasksService,
@@ -31,28 +31,28 @@ export class TaskResolver {
     @Inject(CreateTaskService) private createTaskService: CreateTaskService,
   ) {}
 
-  @Query(() => [Task])
+  @Query(() => [TaskDto])
   @Permissions(`${Resources.Task}#${TaskPermission.read}`)
   @UseGuards(PermissionsGuard)
   async searchTasks(@Args('searchTasksInput') searchTasksInput: SearchTasksInput) {
     return await this.searchTasksService.searchTasks(searchTasksInput);
   }
 
-  @Query(() => Task, { nullable: true })
+  @Query(() => TaskDto, { nullable: true })
   @Permissions(`${Resources.Task}#${TaskPermission.read}`)
   @UseGuards(PermissionsGuard)
   async getTask(@Args('id') id: string, @Context() ctx) {
     return await this.getTaskService.getTask(id, ctx.user.id);
   }
 
-  @Mutation(() => Task)
+  @Mutation(() => TaskDto)
   @Permissions(`${Resources.Task}#${TaskPermission.create}`)
   @UseGuards(PermissionsGuard)
   async createTask(@Args('createTaskInput') createTaskInput: CreateTaskInput, @Context() ctx) {
     return await this.createTaskService.createTask(createTaskInput, ctx.user.id);
   }
 
-  @Mutation(() => Task)
+  @Mutation(() => TaskDto)
   @Permissions(`${Resources.Task}#${TaskPermission.update}`)
   @UseGuards(PermissionsGuard)
   async updateTask(@Args('updateTaskInput') updateTaskInput: UpdateTaskInput, @Context() ctx) {

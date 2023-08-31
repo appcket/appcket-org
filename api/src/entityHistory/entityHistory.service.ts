@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { groupBy, mapValues, reduce } from 'lodash';
 
 import { EntityHistory } from 'src/entityHistory/entityHistory.entity';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';

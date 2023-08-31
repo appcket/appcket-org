@@ -3,7 +3,7 @@ import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nes
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { Project } from 'src/project/project.entity';
+import { ProjectDto } from 'src/project/dtos/project.dto';
 import { UpdateProjectInput } from './dtos/updateProject.input';
 import { CreateProjectInput } from './dtos/createProject.input';
 import { Resources } from 'src/common/enums/resources.enum';
@@ -28,7 +28,7 @@ class ProjectOrderByUpdatedAtInput {
   updated_at: SortOrder;
 }
 
-@Resolver(() => Project)
+@Resolver(() => ProjectDto)
 export class ProjectResolver {
   constructor(
     @Inject(GetProjectService) private getProjectService: GetProjectService,
@@ -37,14 +37,14 @@ export class ProjectResolver {
     @Inject(CreateProjectService) private createProjectService: CreateProjectService,
   ) {}
 
-  @Query(() => Project, { nullable: true })
+  @Query(() => ProjectDto, { nullable: true })
   @Permissions(`${Resources.Project}#${ProjectPermission.read}`)
   @UseGuards(PermissionsGuard)
   async getProject(@Args('id') id: string, @Context() ctx) {
     return await this.getProjectService.getProject(id, ctx.user.id);
   }
 
-  @Query(() => [Project])
+  @Query(() => [ProjectDto])
   @Permissions(`${Resources.Project}#${ProjectPermission.read}`)
   @UseGuards(PermissionsGuard)
   async searchProjects(
@@ -62,7 +62,7 @@ export class ProjectResolver {
     );
   }
 
-  @Mutation(() => Project)
+  @Mutation(() => ProjectDto)
   @Permissions(`${Resources.Project}#${ProjectPermission.update}`)
   @UseGuards(PermissionsGuard)
   async updateProject(
@@ -72,7 +72,7 @@ export class ProjectResolver {
     return await this.updateProjectService.updateProject(updateProjectInput, ctx.user.id);
   }
 
-  @Mutation(() => Project)
+  @Mutation(() => ProjectDto)
   @Permissions(`${Resources.Project}#${ProjectPermission.create}`)
   @UseGuards(PermissionsGuard)
   async createProject(

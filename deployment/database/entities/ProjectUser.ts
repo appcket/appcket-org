@@ -1,11 +1,9 @@
-import { Entity, ManyToOne, OptionalProps, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { BaseEntity } from './Base';
 import { Project } from './Project';
 
 @Entity({ schema: 'appcket' })
-export class ProjectUser {
-  @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
-  id!: string;
-
+export class ProjectUser extends BaseEntity {
   @ManyToOne({ entity: () => Project, fieldName: 'project_id', onUpdateIntegrity: 'cascade' })
   projectId!: Project;
 

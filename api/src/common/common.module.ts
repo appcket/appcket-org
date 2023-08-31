@@ -4,6 +4,7 @@ import { Agent } from 'https';
 import { readFileSync } from 'fs';
 import * as caAppend from 'ca-append';
 import { CommonService } from 'src/common/services/common.service';
+import { PaginationService } from 'src/common/services/pagination.service';
 
 // https://blog.bossylobster.com/2021/05/node-ca-append.html - this is needed so https requests from api to accounts will work with letsencrypt certs
 caAppend.monkeyPatch();
@@ -22,7 +23,7 @@ const agentOptions = {
       httpsAgent: new Agent(agentOptions),
     }),
   ],
-  exports: [CommonService, HttpModule],
-  providers: [CommonService],
+  exports: [CommonService, PaginationService, HttpModule],
+  providers: [CommonService, PaginationService],
 })
 export class CommonModule {}

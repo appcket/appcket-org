@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/core';
-import { EntityRepository, wrap } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { Team } from 'src/team/team.entity';
+import { TeamUser } from 'src/team/teamUser.entity';
 import { UpdateTeamInput } from 'src/team/dtos/updateTeam.input';
 import { GetTeamService } from 'src/team/services/getTeam.service';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
@@ -20,8 +21,8 @@ export class UpdateTeamService {
 
   constructor(
     private readonly em: EntityManager,
-    @InjectRepository(Team)
-    private readonly teamRepository: EntityRepository<Team>,
+    @InjectRepository(TeamUser)
+    private readonly teamUserRepository: EntityRepository<TeamUser>,
     private getTeamService: GetTeamService,
     private getOrganizationService: GetOrganizationService,
     private createChangeAuditChangeService: CreateChangeAuditChangeService,
@@ -38,29 +39,68 @@ export class UpdateTeamService {
 
     const team = await this.getTeamService.getTeam(data.id, userId);
 
-    wrap(team).assign({
+    let teamUsersUpdated = [];
+
+    teamUsersUpdated = data.userIds.map((id) => {
+      return {
+        user: id,
+        team: team.id,
+      };
+    });
+
+    // if teamUsersUpdated item is not found in the existing team.teamUsers, insert
+    teamUsersUpdated.forEach((teamUserUpdated) => {
+      if (!team.teamUsers.toArray().find((teamUser) => teamUser.user.id == teamUserUpdated.user)) {
+        this.em.create(TeamUser, {
+          user: teamUserUpdated.user,
+          team: team.id,
+          createdAt: new Date(),
+          createdBy: userId,
+        });
+      }
+    });
+
+    // if existing team.teamUser record is not found in teamUsersUpdated, soft delete
+    team.teamUsers.getItems().forEach((teamUser) => {
+      if (!teamUsersUpdated.find((teamUserUpdated) => teamUserUpdated.user == teamUser.user.id)) {
+        const newTeamUser = this.em.assign(teamUser, {
+          deletedAt: new Date(),
+          deletedBy: userId,
+        });
+        this.em.persist(newTeamUser);
+      }
+    });
+
+    await this.em.flush();
+
+    this.em.assign(team, {
+      updatedAt: new Date(),
       name: data.name,
       description: data.description,
       organization: data.organizationId,
-      users: data.userIds,
+      updatedBy: userId,
     });
-    await this.em.persist(team);
+
+    await this.em.persistAndFlush(team);
 
     const updatedTeam = await this.getTeamService.getTeam(data.id, userId);
 
     this.logger.log(`${Team.name} updated successfully. id: ${updatedTeam.id}`);
 
     // sort here so change audit diff process doesn't generate a change based on a different order of users
-    const sortedUsers = this.commonService.sortCollection(
-      updatedTeam.users.toArray().map((key) => ({
-        id: key.id,
-        username: key.username,
-        email: key.email,
-        firstName: key.firstName,
-        lastName: key.lastName,
-      })),
-      'id',
-    );
+    const usersToSort = [];
+    updatedTeam.teamUsers.toArray().forEach((teamUser) => {
+      if (teamUser.deletedAt === null || teamUser.deletedAt === undefined) {
+        usersToSort.push({
+          id: teamUser.user.id,
+          username: teamUser.user.username,
+          email: teamUser.user.email,
+          firstName: teamUser.user.firstName,
+          lastName: teamUser.user.lastName,
+        });
+      }
+    });
+    const sortedUsers = this.commonService.sortCollection(usersToSort, 'id');
 
     const teamChangeAudit = {
       appId: this.configService.get('appId'),

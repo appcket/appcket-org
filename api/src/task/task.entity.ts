@@ -1,25 +1,18 @@
-import { ObjectType, Field } from '@nestjs/graphql';
-import { Entity, ManyToOne, OneToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
+
+import { BaseEntity } from 'src/common/entities/base.entity';
 import { Project } from 'src/project/project.entity';
 import { TaskStatusType } from 'src/taskStatusType/taskStatusType.entity';
 import { User } from 'src/user/user.entity';
 
-@ObjectType()
 @Entity({ schema: 'appcket' })
-export class Task {
-  @Field()
-  @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
-  id!: string;
-
-  @Field()
+export class Task extends BaseEntity {
   @Property({ length: 100 })
   name!: string;
 
-  @Field({ nullable: true })
   @Property({ columnType: 'text', length: 5000, nullable: true })
   description?: string;
 
-  @Field({ nullable: true })
   @OneToOne({
     entity: () => User,
     fieldName: 'assigned_to',
@@ -28,7 +21,6 @@ export class Task {
   })
   assignedTo!: User;
 
-  @Field({ nullable: true })
   @ManyToOne({
     entity: () => TaskStatusType,
     onUpdateIntegrity: 'cascade',
@@ -37,7 +29,6 @@ export class Task {
   })
   taskStatusType!: TaskStatusType;
 
-  @Field()
   @ManyToOne({ entity: () => Project, onUpdateIntegrity: 'cascade' })
   project!: Project;
 }

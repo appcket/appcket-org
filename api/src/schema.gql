@@ -29,54 +29,59 @@ type EntityHistory {
   changes: [EntityHistoryChange!]
 }
 
-type Permission {
+type PermissionDto {
   rsid: String!
   rsname: String!
   scopes: [String!]
 }
 
-type Project {
-  id: String!
-  name: String!
-  description: String
-  organization: Organization!
-  users: [User!]!
-}
-
-type Team {
-  id: String!
-  name: String!
-  description: String
-  organization: Organization!
-  users: [User!]!
-}
-
-type UserAttribute {
+type UserAttributeDto {
   id: String!
   name: String!
   value: String!
 }
 
-type User {
+type TeamDto {
+  id: String!
+  createdAt: DateTime!
+  createdBy: UserDto
+  updatedAt: DateTime!
+  updatedBy: UserDto
+  deletedAt: DateTime
+  deletedBy: UserDto
+  name: String!
+  description: String
+  organization: OrganizationDto!
+  users: [UserDto!]!
+}
+
+type UserDto {
   id: String!
   email: String!
   firstName: String!
   lastName: String
   username: String!
-  role: String!
-  organizations: [Organization!]!
-  projects: [Project!]!
-  teams: [Team!]!
-  attributes: [UserAttribute!]!
-  permissions: [Permission!]!
+  role: String
+  attributes: [UserAttributeDto!]
+  permissions: [PermissionDto!]!
+  organizations: [OrganizationDto!]
+  team: [TeamDto!]!
 }
 
-type Organization {
+type ProjectDto {
   id: String!
   name: String!
-  projects: [Project!]!
-  teams: [Team!]!
-  users: [User!]!
+  description: String
+  organization: OrganizationDto!
+  users: [UserDto!]!
+}
+
+type OrganizationDto {
+  id: String!
+  name: String!
+  projects: [ProjectDto!]
+  teams: [TeamDto!]
+  users: [UserDto!]
 }
 
 type TaskStatusType {
@@ -84,37 +89,51 @@ type TaskStatusType {
   name: String!
 }
 
-type Task {
+type TaskDto {
   id: String!
   name: String!
   description: String
-  assignedTo: User
+  assignedTo: UserDto
   taskStatusType: TaskStatusType
-  project: Project!
+  project: ProjectDto!
 }
 
-type SearchTeam {
-  teams: [Team!]!
-  history: [EntityHistory!]!
-  totalCount: Float!
+type PageInfo {
+  startCursor: String!
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type TeamDtoEdge {
+  cursor: String!
+  node: TeamDto!
+}
+
+type PaginatedTeamDto {
+  previousCount: Int!
+  currentCount: Int!
+  totalCount: Int!
+  edges: [TeamDtoEdge!]!
+  pageInfo: PageInfo!
 }
 
 type Query {
-  getEntityHistory(id: String!, orderBy: OrderByInput): EntityHistory
-  getOrganization(id: String!): Organization
+  getEntityHistory(id: String!, orderBy: OrderByInput2): EntityHistory
+  getOrganization(id: String!): OrganizationDto
   hasPermission(permissions: [String!]!): Boolean!
-  getProject(id: String!): Project
-  searchProjects(searchString: String, limit: Float, offset: Float, orderBy: ProjectOrderByUpdatedAtInput): [Project!]!
-  searchTasks(searchTasksInput: SearchTasksInput!): [Task!]!
-  getTask(id: String!): Task
+  getProject(id: String!): ProjectDto
+  searchProjects(searchString: String, limit: Float, offset: Float, orderBy: ProjectOrderByUpdatedAtInput): [ProjectDto!]!
+  searchTasks(searchTasksInput: SearchTasksInput!): [TaskDto!]!
+  getTask(id: String!): TaskDto
   getTaskStatusTypes: [TaskStatusType!]!
-  getTeam(id: String!): Team
-  searchTeams(searchString: String, limit: Float, offset: Float, orderBy: TeamOrderByUpdatedAtInput): SearchTeam!
-  userInfo: User!
-  searchUsers(organizationId: String!): [User!]!
+  getTeam(id: String!): TeamDto
+  searchTeams(searchTeamsInput: SearchTeamsInput!): PaginatedTeamDto!
+  userInfo: UserDto!
+  searchUsers(organizationId: String!): [UserDto!]!
 }
 
-input OrderByInput {
+input OrderByInput2 {
   fieldName: String!
   direction: SortOrder!
 }
@@ -133,24 +152,32 @@ input SearchTasksInput {
   projectIds: [String!]
   limit: Float
   offset: Float
-  orderBy: OrderByUpdatedAtInput
 }
 
-input OrderByUpdatedAtInput {
-  updated_at: SortOrder!
+input SearchTeamsInput {
+  searchString: String
+  first: Float
+  after: String
+  orderBy: [OrderByInput!]
 }
 
-input TeamOrderByUpdatedAtInput {
-  updatedAt: SortOrder!
+input OrderByInput {
+  fieldName: String!
+  orderDirection: QueryOrder! = ASC
+}
+
+enum QueryOrder {
+  ASC
+  DESC
 }
 
 type Mutation {
-  updateProject(updateProjectInput: UpdateProjectInput!): Project!
-  createProject(createProjectInput: CreateProjectInput!): Project!
-  createTask(createTaskInput: CreateTaskInput!): Task!
-  updateTask(updateTaskInput: UpdateTaskInput!): Task!
-  updateTeam(updateTeamInput: UpdateTeamInput!): Team!
-  createTeam(createTeamInput: CreateTeamInput!): Team!
+  updateProject(updateProjectInput: UpdateProjectInput!): ProjectDto!
+  createProject(createProjectInput: CreateProjectInput!): ProjectDto!
+  createTask(createTaskInput: CreateTaskInput!): TaskDto!
+  updateTask(updateTaskInput: UpdateTaskInput!): TaskDto!
+  updateTeam(updateTeamInput: UpdateTeamInput!): TeamDto!
+  createTeam(createTeamInput: CreateTeamInput!): TeamDto!
 }
 
 input UpdateProjectInput {

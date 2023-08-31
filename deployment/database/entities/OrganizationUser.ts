@@ -1,8 +1,9 @@
-import { Entity, Index, ManyToOne, OptionalProps, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { BaseEntity } from './Base';
 import { Organization } from './Organization';
 
 @Entity({ schema: 'appcket' })
-export class OrganizationUser {
+export class OrganizationUser extends BaseEntity {
   @Index({ name: 'organization_user_id_idx' })
   @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
   id!: string;

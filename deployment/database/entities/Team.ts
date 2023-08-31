@@ -1,11 +1,9 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { BaseEntity } from './Base';
 import { Organization } from './Organization';
 
 @Entity({ schema: 'appcket' })
-export class Team {
-  @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
-  id!: string;
-
+export class Team extends BaseEntity {
   @Property({ length: 50 })
   name!: string;
 

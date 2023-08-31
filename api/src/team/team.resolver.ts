@@ -3,12 +3,12 @@ import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nes
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { Team } from './team.entity';
-import { UpdateTeamInput } from './dtos/updateTeam.input';
-import { CreateTeamInput } from './dtos/createTeam.input';
+import { Team } from 'src/team/team.entity';
+import { TeamDto } from 'src/team/dtos/team.dto';
+import { UpdateTeamInput } from 'src/team/dtos/updateTeam.input';
+import { CreateTeamInput } from 'src/team/dtos/createTeam.input';
 import { Resources } from 'src/common/enums/resources.enum';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
-import { SortOrder } from 'src/common/enums/sortOrder.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
 import { GetTeamService } from 'src/team/services/getTeam.service';
@@ -16,18 +16,13 @@ import { UpdateTeamService } from 'src/team/services/updateTeam.service';
 import { CreateTeamService } from 'src/team/services/createTeam.service';
 import { SearchTeamsService } from 'src/team/services/searchTeams.service';
 import { EntityHistoryService } from 'src/entityHistory/entityHistory.service';
-import { SearchTeam } from 'src/team/searchTeam.entity';
+import { PaginatedTeamDto } from 'src/team/dtos/paginatedTeam.dto';
+import { SearchTeamsInput } from 'src/team/dtos/searchTeam.input';
 
 @InputType()
 export class TeamCreateInput {
   @Field()
   name: string;
-}
-
-@InputType()
-class TeamOrderByUpdatedAtInput {
-  @Field(() => SortOrder)
-  updatedAt: SortOrder;
 }
 
 @Resolver(() => Team)
@@ -40,52 +35,82 @@ export class TeamResolver {
     @Inject(EntityHistoryService) private entityHistoryService: EntityHistoryService,
   ) {}
 
-  @Query(() => Team, { nullable: true })
+  @Query(() => TeamDto, { nullable: true })
   @Permissions(`${Resources.Team}#${TeamPermission.read}`)
   @UseGuards(PermissionsGuard)
   async getTeam(@Args('id') id: string, @Context() ctx) {
-    return await this.getTeamService.getTeam(id, ctx.user.id);
+    const team = await this.getTeamService.getTeam(id, ctx.user.id);
+
+    let createdBy = null;
+    let updatedBy = null;
+
+    if (team.createdBy) {
+      createdBy = {
+        id: team.createdBy.id,
+        email: team.createdBy.email,
+        username: team.createdBy.username,
+        firstName: team.createdBy.firstName,
+        lastName: team.createdBy.lastName,
+      };
+    }
+
+    if (team.updatedBy) {
+      updatedBy = {
+        id: team.updatedBy.id,
+        email: team.updatedBy.email,
+        username: team.updatedBy.username,
+        firstName: team.updatedBy.firstName,
+        lastName: team.updatedBy.lastName,
+      };
+    }
+
+    const teamDto: TeamDto = {
+      id: team.id,
+      createdAt: team.createdAt,
+      createdBy,
+      updatedAt: team.updatedAt,
+      updatedBy,
+      name: team.name,
+      description: team.description,
+      organization: {
+        id: team.organization.id,
+        name: team.organization.name,
+      },
+      users: team.teamUsers.toArray().map((teamUser) => ({
+        id: teamUser.user.id,
+        createdAt: teamUser.createdAt,
+        createdBy: teamUser.createdBy,
+        updatedAt: teamUser.updatedAt,
+        updatedBy: teamUser.updatedBy,
+        username: teamUser.user.username,
+        email: teamUser.user.email,
+        firstName: teamUser.user.firstName,
+        lastName: teamUser.user.lastName,
+        attributes: teamUser.user.attributes,
+        role: teamUser.user.role,
+      })),
+    };
+
+    return teamDto;
   }
 
-  @Query(() => SearchTeam)
+  @Query(() => PaginatedTeamDto)
   @Permissions(`${Resources.Team}#${TeamPermission.read}`)
   @UseGuards(PermissionsGuard)
-  async searchTeams(
-    @Args('searchString', { nullable: true }) searchString: string,
-    @Args('limit', { nullable: true }) limit: number,
-    @Args('offset', { nullable: true }) offset: number,
-    @Args('orderBy', { nullable: true }) orderBy: TeamOrderByUpdatedAtInput,
-    @Context() ctx,
-  ) {
-    const { entities, count } = await this.searchTeamsService.searchTeams(
-      searchString,
-      limit,
-      offset,
-      ctx.user.id,
-    );
-    const entityIds = entities.map((team) => team.id);
+  async searchTeams(@Args('searchTeamsInput') searchTeamsInput: SearchTeamsInput, @Context() ctx) {
+    const results = await this.searchTeamsService.searchTeams(searchTeamsInput, ctx.user.id);
 
-    const history = await this.entityHistoryService.getEntitiesHistory(
-      entityIds,
-      false,
-      ctx.user.id,
-    );
-
-    return {
-      totalCount: count,
-      teams: entities,
-      history,
-    };
+    return results;
   }
 
-  @Mutation(() => Team)
+  @Mutation(() => TeamDto)
   @Permissions(`${Resources.Team}#${TeamPermission.update}`)
   @UseGuards(PermissionsGuard)
   async updateTeam(@Args('updateTeamInput') updateTeamInput: UpdateTeamInput, @Context() ctx) {
     return await this.updateTeamService.updateTeam(updateTeamInput, ctx.user.id);
   }
 
-  @Mutation(() => Team)
+  @Mutation(() => TeamDto)
   @Permissions(`${Resources.Team}#${TeamPermission.create}`)
   @UseGuards(PermissionsGuard)
   async createTeam(@Args('createTeamInput') createTeamInput: CreateTeamInput, @Context() ctx) {

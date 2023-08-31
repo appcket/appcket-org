@@ -1,5 +1,5 @@
-import { EntityManager, wrap } from '@mikro-orm/core';
-import { Seeder } from '@mikro-orm/seeder';
+import { EntityManager } from '@mikro-orm/core';
+import { Factory, Faker, Seeder } from '@mikro-orm/seeder';
 
 import { ChangeAuditApp } from '../entities/ChangeAuditApp';
 import { ChangeAuditOperationType } from '../entities/ChangeAuditOperationType';
@@ -11,6 +11,19 @@ import { Task } from '../entities/Task';
 import { TaskStatusType } from '../entities/TaskStatusType';
 import { Team } from '../entities/Team';
 import { TeamUser } from '../entities/TeamUser';
+import { randomUUID } from 'crypto';
+
+export class TeamFactory extends Factory<Team> {
+  model = Team;
+
+  definition(faker: Faker): Partial<Team> {
+    return {
+      id: randomUUID(),
+      name: `${faker.company.catchPhraseAdjective()} ${faker.company.catchPhraseDescriptor()}`,
+      description: faker.lorem.words(),
+    };
+  }
+}
 
 export class DatabaseSeeder extends Seeder {
   private organizationEntities = [];
@@ -220,6 +233,15 @@ export class DatabaseSeeder extends Seeder {
       this.teamEntities.push(createdEntity);
       console.log(`Created Team with name: ${entity.name}`);
     }
+
+    new TeamFactory(em).each(team => {
+      team.organization = this.organizationEntities[0];
+    }).create(25);
+    
+    new TeamFactory(em).each(team => {
+      team.organization = this.organizationEntities[1];
+    }).create(25);
+    console.log(`Created 50 random Teams`);
 
     const teamUserData: TeamUser[] = [
       {

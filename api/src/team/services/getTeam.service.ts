@@ -17,9 +17,17 @@ export class GetTeamService {
     const userOrganizationIds = await this.getOrganizationService.getUserOrganizationIds(userId);
     const organizationWhere = { $in: userOrganizationIds };
     const team = await this.teamRepository.findOneOrFail(
-      { id, organization: organizationWhere },
+      { id, deletedAt: null, organization: organizationWhere },
       {
-        populate: ['organization.id', 'organization.name', 'users'],
+        populate: [
+          'createdBy',
+          'updatedBy',
+          'organization.id',
+          'organization.name',
+          'teamUsers.user',
+          'teamUsers.user.attributes',
+        ],
+        populateWhere: { teamUsers: { deletedAt: null } },
       },
     );
 

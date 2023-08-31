@@ -1,12 +1,19 @@
+import PageInfo from 'src/common/models/responses/PageInfo';
 import Team from 'src/common/models/Team';
-import { IEntityHistory } from 'src/common/models/EntityHistory';
 
-export interface TeamsHistory extends Team {
-  teams: Team[];
-  history: IEntityHistory[];
+export interface PaginatedResponse extends Team {
+  currentCount: number;
+  previousCount: number;
   totalCount: number;
+  pageInfo: PageInfo;
+  edges: [
+    {
+      cursor: string;
+      node: Team;
+    },
+  ];
 }
 
 export interface SearchTeamsResponse extends Team {
-  searchTeams: TeamsHistory;
+  searchTeams: PaginatedResponse;
 }

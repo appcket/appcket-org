@@ -1,12 +1,10 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { BaseEntity } from './Base';
 import { Project } from './Project';
 import { TaskStatusType } from './TaskStatusType';
 
 @Entity({ schema: 'appcket' })
-export class Task {
-  @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
-  id!: string;
-
+export class Task extends BaseEntity {
   @Property({ length: 100 })
   name!: string;
 
