@@ -15,6 +15,7 @@ import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 import { displayUser } from 'src/common/utils/general';
+import EntityHistory from 'src/common/components/EntityHistory';
 
 const Task = () => {
   const params = useParams();
@@ -26,9 +27,15 @@ const Task = () => {
     Resources.Task,
     TaskPermission.update,
   );
+  const readTaskHistoryPermission = hasPermission(
+    userInfoQuery.data?.userInfo.permissions as Permission[],
+    Resources.Task,
+    TaskPermission.readHistory,
+  );
   const { status, data, error, isFetching } = useGetTask(taskId);
 
   let taskComponent;
+  let entityHistoryComponent;
 
   if (status === 'loading' || isFetching) {
     taskComponent = <Loading />;
@@ -41,6 +48,10 @@ const Task = () => {
 
     if (updateTaskPermission) {
       updateTaskButton = <EditButton variant="contained" isDisabled={false} linkTo="edit" />;
+    }
+
+    if (readTaskHistoryPermission) {
+      entityHistoryComponent = <EntityHistory entityId={taskId} entityType={Resources.Task} />;
     }
 
     const displayedUser = displayUser(data?.getTask?.assignedTo);
@@ -66,6 +77,7 @@ const Task = () => {
           </Typography>
           <Typography variant="body1">Description: {data?.getTask?.description}</Typography>
         </Grid>
+        {entityHistoryComponent}
       </Paper>
     );
   }

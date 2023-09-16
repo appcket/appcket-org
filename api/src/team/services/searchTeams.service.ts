@@ -5,7 +5,7 @@ import { Team } from 'src/team/team.entity';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 import { IPaginated } from 'src/common/models/paginated.interface';
 import { PaginationService } from 'src/common/services/pagination.service';
-import { SearchTeamsInput } from 'src/team/dtos/searchTeam.input';
+import { SearchTeamsInput } from 'src/team/dtos/searchTeams.input';
 
 @Injectable()
 export class SearchTeamsService {
@@ -15,15 +15,12 @@ export class SearchTeamsService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  public async searchTeams(
-    searchTeamsInput: SearchTeamsInput,
-    userId: string,
-  ): Promise<IPaginated<Team>> {
+  public async searchTeams(input: SearchTeamsInput, userId: string): Promise<IPaginated<Team>> {
     const userOrganizationIds = await this.getOrganizationService.getUserOrganizationIds(userId);
     const organizationWhere = { $in: userOrganizationIds };
-    const where = searchTeamsInput.searchString
+    const where = input.searchString
       ? {
-          name: { $like: `%${searchTeamsInput.searchString}%` },
+          name: { $like: `%${input.searchString}%` },
           deletedAt: null,
           organization: organizationWhere,
         }
@@ -35,17 +32,17 @@ export class SearchTeamsService {
     const query = this.em
       .createQueryBuilder(Team, 't')
       .select('*')
-      // TODO: also populate team.createdBy and team.updatedBy with User entity values
+      .leftJoinAndSelect('t.createdBy', 'cb', null, ['username', 'email', 'firstName', 'lastName'])
       .leftJoinAndSelect('t.organization', 'o')
       .where(where);
 
     return this.paginationService.queryBuilderPagination(
       'team',
-      'name',
-      searchTeamsInput.first,
-      searchTeamsInput.orderBy[0]?.orderDirection,
+      input.orderBy[0]?.fieldName,
+      input.first,
+      input.orderBy[0]?.direction,
       query,
-      searchTeamsInput.after,
+      input.after,
     );
   }
 }

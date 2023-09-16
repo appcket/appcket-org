@@ -13,6 +13,8 @@ import { Team } from '../entities/Team';
 import { TeamUser } from '../entities/TeamUser';
 import { randomUUID } from 'crypto';
 
+const now = new Date();
+
 export class TeamFactory extends Factory<Team> {
   model = Team;
 
@@ -61,11 +63,15 @@ export class DatabaseSeeder extends Seeder {
   private organizationData: Organization[] = [
     {
       id: '4cb17fd4-9292-4e20-bfa7-809d1a62fcc8',
-      name: 'Vandelay Industries'
+      name: 'Vandelay Industries',
+      createdAt: now,
+      updatedAt: now,
     },
     {
       id: '5fb17fd4-9292-4e20-bfa7-809d1a62fcc7',
       name: 'Pennypacker Enterprises',
+      createdAt: now,
+      updatedAt: now,
     },
   ];
 

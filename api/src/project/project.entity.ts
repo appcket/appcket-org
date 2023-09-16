@@ -1,16 +1,37 @@
 import 'reflect-metadata';
-import { ObjectType, Field } from '@nestjs/graphql';
-import { Collection, Entity, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
+import { Collection, Entity, OneToMany, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
 
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Organization } from 'src/organization/organization.entity';
 import { ProjectUser } from 'src/project/projectUser.entity';
 import { User } from 'src/user/user.entity';
 
-@ObjectType()
 @Entity({ schema: 'appcket' })
 export class Project extends BaseEntity {
-  @Field()
+  @OneToOne({
+    entity: () => User,
+    fieldName: 'created_by',
+    onUpdateIntegrity: 'cascade',
+    nullable: true,
+  })
+  createdBy!: User;
+
+  @OneToOne({
+    entity: () => User,
+    fieldName: 'updated_by',
+    onUpdateIntegrity: 'cascade',
+    nullable: true,
+  })
+  updatedBy!: User;
+
+  @OneToOne({
+    entity: () => User,
+    fieldName: 'deleted_by',
+    onUpdateIntegrity: 'cascade',
+    nullable: true,
+  })
+  deletedBy!: User;
+
   @Property({ length: 50 })
   name!: string;
 
@@ -23,11 +44,6 @@ export class Project extends BaseEntity {
   })
   organization!: Organization;
 
-  @ManyToMany({
-    entity: () => User,
-    pivotEntity: () => ProjectUser,
-    pivotTable: 'project_user',
-    inversedBy: 'projects',
-  })
-  users = new Collection<User>(this);
+  @OneToMany(() => ProjectUser, (projectUser) => projectUser.project)
+  projectUsers = new Collection<ProjectUser>(this);
 }

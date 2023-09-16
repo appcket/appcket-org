@@ -7,8 +7,6 @@ import { Project } from 'src/project/project.entity';
 
 @Injectable()
 export class GetProjectService {
-  private readonly entityType = 'Project';
-
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: EntityRepository<Project>,
@@ -20,9 +18,17 @@ export class GetProjectService {
     const organizationWhere = { $in: userOrganizationIds };
 
     const project = await this.projectRepository.findOneOrFail(
-      { id, organization: organizationWhere },
+      { id, deletedAt: null, organization: organizationWhere },
       {
-        populate: ['organization', 'users', 'users.attributes'],
+        populate: [
+          'createdBy',
+          'updatedBy',
+          'organization.id',
+          'organization.name',
+          'projectUsers.user',
+          'projectUsers.user.attributes',
+        ],
+        populateWhere: { projectUsers: { deletedAt: null } },
       },
     );
 

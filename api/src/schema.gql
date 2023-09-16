@@ -55,6 +55,20 @@ type TeamDto {
   users: [UserDto!]!
 }
 
+type ProjectDto {
+  id: String!
+  createdAt: DateTime!
+  createdBy: UserDto
+  updatedAt: DateTime!
+  updatedBy: UserDto
+  deletedAt: DateTime
+  deletedBy: UserDto
+  name: String!
+  description: String
+  organization: OrganizationDto!
+  users: [UserDto!]!
+}
+
 type UserDto {
   id: String!
   email: String!
@@ -66,14 +80,7 @@ type UserDto {
   permissions: [PermissionDto!]!
   organizations: [OrganizationDto!]
   team: [TeamDto!]!
-}
-
-type ProjectDto {
-  id: String!
-  name: String!
-  description: String
-  organization: OrganizationDto!
-  users: [UserDto!]!
+  project: [ProjectDto!]!
 }
 
 type OrganizationDto {
@@ -84,6 +91,26 @@ type OrganizationDto {
   users: [UserDto!]
 }
 
+type PageInfo {
+  startCursor: String!
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type ProjectDtoEdge {
+  cursor: String!
+  node: ProjectDto!
+}
+
+type PaginatedProjectDto {
+  previousCount: Int!
+  currentCount: Int!
+  totalCount: Int!
+  edges: [ProjectDtoEdge!]!
+  pageInfo: PageInfo!
+}
+
 type TaskStatusType {
   id: String!
   name: String!
@@ -91,6 +118,12 @@ type TaskStatusType {
 
 type TaskDto {
   id: String!
+  createdAt: DateTime!
+  createdBy: UserDto
+  updatedAt: DateTime!
+  updatedBy: UserDto
+  deletedAt: DateTime
+  deletedBy: UserDto
   name: String!
   description: String
   assignedTo: UserDto
@@ -98,11 +131,17 @@ type TaskDto {
   project: ProjectDto!
 }
 
-type PageInfo {
-  startCursor: String!
-  endCursor: String!
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
+type TaskDtoEdge {
+  cursor: String!
+  node: TaskDto!
+}
+
+type PaginatedTaskDto {
+  previousCount: Int!
+  currentCount: Int!
+  totalCount: Int!
+  edges: [TaskDtoEdge!]!
+  pageInfo: PageInfo!
 }
 
 type TeamDtoEdge {
@@ -123,8 +162,8 @@ type Query {
   getOrganization(id: String!): OrganizationDto
   hasPermission(permissions: [String!]!): Boolean!
   getProject(id: String!): ProjectDto
-  searchProjects(searchString: String, limit: Float, offset: Float, orderBy: ProjectOrderByUpdatedAtInput): [ProjectDto!]!
-  searchTasks(searchTasksInput: SearchTasksInput!): [TaskDto!]!
+  searchProjects(searchProjectsInput: SearchProjectsInput!): PaginatedProjectDto!
+  searchTasks(searchTasksInput: SearchTasksInput!): PaginatedTaskDto!
   getTask(id: String!): TaskDto
   getTaskStatusTypes: [TaskStatusType!]!
   getTeam(id: String!): TeamDto
@@ -143,18 +182,7 @@ enum SortOrder {
   desc
 }
 
-input ProjectOrderByUpdatedAtInput {
-  updated_at: SortOrder!
-}
-
-input SearchTasksInput {
-  searchString: String
-  projectIds: [String!]
-  limit: Float
-  offset: Float
-}
-
-input SearchTeamsInput {
+input SearchProjectsInput {
   searchString: String
   first: Float
   after: String
@@ -163,12 +191,27 @@ input SearchTeamsInput {
 
 input OrderByInput {
   fieldName: String!
-  orderDirection: QueryOrder! = ASC
+  direction: QueryOrder! = ASC
 }
 
 enum QueryOrder {
   ASC
   DESC
+}
+
+input SearchTasksInput {
+  searchString: String
+  first: Float
+  after: String
+  orderBy: [OrderByInput!]
+  projectIds: [String!]
+}
+
+input SearchTeamsInput {
+  searchString: String
+  first: Float
+  after: String
+  orderBy: [OrderByInput!]
 }
 
 type Mutation {

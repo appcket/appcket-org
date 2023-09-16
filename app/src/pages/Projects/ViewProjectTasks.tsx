@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Typography from '@mui/material/Typography';
 import { Link, NavLink, useParams } from 'react-router-dom';
@@ -10,13 +11,16 @@ import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import { useSearchTasks } from 'src/common/api/task';
 import { useGetProject } from 'src/common/api/project';
-import Loading from 'src/common/components/Loading';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TaskPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
 import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import { displayUser } from 'src/common/utils/general';
+import PaginatedGrid from 'src/common/components/PaginatedGrid';
+import { formatDatetime } from 'src/common/utils/general';
+
+const PAGE_SIZE = 10;
 
 const ViewProjectTasks = () => {
   const params = useParams();
@@ -24,7 +28,25 @@ const ViewProjectTasks = () => {
   if (params.projectId) {
     projectId = params.projectId;
   }
-  const { status, data, error } = useSearchTasks([projectId]);
+
+  const [queryOptions, setQueryOptions] = useState({
+    pageSize: PAGE_SIZE,
+    cursor: '',
+    orderByFieldName: 'name',
+    orderByDirection: 'ASC',
+    searchValue: '',
+    searchFieldName: 'name',
+  });
+
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const { status, data, error } = useSearchTasks(
+    [projectId],
+    queryOptions.searchValue,
+    queryOptions.pageSize,
+    queryOptions.cursor ? queryOptions.cursor : null,
+    `[{ fieldName: "${queryOptions.orderByFieldName}", direction: ${queryOptions.orderByDirection} }]`,
+  );
   const getProjectResult = useGetProject(projectId);
 
   const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
@@ -53,40 +75,111 @@ const ViewProjectTasks = () => {
     );
   }
 
-  let tasksComponent = <Typography paragraph>Unable to view Tasks</Typography>;
-
   const columns: GridColDef[] = [
     {
       field: 'name',
       headerName: 'Name',
-      flex: 0.5,
+      flex: 0.25,
       renderCell: (cellValues) => {
-        return <NavLink to={`/tasks/${cellValues.row.id}`}>{cellValues.row.name}</NavLink>;
+        return (
+          <NavLink to={`/tasks/${cellValues.row.node.id}`}>{cellValues.row.node.name}</NavLink>
+        );
       },
     },
     {
       field: 'assignedTo',
       headerName: 'Assigned To',
-      flex: 0.5,
+      flex: 0.25,
       renderCell: (cellValues) => {
-        return `${displayUser(cellValues.row.assignedTo)}`;
+        return `${displayUser(cellValues.row.node.assignedTo)}`;
+      },
+    },
+    {
+      field: 'updatedAt',
+      headerName: 'Updated',
+      filterable: false,
+      flex: 0.25,
+      renderCell: (cellValues) => {
+        return formatDatetime(cellValues.row.node.updatedAt);
+      },
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created',
+      filterable: false,
+      flex: 0.25,
+      renderCell: (cellValues) => {
+        return formatDatetime(cellValues.row.node.createdAt);
       },
     },
   ];
 
-  if (status === 'loading') {
-    tasksComponent = <Loading />;
-  } else if (status === 'error' && error instanceof Error) {
-    tasksComponent = <Typography paragraph>Error: {error.message}</Typography>;
-  } else {
-    const rows: GridRowsProp = data ? data : [];
+  const handlePaginate = (pageSize: number, currentPage: number, cursor: string) => {
+    setQueryOptions({
+      pageSize,
+      cursor,
+      orderByFieldName: queryOptions.orderByFieldName,
+      orderByDirection: queryOptions.orderByDirection,
+      searchValue: queryOptions.searchValue,
+      searchFieldName: queryOptions.searchFieldName,
+    });
+    setCurrentPage(currentPage);
+  };
 
-    tasksComponent = (
-      <div style={{ height: 300, width: '100%' }}>
-        <DataGrid disableRowSelectionOnClick rows={rows} columns={columns} />
-      </div>
-    );
-  }
+  const handleSort = (orderByFieldName: string, orderByDirection: string) => {
+    setQueryOptions({
+      pageSize: queryOptions.pageSize,
+      cursor: queryOptions.cursor,
+      orderByFieldName,
+      orderByDirection,
+      searchValue: queryOptions.searchValue,
+      searchFieldName: queryOptions.searchFieldName,
+    });
+  };
+
+  const handleFilter = (searchValue: string, searchFieldName: string) => {
+    setQueryOptions({
+      pageSize: queryOptions.pageSize,
+      cursor: queryOptions.cursor,
+      orderByFieldName: queryOptions.orderByFieldName,
+      orderByDirection: queryOptions.orderByDirection,
+      searchValue,
+      searchFieldName,
+    });
+  };
+
+  const rows: GridRowsProp = data?.edges ? data.edges : [];
+
+  const totalCount = data?.totalCount ? data.totalCount : 0;
+  const pageInfo = data?.pageInfo
+    ? data.pageInfo
+    : {
+        endCursor: '',
+        startCursor: '',
+        hasPreviousPage: false,
+        hasNextPage: false,
+      };
+
+  // tasksComponent = (
+  //   <div style={{ height: 300, width: '100%' }}>
+  //     <DataGrid disableRowSelectionOnClick rows={rows} columns={columns} />
+  //   </div>
+  // );
+
+  const tasksGrid = (
+    <PaginatedGrid
+      status={status}
+      rows={rows}
+      columns={columns}
+      totalCount={totalCount}
+      pageInfo={pageInfo}
+      currentPage={currentPage}
+      pageSize={queryOptions.pageSize}
+      onPaginate={handlePaginate}
+      onSort={handleSort}
+      onFilter={handleFilter}
+    />
+  );
 
   return (
     <Page title={`${getProjectResult.data?.getProject.name} Tasks`}>
@@ -98,7 +191,7 @@ const ViewProjectTasks = () => {
           <Grid>{createTaskButton}</Grid>
         </Grid>
       </PageHeader>
-      <div>{tasksComponent}</div>
+      {tasksGrid}
     </Page>
   );
 };

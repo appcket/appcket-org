@@ -1,11 +1,11 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import Typography from '@mui/material/Typography';
 import { Link, NavLink } from 'react-router-dom';
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import { GridRowsProp, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
+
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import { useSearchProjects } from 'src/common/api/project';
@@ -14,12 +14,32 @@ import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
 import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
-import Loading from 'src/common/components/Loading';
+import { formatDatetime } from 'src/common/utils/general';
+import PaginatedGrid from 'src/common/components/PaginatedGrid';
+
+const PAGE_SIZE = 10;
 
 const ViewProjects = () => {
-  // TODO: user input from Project name filter input field should drive table results
-  const { status, data, error } = useSearchProjects('');
   const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+
+  const [queryOptions, setQueryOptions] = useState({
+    pageSize: PAGE_SIZE,
+    cursor: '',
+    orderByFieldName: 'name',
+    orderByDirection: 'ASC',
+    searchValue: '',
+    searchFieldName: 'name',
+  });
+
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const { status, data, error } = useSearchProjects(
+    queryOptions.searchValue,
+    queryOptions.pageSize,
+    queryOptions.cursor ? queryOptions.cursor : null,
+    `[{ fieldName: "${queryOptions.orderByFieldName}", direction: ${queryOptions.orderByDirection} }]`,
+  );
+
   const createProjectPermission = hasPermission(
     userInfoQuery.data?.userInfo.permissions as Permission[],
     Resources.Project,
@@ -45,36 +65,97 @@ const ViewProjects = () => {
     );
   }
 
-  let projectsComponent = <Typography paragraph>Unable to view Projects</Typography>;
-
   const columns: GridColDef[] = [
     {
       field: 'name',
       headerName: 'Name',
       flex: 0.25,
       renderCell: (cellValues) => {
-        return <NavLink to={`/projects/${cellValues.row.id}`}>{cellValues.row.name}</NavLink>;
+        return (
+          <NavLink to={`/projects/${cellValues.row.node.id}`}>{cellValues.row.node.name}</NavLink>
+        );
       },
     },
     {
-      field: 'organization',
-      headerName: 'Organization',
-      flex: 0.75,
-      renderCell: (cellValues) => cellValues.row.organization.name,
+      field: 'updatedAt',
+      headerName: 'Updated',
+      filterable: false,
+      flex: 0.25,
+      renderCell: (cellValues) => {
+        return formatDatetime(cellValues.row.node.updatedAt);
+      },
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created',
+      filterable: false,
+      flex: 0.25,
+      renderCell: (cellValues) => {
+        return formatDatetime(cellValues.row.node.createdAt);
+      },
     },
   ];
 
-  if (status === 'loading') {
-    projectsComponent = <Loading />;
-  } else if (status === 'error' && error instanceof Error) {
-    projectsComponent = <Typography paragraph>Error: {error.message}</Typography>;
-  } else {
-    const rows: GridRowsProp = data ? data : [];
+  const handlePaginate = (pageSize: number, currentPage: number, cursor: string) => {
+    setQueryOptions({
+      pageSize,
+      cursor,
+      orderByFieldName: queryOptions.orderByFieldName,
+      orderByDirection: queryOptions.orderByDirection,
+      searchValue: queryOptions.searchValue,
+      searchFieldName: queryOptions.searchFieldName,
+    });
+    setCurrentPage(currentPage);
+  };
 
-    projectsComponent = (
-      <DataGrid disableRowSelectionOnClick rows={rows} columns={columns} autoHeight={true} />
-    );
-  }
+  const handleSort = (orderByFieldName: string, orderByDirection: string) => {
+    setQueryOptions({
+      pageSize: queryOptions.pageSize,
+      cursor: queryOptions.cursor,
+      orderByFieldName,
+      orderByDirection,
+      searchValue: queryOptions.searchValue,
+      searchFieldName: queryOptions.searchFieldName,
+    });
+  };
+
+  const handleFilter = (searchValue: string, searchFieldName: string) => {
+    setQueryOptions({
+      pageSize: queryOptions.pageSize,
+      cursor: queryOptions.cursor,
+      orderByFieldName: queryOptions.orderByFieldName,
+      orderByDirection: queryOptions.orderByDirection,
+      searchValue,
+      searchFieldName,
+    });
+  };
+
+  const rows: GridRowsProp = data?.edges ? data.edges : [];
+
+  const totalCount = data?.totalCount ? data.totalCount : 0;
+  const pageInfo = data?.pageInfo
+    ? data.pageInfo
+    : {
+        endCursor: '',
+        startCursor: '',
+        hasPreviousPage: false,
+        hasNextPage: false,
+      };
+
+  const projectsGrid = (
+    <PaginatedGrid
+      status={status}
+      rows={rows}
+      columns={columns}
+      totalCount={totalCount}
+      pageInfo={pageInfo}
+      currentPage={currentPage}
+      pageSize={queryOptions.pageSize}
+      onPaginate={handlePaginate}
+      onSort={handleSort}
+      onFilter={handleFilter}
+    />
+  );
 
   return (
     <Page title="Projects">
@@ -83,7 +164,7 @@ const ViewProjects = () => {
           <Grid>{createProjectButton}</Grid>
         </Grid>
       </PageHeader>
-      {projectsComponent}
+      {projectsGrid}
     </Page>
   );
 };

@@ -4,6 +4,7 @@ import { OrganizationDto } from 'src/organization/organization.dto';
 import { PermissionDto } from 'src/permission/permission.dto';
 import { UserAttributeDto } from 'src/user/userAttribute.dto';
 import { TeamDto } from 'src/team/dtos/team.dto';
+import { ProjectDto } from 'src/project/dtos/project.dto';
 
 @ObjectType()
 export class UserDto {
@@ -36,4 +37,7 @@ export class UserDto {
 
   @Field(() => [TeamDto])
   team?: TeamDto[];
+
+  @Field(() => [ProjectDto])
+  project?: ProjectDto[];
 }

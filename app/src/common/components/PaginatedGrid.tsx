@@ -1,32 +1,48 @@
-import { MutableRefObject, useEffect, useState } from 'react';
-import { DataGrid, GridRowsProp, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import { useCallback, useEffect, useState, useRef } from 'react';
+import {
+  DataGrid,
+  GridRowsProp,
+  GridColDef,
+  GridFilterModel,
+  GridPaginationModel,
+  GridSortModel,
+} from '@mui/x-data-grid';
 
 import PageInfo from 'src/common/models/responses/PageInfo';
 
 type Props = {
+  status: string;
   rows: GridRowsProp;
   columns: GridColDef[];
   totalCount: number;
   pageInfo: PageInfo;
   currentPage: number;
-  mapPageToNextCursor: MutableRefObject<{ [page: number]: string }>;
+  pageSize?: number;
   onPaginate: (pageSize: number, currentPage: number, cursor: string) => void;
+  onSort: (orderByFieldName: string, orderByDirection: string) => void;
+  onFilter: (searchValue: string, searchFieldName: string) => void;
 };
 
 const PaginatedGrid = ({
+  status,
   rows,
   columns,
   totalCount,
   pageInfo,
   currentPage,
-  mapPageToNextCursor,
+  pageSize,
   onPaginate,
+  onSort,
+  onFilter,
 }: Props) => {
-  const PAGE_SIZE = 5;
+  const PAGE_SIZE = 10;
+  let loading = true;
+
+  const mapPageToNextCursor = useRef<{ [page: number]: string }>({});
 
   const [paginationModel, setPaginationModel] = useState({
     page: currentPage,
-    pageSize: PAGE_SIZE,
+    pageSize: pageSize ? pageSize : PAGE_SIZE,
   });
 
   useEffect(() => {
@@ -48,25 +64,62 @@ const PaginatedGrid = ({
 
     if (newPaginationModel.page === 0 || cursor) {
       setPaginationModel(newPaginationModel);
-      onPaginate(5, newPaginationModel.page, cursor);
+      onPaginate(newPaginationModel.pageSize, newPaginationModel.page, cursor);
     }
   };
 
+  const handleSortModelChange = useCallback((sortModel: GridSortModel) => {
+    let orderByField = 'name';
+    let orderByDirection = 'ASC';
+
+    if (sortModel.length > 0 && sortModel[0].field) {
+      orderByField = sortModel[0].field;
+    }
+
+    if (sortModel.length > 0 && sortModel[0].sort === 'desc') {
+      orderByDirection = 'DESC';
+    }
+
+    onSort(orderByField, orderByDirection);
+  }, []);
+
+  const handleFilterChange = useCallback((filterModel: GridFilterModel) => {
+    let searchValue = '';
+    let searchFieldName = 'name';
+
+    if (filterModel.items.length > 0 && filterModel.items[0].value) {
+      searchValue = filterModel.items[0].value;
+    }
+
+    if (filterModel.items.length > 0 && filterModel.items[0].field) {
+      searchFieldName = filterModel.items[0].field;
+    }
+
+    onFilter(searchValue, searchFieldName);
+  }, []);
+
+  if (status !== 'loading') {
+    loading = false;
+  }
+
   return (
-    <div>
-      <DataGrid
-        disableRowSelectionOnClick
-        rows={rows}
-        getRowId={(row) => row.node.id}
-        rowCount={rowCountState}
-        pageSizeOptions={[PAGE_SIZE]}
-        paginationMode="server"
-        onPaginationModelChange={handlePaginationModelChange}
-        paginationModel={paginationModel}
-        columns={columns}
-        autoHeight={true}
-      />
-    </div>
+    <DataGrid
+      loading={loading}
+      disableRowSelectionOnClick
+      rows={rows}
+      getRowId={(row) => row.node.id}
+      rowCount={rowCountState}
+      pageSizeOptions={[PAGE_SIZE]}
+      paginationMode="server"
+      onPaginationModelChange={handlePaginationModelChange}
+      paginationModel={paginationModel}
+      sortingMode="server"
+      onSortModelChange={handleSortModelChange}
+      filterMode="server"
+      onFilterModelChange={handleFilterChange}
+      columns={columns}
+      autoHeight={true}
+    />
   );
 };
 

@@ -2,15 +2,27 @@ import { gql } from 'graphql-request';
 import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import { useApiMutation, useApiQuery } from 'src/common/api';
-import SearchProjectsResponse from 'src/common/models/responses/SearchProjectsResponse';
+import {
+  SearchProjectsResponse,
+  SearchProjectsPaginated,
+} from 'src/common/models/responses/SearchProjectsResponse';
 import GetProjectResponse from 'src/common/models/responses/GetProjectResponse';
 import UpdateProjectResponse from 'src/common/models/responses/UpdateProjectResponse';
 import CreateProjectResponse from 'src/common/models/responses/CreateProjectResponse';
 import Project from 'src/common/models/Project';
 
-export const useSearchProjects = (searchString: string): UseQueryResult<Project[]> => {
-  const queryKey = ['searchProjects'];
-  const processData = (data: SearchProjectsResponse): Project[] => {
+export const useSearchProjects = (
+  searchString: string,
+  first: number,
+  after: string | null,
+  orderBy: string,
+): UseQueryResult<SearchProjectsPaginated> => {
+  after = after ? `"${after}"` : null;
+  let queryKeySearch = 'search:' + searchString;
+  let queryKeyAfter = 'after:' + after;
+  let queryKeyOrderBy = 'orderBy:' + orderBy;
+  const queryKey = ['searchProjects', queryKeySearch, queryKeyAfter, queryKeyOrderBy];
+  const processData = (data: SearchProjectsResponse): SearchProjectsPaginated => {
     return data.searchProjects;
   };
 
@@ -18,12 +30,33 @@ export const useSearchProjects = (searchString: string): UseQueryResult<Project[
     queryKey,
     gql`
       {
-        ${queryKey}(searchString: "${searchString}") {
-          id
-          name
-          organization {
-            id
-            name
+        ${queryKey[0]}(searchProjectsInput: {
+          searchString: "${searchString}",
+          first: ${first},
+          after: ${after},
+          orderBy: ${orderBy}
+        }) {
+          currentCount
+          previousCount
+          totalCount
+          pageInfo {
+            endCursor
+            startCursor
+            hasPreviousPage
+            hasNextPage
+          }
+          edges {
+            cursor
+            node {
+              id
+              name
+              createdAt
+              updatedAt
+              organization {
+                id
+                name
+              }
+            }
           }
         }
       }

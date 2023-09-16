@@ -38,12 +38,7 @@ export class User {
   })
   organizations = new Collection<Organization>(this);
 
-  @ManyToMany({
-    entity: () => Project,
-    pivotEntity: () => ProjectUser,
-    pivotTable: 'appcket.project_user',
-    mappedBy: 'users',
-  })
+  @OneToMany(() => ProjectUser, (projectUser) => projectUser.user)
   projects = new Collection<Project>(this);
 
   @OneToMany(() => TeamUser, (teamUser) => teamUser.user)

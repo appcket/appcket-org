@@ -4,7 +4,7 @@ import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 import { useApiMutation, useApiQuery } from 'src/common/api';
 import {
   SearchTeamsResponse,
-  PaginatedResponse,
+  SearchTeamsPaginated,
 } from 'src/common/models/responses/SearchTeamsResponse';
 import GetTeamResponse from 'src/common/models/responses/GetTeamResponse';
 import UpdateTeamResponse from 'src/common/models/responses/UpdateTeamResponse';
@@ -16,11 +16,13 @@ export const useSearchTeams = (
   first: number,
   after: string | null,
   orderBy: string,
-  queryKeyId: string,
-): UseQueryResult<PaginatedResponse> => {
+): UseQueryResult<SearchTeamsPaginated> => {
   after = after ? `"${after}"` : null;
-  const queryKey = ['searchTeams', queryKeyId];
-  const processData = (data: SearchTeamsResponse): PaginatedResponse => {
+  let queryKeySearch = 'search:' + searchString;
+  let queryKeyAfter = 'after:' + after;
+  let queryKeyOrderBy = 'orderBy:' + orderBy;
+  const queryKey = ['searchTeams', queryKeySearch, queryKeyAfter, queryKeyOrderBy];
+  const processData = (data: SearchTeamsResponse): SearchTeamsPaginated => {
     return data.searchTeams;
   };
 

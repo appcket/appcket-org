@@ -3,7 +3,7 @@ import { IsString, Max, MaxLength, Min, MinLength, IsNumber, IsOptional } from '
 import { OrderByInput } from 'src/common/dtos/orderBy.input';
 
 @InputType()
-export class PaginatedSearchInput {
+export class PaginatedSearchInput<T> {
   @Field(() => String, { nullable: true }) // nullable = true needed for GraphQL optionality
   @IsOptional() // needed for auto-validation https://docs.nestjs.com/techniques/validation#auto-validation
   @IsString()
@@ -26,5 +26,5 @@ export class PaginatedSearchInput {
 
   @Field(() => [OrderByInput], { nullable: true })
   @IsOptional()
-  orderBy: OrderByInput[];
+  orderBy: OrderByInput<T>[];
 }

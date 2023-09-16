@@ -1,32 +1,11 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { IsString, MaxLength, MinLength, IsNumber, IsOptional } from 'class-validator';
+import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { IsOptional } from 'class-validator';
 
-// import { OrderByUpdatedAtInput } from 'src/common/dtos/orderByUpdatedAt.input';
+import { PaginatedSearchInput } from 'src/common/dtos/paginatedSearch.input';
 
 @InputType()
-export class SearchTasksInput {
-  @Field(() => String, { nullable: true }) // nullable = true needed for GraphQL optionality
-  @IsOptional() // needed for auto-validation https://docs.nestjs.com/techniques/validation#auto-validation
-  @IsString()
-  @MaxLength(50)
-  @MinLength(1)
-  searchString: string;
-
-  @Field((type) => [String], { nullable: true })
+export class SearchTasksInput extends PartialType(PaginatedSearchInput) {
+  @Field(() => [String], { nullable: true })
   @IsOptional()
   projectIds: string[];
-
-  @Field(() => Number, { nullable: true })
-  @IsOptional()
-  @IsNumber()
-  limit: number;
-
-  @Field(() => Number, { nullable: true })
-  @IsOptional()
-  @IsNumber()
-  offset: number;
-
-  // @Field((type) => OrderByUpdatedAtInput, { nullable: true })
-  // @IsOptional()
-  // orderBy: OrderByUpdatedAtInput;
 }

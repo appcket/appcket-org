@@ -16,6 +16,7 @@ export class GetTeamService {
   public async getTeam(id: string, userId: string): Promise<Team> {
     const userOrganizationIds = await this.getOrganizationService.getUserOrganizationIds(userId);
     const organizationWhere = { $in: userOrganizationIds };
+
     const team = await this.teamRepository.findOneOrFail(
       { id, deletedAt: null, organization: organizationWhere },
       {

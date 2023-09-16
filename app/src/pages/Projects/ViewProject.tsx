@@ -18,6 +18,7 @@ import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 import Loading from 'src/common/components/Loading';
 import { displayUser } from 'src/common/utils/general';
+import EntityHistory from 'src/common/components/EntityHistory';
 
 const Project = () => {
   const params = useParams();
@@ -29,9 +30,15 @@ const Project = () => {
     Resources.Project,
     ProjectPermission.update,
   );
+  const readProjectHistoryPermission = hasPermission(
+    userInfoQuery.data?.userInfo.permissions as Permission[],
+    Resources.Project,
+    ProjectPermission.readHistory,
+  );
   const { status, data, error, isFetching } = useGetProject(projectId);
 
   let projectComponent;
+  let entityHistoryComponent;
 
   if (status === 'loading' || isFetching) {
     projectComponent = <Loading />;
@@ -44,6 +51,12 @@ const Project = () => {
 
     if (updateProjectPermission) {
       updateProjectButton = <EditButton linkTo="edit" />;
+    }
+
+    if (readProjectHistoryPermission) {
+      entityHistoryComponent = (
+        <EntityHistory entityId={projectId} entityType={Resources.Project} />
+      );
     }
 
     const usersComponent = (
@@ -80,6 +93,7 @@ const Project = () => {
             </Typography>
             {usersComponent}
           </Grid>
+          {entityHistoryComponent}
         </Paper>
       </div>
     );

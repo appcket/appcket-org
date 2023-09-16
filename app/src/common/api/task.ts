@@ -2,42 +2,97 @@ import { gql } from 'graphql-request';
 import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import { useApiMutation, useApiQuery } from 'src/common/api';
-import SearchTasksResponse from 'src/common/models/responses/SearchTasksResponse';
 import GetTaskResponse from 'src/common/models/responses/GetTaskResponse';
 import UpdateTaskResponse from 'src/common/models/responses/UpdateTaskResponse';
 import CreateTaskResponse from 'src/common/models/responses/CreateTaskResponse';
 import Task from 'src/common/models/Task';
+import {
+  SearchTasksResponse,
+  SearchTasksPaginated,
+} from 'src/common/models/responses/SearchTasksResponse';
 
-export const useSearchTasks = (projectIds: string[]): UseQueryResult<Task[]> => {
-  const queryKey = ['searchTasks'];
-  const processData = (data: SearchTasksResponse): Task[] => {
+export const useSearchTasks = (
+  projectIds: string[],
+  searchString: string,
+  first: number,
+  after: string | null,
+  orderBy: string,
+): UseQueryResult<SearchTasksPaginated> => {
+  after = after ? `"${after}"` : null;
+  let queryKeyProjectIds = 'projectIds:' + projectIds;
+  let queryKeySearch = 'search:' + searchString;
+  let queryKeyAfter = 'after:' + after;
+  let queryKeyOrderBy = 'orderBy:' + orderBy;
+  const queryKey = [
+    'searchTasks',
+    queryKeyProjectIds,
+    queryKeySearch,
+    queryKeyAfter,
+    queryKeyOrderBy,
+  ];
+  const processData = (data: SearchTasksResponse): SearchTasksPaginated => {
     return data.searchTasks;
   };
 
   return useApiQuery(
     queryKey,
     gql`
-    {
-      ${queryKey}(searchTasksInput: {projectIds: ["${projectIds}"]}) {
-        id
-        name
+      {
+        ${queryKey[0]}(searchTasksInput: {
+          projectIds: ["${projectIds}"],
+          searchString: "${searchString}",
+          first: ${first},
+          after: ${after},
+          orderBy: ${orderBy}
+        }) {
+          currentCount
+          previousCount
+          totalCount
+          pageInfo {
+            endCursor
+            startCursor
+            hasPreviousPage
+            hasNextPage
+          }
+          edges {
+            cursor
+            node {
+              id
+              name
+              createdAt
+              createdBy {
+                id
+                username
+                email
+                firstName
+                lastName
+              }
+              updatedAt
+              updatedBy {
+                id
+                username
+                email
+                firstName
+                lastName
+        }
         assignedTo {
-          id
-          email
           username
+          email
           firstName
           lastName
-        }
-        taskStatusType {
-          id
-          name
         }
         project {
           id
           name
         }
+        taskStatusType {
+          id
+          name
+        }
       }
     }
+        }
+      }
     `,
     processData,
   );

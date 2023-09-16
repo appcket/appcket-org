@@ -1,41 +1,51 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
+import { EntityManager } from '@mikro-orm/postgresql';
 
 import { Project } from 'src/project/project.entity';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
+import { IPaginated } from 'src/common/models/paginated.interface';
+import { PaginationService } from 'src/common/services/pagination.service';
+import { SearchProjectsInput } from 'src/project/dtos/searchProjects.input';
 
 @Injectable()
 export class SearchProjectsService {
   constructor(
-    @InjectRepository(Project)
-    private readonly projectRepository: EntityRepository<Project>,
     private getOrganizationService: GetOrganizationService,
+    private readonly em: EntityManager,
+    private readonly paginationService: PaginationService,
   ) {}
 
   public async searchProjects(
-    searchString: string,
-    limit: number,
-    offset: number,
+    input: SearchProjectsInput,
     userId: string,
-  ): Promise<Project[]> {
+  ): Promise<IPaginated<Project>> {
     const userOrganizationIds = await this.getOrganizationService.getUserOrganizationIds(userId);
     const organizationWhere = { $in: userOrganizationIds };
-    const where = searchString
+    const where = input.searchString
       ? {
-          name: { $like: `%${searchString}%` },
+          name: { $like: `%${input.searchString}%` },
+          deletedAt: null,
           organization: organizationWhere,
         }
       : {
+          deletedAt: null,
           organization: organizationWhere,
         };
 
-    const dbProjects = await this.projectRepository.find(where, {
-      populate: ['organization'],
-      limit,
-      offset,
-    });
+    const query = this.em
+      .createQueryBuilder(Project, 'p')
+      .select('*')
+      .leftJoinAndSelect('p.createdBy', 'cb', null, ['username', 'email', 'firstName', 'lastName'])
+      .leftJoinAndSelect('p.organization', 'o')
+      .where(where);
 
-    return dbProjects;
+    return this.paginationService.queryBuilderPagination(
+      'team',
+      input.orderBy[0]?.fieldName,
+      input.first,
+      input.orderBy[0]?.direction,
+      query,
+      input.after,
+    );
   }
 }

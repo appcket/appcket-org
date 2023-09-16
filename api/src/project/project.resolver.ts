@@ -7,7 +7,6 @@ import { ProjectDto } from 'src/project/dtos/project.dto';
 import { UpdateProjectInput } from './dtos/updateProject.input';
 import { CreateProjectInput } from './dtos/createProject.input';
 import { Resources } from 'src/common/enums/resources.enum';
-import { SortOrder } from 'src/common/enums/sortOrder.enum';
 import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
@@ -15,17 +14,13 @@ import { GetProjectService } from 'src/project/services/getProject.service';
 import { SearchProjectsService } from 'src/project/services/searchProjects.service';
 import { UpdateProjectService } from 'src/project/services/updateProject.service';
 import { CreateProjectService } from 'src/project/services/createProject.service';
+import { PaginatedProjectDto } from 'src/project/dtos/paginatedProject.dto';
+import { SearchProjectsInput } from 'src/project/dtos/searchProjects.input';
 
 @InputType()
 export class ProjectCreateInput {
   @Field()
   name: string;
-}
-
-@InputType()
-class ProjectOrderByUpdatedAtInput {
-  @Field(() => SortOrder)
-  updated_at: SortOrder;
 }
 
 @Resolver(() => ProjectDto)
@@ -41,25 +36,74 @@ export class ProjectResolver {
   @Permissions(`${Resources.Project}#${ProjectPermission.read}`)
   @UseGuards(PermissionsGuard)
   async getProject(@Args('id') id: string, @Context() ctx) {
-    return await this.getProjectService.getProject(id, ctx.user.id);
+    const project = await this.getProjectService.getProject(id, ctx.user.id);
+
+    let createdBy = null;
+    let updatedBy = null;
+
+    if (project.createdBy) {
+      createdBy = {
+        id: project.createdBy.id,
+        email: project.createdBy.email,
+        username: project.createdBy.username,
+        firstName: project.createdBy.firstName,
+        lastName: project.createdBy.lastName,
+      };
+    }
+
+    if (project.updatedBy) {
+      updatedBy = {
+        id: project.updatedBy.id,
+        email: project.updatedBy.email,
+        username: project.updatedBy.username,
+        firstName: project.updatedBy.firstName,
+        lastName: project.updatedBy.lastName,
+      };
+    }
+
+    const ProjectDto: ProjectDto = {
+      id: project.id,
+      createdAt: project.createdAt,
+      createdBy,
+      updatedAt: project.updatedAt,
+      updatedBy,
+      name: project.name,
+      description: project.description,
+      organization: {
+        id: project.organization.id,
+        name: project.organization.name,
+      },
+      users: project.projectUsers.toArray().map((projectUser) => ({
+        id: projectUser.user.id,
+        createdAt: projectUser.createdAt,
+        createdBy: projectUser.createdBy,
+        updatedAt: projectUser.updatedAt,
+        updatedBy: projectUser.updatedBy,
+        username: projectUser.user.username,
+        email: projectUser.user.email,
+        firstName: projectUser.user.firstName,
+        lastName: projectUser.user.lastName,
+        attributes: projectUser.user.attributes,
+        role: projectUser.user.role,
+      })),
+    };
+
+    return ProjectDto;
   }
 
-  @Query(() => [ProjectDto])
+  @Query(() => PaginatedProjectDto)
   @Permissions(`${Resources.Project}#${ProjectPermission.read}`)
   @UseGuards(PermissionsGuard)
   async searchProjects(
-    @Args('searchString', { nullable: true }) searchString: string,
-    @Args('limit', { nullable: true }) limit: number,
-    @Args('offset', { nullable: true }) offset: number,
-    @Args('orderBy', { nullable: true }) orderBy: ProjectOrderByUpdatedAtInput,
+    @Args('searchProjectsInput') searchProjectsInput: SearchProjectsInput,
     @Context() ctx,
   ) {
-    return await this.searchProjectsService.searchProjects(
-      searchString,
-      limit,
-      offset,
+    const results = await this.searchProjectsService.searchProjects(
+      searchProjectsInput,
       ctx.user.id,
     );
+
+    return results;
   }
 
   @Mutation(() => ProjectDto)

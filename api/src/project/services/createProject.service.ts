@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 import { Project } from 'src/project/project.entity';
+import { ProjectUser } from 'src/project/projectUser.entity';
 import { CreateProjectInput } from 'src/project/dtos/createProject.input';
 import { GetProjectService } from 'src/project/services/getProject.service';
 import { CreateChangeAuditChangeService } from 'src/changeAudit/services/createChangeAuditChange.service';
@@ -38,10 +39,17 @@ export class CreateProjectService {
       name: data.name,
       description: data.description,
       organization: data.organizationId,
-      users: data.userIds,
+      createdBy: userId,
     });
 
     await this.em.persistAndFlush(newProject);
+
+    data.userIds.map((userId) => {
+      this.em.create(ProjectUser, {
+        project: newProject.id,
+        user: userId,
+      });
+    });
 
     const createdProject = await this.getProjectService.getProject(newProject.id, userId);
 
@@ -58,12 +66,12 @@ export class CreateProjectService {
           name: createdProject.name,
           description: createdProject.description,
           organizationId: createdProject.organization.id,
-          users: createdProject.users.toArray().map((key) => ({
-            id: key.id,
-            username: key.username,
-            email: key.email,
-            firstName: key.firstName,
-            lastName: key.lastName,
+          users: createdProject.projectUsers.toArray().map((projectUser) => ({
+            id: projectUser.user.id,
+            username: projectUser.user.username,
+            email: projectUser.user.email,
+            firstName: projectUser.user.firstName,
+            lastName: projectUser.user.lastName,
           })),
         },
       },

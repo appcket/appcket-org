@@ -17,7 +17,7 @@ import { CreateTeamService } from 'src/team/services/createTeam.service';
 import { SearchTeamsService } from 'src/team/services/searchTeams.service';
 import { EntityHistoryService } from 'src/entityHistory/entityHistory.service';
 import { PaginatedTeamDto } from 'src/team/dtos/paginatedTeam.dto';
-import { SearchTeamsInput } from 'src/team/dtos/searchTeam.input';
+import { SearchTeamsInput } from 'src/team/dtos/searchTeams.input';
 
 @InputType()
 export class TeamCreateInput {
