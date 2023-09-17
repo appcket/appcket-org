@@ -60,7 +60,7 @@ export class CreateProjectService {
       operationType: ChangeAuditOperationTypes.Create,
       entity: {
         id: createdProject.id.toString(),
-        type: Resources.Task,
+        type: Resources.Project,
         data: {
           id: createdProject.id,
           name: createdProject.name,

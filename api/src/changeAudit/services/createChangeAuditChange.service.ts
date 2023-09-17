@@ -30,8 +30,9 @@ export class CreateChangeAuditChangeService {
     // get the most recent version of this entity
     const previousEntity = await this.changeAuditEntityRepository.findOne(
       {
-        entityId: data.entity.id,
         appId: data.appId,
+        entityId: data.entity.id,
+        entityType: data.entity.type,
       },
       {
         orderBy: { createdAt: -1 },
@@ -54,6 +55,7 @@ export class CreateChangeAuditChangeService {
     const entity = this.changeAuditEntityRepository.create({
       // external users pass in entity.id, but internally store this in the entityId column
       entityId: data.entity.id,
+      entityType: data.entity.type,
       appId: data.appId,
       operationType: data.operationType.toLowerCase(),
       userId: data.user.id,
@@ -77,6 +79,7 @@ export class CreateChangeAuditChangeService {
 
         const newChange = this.changeAuditChangeRepository.create({
           entityId: entity.entityId,
+          entityType: entity.entityType,
           changeAuditEntity: entity.id,
           userId: data.user.id,
           userEmail: data.user.email,
@@ -92,6 +95,7 @@ export class CreateChangeAuditChangeService {
       // if no changes found for this entity, then insert an initial baseline change for the newly created entity
       const newChange = this.changeAuditChangeRepository.create({
         entityId: entity.entityId,
+        entityType: entity.entityType,
         changeAuditEntity: entity.id,
         userId: data.user.id,
         userEmail: data.user.email,

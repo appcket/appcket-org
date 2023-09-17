@@ -77,6 +77,7 @@ describe('CreateChangeAuditChangeService', () => {
     userId: changeInitial.user.id,
     userEmail: changeInitial.user.email,
     userDisplayName: changeInitial.user.displayName,
+    entityType: 'task',
     entity: JSON.stringify(changeInitial.entity),
     createdAt: new Date('2023-08-23 07:39:18.000'),
     diff: null,
@@ -102,6 +103,7 @@ describe('CreateChangeAuditChangeService', () => {
     userId: changeUpdated.user.id,
     userEmail: changeUpdated.user.email,
     userDisplayName: changeUpdated.user.displayName,
+    entityType: 'task',
     entity: JSON.stringify(changeUpdated.entity),
     createdAt: new Date('2023-08-23 07:39:18.000'),
   };
@@ -119,6 +121,7 @@ describe('CreateChangeAuditChangeService', () => {
     {
       changeAuditEntity: ENTITY_ID,
       entityId: changeUpdated.entity.id,
+      entityType: changeUpdated.entity.type,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -129,6 +132,7 @@ describe('CreateChangeAuditChangeService', () => {
     {
       changeAuditEntity: ENTITY_ID,
       entityId: changeUpdated.entity.id,
+      entityType: changeUpdated.entity.type,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -139,6 +143,7 @@ describe('CreateChangeAuditChangeService', () => {
     {
       changeAuditEntity: ENTITY_ID,
       entityId: changeUpdated.entity.id,
+      entityType: changeUpdated.entity.type,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -149,6 +154,7 @@ describe('CreateChangeAuditChangeService', () => {
     {
       changeAuditEntity: ENTITY_ID,
       entityId: changeUpdated.entity.id,
+      entityType: changeUpdated.entity.type,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -159,6 +165,7 @@ describe('CreateChangeAuditChangeService', () => {
     {
       changeAuditEntity: ENTITY_ID,
       entityId: changeUpdated.entity.id,
+      entityType: changeUpdated.entity.type,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -169,6 +176,7 @@ describe('CreateChangeAuditChangeService', () => {
     {
       changeAuditEntity: ENTITY_ID,
       entityId: changeUpdated.entity.id,
+      entityType: changeUpdated.entity.type,
       userId: changeUpdated.user.id,
       userEmail: changeUpdated.user.email,
       userDisplayName: changeUpdated.user.displayName,
@@ -287,8 +295,9 @@ describe('CreateChangeAuditChangeService', () => {
     when(mockChangeAuditEntityRepository.findOne)
       .calledWith(
         {
-          entityId: changeUpdated.entity.id,
           appId: changeUpdated.appId,
+          entityId: changeUpdated.entity.id,
+          entityType: changeUpdated.entity.type,
         },
         {
           orderBy: { createdAt: -1 },

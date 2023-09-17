@@ -29,11 +29,13 @@ export class EntityHistoryResolver {
   @UseGuards(PermissionsGuard)
   async getEntityHistory(
     @Args('id') id: string,
+    @Args('type') type: string,
     @Args('orderBy', { nullable: true }) orderBy: OrderByInput2,
     @Context() ctx,
   ) {
     return await this.entityHistoryService.getEntityHistory(
       id,
+      type,
       orderBy ? orderBy : null,
       ctx.user.id,
     );

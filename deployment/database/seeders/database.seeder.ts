@@ -127,32 +127,44 @@ export class DatabaseSeeder extends Seeder {
       {
         id: '02f3593d-aff4-409a-b297-961078a162c7',
         organization: this.organizationEntities[0],
-        userId: this.accountsUsers.ryan
+        userId: this.accountsUsers.ryan,
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '12f110b2-eff5-4e38-b1e8-2b23373cdf38',
         organization: this.organizationEntities[0],
-        userId: this.accountsUsers.lloyd
+        userId: this.accountsUsers.lloyd,
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: 'b67cdfca-6736-4b50-8281-afd2c126572f',
         organization: this.organizationEntities[0],
-        userId: this.accountsUsers.art
+        userId: this.accountsUsers.art,
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: 'faab3b1d-83e6-412d-90b5-cb3f8af2fd59',
         organization: this.organizationEntities[0],
-        userId: this.accountsUsers.kel
+        userId: this.accountsUsers.kel,
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '74bc2775-14e1-42b1-8766-904deb85c6f0',
         organization: this.organizationEntities[1],
-        userId: this.accountsUsers.ryan
+        userId: this.accountsUsers.ryan,
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '193110d3-3994-4d24-aa87-73c1b77c7a47',
         organization: this.organizationEntities[1],
-        userId: this.accountsUsers.he
+        userId: this.accountsUsers.he,
+        createdAt: now,
+        updatedAt: now,
       },
     ];
 
@@ -166,19 +178,25 @@ export class DatabaseSeeder extends Seeder {
         id: '1cb17fd4-9292-4e20-bfa7-809d1a62fcd5',
         name: 'Latex 2.0',
         description: 'This project is for tracking things we need for launching our new Latex line.',
-        organization: this.organizationEntities[0]
+        organization: this.organizationEntities[0],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '2fb17fd4-9292-4e20-bfa7-809d1a62fca4',
         name: 'Project Bosco',
         description: 'Make sure we choose a stronger password this time.',
-        organization: this.organizationEntities[0]
+        organization: this.organizationEntities[0],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '16d93551-dbd0-4a1e-9157-32d036d345ed',
         name: 'Silver Mine #2H Peru Mountains',
         description: 'Mr. Pennypacker wants due diligence performed on whether to invest in a new Peruvian mine.',
-        organization: this.organizationEntities[1]
+        organization: this.organizationEntities[1],
+        createdAt: now,
+        updatedAt: now,
       }
     ];
 
@@ -193,26 +211,36 @@ export class DatabaseSeeder extends Seeder {
         id: 'ef70dc8f-cd63-403d-8917-9514e8ec8813',
         userId: this.accountsUsers.ryan,
         projectId: this.projectEntities[0],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: 'e2666c68-7696-44db-98ea-f0dd1b6b7750',
         userId: this.accountsUsers.lloyd,
         projectId: this.projectEntities[0],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '84efee64-2a5b-4c73-81ab-fa012105dd8a',
         userId: this.accountsUsers.art,
         projectId: this.projectEntities[1],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: 'c231c884-6998-464d-ab98-7df6a127cec2',
         userId: this.accountsUsers.kel,
         projectId: this.projectEntities[1],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '31bf6054-5048-479d-975b-4aab115f3d82',
         userId: this.accountsUsers.he,
         projectId: this.projectEntities[2],
+        createdAt: now,
+        updatedAt: now,
       },
     ];
 
@@ -225,12 +253,16 @@ export class DatabaseSeeder extends Seeder {
       {
         id: '9f107212-ecb8-4a3c-931e-10edaf9af582',
         name: 'Sales',
-        organization: this.organizationEntities[0]
+        organization: this.organizationEntities[0],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: 'da31bf7f-b32c-4ef3-83fb-e16ce7781753',
         name: 'Manufacturing',
-        organization: this.organizationEntities[0]
+        organization: this.organizationEntities[0],
+        createdAt: now,
+        updatedAt: now,
       }
     ];
 
@@ -254,21 +286,29 @@ export class DatabaseSeeder extends Seeder {
         id: '02591293-23a1-4759-a04c-65818ed57238',
         userId: this.accountsUsers.ryan,
         teamId: this.teamEntities[0],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '14db94b9-7daf-4027-bff4-c9ba580c0e0b',
         userId: this.accountsUsers.lloyd,
         teamId: this.teamEntities[0],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '7e8845ac-5bd2-40c7-9c8b-4adc7373002b',
         userId: this.accountsUsers.art,
         teamId: this.teamEntities[1],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '56b01550-816d-49b9-aeb1-8955d428bd64',
         userId: this.accountsUsers.kel,
         teamId: this.teamEntities[1],
+        createdAt: now,
+        updatedAt: now,
       },
     ];
 
@@ -284,7 +324,9 @@ export class DatabaseSeeder extends Seeder {
         description: 'Optional description notes',
         assignedTo: this.accountsUsers.ryan,
         taskStatusTypeId: this.taskStatusTypeEntities[0],
-        projectId: this.projectEntities[0]
+        projectId: this.projectEntities[0],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: '866e4e44-3c0f-4105-beb4-99460ef5cf84',
@@ -292,7 +334,9 @@ export class DatabaseSeeder extends Seeder {
         description: "George's email is jerkstore@gmail.com",
         assignedTo: this.accountsUsers.art,
         taskStatusTypeId: this.taskStatusTypeEntities[2],
-        projectId: this.projectEntities[1]
+        projectId: this.projectEntities[1],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: 'a15be7c6-6f31-432e-b697-f31e35cc9de3',
@@ -300,7 +344,9 @@ export class DatabaseSeeder extends Seeder {
         description: 'TOP SECRET, require NDAs from everybody you speak with',
         assignedTo: this.accountsUsers.kel,
         taskStatusTypeId: this.taskStatusTypeEntities[0],
-        projectId: this.projectEntities[0]
+        projectId: this.projectEntities[0],
+        createdAt: now,
+        updatedAt: now,
       },
       {
         id: 'cca29503-f4bc-4912-85a5-55f7e5d11fa1',
@@ -308,7 +354,9 @@ export class DatabaseSeeder extends Seeder {
         description: 'Before he travels to see the new mine location, Mr. Pennypacker wants some authentic clothing from Putumayo.',
         assignedTo: this.accountsUsers.ryan,
         taskStatusTypeId: this.taskStatusTypeEntities[0],
-        projectId: this.projectEntities[2]
+        projectId: this.projectEntities[2],
+        createdAt: now,
+        updatedAt: now,
       },
     ];
 

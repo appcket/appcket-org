@@ -14,6 +14,10 @@ export class ChangeAuditEntity {
   @Property({ length: 36 })
   entityId!: string;
 
+  @Index({ name: 'change_audit_entity_entity_type_idx' })
+  @Property({ length: 50 })
+  entityType!: string;
+
   @ManyToOne({ entity: () => ChangeAuditApp, fieldName: 'app_id', onUpdateIntegrity: 'cascade' })
   appId!: ChangeAuditApp;
 

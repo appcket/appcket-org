@@ -17,11 +17,13 @@ export class GetChangeAuditChangeService {
 
   public async getChangeAuditChanges(
     changeAuditEntityIds: string[],
+    entityType: string,
     findOptions: FindOptions<ChangeAuditChange>,
   ): Promise<ChangeAuditChange[]> {
     return await this.changeAuditChangeRepository.find(
       {
         changeAuditEntity: { $in: changeAuditEntityIds },
+        entityType,
       },
       findOptions,
     );

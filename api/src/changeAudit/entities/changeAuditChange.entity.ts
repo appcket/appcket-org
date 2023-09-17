@@ -18,6 +18,9 @@ export class ChangeAuditChange {
   @Property({ length: 36 })
   entityId!: string;
 
+  @Property({ length: 50 })
+  entityType!: string;
+
   @Property({ length: 36 })
   userId!: string;
 

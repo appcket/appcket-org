@@ -20,12 +20,14 @@ export class GetChangeAuditEntityService {
   public async getChangeAuditEntity(
     appId: string,
     entityId: string,
+    entityType: string,
     operationType: ChangeAuditOperationTypes = ChangeAuditOperationTypes.Update,
     findOptions: FindOptions<ChangeAuditEntity>,
   ): Promise<ChangeAuditEntity> {
     return await this.changeAuditEntityRepository.findOne(
       {
         entityId,
+        entityType,
         appId,
         operationType,
       },

@@ -38,19 +38,6 @@ export class EntityHistoryService {
     const userIds = entities.map((emtity) => emtity.userId);
     const users = await this.userService.getUsersByIds(userIds);
 
-    // group entities by entityId
-    /*
-    [
-      {
-        entityId: 'fsdafsda',
-        createdAt: '',
-        updatedAt: '',
-        createdBy: {},
-        updatedBy: {},
-      }
-    ]
-    */
-
     entities.map((entity) => {
       const foundUser = users.find((user) => entity.userId === user.id);
       const displayName = this.commonService.getUserDisplayName(foundUser);
@@ -93,7 +80,12 @@ export class EntityHistoryService {
     return entitiesHistory;
   }
 
-  public async getEntityHistory(entityId: string, orderBy, userId: string): Promise<EntityHistory> {
+  public async getEntityHistory(
+    entityId: string,
+    entityType: string,
+    orderBy,
+    userId: string,
+  ): Promise<EntityHistory> {
     const appId = this.configService.get('appId');
     const entityHistory = new EntityHistory();
     entityHistory.id = entityId;
@@ -102,6 +94,7 @@ export class EntityHistoryService {
     const oldestEntity = await this.getChangeAuditEntityService.getChangeAuditEntity(
       appId,
       entityId,
+      entityType,
       ChangeAuditOperationTypes.Create,
       {
         orderBy: { createdAt: 1 },
@@ -112,6 +105,7 @@ export class EntityHistoryService {
     const newestEntity = await this.getChangeAuditEntityService.getChangeAuditEntity(
       appId,
       entityId,
+      entityType,
       ChangeAuditOperationTypes.Update,
       {
         orderBy: { createdAt: -1 },
@@ -155,9 +149,13 @@ export class EntityHistoryService {
     const entityIds = allEntityVersions.map((ent) => ent.id);
 
     // get all changes for this entity
-    const changes = await this.getChangeAuditChangeService.getChangeAuditChanges(entityIds, {
-      orderBy: { createdAt: -1 },
-    });
+    const changes = await this.getChangeAuditChangeService.getChangeAuditChanges(
+      entityIds,
+      entityType,
+      {
+        orderBy: { createdAt: -1 },
+      },
+    );
 
     const changeUserIds = changes.map((change) => change.userId);
     const changeUsers = await this.userService.getUsersByIds(changeUserIds);

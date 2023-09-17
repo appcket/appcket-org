@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import Timeline from '@mui/lab/Timeline';
@@ -20,14 +21,14 @@ import Loading from 'src/common/components/Loading';
 import DateTime from 'src/common/components/DateTime';
 import { useGetEntityHistory } from 'src/common/api/entityHistory';
 import { IEntityHistoryChange } from 'src/common/models/EntityHistory';
-import { ReactNode } from 'react';
+import Resources from 'src/common/enums/resources.enum';
 
 type Props = {
   entityId: string;
-  entityType: string;
+  entityType: Resources;
 };
 
-const displayText = (change: IEntityHistoryChange, entityType: string): ReactNode => {
+const displayText = (change: IEntityHistoryChange, entityType: Resources): ReactNode => {
   if (isNull(change.fieldName)) {
     if (isNull(change.oldValue)) {
       return (
@@ -64,7 +65,7 @@ const displayText = (change: IEntityHistoryChange, entityType: string): ReactNod
 };
 
 const EntityHistory = ({ entityId, entityType }: Props) => {
-  const { status, data, error, isFetching } = useGetEntityHistory(entityId);
+  const { status, data, error, isFetching } = useGetEntityHistory(entityId, entityType);
 
   let content;
 

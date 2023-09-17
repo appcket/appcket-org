@@ -158,7 +158,7 @@ type PaginatedTeamDto {
 }
 
 type Query {
-  getEntityHistory(id: String!, orderBy: OrderByInput2): EntityHistory
+  getEntityHistory(id: String!, type: String!, orderBy: OrderByInput2): EntityHistory
   getOrganization(id: String!): OrganizationDto
   hasPermission(permissions: [String!]!): Boolean!
   getProject(id: String!): ProjectDto

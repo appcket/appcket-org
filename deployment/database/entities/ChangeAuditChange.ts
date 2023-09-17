@@ -1,6 +1,6 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { ChangeAuditEntity } from './ChangeAuditEntity';
- 
+
 @Entity({ schema: 'appcket' })
 export class ChangeAuditChange {
   @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
@@ -14,6 +14,10 @@ export class ChangeAuditChange {
 
   @Property({ length: 36 })
   entityId!: string;
+
+  @Index({ name: 'change_audit_change_entity_type_idx' })
+  @Property({ length: 50 })
+  entityType!: string;
 
   @Property({ length: 36 })
   userId!: string;
