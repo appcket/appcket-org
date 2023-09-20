@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { RiHome4Line, RiInformationLine } from 'react-icons/ri';
-import { GoJersey } from 'react-icons/go';
+import { TbShirtSport } from 'react-icons/tb';
 import { CgBriefcase } from 'react-icons/cg';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import { Scrollbars } from 'rc-scrollbars';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -29,7 +29,7 @@ const items = [
   },
   {
     href: '/teams',
-    icon: GoJersey,
+    icon: TbShirtSport,
     title: 'Teams',
   },
   {

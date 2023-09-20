@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink } from 'react-router-dom';
-import { GridRowsProp, GridColDef, GridSortModel } from '@mui/x-data-grid';
+import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';

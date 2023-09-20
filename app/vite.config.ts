@@ -11,6 +11,9 @@ import fs from 'fs';
 export default defineConfig({
   envDir: './',
   plugins: [react(), tsconfigPaths(), svgrPlugin()],
+  optimizeDeps: {
+    include: ['@mui/material/Unstable_Grid2'],
+  },
   server: {
     port: 3000,
     host: '0.0.0.0',

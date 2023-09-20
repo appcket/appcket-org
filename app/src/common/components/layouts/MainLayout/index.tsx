@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import { Scrollbars } from 'rc-scrollbars';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
@@ -10,7 +10,7 @@ import SideBarHeader from 'src/common/components/layouts/MainLayout/SideBar/Head
 import BottomBar from 'src/common/components/layouts/MainLayout/BottomBar';
 import TopBar from 'src/common/components/layouts/MainLayout/TopBar';
 
-const drawerWidth = 280;
+const drawerWidth = 270;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -54,14 +54,14 @@ const MainLayout = () => {
   }, [lessThanSmall]);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', pb: '125px', height: 'inherit' }}>
       <TopBar open={open} drawerWidth={drawerWidth} handleSideBarOpen={handleSideBarOpen} />
       <SideBar open={open} handleSideBarClose={handleSideBarClose} drawerWidth={drawerWidth} />
       <Main open={open}>
         <SideBarHeader />
-        {/* <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={200}> */}
-        <Outlet />
-        {/* </Scrollbars> */}
+        <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={200}>
+          <Outlet />
+        </Scrollbars>
       </Main>
       <BottomBar open={open} theme={theme} drawerWidth={drawerWidth} />
     </Box>
