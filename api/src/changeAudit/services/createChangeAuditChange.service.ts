@@ -8,6 +8,7 @@ import { CreateChangeAuditChange } from 'src/changeAudit/types/createChangeAudit
 import { ChangeAuditChange } from 'src/changeAudit/entities/changeAuditChange.entity';
 import { ChangeAuditEntity } from 'src/changeAudit/entities/changeAuditEntity.entity';
 import { EntityChangesUtil } from 'src/changeAudit/utils/entityChanges.util';
+import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
 
 @Injectable()
 export class CreateChangeAuditChangeService {
@@ -49,6 +50,15 @@ export class CreateChangeAuditChangeService {
         previousEntity.entity['data'],
         data.entity.data,
       );
+    }
+
+    // this entity has no changes (user just sent in the same object as before), so do not need to save anything
+    if (
+      diffResult.changes.length === 0 &&
+      diffResult.diffs.length === 0 &&
+      data.operationType === ChangeAuditOperationTypes.Update
+    ) {
+      return;
     }
 
     // insert most recent version of this entity

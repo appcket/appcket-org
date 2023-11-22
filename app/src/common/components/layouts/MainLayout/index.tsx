@@ -6,11 +6,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 
 import SideBar from 'src/common/components/layouts/MainLayout/SideBar';
-import SideBarHeader from 'src/common/components/layouts/MainLayout/SideBar/Header';
 import BottomBar from 'src/common/components/layouts/MainLayout/BottomBar';
 import TopBar from 'src/common/components/layouts/MainLayout/TopBar';
 
-const drawerWidth = 270;
+const drawerWidth = 240;
+let marginLeftSize = drawerWidth;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -20,7 +20,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `-${drawerWidth}px`,
+  marginLeft: `-${marginLeftSize}px`,
   ...(open && {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
@@ -48,22 +48,34 @@ const MainLayout = () => {
     // if on mobile, close the drawer initially; if switch to mobile, close the drawer
     if (lessThanSmall) {
       handleSideBarClose();
+      marginLeftSize = 0;
     } else {
       setOpen(true);
+      marginLeftSize = drawerWidth;
     }
   }, [lessThanSmall]);
 
   return (
-    <Box sx={{ display: 'flex', pb: '125px', height: 'inherit' }}>
+    <Box sx={{ display: 'flex', pb: '44px', height: 'inherit' }}>
       <TopBar open={open} drawerWidth={drawerWidth} handleSideBarOpen={handleSideBarOpen} />
-      <SideBar open={open} handleSideBarClose={handleSideBarClose} drawerWidth={drawerWidth} />
+      <SideBar
+        open={open}
+        handleSideBarClose={handleSideBarClose}
+        drawerWidth={drawerWidth}
+        lessThanSmall={lessThanSmall}
+      />
       <Main open={open}>
-        <SideBarHeader />
         <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={200}>
           <Outlet />
         </Scrollbars>
       </Main>
-      <BottomBar open={open} theme={theme} drawerWidth={drawerWidth} />
+      <BottomBar
+        open={open}
+        theme={theme}
+        drawerWidth={drawerWidth}
+        marginLeftSize={marginLeftSize}
+        lessThanSmall={lessThanSmall}
+      />
     </Box>
   );
 };

@@ -2,6 +2,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Fade from '@mui/material/Fade';
+import Link from '@mui/material/Link';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
@@ -21,13 +22,14 @@ const About = () => {
             <Grid item xs={12}>
               <Typography paragraph>
                 This is a sample React application which is part of the{' '}
-                <a href="https://github.com/appcket/appcket-org">Appcket starter kit</a>. It&apos;s
-                meant to give developers a foundation to start building a web app while serving as
-                an example of how to authenticate and authorize with Keycloak and access a protected
-                GraphQL API.
+                <Link href="https://github.com/appcket/appcket-org">Appcket starter kit</Link>.
+                It&apos;s meant to give developers a foundation to start building a web app while
+                serving as an example of how to authenticate and authorize with Keycloak and access
+                a protected GraphQL API.
               </Typography>
               <Typography paragraph>
-                Check out the <a href="https://appcket.org">Appcket Docs</a> for more information.
+                Check out the <Link href="https://appcket.org">Appcket Docs</Link> for more
+                information.
               </Typography>
             </Grid>
           </Grid>

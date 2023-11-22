@@ -27,3 +27,13 @@ export const displayDatetimeAndUser = (datetime: string, user: User) => {
 
   return '';
 };
+
+export const isJson = (string: string) => {
+  try {
+    JSON.parse(string);
+  } catch (e) {
+    return false;
+  }
+
+  return true;
+};

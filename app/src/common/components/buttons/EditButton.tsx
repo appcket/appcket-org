@@ -16,6 +16,7 @@ const EditButton = ({ entityType, variant = 'contained', linkTo, isDisabled }: P
   return (
     <Button
       variant={variant}
+      color="secondary"
       component={Link}
       to={linkTo}
       disabled={isDisabled}

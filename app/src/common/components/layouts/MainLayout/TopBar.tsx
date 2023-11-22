@@ -13,8 +13,11 @@ import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
+
 import { FaUserShield } from 'react-icons/fa';
 import { useUserInfo } from 'src/common/api/user';
+import { displayUser } from 'src/common/utils/general';
+import ThemeColorModeToggler from 'src/common/components/buttons/ThemeColorModeToggler';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -58,7 +61,13 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
   };
 
   return (
-    <AppBar position="fixed" open={open} drawerwidth={drawerWidth} elevation={3}>
+    <AppBar
+      position="fixed"
+      open={open}
+      drawerwidth={drawerWidth}
+      elevation={0}
+      sx={{ backdropFilter: 'blur(8px)' }}
+    >
       <Container maxWidth={false}>
         <Toolbar disableGutters>
           <IconButton
@@ -80,10 +89,13 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
               {/* Top Toolbar */}
             </Typography>
           </Box>
+          <Box sx={{ mr: 2 }}>
+            <ThemeColorModeToggler />
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="User Settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/images/avatars/avatar_1.png" />
+                <Avatar alt={displayUser(data)} src="/images/avatars/avatar_1.png" />
               </IconButton>
             </Tooltip>
             <Menu

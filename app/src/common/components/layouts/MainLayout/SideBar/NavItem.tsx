@@ -19,7 +19,7 @@ type Props = {
 const NavItemWrapper = styled(Box)(
   ({ theme }) => `
   .MuiListItemButton-root {
-    padding: ${theme.spacing(1.2, 3)};
+    padding: ${theme.spacing(0.8, 2)};
 
     .MuiListItemIcon-root {
       color: ${alpha(theme.palette.common.white, 0.4)};

@@ -6,7 +6,6 @@ import { CgBriefcase } from 'react-icons/cg';
 import { Scrollbars } from 'rc-scrollbars';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -15,7 +14,7 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import { find } from 'lodash';
 
 import { grey } from '@mui/material/colors';
-import theme from 'src/common/theme';
+import { getTheme } from 'src/common/theme';
 import { useUserInfo } from 'src/common/api/user';
 import { ReactComponent as Logo } from 'src/assets/logo.svg';
 import SideBarHeader from 'src/common/components/layouts/MainLayout/SideBar/Header';
@@ -48,10 +47,14 @@ type Props = {
   open: boolean;
   handleSideBarClose: () => void;
   drawerWidth: number;
+  lessThanSmall: boolean;
 };
 
-const SideBar = ({ open, handleSideBarClose, drawerWidth }: Props) => {
+const SideBar = ({ open, handleSideBarClose, drawerWidth, lessThanSmall }: Props) => {
+  const theme = getTheme();
   const { data } = useUserInfo();
+  const drawerVariant = lessThanSmall ? 'temporary' : 'persistent';
+  const handleClose = () => handleSideBarClose();
 
   return (
     <Drawer
@@ -63,15 +66,20 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth }: Props) => {
           boxSizing: 'border-box',
         },
       }}
-      variant="persistent"
+      variant={drawerVariant}
+      onClose={handleClose}
       anchor="left"
       open={open}
     >
-      <SideBarHeader className="w-fit py-5">
+      <SideBarHeader className="w-fit py-3">
         <Link to="/">
-          <Logo width={170} className="mt-2 ml-2" />
+          <Logo width={140} className="mt-1 ml-2" />
         </Link>
-        <IconButton sx={{ color: grey[300] }} onClick={handleSideBarClose} className="ml-8">
+        <IconButton
+          sx={{ color: grey[300], marginLeft: { xs: '24px' } }}
+          onClick={handleSideBarClose}
+          className="ml-8"
+        >
           {theme.direction === 'ltr' ? <MenuIcon /> : <MenuIcon />}
         </IconButton>
       </SideBarHeader>
@@ -87,7 +95,6 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth }: Props) => {
                 background: `${theme.palette.grey[500]}`,
                 borderRadius: 4,
                 transition: `${theme.transitions.create(['background'])}`,
-
                 '&:hover': {
                   background: `${theme.palette.grey[300]}`,
                 },
@@ -100,8 +107,8 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth }: Props) => {
           <Avatar
             sx={{
               cursor: 'pointer',
-              width: 96,
-              height: 96,
+              width: 72,
+              height: 72,
             }}
             component={Link}
             src="/images/avatars/avatar_1.png"
@@ -114,7 +121,6 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth }: Props) => {
             {find(data?.attributes, { name: 'jobTitle' })?.value}
           </Typography>
         </Box>
-        <Divider />
         <List>
           {items.map((item) => (
             <NavItem
@@ -135,6 +141,7 @@ SideBar.propTypes = {
   handleSideBarClose: PropTypes.func,
   open: PropTypes.bool,
   drawerWidth: PropTypes.number,
+  lessThanSmall: PropTypes.bool,
 };
 
 SideBar.defaultProps = {
@@ -142,7 +149,8 @@ SideBar.defaultProps = {
     // do nothing
   },
   open: false,
-  drawerWidth: 280,
+  drawerWidth: 260,
+  lessThanSmall: false,
 };
 
 export default SideBar;

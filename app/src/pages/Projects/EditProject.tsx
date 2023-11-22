@@ -156,7 +156,7 @@ const EditProject = () => {
           organizationId={getProjectQuery.data.getProject.organization.id}
         />
 
-        <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
+        <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
           <Grid item>
             <Button
               onClick={() => {

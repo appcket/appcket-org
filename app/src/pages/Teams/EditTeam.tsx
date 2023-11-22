@@ -144,7 +144,7 @@ const EditTeam = () => {
             parent component can have this data and send it back to the api onSubmit*/}
         <ResourceUsersGrid resourceType="Team" organizationId={getTeamQuery.data.organization.id} />
 
-        <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
+        <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
           <Grid item>
             <Button
               onClick={() => {

@@ -151,7 +151,7 @@ const CreateProject = () => {
 
       {watchOrganizationId && organizationUsersGrid}
 
-      <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
+      <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
         <Grid item>
           <Button
             onClick={() => {

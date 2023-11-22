@@ -1832,6 +1832,15 @@
   resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.5.1.tgz#27337d72046d5236b32fd977edee3f74c71d332f"
   integrity sha512-UCcUKrUYGj7ClomOo2SpNVvx4/fkd/2BbIHDCle8A0ax+P3bU7yJwDBDrS6ZwdTMARWTGODX1hEsCcO+7beJjg==
 
+"@textea/json-viewer@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@textea/json-viewer/-/json-viewer-3.2.3.tgz#9242e24cd8b7f80f3720a3ebe0ecee53c85f05ee"
+  integrity sha512-9fG/JU/wSzib2Naxna+J1PktIKG+9TWOB5ycphKwSSUwrid/d6wAMQYGCCAKmYt0qQq+EQ1jDuFjx7qzfm+cmg==
+  dependencies:
+    clsx "^2.0.0"
+    copy-to-clipboard "^3.3.3"
+    zustand "^4.4.1"
+
 "@types/aria-query@^5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-5.0.1.tgz#3286741fb8f1e1580ac28784add4c7a1d49bdfbc"
@@ -2689,6 +2698,13 @@ copy-anything@^3.0.2:
   dependencies:
     is-what "^4.1.8"
 
+copy-to-clipboard@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.3.3.tgz#55ac43a1db8ae639a4bd99511c148cdd1b83a1b0"
+  integrity sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==
+  dependencies:
+    toggle-selection "^1.0.6"
+
 core-js-compat@^3.31.0:
   version "3.32.2"
   resolved "https://registry.yarnpkg.com/core-js-compat/-/core-js-compat-3.32.2.tgz#8047d1a8b3ac4e639f0d4f66d4431aa3b16e004c"
@@ -2733,10 +2749,10 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-crypto-js@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
-  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
+crypto-js@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 css.escape@^1.5.1:
   version "1.5.1"
@@ -4459,12 +4475,12 @@ object.values@^1.1.6:
     define-properties "^1.2.0"
     es-abstract "^1.22.1"
 
-oidc-client-ts@^2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/oidc-client-ts/-/oidc-client-ts-2.2.5.tgz#ca0a9f791d8d9d00a1720226d3e96b50065ce015"
-  integrity sha512-omAHoLdFcylnwZeHJahOnJBwd0r78JzhmVAmsQjLGrexAnQKiHW9Ilr9FlRD5qjMikmabvaucI4k49AbQLXhmQ==
+oidc-client-ts@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/oidc-client-ts/-/oidc-client-ts-2.4.0.tgz#764c8a33de542026e2798de9849ce8049047d7e5"
+  integrity sha512-WijhkTrlXK2VvgGoakWJiBdfIsVGz6CFzgjNNqZU1hPKV2kyeEaJgLs7RwuiSp2WhLfWBQuLvr2SxVlZnk3N1w==
   dependencies:
-    crypto-js "^4.1.1"
+    crypto-js "^4.2.0"
     jwt-decode "^3.1.2"
 
 once@^1.3.0:
@@ -4509,16 +4525,6 @@ optionator@^0.9.3:
     levn "^0.4.1"
     prelude-ls "^1.2.1"
     type-check "^0.4.0"
-
-overlayscrollbars-react@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/overlayscrollbars-react/-/overlayscrollbars-react-0.5.2.tgz#b8a6294279a1d0984392586b56a03df78d6c1e34"
-  integrity sha512-y3xIPY3to7hneF30MQ/tK9nI6UOcflgenAYktgyfi0GuwnsYEuAqgLfs2qDGiNhFA30Xcz3gaMxvqD7+hTvFRA==
-
-overlayscrollbars@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/overlayscrollbars/-/overlayscrollbars-2.3.1.tgz#a46ab4883c10d5a41e4fd1933f1c646c27a26617"
-  integrity sha512-fTg8dhcgEhUBZpqadKSfaz6ILnEmaOhTnRiqPTmuVx8v2leI6lZREZZc+vs03GKu9/n0N1v+kRvzoWTmwvdM4g==
 
 p-limit@^3.0.2:
   version "3.1.0"
@@ -5412,6 +5418,11 @@ to-space-case@^1.0.0:
   integrity sha512-rLdvwXZ39VOn1IxGL3V6ZstoTbwLRckQmn/U8ZDLuWwIXNpuZDhQ3AiRUlhTbOXFVE9C+dR51wM0CBDhk31VcA==
   dependencies:
     to-no-case "^1.0.0"
+
+toggle-selection@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/toggle-selection/-/toggle-selection-1.0.6.tgz#6e45b1263f2017fa0acc7d89d78b15b8bf77da32"
+  integrity sha512-BiZS+C1OS8g/q2RRbJmy59xpyghNBqrr6k5L/uKBGRsTfxmu3ffiRnd8mlGPUVayg8pvfi5urfnu8TU7DVOkLQ==
 
 totalist@^3.0.0:
   version "3.0.1"

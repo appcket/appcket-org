@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:20
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
   git \
   bzip2 \
   build-essential \
-  python \
+  python3 \
   gcc \
   make \
   vim \

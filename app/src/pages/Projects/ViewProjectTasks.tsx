@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import Typography from '@mui/material/Typography';
 import { Link, NavLink, useParams } from 'react-router-dom';
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { Card } from '@mui/material';
 
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import Page from 'src/common/components/Page';
@@ -66,6 +66,7 @@ const ViewProjectTasks = () => {
     createTaskButton = (
       <Button
         variant="contained"
+        color="secondary"
         component={Link}
         to="create"
         startIcon={<AddCircleOutlineOutlined />}
@@ -191,7 +192,7 @@ const ViewProjectTasks = () => {
           <Grid>{createTaskButton}</Grid>
         </Grid>
       </PageHeader>
-      {tasksGrid}
+      <Card sx={{ mx: { xs: 3, md: 3 } }}>{tasksGrid}</Card>
     </Page>
   );
 };

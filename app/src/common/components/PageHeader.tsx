@@ -14,9 +14,14 @@ type Props = {
 const PageHeader = ({ title, subTitle, children }: Props) => {
   const containerRef = useRef(null);
   return (
-    <Box className="p-8 mb-8 shadow-sm bg-slate-200">
-      <Grid container spacing={2}>
-        <Grid xs={8}>
+    <Box
+      className="p-5 mb-5 shadow-sm"
+      sx={{
+        bgcolor: 'background.pageHeader',
+      }}
+    >
+      <Grid container spacing={2} className="pt-16">
+        <Grid xs={7} sm={8}>
           <Slide direction="right" in={true} container={containerRef.current}>
             <Box>
               <Typography variant="h1" component="h1" gutterBottom>
@@ -26,7 +31,7 @@ const PageHeader = ({ title, subTitle, children }: Props) => {
             </Box>
           </Slide>
         </Grid>
-        <Grid xs={4}>
+        <Grid xs={4} mt={2}>
           <Slide direction="left" in={true} container={containerRef.current}>
             <Box>{children}</Box>
           </Slide>

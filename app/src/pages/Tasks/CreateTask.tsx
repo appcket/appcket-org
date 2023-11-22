@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -115,9 +115,9 @@ const CreateTask = () => {
         </Grid>
         <Typography variant="body1" sx={{ mb: 3 }}>
           Project:{' '}
-          <NavLink to={`/projects/${getProjectQuery.data.getProject.id}`}>
+          <Button component={Link} to={`/projects/${getProjectQuery.data.getProject.id}`}>
             {getProjectQuery.data.getProject.name}
-          </NavLink>
+          </Button>
         </Typography>
         <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
           <FormTextField
@@ -148,7 +148,7 @@ const CreateTask = () => {
 
         {assignedToFormField}
 
-        <Grid container justifyContent="flex-end" sx={{ mt: 8 }}>
+        <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
           <Grid item>
             <Button
               onClick={() => {

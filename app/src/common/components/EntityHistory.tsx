@@ -16,12 +16,14 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { isNull } from 'lodash';
+import { JsonViewer } from '@textea/json-viewer';
 
 import Loading from 'src/common/components/Loading';
 import DateTime from 'src/common/components/DateTime';
 import { useGetEntityHistory } from 'src/common/api/entityHistory';
 import { IEntityHistoryChange } from 'src/common/models/EntityHistory';
 import Resources from 'src/common/enums/resources.enum';
+import { isJson } from 'src/common/utils/general';
 
 type Props = {
   entityId: string;
@@ -31,12 +33,19 @@ type Props = {
 const displayText = (change: IEntityHistoryChange, entityType: Resources): ReactNode => {
   if (isNull(change.fieldName)) {
     if (isNull(change.oldValue)) {
+      let newValue = JSON.parse(change.newValue);
       return (
         <div>
           <Typography variant="body2">{change.changedBy.displayName}</Typography>
           <Typography variant="subtitle2">created</Typography>
           <Typography variant="body1">a new {entityType}:</Typography>
-          <Typography variant="body1">{change.newValue}</Typography>
+          <JsonViewer
+            sx={{ backgroundColor: '#d9d9d9' }}
+            value={newValue}
+            displayDataTypes={false}
+            displaySize={false}
+            enableClipboard={false}
+          />
         </div>
       );
     } else {
@@ -50,15 +59,44 @@ const displayText = (change: IEntityHistoryChange, entityType: Resources): React
       );
     }
   } else {
+    let newValue = change.newValue;
+    let oldValue = change.oldValue;
+    let renderNewValue = <Typography variant="body1">{newValue}</Typography>;
+    let renderOldValue = <Typography variant="body1">{oldValue}</Typography>;
+    if (isJson(newValue)) {
+      newValue = JSON.parse(change.newValue);
+      renderNewValue = (
+        <JsonViewer
+          sx={{ backgroundColor: '#d9d9d9' }}
+          value={newValue}
+          displayDataTypes={false}
+          displaySize={false}
+          enableClipboard={false}
+        />
+      );
+    }
+    if (isJson(oldValue)) {
+      oldValue = JSON.parse(change.oldValue);
+      renderOldValue = (
+        <JsonViewer
+          sx={{ backgroundColor: '#d9d9d9' }}
+          value={oldValue}
+          displayDataTypes={false}
+          displaySize={false}
+          enableClipboard={false}
+        />
+      );
+    }
+
     return (
       <div>
         <Typography variant="body2">{change.changedBy.displayName}</Typography>
         <Typography variant="subtitle2">changed</Typography>
         <Typography variant="body1">{change.fieldName}</Typography>
         <Typography variant="subtitle2">from</Typography>
-        <Typography variant="body1">{change.oldValue}</Typography>
+        {renderOldValue}
         <Typography variant="subtitle2">to</Typography>
-        <Typography variant="body1">{change.newValue}</Typography>
+        {renderNewValue}
       </div>
     );
   }
@@ -81,7 +119,7 @@ const EntityHistory = ({ entityId, entityType }: Props) => {
         <Timeline
           sx={{
             [`& .${timelineOppositeContentClasses.root}`]: {
-              flex: 0.2,
+              flex: 0.15,
             },
           }}
         >

@@ -1,5 +1,6 @@
-import { NavLink, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -64,9 +65,9 @@ const Task = () => {
         <Grid item xs={12} sm={6}>
           <Typography variant="body1" sx={{ mb: 3 }}>
             Project:{' '}
-            <NavLink to={`/projects/${data?.getTask?.project.id}`}>
+            <Button component={Link} to={`/projects/${data?.getTask?.project.id}`}>
               {data?.getTask?.project.name}
-            </NavLink>
+            </Button>
           </Typography>
           <Typography variant="body1">
             Status:{' '}

@@ -6,18 +6,19 @@ import Toolbar from '@mui/material/Toolbar';
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
   drawerwidth?: number;
+  marginleftsize?: number;
 }
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open, drawerwidth }) => ({
+})<AppBarProps>(({ theme, open, drawerwidth, marginleftsize }) => ({
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     width: `calc(100% - ${drawerwidth}px)`,
-    marginLeft: `${drawerwidth}px`,
+    marginLeft: `${marginleftsize}px`,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -29,19 +30,24 @@ type Props = {
   theme: Theme;
   open: boolean;
   drawerWidth: number;
-  handleSideBarOpen?: () => void;
+  marginLeftSize: number;
+  lessThanSmall: boolean;
 };
 
-const BottomBar = ({ theme, open, drawerWidth }: Props) => {
+const BottomBar = ({ theme, open, drawerWidth, marginLeftSize, lessThanSmall }: Props) => {
+  if (lessThanSmall) {
+    drawerWidth = 0;
+  }
   return (
     <AppBar
       position="fixed"
       open={open}
       drawerwidth={drawerWidth}
-      sx={{ top: 'auto', bottom: 0, height: '64px', background: theme.palette.grey[400] }}
+      marginleftsize={marginLeftSize}
+      sx={{ top: 'auto', bottom: 0, height: '44px' }}
     >
       <Toolbar>
-        <Typography variant="h6" noWrap component="div">
+        <Typography variant="body2" noWrap component="div" paddingBottom={2}>
           &copy;{' '}
           {new Intl.DateTimeFormat('en-US', {
             year: 'numeric',

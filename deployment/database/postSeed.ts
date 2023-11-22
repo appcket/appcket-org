@@ -9,6 +9,8 @@ import config from './mikro-orm.config';
 
   const connection = em.getConnection();
 
+  await connection.execute('DROP TABLE IF EXISTS appcket.base_entity;');
+
   // add foreign keys to keycloak user_entity table after setting everything else up through mikro-orm
   await connection.execute('ALTER TABLE appcket.organization_user ADD CONSTRAINT organization_user_user_id_foreign FOREIGN KEY (user_id) REFERENCES keycloak.user_entity(id);');
   await connection.execute('ALTER TABLE appcket.project_user ADD CONSTRAINT project_user_user_id_foreign FOREIGN KEY (user_id) REFERENCES keycloak.user_entity(id);');

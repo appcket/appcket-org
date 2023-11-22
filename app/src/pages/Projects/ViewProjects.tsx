@@ -5,6 +5,7 @@ import { GridRowsProp, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
+import { Card } from '@mui/material';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
@@ -56,6 +57,7 @@ const ViewProjects = () => {
     createProjectButton = (
       <Button
         variant="contained"
+        color="secondary"
         component={Link}
         to="create"
         startIcon={<AddCircleOutlineOutlined />}
@@ -164,7 +166,7 @@ const ViewProjects = () => {
           <Grid>{createProjectButton}</Grid>
         </Grid>
       </PageHeader>
-      {projectsGrid}
+      <Card sx={{ mx: { xs: 3, md: 3 } }}>{projectsGrid}</Card>
     </Page>
   );
 };

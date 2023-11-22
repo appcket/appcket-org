@@ -16,6 +16,7 @@ import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import { formatDatetime } from 'src/common/utils/general';
 import PaginatedGrid from 'src/common/components/PaginatedGrid';
+import { Card } from '@mui/material';
 
 const PAGE_SIZE = 10;
 
@@ -56,6 +57,7 @@ const ViewTeams = () => {
     createTeamButton = (
       <Button
         variant="contained"
+        color="secondary"
         component={Link}
         to="create"
         startIcon={<AddCircleOutlineOutlined />}
@@ -164,7 +166,7 @@ const ViewTeams = () => {
           <Grid>{createTeamButton}</Grid>
         </Grid>
       </PageHeader>
-      {teamsGrid}
+      <Card sx={{ mx: { xs: 3, md: 3 } }}>{teamsGrid}</Card>
     </Page>
   );
 };

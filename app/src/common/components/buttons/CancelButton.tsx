@@ -15,6 +15,7 @@ const CancelButton = ({ variant = 'contained', linkTo, isDisabled }: Props) => {
   return (
     <Button
       variant={variant}
+      color="secondary"
       component={Link}
       to={linkTo}
       disabled={isDisabled}
