@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink } from 'react-router-dom';
 import { GridRowsProp, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
@@ -7,13 +6,13 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import { Card } from '@mui/material';
 
+import { useUserInfo } from 'src/common/api/user';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import { useSearchProjects } from 'src/common/api/project';
 import hasPermission from 'src/common/utils/hasPermission';
 import { ProjectPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import { formatDatetime } from 'src/common/utils/general';
 import PaginatedGrid from 'src/common/components/PaginatedGrid';
@@ -21,7 +20,7 @@ import PaginatedGrid from 'src/common/components/PaginatedGrid';
 const PAGE_SIZE = 10;
 
 const ViewProjects = () => {
-  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+  const userInfo = useUserInfo();
 
   const [queryOptions, setQueryOptions] = useState({
     pageSize: PAGE_SIZE,
@@ -42,7 +41,7 @@ const ViewProjects = () => {
   );
 
   const createProjectPermission = hasPermission(
-    userInfoQuery.data?.userInfo.permissions as Permission[],
+    userInfo.data?.permissions as Permission[],
     Resources.Project,
     ProjectPermission.create,
   );

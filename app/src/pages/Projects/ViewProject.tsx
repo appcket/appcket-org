@@ -1,6 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { useQuery } from '@tanstack/react-query';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -8,6 +7,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
+import { useUserInfo } from 'src/common/api/user';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import { useGetProject } from 'src/common/api/project';
@@ -24,24 +24,24 @@ import EntityHistory from 'src/common/components/EntityHistory';
 const Project = () => {
   const params = useParams();
   const projectId = params.projectId || '';
-  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+  const userInfo = useUserInfo();
 
   const updateProjectPermission = hasPermission(
-    userInfoQuery.data?.userInfo.permissions as Permission[],
+    userInfo.data?.permissions as Permission[],
     Resources.Project,
     ProjectPermission.update,
   );
   const readProjectHistoryPermission = hasPermission(
-    userInfoQuery.data?.userInfo.permissions as Permission[],
+    userInfo.data?.permissions as Permission[],
     Resources.Project,
     ProjectPermission.readHistory,
   );
-  const { status, data, error, isFetching } = useGetProject(projectId);
+  const { status, data, error, isFetching, isLoading } = useGetProject(projectId);
 
   let projectComponent;
   let entityHistoryComponent;
 
-  if (status === 'loading' || isFetching) {
+  if (isLoading || isFetching) {
     projectComponent = <Loading />;
   } else if (status === 'error' && error instanceof Error) {
     projectComponent = <Typography paragraph>Error: {error.message}</Typography>;

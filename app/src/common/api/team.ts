@@ -1,5 +1,4 @@
 import { gql } from 'graphql-request';
-import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import { useApiMutation, useApiQuery } from 'src/common/api';
 import {
@@ -16,7 +15,7 @@ export const useSearchTeams = (
   first: number,
   after: string | null,
   orderBy: string,
-): UseQueryResult<SearchTeamsPaginated> => {
+) => {
   after = after ? `"${after}"` : null;
   let queryKeySearch = 'search:' + searchString;
   let queryKeyAfter = 'after:' + after;
@@ -65,7 +64,7 @@ export const useSearchTeams = (
   );
 };
 
-export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
+export const useGetTeam = (teamId: string) => {
   const queryKey = ['getTeam'];
   const processData = (data: GetTeamResponse): Team => {
     return data.getTeam;
@@ -101,7 +100,7 @@ export const useGetTeam = (teamId: string): UseQueryResult<Team> => {
   );
 };
 
-export const useUpdateTeam = (): UseMutationResult => {
+export const useUpdateTeam = () => {
   const mutationKey = 'updateTeam';
 
   const processData = (data: UpdateTeamResponse): Team => {
@@ -120,7 +119,7 @@ export const useUpdateTeam = (): UseMutationResult => {
   );
 };
 
-export const useCreateTeam = (): UseMutationResult => {
+export const useCreateTeam = () => {
   const mutationKey = 'createTeam';
 
   const processData = (data: CreateTeamResponse): Team => {

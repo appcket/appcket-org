@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -9,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
+import { useUserInfo } from 'src/common/api/user';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import CreateProjectInput from 'src/common/models/inputs/CreateProjectInput';
@@ -20,7 +20,6 @@ import { FormTextField } from 'src/common/components/form/FormTextField';
 import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
-import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import { resourcesToSelectMenuOptions } from 'src/common/utils/form';
 import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
@@ -47,7 +46,7 @@ const CreateProject = () => {
   const createProject = useCreateProject();
   const resetSelectedUserIds = useStore((state) => state.resourceUsers.resetSelectedUserIds);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
-  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+  const userInfo = useUserInfo();
 
   const initialSelectedItemIds: <T>(items: T[], key: string) => string[] = (
     items,
@@ -89,16 +88,14 @@ const CreateProject = () => {
   let organizationSelectMenu;
   let organizationUsersGrid;
 
-  if (userInfoQuery.status === 'loading' || userInfoQuery.isFetching) {
+  if (userInfo.isLoading || userInfo.isFetching) {
     organizationSelectMenu = <Loading />;
     organizationUsersGrid = <Loading />;
-  } else if (userInfoQuery.status === 'error' && userInfoQuery.error instanceof Error) {
-    organizationSelectMenu = (
-      <Typography paragraph>Error: {userInfoQuery.error.message}</Typography>
-    );
-  } else if (userInfoQuery.isSuccess && userInfoQuery.data.userInfo.organizations) {
+  } else if (userInfo.status === 'error' && userInfo.error instanceof Error) {
+    organizationSelectMenu = <Typography paragraph>Error: {userInfo.error.message}</Typography>;
+  } else if (userInfo.isSuccess && userInfo.data.organizations) {
     const options = resourcesToSelectMenuOptions<Organization>(
-      userInfoQuery.data.userInfo.organizations,
+      userInfo.data.organizations,
       'id',
       'name',
     );

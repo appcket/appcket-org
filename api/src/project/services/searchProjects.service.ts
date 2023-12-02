@@ -40,7 +40,7 @@ export class SearchProjectsService {
       .where(where);
 
     return this.paginationService.queryBuilderPagination(
-      'team',
+      'project',
       input.orderBy[0]?.fieldName,
       input.first,
       input.orderBy[0]?.direction,

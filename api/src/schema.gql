@@ -191,6 +191,7 @@ input SearchProjectsInput {
 
 input OrderByInput {
   fieldName: String!
+  innerFieldName: String
   direction: QueryOrder! = ASC
 }
 

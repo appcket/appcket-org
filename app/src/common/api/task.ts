@@ -1,5 +1,4 @@
 import { gql } from 'graphql-request';
-import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import { useApiMutation, useApiQuery } from 'src/common/api';
 import GetTaskResponse from 'src/common/models/responses/GetTaskResponse';
@@ -17,7 +16,7 @@ export const useSearchTasks = (
   first: number,
   after: string | null,
   orderBy: string,
-): UseQueryResult<SearchTasksPaginated> => {
+) => {
   after = after ? `"${after}"` : null;
   let queryKeyProjectIds = 'projectIds:' + projectIds;
   let queryKeySearch = 'search:' + searchString;
@@ -98,7 +97,7 @@ export const useSearchTasks = (
   );
 };
 
-export const useGetTask = (taskId: string): UseQueryResult<GetTaskResponse> => {
+export const useGetTask = (taskId: string) => {
   const queryKey = ['getTask'];
   const processData = (data: GetTaskResponse) => {
     return data;
@@ -143,7 +142,7 @@ export const useGetTask = (taskId: string): UseQueryResult<GetTaskResponse> => {
   );
 };
 
-export const useUpdateTask = (): UseMutationResult => {
+export const useUpdateTask = () => {
   const mutationKey = 'updateTask';
 
   const processData = (data: UpdateTaskResponse): Task => {
@@ -177,7 +176,7 @@ export const useUpdateTask = (): UseMutationResult => {
   );
 };
 
-export const useCreateTask = (): UseMutationResult => {
+export const useCreateTask = () => {
   const mutationKey = 'createTask';
 
   const processData = (data: CreateTaskResponse): Task => {

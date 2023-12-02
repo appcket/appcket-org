@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink } from 'react-router-dom';
 import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
@@ -12,16 +11,16 @@ import { useSearchTeams } from 'src/common/api/team';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import { formatDatetime } from 'src/common/utils/general';
 import PaginatedGrid from 'src/common/components/PaginatedGrid';
 import { Card } from '@mui/material';
+import { useUserInfo } from 'src/common/api/user';
 
 const PAGE_SIZE = 10;
 
 const ViewTeams = () => {
-  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+  const userInfo = useUserInfo();
 
   const [queryOptions, setQueryOptions] = useState({
     pageSize: PAGE_SIZE,
@@ -34,7 +33,7 @@ const ViewTeams = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { status, data, error } = useSearchTeams(
+  const { status, data } = useSearchTeams(
     queryOptions.searchValue,
     queryOptions.pageSize,
     queryOptions.cursor ? queryOptions.cursor : null,
@@ -42,7 +41,7 @@ const ViewTeams = () => {
   );
 
   const createTeamPermission = hasPermission(
-    userInfoQuery.data?.userInfo.permissions as Permission[],
+    userInfo.data?.permissions as Permission[],
     Resources.Team,
     TeamPermission.create,
   );

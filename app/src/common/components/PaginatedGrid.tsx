@@ -98,7 +98,7 @@ const PaginatedGrid = ({
     onFilter(searchValue, searchFieldName);
   }, []);
 
-  if (status !== 'loading') {
+  if (status !== 'pending') {
     loading = false;
   }
 

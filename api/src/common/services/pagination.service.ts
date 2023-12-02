@@ -37,7 +37,7 @@ export class PaginationService {
   /**
    * Create Edge
    *
-   * Takes an instance, the cursor key and a innerCursor,
+   * Takes an instance, the cursor key and an innerCursor,
    * and generates a GraphQL edge
    */
   private static createEdge<T>(instance: T, cursor: keyof T, innerCursor?: string): IEdge<T> {

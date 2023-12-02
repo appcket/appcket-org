@@ -33,15 +33,15 @@ export class SearchTasksService {
       .leftJoinAndSelect('t.assignedTo', 'at', null, ['username', 'email', 'firstName', 'lastName'])
       .where(where);
 
-    const test = await this.paginationService.queryBuilderPagination(
-      'team',
+    return await this.paginationService.queryBuilderPagination(
+      'task',
       input.orderBy[0]?.fieldName,
       input.first,
       input.orderBy[0]?.direction,
       query,
       input.after,
+      false,
+      input.orderBy[0]?.innerFieldName,
     );
-
-    return test;
   }
 }

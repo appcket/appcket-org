@@ -37,3 +37,19 @@ export const isJson = (string: string) => {
 
   return true;
 };
+
+export const getOrderByInnerFieldName = (orderByFieldName: string) => {
+  let orderByInnerFieldName = '';
+  switch (orderByFieldName) {
+    case 'taskStatusType':
+      orderByInnerFieldName = 'name';
+      break;
+    case 'assignedTo':
+      orderByInnerFieldName = 'firstName';
+      break;
+    default:
+      break;
+  }
+
+  return orderByInnerFieldName;
+};

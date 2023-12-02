@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink, useParams } from 'react-router-dom';
 import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Card } from '@mui/material';
 
+import { useUserInfo } from 'src/common/api/user';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
@@ -14,11 +14,11 @@ import { useGetProject } from 'src/common/api/project';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TaskPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import { displayUser } from 'src/common/utils/general';
 import PaginatedGrid from 'src/common/components/PaginatedGrid';
 import { formatDatetime } from 'src/common/utils/general';
+import { getOrderByInnerFieldName } from 'src/common/utils/general';
 
 const PAGE_SIZE = 10;
 
@@ -33,6 +33,7 @@ const ViewProjectTasks = () => {
     pageSize: PAGE_SIZE,
     cursor: '',
     orderByFieldName: 'name',
+    orderByInnerFieldName: '',
     orderByDirection: 'ASC',
     searchValue: '',
     searchFieldName: 'name',
@@ -40,18 +41,20 @@ const ViewProjectTasks = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { status, data, error } = useSearchTasks(
+  const { status, data } = useSearchTasks(
     [projectId],
     queryOptions.searchValue,
     queryOptions.pageSize,
     queryOptions.cursor ? queryOptions.cursor : null,
-    `[{ fieldName: "${queryOptions.orderByFieldName}", direction: ${queryOptions.orderByDirection} }]`,
+    queryOptions.orderByInnerFieldName === ''
+      ? `[{ fieldName: "${queryOptions.orderByFieldName}",  direction: ${queryOptions.orderByDirection} }]`
+      : `[{ fieldName: "${queryOptions.orderByFieldName}", innerFieldName: "${queryOptions.orderByInnerFieldName}", direction: ${queryOptions.orderByDirection} }]`,
   );
   const getProjectResult = useGetProject(projectId);
 
-  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+  const userInfo = useUserInfo();
   const createTaskPermission = hasPermission(
-    userInfoQuery.data?.userInfo.permissions as Permission[],
+    userInfo.data?.permissions as Permission[],
     Resources.Task,
     TaskPermission.create,
   );
@@ -90,16 +93,24 @@ const ViewProjectTasks = () => {
     {
       field: 'assignedTo',
       headerName: 'Assigned To',
-      flex: 0.25,
+      flex: 0.2,
       renderCell: (cellValues) => {
         return `${displayUser(cellValues.row.node.assignedTo)}`;
+      },
+    },
+    {
+      field: 'taskStatusType',
+      headerName: 'Status',
+      flex: 0.15,
+      renderCell: (cellValues) => {
+        return `${cellValues.row.node.taskStatusType.name}`;
       },
     },
     {
       field: 'updatedAt',
       headerName: 'Updated',
       filterable: false,
-      flex: 0.25,
+      flex: 0.15,
       renderCell: (cellValues) => {
         return formatDatetime(cellValues.row.node.updatedAt);
       },
@@ -108,7 +119,7 @@ const ViewProjectTasks = () => {
       field: 'createdAt',
       headerName: 'Created',
       filterable: false,
-      flex: 0.25,
+      flex: 0.15,
       renderCell: (cellValues) => {
         return formatDatetime(cellValues.row.node.createdAt);
       },
@@ -120,6 +131,7 @@ const ViewProjectTasks = () => {
       pageSize,
       cursor,
       orderByFieldName: queryOptions.orderByFieldName,
+      orderByInnerFieldName: queryOptions.orderByInnerFieldName,
       orderByDirection: queryOptions.orderByDirection,
       searchValue: queryOptions.searchValue,
       searchFieldName: queryOptions.searchFieldName,
@@ -132,6 +144,7 @@ const ViewProjectTasks = () => {
       pageSize: queryOptions.pageSize,
       cursor: queryOptions.cursor,
       orderByFieldName,
+      orderByInnerFieldName: getOrderByInnerFieldName(orderByFieldName),
       orderByDirection,
       searchValue: queryOptions.searchValue,
       searchFieldName: queryOptions.searchFieldName,
@@ -143,6 +156,7 @@ const ViewProjectTasks = () => {
       pageSize: queryOptions.pageSize,
       cursor: queryOptions.cursor,
       orderByFieldName: queryOptions.orderByFieldName,
+      orderByInnerFieldName: getOrderByInnerFieldName(queryOptions.orderByFieldName),
       orderByDirection: queryOptions.orderByDirection,
       searchValue,
       searchFieldName,

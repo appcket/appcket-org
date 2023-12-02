@@ -1,15 +1,11 @@
 import { gql } from 'graphql-request';
-import { UseQueryResult } from '@tanstack/react-query';
 
 import { useApiQuery } from 'src/common/api';
 import Resources from 'src/common/enums/resources.enum';
 import GetEntityHistoryResponse from 'src/common/models/responses/GetEntityHistoryResponse';
 import { IEntityHistory } from 'src/common/models/EntityHistory';
 
-export const useGetEntityHistory = (
-  entityHistoryId: string,
-  entityType: Resources,
-): UseQueryResult<IEntityHistory> => {
+export const useGetEntityHistory = (entityHistoryId: string, entityType: Resources) => {
   const queryKey = ['getEntityHistory', entityHistoryId, 'type', entityType];
   const processData = (data: GetEntityHistoryResponse): IEntityHistory => {
     return data.getEntityHistory;

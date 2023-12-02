@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -7,6 +6,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
+import { useUserInfo } from 'src/common/api/user';
 import Loading from 'src/common/components/Loading';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
@@ -14,7 +14,6 @@ import { useGetTeam } from 'src/common/api/team';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 import { displayUser } from 'src/common/utils/general';
@@ -23,24 +22,24 @@ import EntityHistory from 'src/common/components/EntityHistory';
 const Team = () => {
   const params = useParams();
   const teamId = params.teamId || '';
-  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+  const userInfo = useUserInfo();
 
   const updateTeamPermission = hasPermission(
-    userInfoQuery.data?.userInfo.permissions as Permission[],
+    userInfo.data?.permissions as Permission[],
     Resources.Team,
     TeamPermission.update,
   );
   const readTeamHistoryPermission = hasPermission(
-    userInfoQuery.data?.userInfo.permissions as Permission[],
+    userInfo.data?.permissions as Permission[],
     Resources.Team,
     TeamPermission.readHistory,
   );
-  const { status, data, error, isFetching } = useGetTeam(teamId);
+  const { status, data, error, isFetching, isLoading } = useGetTeam(teamId);
 
   let teamComponent;
   let entityHistoryComponent;
 
-  if (status === 'loading' || isFetching) {
+  if (isLoading || isFetching) {
     teamComponent = <Loading />;
   } else if (status === 'error' && error instanceof Error) {
     teamComponent = <Typography paragraph>Error: {error.message}</Typography>;

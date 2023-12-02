@@ -1,12 +1,11 @@
 import { gql } from 'graphql-request';
-import { UseQueryResult } from '@tanstack/react-query';
 
 import { useApiQuery } from 'src/common/api';
 import User from 'src/common/models/User';
 import SearchUsersResponse from 'src/common/models/responses/SearchUsersResponse';
 import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 
-export const useUserInfo = (): UseQueryResult<User> => {
+export const useUserInfo = () => {
   const queryKey = ['userInfo'];
   const processData = (data: UserInfoResponse): User => {
     return data.userInfo;
@@ -39,10 +38,12 @@ export const useUserInfo = (): UseQueryResult<User> => {
       }
     `,
     processData,
+    Infinity,
+    Infinity,
   );
 };
 
-export const useSearchUsers = (organizationId: string): UseQueryResult<User[]> => {
+export const useSearchUsers = (organizationId: string) => {
   const queryKey = ['searchUsers', organizationId];
   const processData = (data: SearchUsersResponse): User[] => {
     return data.searchUsers;

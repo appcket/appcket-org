@@ -16,7 +16,7 @@ import { find } from 'lodash';
 import { grey } from '@mui/material/colors';
 import { getTheme } from 'src/common/theme';
 import { useUserInfo } from 'src/common/api/user';
-import { ReactComponent as Logo } from 'src/assets/logo.svg';
+import ReactLogo from 'src/assets/logo.svg?react';
 import SideBarHeader from 'src/common/components/layouts/MainLayout/SideBar/Header';
 import NavItem from 'src/common/components/layouts/MainLayout/SideBar/NavItem';
 
@@ -73,7 +73,7 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth, lessThanSmall }: Props
     >
       <SideBarHeader className="w-fit py-3">
         <Link to="/">
-          <Logo width={140} className="mt-1 ml-2" />
+          <ReactLogo width={140} className="mt-1 ml-2" />
         </Link>
         <IconButton
           sx={{ color: grey[300], marginLeft: { xs: '24px' } }}

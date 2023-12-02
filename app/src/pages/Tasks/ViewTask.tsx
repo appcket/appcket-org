@@ -1,10 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
+import { useUserInfo } from 'src/common/api/user';
 import Loading from 'src/common/components/Loading';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
@@ -12,7 +12,6 @@ import { useGetTask } from 'src/common/api/task';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TaskPermission } from 'src/common/enums/permissions.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 import { displayUser } from 'src/common/utils/general';
@@ -21,24 +20,24 @@ import EntityHistory from 'src/common/components/EntityHistory';
 const Task = () => {
   const params = useParams();
   const taskId = params.taskId || '';
-  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+  const userInfo = useUserInfo();
 
   const updateTaskPermission = hasPermission(
-    userInfoQuery.data?.userInfo.permissions as Permission[],
+    userInfo.data?.permissions as Permission[],
     Resources.Task,
     TaskPermission.update,
   );
   const readTaskHistoryPermission = hasPermission(
-    userInfoQuery.data?.userInfo.permissions as Permission[],
+    userInfo.data?.permissions as Permission[],
     Resources.Task,
     TaskPermission.readHistory,
   );
-  const { status, data, error, isFetching } = useGetTask(taskId);
+  const { status, data, error, isFetching, isLoading } = useGetTask(taskId);
 
   let taskComponent;
   let entityHistoryComponent;
 
-  if (status === 'loading' || isFetching) {
+  if (isLoading || isFetching) {
     taskComponent = <Loading />;
   } else if (status === 'error' && error instanceof Error) {
     taskComponent = <Typography paragraph>Error: {error.message}</Typography>;

@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -9,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
+import { useUserInfo } from 'src/common/api/user';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import CreateTeamInput from 'src/common/models/inputs/CreateTeamInput';
@@ -45,7 +45,7 @@ const CreateTeam = () => {
   const createTeam = useCreateTeam();
   const resetSelectedUserIds = useStore((state) => state.resourceUsers.resetSelectedUserIds);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
-  const userInfoQuery = useQuery<UserInfoResponse>(['userInfo']);
+  const userInfo = useUserInfo();
 
   const initialSelectedItemIds: <T>(items: T[], key: string) => string[] = (
     items,
@@ -87,15 +87,13 @@ const CreateTeam = () => {
   let organizationSelectMenu;
   let organizationUsersGrid;
 
-  if (userInfoQuery.status === 'loading' || userInfoQuery.isFetching) {
+  if (userInfo.isLoading || userInfo.isFetching) {
     organizationSelectMenu = <Loading />;
     organizationUsersGrid = <Loading />;
-  } else if (userInfoQuery.status === 'error' && userInfoQuery.error instanceof Error) {
-    organizationSelectMenu = (
-      <Typography paragraph>Error: {userInfoQuery.error.message}</Typography>
-    );
-  } else if (userInfoQuery.isSuccess) {
-    const options = userInfoQuery.data.userInfo.organizations?.map((organization) => {
+  } else if (userInfo.status === 'error' && userInfo.error instanceof Error) {
+    organizationSelectMenu = <Typography paragraph>Error: {userInfo.error.message}</Typography>;
+  } else if (userInfo.isSuccess) {
+    const options = userInfo.data.organizations?.map((organization) => {
       return { id: organization.id, label: organization.name };
     });
     organizationSelectMenu = (
