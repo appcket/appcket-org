@@ -9,7 +9,7 @@ export class ChangeAuditChange {
   @Property()
   createdAt: Date = new Date();
 
-  @ManyToOne({ entity: () => ChangeAuditEntity, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => ChangeAuditEntity, updateRule: 'cascade' })
   changeAuditEntity!: ChangeAuditEntity;
 
   @Property({ length: 36 })

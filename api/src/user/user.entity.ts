@@ -27,7 +27,7 @@ export class User {
   @Property({ length: 255 })
   username: string;
 
-  @Property({ length: 255 })
+  @Property({ length: 255, persist: false })
   role: string;
 
   @ManyToMany({

@@ -12,7 +12,7 @@ export class OrganizationUser extends BaseEntity {
 
   @ManyToOne({
     entity: () => Organization,
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
   })
   organization!: Organization;
 

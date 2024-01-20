@@ -15,14 +15,14 @@ export class ChangeAuditEntity {
   entityId!: string;
 
   @Property({ length: 50 })
-  entityType!: string;
+  entityType?: string;
 
-  @ManyToOne({ entity: () => ChangeAuditApp, fieldName: 'app_id', onUpdateIntegrity: 'cascade' })
-  appId!: ChangeAuditApp;
+  @ManyToOne({ entity: () => ChangeAuditApp, fieldName: 'app_id', updateRule: 'cascade' })
+  appId?: ChangeAuditApp;
 
   @ManyToOne({
     entity: () => ChangeAuditOperationType,
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
   })
   operationType!: ChangeAuditOperationType;
 
@@ -36,7 +36,7 @@ export class ChangeAuditEntity {
   userDisplayName?: string;
 
   @Property({ columnType: 'jsonb' })
-  entity!: any;
+  entity?: any;
 
   @Property({ columnType: 'jsonb', nullable: true })
   diff?: any;

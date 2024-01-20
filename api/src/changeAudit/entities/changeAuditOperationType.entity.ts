@@ -6,5 +6,5 @@ export class ChangeAuditOperationType {
   id!: string;
 
   @Property({ length: 50 })
-  name!: string;
+  name?: string;
 }

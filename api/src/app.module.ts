@@ -64,7 +64,7 @@ caAppend.monkeyPatch();
           autoLoadEntities: true,
           dbName: configService.get('orm.dbName'),
           schema: configService.get('orm.schema'),
-          type: configService.get('orm.type'),
+          driver: configService.get('orm.driver'),
           user: configService.get('orm.user'),
           password: configService.get('orm.password'),
           host: configService.get('orm.host'),

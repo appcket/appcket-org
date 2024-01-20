@@ -8,7 +8,7 @@ export class OrganizationUser extends BaseEntity {
   @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
   id!: string;
 
-  @ManyToOne({ entity: () => Organization, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => Organization, updateRule: 'cascade' })
   organization!: Organization;
 
   @Property({ length: 36 })

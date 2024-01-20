@@ -10,6 +10,6 @@ export class Project extends BaseEntity {
   @Property({ columnType: 'text', length: 500, nullable: true })
   description?: string;
 
-  @ManyToOne({ entity: () => Organization, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => Organization, updateRule: 'cascade' })
   organization!: Organization;
 }

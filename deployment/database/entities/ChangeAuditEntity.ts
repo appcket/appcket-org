@@ -18,10 +18,10 @@ export class ChangeAuditEntity {
   @Property({ length: 50 })
   entityType!: string;
 
-  @ManyToOne({ entity: () => ChangeAuditApp, fieldName: 'app_id', onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => ChangeAuditApp, fieldName: 'app_id', updateRule: 'cascade' })
   appId!: ChangeAuditApp;
 
-  @ManyToOne({ entity: () => ChangeAuditOperationType, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => ChangeAuditOperationType, updateRule: 'cascade' })
   operationType!: ChangeAuditOperationType;
 
   @Property({ length: 36 })

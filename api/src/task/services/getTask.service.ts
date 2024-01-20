@@ -4,7 +4,6 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 import { Task } from 'src/task/task.entity';
-import { PopulateHint } from '@mikro-orm/core';
 
 @Injectable()
 export class GetTaskService {
@@ -16,7 +15,7 @@ export class GetTaskService {
 
   public async getTask(id: string, userId: string): Promise<Task> {
     const task = await this.taskRepository.findOneOrFail(
-      { id, project: { projectUsers: { deletedAt: null } } },
+      { id, deletedAt: null },
       {
         populate: [
           'project',
@@ -24,7 +23,7 @@ export class GetTaskService {
           'taskStatusType',
           'project.organization.id',
         ],
-        populateWhere: PopulateHint.INFER,
+        populateWhere: { project: { projectUsers: { deletedAt: null } } },
       },
     );
 

@@ -9,7 +9,7 @@ export class TeamUser extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'created_by',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   createdBy!: User;
@@ -17,7 +17,7 @@ export class TeamUser extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'updated_by',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   updatedBy!: User;
@@ -25,14 +25,14 @@ export class TeamUser extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'deleted_by',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   deletedBy!: User;
 
-  @ManyToOne({ entity: () => Team, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => Team, updateRule: 'cascade' })
   team!: Team;
 
-  @ManyToOne({ entity: () => User, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => User, updateRule: 'cascade' })
   user!: User;
 }

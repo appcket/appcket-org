@@ -9,6 +9,6 @@ export class ChangeAuditApp {
   @Property({ length: 30 })
   name!: string;
 
-  @ManyToOne({ entity: () => Organization, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => Organization, updateRule: 'cascade' })
   organization!: Organization;
 }

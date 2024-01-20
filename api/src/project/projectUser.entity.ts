@@ -8,7 +8,7 @@ export class ProjectUser extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'created_by',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   createdBy!: User;
@@ -16,7 +16,7 @@ export class ProjectUser extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'updated_by',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   updatedBy!: User;
@@ -24,14 +24,14 @@ export class ProjectUser extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'deleted_by',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   deletedBy!: User;
 
-  @ManyToOne({ entity: () => Project, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => Project, updateRule: 'cascade' })
   project!: Project;
 
-  @ManyToOne({ entity: () => User, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => User, updateRule: 'cascade' })
   user!: User;
 }

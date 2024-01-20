@@ -1,5 +1,6 @@
 import { EntityManager } from '@mikro-orm/core';
-import { Factory, Faker, Seeder } from '@mikro-orm/seeder';
+import { Factory, Seeder } from '@mikro-orm/seeder';
+import { faker } from '@faker-js/faker';
 
 import { ChangeAuditApp } from '../entities/ChangeAuditApp';
 import { ChangeAuditOperationType } from '../entities/ChangeAuditOperationType';
@@ -18,7 +19,7 @@ const now = new Date();
 export class TeamFactory extends Factory<Team> {
   model = Team;
 
-  definition(faker: Faker): Partial<Team> {
+  definition(): Partial<Team> {
     return {
       id: randomUUID(),
       name: `${faker.company.catchPhraseAdjective()} ${faker.company.catchPhraseDescriptor()}`,

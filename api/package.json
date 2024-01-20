@@ -21,9 +21,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@mikro-orm/core": "^5.9.4",
-    "@mikro-orm/nestjs": "^5.2.2",
-    "@mikro-orm/postgresql": "^5.9.4",
+    "@mikro-orm/core": "^6.0.1",
+    "@mikro-orm/nestjs": "^5.2.3",
+    "@mikro-orm/postgresql": "^6.0.1",
     "@nestjs/apollo": "^12.0.11",
     "@apollo/server": "^4.9.5",
     "@nestjs/axios": "^3.0.1",

@@ -20,7 +20,7 @@ export class UserAttribute {
 
   @ManyToOne({
     entity: () => User,
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
   })
   user!: User;
 }

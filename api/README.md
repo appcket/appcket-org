@@ -1,3 +1,15 @@
+If you receive an error during development/debugging: Starting inspector on 127.0.0.1:9229 failed: address already in use
+
+install lsof
+
+$ apt update
+$ apt install -y lsof
+
+and kill the pid of port 9229
+
+$ lsof -i :9229
+$ kill -9 {pid}
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>

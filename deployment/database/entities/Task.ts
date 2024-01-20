@@ -14,9 +14,9 @@ export class Task extends BaseEntity {
   @Property({ length: 36, nullable: true })
   assignedTo?: string;
 
-  @ManyToOne({ entity: () => TaskStatusType, fieldName: 'task_status_type_id', onUpdateIntegrity: 'cascade', nullable: true })
+  @ManyToOne({ entity: () => TaskStatusType, fieldName: 'task_status_type_id', updateRule: 'cascade', nullable: true })
   taskStatusTypeId!: TaskStatusType;
 
-  @ManyToOne({ entity: () => Project, fieldName: 'project_id', onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => Project, fieldName: 'project_id', updateRule: 'cascade' })
   projectId!: Project;
 }

@@ -1,3 +1,5 @@
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+
 const realm = process.env.KEYCLOAK_REALM;
 const authServerUrl = `${process.env.ACCOUNTS_URL}`;
 const tokenEndpointUrl = `${authServerUrl}/realms/${realm}/protocol/openid-connect/token`;
@@ -11,7 +13,7 @@ export const config = {
   orm: {
     dbName: process.env.DB_NAME,
     schema: process.env.DB_SCHEMA,
-    type: 'postgresql',
+    driver: PostgreSqlDriver,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     host: process.env.DB_ADDR,

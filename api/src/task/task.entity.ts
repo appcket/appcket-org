@@ -10,7 +10,7 @@ export class Task extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'created_by',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   createdBy!: User;
@@ -18,7 +18,7 @@ export class Task extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'updated_by',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   updatedBy!: User;
@@ -26,7 +26,7 @@ export class Task extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'deleted_by',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   deletedBy!: User;
@@ -40,19 +40,19 @@ export class Task extends BaseEntity {
   @OneToOne({
     entity: () => User,
     fieldName: 'assigned_to',
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
     nullable: true,
   })
   assignedTo!: User;
 
   @ManyToOne({
     entity: () => TaskStatusType,
-    onUpdateIntegrity: 'cascade',
-    onDelete: 'set null',
+    updateRule: 'cascade',
+    deleteRule: 'set null',
     nullable: true,
   })
   taskStatusType!: TaskStatusType;
 
-  @ManyToOne({ entity: () => Project, onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => Project, updateRule: 'cascade' })
   project!: Project;
 }

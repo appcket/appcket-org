@@ -4,7 +4,7 @@ import { Project } from './Project';
 
 @Entity({ schema: 'appcket' })
 export class ProjectUser extends BaseEntity {
-  @ManyToOne({ entity: () => Project, fieldName: 'project_id', onUpdateIntegrity: 'cascade' })
+  @ManyToOne({ entity: () => Project, fieldName: 'project_id', updateRule: 'cascade' })
   projectId!: Project;
 
   @Property({ length: 36 })

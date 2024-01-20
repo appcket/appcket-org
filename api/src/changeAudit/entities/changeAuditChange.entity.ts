@@ -11,7 +11,7 @@ export class ChangeAuditChange {
 
   @ManyToOne({
     entity: () => ChangeAuditEntity,
-    onUpdateIntegrity: 'cascade',
+    updateRule: 'cascade',
   })
   changeAuditEntity!: ChangeAuditEntity;
 
