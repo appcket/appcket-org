@@ -43,6 +43,8 @@ export class SearchTeamsService {
       input.orderBy[0]?.direction,
       query,
       input.after,
+      false,
+      input.orderBy[0]?.innerFieldName,
     );
   }
 }

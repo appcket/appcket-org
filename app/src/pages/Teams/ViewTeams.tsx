@@ -26,6 +26,7 @@ const ViewTeams = () => {
     pageSize: PAGE_SIZE,
     cursor: '',
     orderByFieldName: 'name',
+    orderByInnerFieldName: '',
     orderByDirection: 'ASC',
     searchValue: '',
     searchFieldName: 'name',
@@ -37,7 +38,7 @@ const ViewTeams = () => {
     queryOptions.searchValue,
     queryOptions.pageSize,
     queryOptions.cursor ? queryOptions.cursor : null,
-    `[{ fieldName: "${queryOptions.orderByFieldName}", direction: ${queryOptions.orderByDirection} }]`,
+    `[{ fieldName: "${queryOptions.orderByFieldName}", innerFieldName: "${queryOptions.orderByInnerFieldName}",  direction: ${queryOptions.orderByDirection} }]`,
   );
 
   const createTeamPermission = hasPermission(
@@ -78,6 +79,16 @@ const ViewTeams = () => {
       },
     },
     {
+      field: 'organization',
+      headerName: 'Organization',
+      sortable: false,
+      filterable: false,
+      flex: 0.25,
+      renderCell: (cellValues) => {
+        return <span>{cellValues.row.node.organization.name}</span>;
+      },
+    },
+    {
       field: 'updatedAt',
       headerName: 'Updated',
       filterable: false,
@@ -102,6 +113,7 @@ const ViewTeams = () => {
       pageSize,
       cursor,
       orderByFieldName: queryOptions.orderByFieldName,
+      orderByInnerFieldName: queryOptions.orderByFieldName === 'organization' ? 'name' : '',
       orderByDirection: queryOptions.orderByDirection,
       searchValue: queryOptions.searchValue,
       searchFieldName: queryOptions.searchFieldName,
@@ -114,6 +126,7 @@ const ViewTeams = () => {
       pageSize: queryOptions.pageSize,
       cursor: queryOptions.cursor,
       orderByFieldName,
+      orderByInnerFieldName: orderByFieldName === 'organization' ? 'name' : '',
       orderByDirection,
       searchValue: queryOptions.searchValue,
       searchFieldName: queryOptions.searchFieldName,
@@ -125,6 +138,7 @@ const ViewTeams = () => {
       pageSize: queryOptions.pageSize,
       cursor: queryOptions.cursor,
       orderByFieldName: queryOptions.orderByFieldName,
+      orderByInnerFieldName: queryOptions.orderByInnerFieldName,
       orderByDirection: queryOptions.orderByDirection,
       searchValue,
       searchFieldName,

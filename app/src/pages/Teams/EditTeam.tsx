@@ -79,7 +79,7 @@ const EditTeam = () => {
 
   let editTeamComponent;
 
-  if (getTeamQuery.status === 'loading' || getTeamQuery.isFetching) {
+  if (getTeamQuery.isFetching) {
     editTeamComponent = <Loading />;
   } else if (getTeamQuery.status === 'error' && getTeamQuery.error instanceof Error) {
     editTeamComponent = <Typography paragraph>Error: {getTeamQuery.error.message}</Typography>;
@@ -96,7 +96,7 @@ const EditTeam = () => {
         {
           onSuccess: (data) => {
             const updatedTeam = data as Team;
-            enqueueSnackbar(`Updated team successfully: ${updatedTeam.name}`, {
+            enqueueSnackbar(`Team updated: ${updatedTeam.name}`, {
               variant: 'success',
             });
             navigate('/teams');

@@ -24,7 +24,7 @@ export class PaginationService {
     let str: string;
 
     if (val instanceof Date) {
-      str = val.getTime().toString();
+      str = new Date(val).toISOString();
     } else if (typeof val === 'number' || typeof val === 'bigint') {
       str = val.toString();
     } else {
@@ -197,25 +197,23 @@ export class PaginationService {
       const decoded = this.decodeCursor(after, afterIsNum);
       const oppositeOd = getOppositeOrder(order);
       const tempQb = qb.clone();
-      tempQb.andWhere(PaginationService.getFilters(cursor, decoded, oppositeOd, innerCursor));
+      const filters = PaginationService.getFilters(cursor, decoded, oppositeOd, innerCursor);
+      tempQb.andWhere(filters);
       prevCount = await tempQb.count(strCursor, true);
 
       const normalOd = getQueryOrder(order);
-      qb.andWhere(PaginationService.getFilters(cursor, decoded, normalOd, innerCursor));
+      const filters2 = PaginationService.getFilters(cursor, decoded, normalOd, innerCursor);
+      qb.andWhere(filters2);
     }
 
-    const cqb = qb.clone();
-    const [count, entities]: [number, T[]] = await this.throwInternalError(
-      Promise.all([
-        cqb.count(strCursor, true),
-        qb
-          .orderBy(PaginationService.getOrderBy(cursor, order, innerCursor))
-          .limit(first)
-          .getResult(),
-      ]),
-    );
+    const orderBy = PaginationService.getOrderBy(cursor, order, innerCursor);
+
+    qb.orderBy(orderBy).limit(first);
+
+    const [results, count] = await qb.getResultAndCount();
+
     const totalCount = count + prevCount;
 
-    return this.paginate(entities, count, prevCount, totalCount, cursor, first, innerCursor);
+    return this.paginate(results, count, prevCount, totalCount, cursor, first, innerCursor);
   }
 }

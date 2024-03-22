@@ -107,7 +107,7 @@ const EntityHistory = ({ entityId, entityType }: Props) => {
 
   let content;
 
-  if (status === 'loading' || isFetching) {
+  if (isFetching) {
     content = <Loading />;
   } else if (status === 'error' && error instanceof Error) {
     content = <Typography paragraph>Error: {error.message}</Typography>;

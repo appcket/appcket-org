@@ -56,7 +56,7 @@ const CreateTask = () => {
   let assignedToFormField;
   let createTaskComponent;
 
-  if (getProjectQuery.status === 'loading' || getProjectQuery.isFetching) {
+  if (getProjectQuery.isFetching) {
     createTaskComponent = <Loading />;
   } else if (getProjectQuery.status === 'error' && getProjectQuery.error instanceof Error) {
     createTaskComponent = <Typography paragraph>Error: {getProjectQuery.error.message}</Typography>;
@@ -97,7 +97,7 @@ const CreateTask = () => {
         {
           onSuccess: (data) => {
             const createdTask = data as Task;
-            enqueueSnackbar(`Created Task successfully: ${createdTask.name}`, {
+            enqueueSnackbar(`Task created: ${createdTask.name}`, {
               variant: 'success',
             });
             navigate(`/tasks/${createdTask.id}`);

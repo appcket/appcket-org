@@ -55,7 +55,7 @@ const EditTask = () => {
   let assignedToFormField;
   let editTaskComponent;
 
-  if (getTaskQuery.status === 'loading' || getTaskQuery.isFetching) {
+  if (getTaskQuery.isFetching) {
     editTaskComponent = <Loading />;
   } else if (getTaskQuery.status === 'error' && getTaskQuery.error instanceof Error) {
     editTaskComponent = <Typography paragraph>Error: {getTaskQuery.error.message}</Typography>;
@@ -110,7 +110,7 @@ const EditTask = () => {
         {
           onSuccess: (data) => {
             const updatedTask = data as Task;
-            enqueueSnackbar(`Updated Task successfully: ${updatedTask.name}`, {
+            enqueueSnackbar(`Task updated: ${updatedTask.name}`, {
               variant: 'success',
             });
             navigate(`/tasks/${updatedTask.id}`);

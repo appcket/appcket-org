@@ -75,7 +75,7 @@ const CreateTeam = () => {
       {
         onSuccess: (data) => {
           const createdTeam = data as Team;
-          enqueueSnackbar(`Created team successfully: ${createdTeam.name}`, {
+          enqueueSnackbar(`Team created: ${createdTeam.name}`, {
             variant: 'success',
           });
           navigate('/teams');

@@ -76,7 +76,7 @@ const CreateProject = () => {
       {
         onSuccess: (data) => {
           const createdProject = data as Project;
-          enqueueSnackbar(`Created project successfully: ${createdProject.name}`, {
+          enqueueSnackbar(`Project created: ${createdProject.name}`, {
             variant: 'success',
           });
           navigate('/projects');

@@ -21,7 +21,7 @@ const PageHeader = ({ title, subTitle, children }: Props) => {
       }}
     >
       <Grid container spacing={2} className="pt-16">
-        <Grid xs={7} sm={8}>
+        <Grid xs={12} sm={8}>
           <Slide direction="right" in={true} container={containerRef.current}>
             <Box>
               <Typography variant="h1" component="h1" gutterBottom>

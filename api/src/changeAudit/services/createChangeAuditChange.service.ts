@@ -55,7 +55,7 @@ export class CreateChangeAuditChangeService {
     // this entity has no changes (user just sent in the same object as before), so do not need to save anything
     if (
       diffResult.changes.length === 0 &&
-      diffResult.diffs.length === 0 &&
+      diffResult.diffs?.length === 0 &&
       data.operationType === ChangeAuditOperationTypes.Update
     ) {
       return;

@@ -78,6 +78,16 @@ const ViewProjects = () => {
       },
     },
     {
+      field: 'organization',
+      headerName: 'Organization',
+      sortable: false,
+      filterable: false,
+      flex: 0.25,
+      renderCell: (cellValues) => {
+        return <span>{cellValues.row.node.organization.name}</span>;
+      },
+    },
+    {
       field: 'updatedAt',
       headerName: 'Updated',
       filterable: false,

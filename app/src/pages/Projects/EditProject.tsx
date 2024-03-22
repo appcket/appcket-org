@@ -87,7 +87,7 @@ const EditProject = () => {
 
   let editProjectComponent;
 
-  if (getProjectQuery.status === 'loading' || getProjectQuery.isFetching) {
+  if (getProjectQuery.isFetching) {
     editProjectComponent = <Loading />;
   } else if (getProjectQuery.status === 'error' && getProjectQuery.error instanceof Error) {
     editProjectComponent = (
@@ -108,7 +108,7 @@ const EditProject = () => {
         {
           onSuccess: (data) => {
             const updatedProject = data as Project;
-            enqueueSnackbar(`Updated project successfully: ${updatedProject.name}`, {
+            enqueueSnackbar(`Project updated: ${updatedProject.name}`, {
               variant: 'success',
             });
             navigate('/projects');
