@@ -6,8 +6,8 @@ export class UserAttributeDto {
   id!: string;
 
   @Field()
-  name!: string;
+  name?: string;
 
   @Field()
-  value!: string;
+  value?: string;
 }

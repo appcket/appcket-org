@@ -1,11 +1,11 @@
-FROM quay.io/keycloak/keycloak:23.0.6 as builder
+FROM quay.io/keycloak/keycloak:24.0.3 as builder
 
 ENV KC_METRICS_ENABLED=true
 ENV KC_FEATURES=authorization,account3,account-api,client-policies,impersonation,token-exchange
 ENV KC_DB=postgres
 RUN /opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:23.0.6
+FROM quay.io/keycloak/keycloak:24.0.3
 #ADD themes/appcket /opt/jboss/keycloak/themes/appcket
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 WORKDIR /opt/keycloak

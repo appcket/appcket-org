@@ -1,5 +1,7 @@
 import fs from 'fs';
 import { Options } from '@mikro-orm/core';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { SeedManager } from '@mikro-orm/seeder';
 
 import { ChangeAuditApp } from './entities/ChangeAuditApp';
 import { ChangeAuditChange } from './entities/ChangeAuditChange';
@@ -31,12 +33,13 @@ const config: Options = {
   ],
   dbName: 'appcket',
   schema: 'appcket',
-  type: 'postgresql',
+  driver: PostgreSqlDriver,
   user: 'dbuser',
   password: 'Ch@ng3To@StrongP@ssw0rd',
   host: 'localhost',
   port: 5432,
   debug: true,
+  extensions: [SeedManager],
   seeder: {
     pathTs: './seeders', // path to the folder with seeders
     defaultSeeder: 'DatabaseSeeder', // default seeder class name
