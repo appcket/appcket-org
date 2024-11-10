@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
@@ -46,7 +46,7 @@ const Team = () => {
   } else {
     teamComponent = <Typography paragraph>Unable to view Team</Typography>;
 
-    let updateTeamButton = <EditButton variant="outlined" isDisabled={true} />;
+    let updateTeamButton = <EditButton linkTo="#" variant="outlined" isDisabled={true} />;
 
     if (updateTeamPermission) {
       updateTeamButton = <EditButton variant="contained" isDisabled={false} linkTo="edit" />;
@@ -73,9 +73,9 @@ const Team = () => {
     teamComponent = (
       <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Grid container justifyContent="flex-end">
-          <Grid item>{updateTeamButton}</Grid>
+          <Grid>{updateTeamButton}</Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Typography variant="body1">Organization: {data?.organization.name}</Typography>
           <Typography variant="body1">Description: {data?.description}</Typography>
           {usersComponent}

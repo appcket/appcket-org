@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
@@ -120,14 +120,14 @@ const EditProject = () => {
     editProjectComponent = (
       <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Grid container justifyContent="flex-end">
-          <Grid item>
+          <Grid>
             <CancelButton linkTo={`../${projectId}`} />
           </Grid>
         </Grid>
         <Typography variant="body1" sx={{ mb: 3 }}>
           Organization: {getProjectQuery.data.getProject.organization.name}
         </Typography>
-        <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
+        <Grid size={{ xs: 24, sm: 12 }} sx={{ mb: 2 }}>
           <FormTextField
             name="name"
             control={control}
@@ -157,7 +157,7 @@ const EditProject = () => {
         />
 
         <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
-          <Grid item>
+          <Grid>
             <Button
               onClick={() => {
                 reset();

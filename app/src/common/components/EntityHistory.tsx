@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Grid2';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
@@ -142,7 +142,7 @@ const EntityHistory = ({ entityId, entityType }: Props) => {
 
   let component = (
     <Grid container spacing={2}>
-      <Grid xs={12}>
+      <Grid size={{ xs: 12 }}>
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -158,11 +158,6 @@ const EntityHistory = ({ entityId, entityType }: Props) => {
   );
 
   return <div>{component}</div>;
-};
-
-EntityHistory.defaultProps = {
-  entityId: '',
-  entityType: 'entity',
 };
 
 EntityHistory.propTypes = {

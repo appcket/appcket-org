@@ -26,12 +26,6 @@ const CancelButton = ({ variant = 'contained', linkTo, isDisabled }: Props) => {
   );
 };
 
-CancelButton.defaultProps = {
-  variant: 'contained',
-  linkTo: '',
-  isDisabled: false,
-};
-
 CancelButton.propTypes = {
   variant: PropTypes.string,
   linkTo: PropTypes.string,

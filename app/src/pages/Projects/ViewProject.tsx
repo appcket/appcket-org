@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
@@ -48,7 +48,7 @@ const Project = () => {
   } else {
     projectComponent = <Typography paragraph>Unable to view Project</Typography>;
 
-    let updateProjectButton = <EditButton variant="outlined" isDisabled={true} />;
+    let updateProjectButton = <EditButton linkTo="#" variant="outlined" isDisabled={true} />;
 
     if (updateProjectPermission) {
       updateProjectButton = <EditButton linkTo="edit" />;
@@ -82,9 +82,9 @@ const Project = () => {
 
         <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
           <Grid container justifyContent="flex-end">
-            <Grid item>{updateProjectButton}</Grid>
+            <Grid>{updateProjectButton}</Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Typography variant="body1">
               Organization: {data?.getProject.organization.name}
             </Typography>

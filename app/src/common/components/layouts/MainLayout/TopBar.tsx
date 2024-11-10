@@ -68,68 +68,66 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
       elevation={0}
       sx={{ backdropFilter: 'blur(8px)' }}
     >
-      <Container maxWidth={false}>
-        <Toolbar disableGutters>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleSideBarOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+      <Toolbar disableGutters>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleSideBarOpen}
+          edge="start"
+          sx={{ ml: 1, mr: 2, ...(open && { display: 'none' }) }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Box sx={{ flexGrow: 1, display: { xs: 'flex' } }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: 'flex' } }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex' } }}>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: 'flex' } }}
-            >
-              {/* Top Toolbar */}
-            </Typography>
-          </Box>
-          <Box sx={{ mr: 2 }}>
-            <ThemeColorModeToggler />
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="User Settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={displayUser(data)} src="/images/avatars/avatar_1.png" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem key="role">
-                <FaUserShield title="Role" />
-                <Typography sx={{ ml: '5px' }} textAlign="center">
-                  {data?.role}
-                </Typography>
-              </MenuItem>
-              <MenuItem key="logout" onClick={() => auth.signoutRedirect()}>
-                <LogoutOutlined />
-                <Typography sx={{ ml: '5px' }} textAlign="center">
-                  Logout
-                </Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
+            {/* Top Toolbar */}
+          </Typography>
+        </Box>
+        <Box sx={{ mr: 2 }}>
+          <ThemeColorModeToggler />
+        </Box>
+        <Box sx={{ flexGrow: 0 }}>
+          <Tooltip title="User Settings">
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 2 }}>
+              <Avatar alt={displayUser(data)} src="/images/avatars/avatar_1.png" />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            sx={{ mt: '45px' }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            <MenuItem key="role">
+              <FaUserShield title="Role" />
+              <Typography sx={{ ml: '5px' }} textAlign="center">
+                {data?.role}
+              </Typography>
+            </MenuItem>
+            <MenuItem key="logout" onClick={() => auth.signoutRedirect()}>
+              <LogoutOutlined />
+              <Typography sx={{ ml: '5px' }} textAlign="center">
+                Logout
+              </Typography>
+            </MenuItem>
+          </Menu>
+        </Box>
+      </Toolbar>
     </AppBar>
   );
 };

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -18,7 +18,7 @@ const Home = () => {
       <Container maxWidth={false}>
         <Slide direction="up" in={true} container={containerRef.current}>
           <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Card>
                 <CardHeader title="Home Card" />
                 <CardContent>

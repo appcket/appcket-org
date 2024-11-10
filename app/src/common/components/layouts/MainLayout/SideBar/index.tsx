@@ -144,13 +144,4 @@ SideBar.propTypes = {
   lessThanSmall: PropTypes.bool,
 };
 
-SideBar.defaultProps = {
-  handleSideBarClose: () => {
-    // do nothing
-  },
-  open: false,
-  drawerWidth: 260,
-  lessThanSmall: false,
-};
-
 export default SideBar;

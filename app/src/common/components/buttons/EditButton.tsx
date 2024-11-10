@@ -27,13 +27,6 @@ const EditButton = ({ entityType, variant = 'contained', linkTo, isDisabled }: P
   );
 };
 
-EditButton.defaultProps = {
-  entityType: '',
-  variant: 'contained',
-  linkTo: '',
-  isDisabled: false,
-};
-
 EditButton.propTypes = {
   entityType: PropTypes.string,
   variant: PropTypes.string,

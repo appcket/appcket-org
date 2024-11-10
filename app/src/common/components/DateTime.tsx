@@ -9,10 +9,6 @@ const DateTime = ({ dateTimeString }: Props) => {
   return formatDatetime(dateTimeString);
 };
 
-DateTime.defaultProps = {
-  dateTimeString: new Date().toString(),
-};
-
 DateTime.propTypes = {
   dateTimeString: PropTypes.string,
 };

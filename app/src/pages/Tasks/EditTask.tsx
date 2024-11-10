@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
@@ -78,6 +78,7 @@ const EditTask = () => {
     const projectUserOptions = getTaskQuery.data.getTask.project.users.map((user) => {
       return { id: user.id, label: `${user.firstName} ${user.lastName ? user.lastName : ''}` };
     });
+
     assignedToFormField = (
       // TODO: validate that you can't remove a user from a project if that user is currently assigned to any of the project's tasks
       // TODO: potentially use an autocomplete of Project's users here instead of a select menu
@@ -122,7 +123,7 @@ const EditTask = () => {
     editTaskComponent = (
       <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Grid container justifyContent="flex-end">
-          <Grid item>
+          <Grid>
             <CancelButton linkTo={`../${taskId}`} />
           </Grid>
         </Grid>
@@ -132,7 +133,7 @@ const EditTask = () => {
             {getTaskQuery.data.getTask.project.name}
           </Button>
         </Typography>
-        <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
+        <Grid size={{ xs: 24, sm: 12 }} sx={{ mb: 2 }}>
           <FormTextField
             name="name"
             control={control}
@@ -162,7 +163,7 @@ const EditTask = () => {
         {assignedToFormField}
 
         <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
-          <Grid item>
+          <Grid>
             <Button
               onClick={() => {
                 reset();

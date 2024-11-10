@@ -1,12 +1,12 @@
 import { ReactNode, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Grid2';
 import Slide from '@mui/material/Slide';
 import PropTypes from 'prop-types';
 
 type Props = {
-  title: string;
+  title?: string;
   subTitle?: string;
   children?: ReactNode;
 };
@@ -21,7 +21,7 @@ const PageHeader = ({ title, subTitle, children }: Props) => {
       }}
     >
       <Grid container spacing={2} className="pt-16">
-        <Grid xs={12} sm={8}>
+        <Grid size={{ xs: 12, sm: 8 }}>
           <Slide direction="right" in={true} container={containerRef.current}>
             <Box>
               <Typography variant="h1" component="h1" gutterBottom>
@@ -31,7 +31,7 @@ const PageHeader = ({ title, subTitle, children }: Props) => {
             </Box>
           </Slide>
         </Grid>
-        <Grid xs={4} mt={2}>
+        <Grid size={{ xs: 4 }} mt={2}>
           <Slide direction="left" in={true} container={containerRef.current}>
             <Box>{children}</Box>
           </Slide>
@@ -39,11 +39,6 @@ const PageHeader = ({ title, subTitle, children }: Props) => {
       </Grid>
     </Box>
   );
-};
-
-PageHeader.defaultProps = {
-  title: '',
-  subTitle: '',
 };
 
 PageHeader.propTypes = {

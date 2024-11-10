@@ -3,22 +3,20 @@ import {
   DataGrid,
   GridRowsProp,
   GridColDef,
-  GridValueGetterParams,
   GRID_CHECKBOX_SELECTION_COL_DEF,
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 
 import { useSearchUsers } from 'src/common/api/user';
 import { useStore } from 'src/common/store';
+import User from '../models/User';
 
 type Props = {
   resourceType: string;
   organizationId: string;
 };
 
-function getFullName(params: GridValueGetterParams) {
-  return `${params.row.firstName || ''} ${params.row.lastName || ''}`;
-}
+const getFullName = (value: string, row: User) => `${row.firstName || ''} ${row.lastName || ''}`;
 
 const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
   const searchUsersQuery = useSearchUsers(organizationId);
@@ -66,10 +64,6 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
   } else {
     return <div>Loading users...</div>;
   }
-};
-
-ResourceUsersGrid.defaultProps = {
-  organizationId: '',
 };
 
 ResourceUsersGrid.propTypes = {

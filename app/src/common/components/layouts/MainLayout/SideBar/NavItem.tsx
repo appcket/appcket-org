@@ -55,12 +55,6 @@ const NavItem = ({ href, icon: Icon, title }: Props) => {
   );
 };
 
-NavItem.defaultProps = {
-  href: '',
-  icon: {},
-  title: '',
-};
-
 NavItem.propTypes = {
   href: PropTypes.string,
   icon: PropTypes.elementType,

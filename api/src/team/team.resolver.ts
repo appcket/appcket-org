@@ -86,7 +86,7 @@ export class TeamResolver {
         email: teamUser.user.email,
         firstName: teamUser.user.firstName,
         lastName: teamUser.user.lastName,
-        attributes: teamUser.user.attributes,
+        // attributes: teamUser.user.attributes,
         role: teamUser.user.role,
       })),
     };

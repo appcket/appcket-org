@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
@@ -120,7 +120,7 @@ const CreateProject = () => {
 
   const createProjectComponent = (
     <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
-      <Grid item xs={24} sm={12} sx={{ mb: 2 }}>
+      <Grid size={{ xs: 24, sm: 12 }} sx={{ mb: 2 }}>
         {organizationSelectMenu}
 
         <FormTextField
@@ -149,7 +149,7 @@ const CreateProject = () => {
       {watchOrganizationId && organizationUsersGrid}
 
       <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
-        <Grid item>
+        <Grid>
           <Button
             onClick={() => {
               reset();

@@ -83,7 +83,7 @@ export class ProjectResolver {
         email: projectUser.user.email,
         firstName: projectUser.user.firstName,
         lastName: projectUser.user.lastName,
-        attributes: projectUser.user.attributes,
+        // attributes: projectUser.user.attributes,
         role: projectUser.user.role,
       })),
     };

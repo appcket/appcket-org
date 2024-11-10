@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
@@ -44,7 +44,7 @@ const Task = () => {
   } else {
     taskComponent = <Typography paragraph>Unable to view Task</Typography>;
 
-    let updateTaskButton = <EditButton variant="outlined" isDisabled={true} />;
+    let updateTaskButton = <EditButton linkTo="#" variant="outlined" isDisabled={true} />;
 
     if (updateTaskPermission) {
       updateTaskButton = <EditButton variant="contained" isDisabled={false} linkTo="edit" />;
@@ -59,9 +59,9 @@ const Task = () => {
     taskComponent = (
       <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Grid container justifyContent="flex-end">
-          <Grid item>{updateTaskButton}</Grid>
+          <Grid>{updateTaskButton}</Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Typography variant="body1" sx={{ mb: 3 }}>
             Project:{' '}
             <Button component={Link} to={`/projects/${data?.getTask?.project.id}`}>

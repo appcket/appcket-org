@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink, useParams } from 'react-router-dom';
 import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Button from '@mui/material/Button';
 import { Card } from '@mui/material';
 

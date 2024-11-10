@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Fade from '@mui/material/Fade';
 import Link from '@mui/material/Link';
 
@@ -19,7 +19,7 @@ const About = () => {
           }}
         >
           <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Typography paragraph>
                 This is a sample React application which is part of the{' '}
                 <Link href="https://github.com/appcket/appcket-org">Appcket starter kit</Link>.
