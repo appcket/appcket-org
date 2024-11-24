@@ -6,18 +6,19 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
+import { useGetTeam } from 'src/common/api/team';
 import { useUserInfo } from 'src/common/api/user';
+import EditButton from 'src/common/components/buttons/EditButton';
+import EntityHistory from 'src/common/components/EntityHistory';
 import Loading from 'src/common/components/Loading';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import { useGetTeam } from 'src/common/api/team';
 import hasPermission from 'src/common/utils/hasPermission';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 import Resources from 'src/common/enums/resources.enum';
 import Permission from 'src/common/models/Permission';
-import EditButton from 'src/common/components/buttons/EditButton';
 import { displayUser } from 'src/common/utils/general';
-import EntityHistory from 'src/common/components/EntityHistory';
 
 const Team = () => {
   const params = useParams();
@@ -41,10 +42,10 @@ const Team = () => {
 
   if (isLoading || isFetching) {
     teamComponent = <Loading />;
-  } else if (status === 'error' && error instanceof Error) {
-    teamComponent = <Typography paragraph>Error: {error.message}</Typography>;
+  } else if (status === QueryStatuses.Error && error instanceof Error) {
+    teamComponent = <Typography component="p">Error: {error.message}</Typography>;
   } else {
-    teamComponent = <Typography paragraph>Unable to view Team</Typography>;
+    teamComponent = <Typography component="p">Unable to view Team</Typography>;
 
     let updateTeamButton = <EditButton linkTo="#" variant="outlined" isDisabled={true} />;
 

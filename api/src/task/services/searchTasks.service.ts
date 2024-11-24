@@ -4,14 +4,10 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { Task } from 'src/task/task.entity';
 import { SearchTasksInput } from 'src/task/dtos/searchTasks.input';
 import { IPaginated } from 'src/common/models/paginated.interface';
-import { PaginationService } from 'src/common/services/pagination.service';
 
 @Injectable()
 export class SearchTasksService {
-  constructor(
-    private readonly em: EntityManager,
-    private readonly paginationService: PaginationService,
-  ) {}
+  constructor(private readonly em: EntityManager) {}
 
   public async searchTasks(input: SearchTasksInput, userId: string): Promise<IPaginated<Task>> {
     const where = input.searchString
@@ -24,24 +20,32 @@ export class SearchTasksService {
           project: { $in: input.projectIds },
         };
 
-    const query = this.em
-      .createQueryBuilder(Task, 't')
-      .select(['*'])
-      .leftJoinAndSelect('t.createdBy', 'cb', null, ['username', 'email', 'firstName', 'lastName'])
-      .leftJoinAndSelect('t.project', 'p')
-      .leftJoinAndSelect('t.taskStatusType', 'tst')
-      .leftJoinAndSelect('t.assignedTo', 'at', null, ['username', 'email', 'firstName', 'lastName'])
-      .where(where);
+    const currentCursor = await this.em.findByCursor(Task, where, {
+      populate: ['project', 'createdBy', 'updatedBy', 'taskStatusType', 'assignedTo'],
+      first: input.first,
+      after: input.after,
+      orderBy: {
+        [input.orderBy[0]?.fieldName]: input.orderBy[0]?.direction.toLocaleLowerCase(),
+      },
+    });
 
-    return await this.paginationService.queryBuilderPagination(
-      'task',
-      input.orderBy[0]?.fieldName,
-      input.first,
-      input.orderBy[0]?.direction,
-      query,
-      input.after,
-      false,
-      input.orderBy[0]?.innerFieldName,
-    );
+    const paginatedTasks: IPaginated<Task> = {
+      totalCount: currentCursor.totalCount,
+      pageInfo: {
+        endCursor: currentCursor.endCursor,
+        hasNextPage: currentCursor.hasNextPage,
+        hasPreviousPage: currentCursor.hasPrevPage,
+        startCursor: currentCursor.startCursor,
+      },
+      edges: [],
+    };
+
+    currentCursor.items.forEach((item) => {
+      paginatedTasks.edges.push({
+        node: item,
+      });
+    });
+
+    return paginatedTasks;
   }
 }

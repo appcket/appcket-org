@@ -1,21 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
+import { Card } from '@mui/material';
 
+import { useUserInfo } from 'src/common/api/user';
+import { useSearchTeams } from 'src/common/api/team';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import { useSearchTeams } from 'src/common/api/team';
-import hasPermission from 'src/common/utils/hasPermission';
+import PaginatedGrid from 'src/common/components/PaginatedGrid';
 import { TeamPermission } from 'src/common/enums/permissions.enum';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 import Resources from 'src/common/enums/resources.enum';
 import Permission from 'src/common/models/Permission';
+import hasPermission from 'src/common/utils/hasPermission';
 import { formatDatetime } from 'src/common/utils/general';
-import PaginatedGrid from 'src/common/components/PaginatedGrid';
-import { Card } from '@mui/material';
-import { useUserInfo } from 'src/common/api/user';
 
 const PAGE_SIZE = 10;
 
@@ -32,6 +33,16 @@ const ViewTeams = () => {
     searchFieldName: 'name',
   });
 
+  const [paginationData, setPaginationData] = useState({
+    totalCount: 0,
+    pageInfo: {
+      endCursor: '',
+      startCursor: '',
+      hasPreviousPage: false,
+      hasNextPage: false,
+    },
+  });
+
   const [currentPage, setCurrentPage] = useState(0);
 
   const { status, data } = useSearchTeams(
@@ -40,6 +51,25 @@ const ViewTeams = () => {
     queryOptions.cursor ? queryOptions.cursor : null,
     `[{ fieldName: "${queryOptions.orderByFieldName}", innerFieldName: "${queryOptions.orderByInnerFieldName}",  direction: ${queryOptions.orderByDirection} }]`,
   );
+
+  useEffect(() => {
+    if (status !== QueryStatuses.Pending) {
+      const totalCount = data?.totalCount ? data.totalCount : 0;
+      const pageInfo = data?.pageInfo
+        ? data.pageInfo
+        : {
+            endCursor: '',
+            startCursor: '',
+            hasPreviousPage: false,
+            hasNextPage: false,
+          };
+
+      setPaginationData({
+        totalCount,
+        pageInfo,
+      });
+    }
+  }, [data]);
 
   const createTeamPermission = hasPermission(
     userInfo.data?.permissions as Permission[],
@@ -147,23 +177,13 @@ const ViewTeams = () => {
 
   const rows: GridRowsProp = data?.edges ? data.edges : [];
 
-  const totalCount = data?.totalCount ? data.totalCount : 0;
-  const pageInfo = data?.pageInfo
-    ? data.pageInfo
-    : {
-        endCursor: '',
-        startCursor: '',
-        hasPreviousPage: false,
-        hasNextPage: false,
-      };
-
   const teamsGrid = (
     <PaginatedGrid
       status={status}
       rows={rows}
       columns={columns}
-      totalCount={totalCount}
-      pageInfo={pageInfo}
+      totalCount={paginationData.totalCount}
+      pageInfo={paginationData.pageInfo}
       currentPage={currentPage}
       pageSize={queryOptions.pageSize}
       onPaginate={handlePaginate}

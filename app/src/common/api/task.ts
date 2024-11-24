@@ -44,8 +44,6 @@ export const useSearchTasks = (
           after: ${after},
           orderBy: ${orderBy}
         }) {
-          currentCount
-          previousCount
           totalCount
           pageInfo {
             endCursor
@@ -54,7 +52,6 @@ export const useSearchTasks = (
             hasNextPage
           }
           edges {
-            cursor
             node {
               id
               name

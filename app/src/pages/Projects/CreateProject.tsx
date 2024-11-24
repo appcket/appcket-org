@@ -9,10 +9,11 @@ import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
 import { useUserInfo } from 'src/common/api/user';
+import { useCreateProject } from 'src/common/api/project';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 import CreateProjectInput from 'src/common/models/inputs/CreateProjectInput';
-import { useCreateProject } from 'src/common/api/project';
 import Project from 'src/common/models/Project';
 import Organization from 'src/common/models/Organization';
 import User from 'src/common/models/User';
@@ -91,8 +92,8 @@ const CreateProject = () => {
   if (userInfo.isLoading || userInfo.isFetching) {
     organizationSelectMenu = <Loading />;
     organizationUsersGrid = <Loading />;
-  } else if (userInfo.status === 'error' && userInfo.error instanceof Error) {
-    organizationSelectMenu = <Typography paragraph>Error: {userInfo.error.message}</Typography>;
+  } else if (userInfo.status === QueryStatuses.Error && userInfo.error instanceof Error) {
+    organizationSelectMenu = <Typography component="p">Error: {userInfo.error.message}</Typography>;
   } else if (userInfo.isSuccess && userInfo.data.organizations) {
     const options = resourcesToSelectMenuOptions<Organization>(
       userInfo.data.organizations,

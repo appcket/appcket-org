@@ -4,18 +4,19 @@ import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
+import { useGetTask } from 'src/common/api/task';
 import { useUserInfo } from 'src/common/api/user';
+import EditButton from 'src/common/components/buttons/EditButton';
+import EntityHistory from 'src/common/components/EntityHistory';
 import Loading from 'src/common/components/Loading';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import { useGetTask } from 'src/common/api/task';
-import hasPermission from 'src/common/utils/hasPermission';
 import { TaskPermission } from 'src/common/enums/permissions.enum';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 import Resources from 'src/common/enums/resources.enum';
 import Permission from 'src/common/models/Permission';
-import EditButton from 'src/common/components/buttons/EditButton';
 import { displayUser } from 'src/common/utils/general';
-import EntityHistory from 'src/common/components/EntityHistory';
+import hasPermission from 'src/common/utils/hasPermission';
 
 const Task = () => {
   const params = useParams();
@@ -39,10 +40,10 @@ const Task = () => {
 
   if (isLoading || isFetching) {
     taskComponent = <Loading />;
-  } else if (status === 'error' && error instanceof Error) {
-    taskComponent = <Typography paragraph>Error: {error.message}</Typography>;
+  } else if (status === QueryStatuses.Error && error instanceof Error) {
+    taskComponent = <Typography component="p">Error: {error.message}</Typography>;
   } else {
-    taskComponent = <Typography paragraph>Unable to view Task</Typography>;
+    taskComponent = <Typography component="p">Unable to view Task</Typography>;
 
     let updateTaskButton = <EditButton linkTo="#" variant="outlined" isDisabled={true} />;
 

@@ -20,14 +20,14 @@ const About = () => {
         >
           <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
             <Grid size={{ xs: 12 }}>
-              <Typography paragraph>
+              <Typography component="p">
                 This is a sample React application which is part of the{' '}
                 <Link href="https://github.com/appcket/appcket-org">Appcket starter kit</Link>.
                 It&apos;s meant to give developers a foundation to start building a web app while
                 serving as an example of how to authenticate and authorize with Keycloak and access
                 a protected GraphQL API.
               </Typography>
-              <Typography paragraph>
+              <Typography component="p">
                 Check out the <Link href="https://appcket.org">Appcket Docs</Link> for more
                 information.
               </Typography>

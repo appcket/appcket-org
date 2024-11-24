@@ -23,6 +23,7 @@ import DateTime from 'src/common/components/DateTime';
 import { useGetEntityHistory } from 'src/common/api/entityHistory';
 import { IEntityHistoryChange } from 'src/common/models/EntityHistory';
 import Resources from 'src/common/enums/resources.enum';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 import { isJson } from 'src/common/utils/general';
 
 type Props = {
@@ -109,8 +110,8 @@ const EntityHistory = ({ entityId, entityType }: Props) => {
 
   if (isFetching) {
     content = <Loading />;
-  } else if (status === 'error' && error instanceof Error) {
-    content = <Typography paragraph>Error: {error.message}</Typography>;
+  } else if (status === QueryStatuses.Error && error instanceof Error) {
+    content = <Typography component="p">Error: {error.message}</Typography>;
   } else {
     if (data?.changes?.length === 0) {
       content = <Typography variant="subtitle2">No history yet</Typography>;

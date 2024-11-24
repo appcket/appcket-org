@@ -8,6 +8,7 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 import PageInfo from 'src/common/models/responses/PageInfo';
 
 type Props = {
@@ -98,7 +99,7 @@ const PaginatedGrid = ({
     onFilter(searchValue, searchFieldName);
   }, []);
 
-  if (status !== 'pending') {
+  if (status !== QueryStatuses.Pending) {
     loading = false;
   }
 
@@ -118,7 +119,6 @@ const PaginatedGrid = ({
       filterMode="server"
       onFilterModelChange={handleFilterChange}
       columns={columns}
-      autoHeight={true}
     />
   );
 };

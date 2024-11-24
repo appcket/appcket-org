@@ -7,14 +7,14 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
+import { useGetProject } from 'src/common/api/project';
 import { useUserInfo } from 'src/common/api/user';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import { useGetProject } from 'src/common/api/project';
 import hasPermission from 'src/common/utils/hasPermission';
 import { ProjectPermission } from 'src/common/enums/permissions.enum';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 import Resources from 'src/common/enums/resources.enum';
-import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
 import Permission from 'src/common/models/Permission';
 import EditButton from 'src/common/components/buttons/EditButton';
 import Loading from 'src/common/components/Loading';
@@ -43,10 +43,10 @@ const Project = () => {
 
   if (isLoading || isFetching) {
     projectComponent = <Loading />;
-  } else if (status === 'error' && error instanceof Error) {
-    projectComponent = <Typography paragraph>Error: {error.message}</Typography>;
+  } else if (status === QueryStatuses.Error && error instanceof Error) {
+    projectComponent = <Typography component="p">Error: {error.message}</Typography>;
   } else {
-    projectComponent = <Typography paragraph>Unable to view Project</Typography>;
+    projectComponent = <Typography component="p">Unable to view Project</Typography>;
 
     let updateProjectButton = <EditButton linkTo="#" variant="outlined" isDisabled={true} />;
 

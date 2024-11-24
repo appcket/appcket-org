@@ -175,12 +175,6 @@ const ViewProjectTasks = () => {
         hasNextPage: false,
       };
 
-  // tasksComponent = (
-  //   <div style={{ height: 300, width: '100%' }}>
-  //     <DataGrid disableRowSelectionOnClick rows={rows} columns={columns} />
-  //   </div>
-  // );
-
   const tasksGrid = (
     <PaginatedGrid
       status={status}

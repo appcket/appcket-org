@@ -8,17 +8,18 @@ import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
-import Page from 'src/common/components/Page';
-import PageHeader from 'src/common/components/PageHeader';
-import UpdateTeamInput from 'src/common/models/inputs/UpdateTeamInput';
 import { useGetTeam, useUpdateTeam } from 'src/common/api/team';
-import Team from 'src/common/models/Team';
-import User from 'src/common/models/User';
-import { FormTextField } from 'src/common/components/form/FormTextField';
-import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
-import { useStore } from 'src/common/store';
 import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
+import { FormTextField } from 'src/common/components/form/FormTextField';
+import Page from 'src/common/components/Page';
+import PageHeader from 'src/common/components/PageHeader';
+import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import UpdateTeamInput from 'src/common/models/inputs/UpdateTeamInput';
+import Team from 'src/common/models/Team';
+import User from 'src/common/models/User';
+import { useStore } from 'src/common/store';
 
 const EditTeam = () => {
   const params = useParams();
@@ -81,10 +82,10 @@ const EditTeam = () => {
 
   if (getTeamQuery.isFetching) {
     editTeamComponent = <Loading />;
-  } else if (getTeamQuery.status === 'error' && getTeamQuery.error instanceof Error) {
-    editTeamComponent = <Typography paragraph>Error: {getTeamQuery.error.message}</Typography>;
+  } else if (getTeamQuery.status === QueryStatuses.Error && getTeamQuery.error instanceof Error) {
+    editTeamComponent = <Typography component="p">Error: {getTeamQuery.error.message}</Typography>;
   } else if (getTeamQuery.isSuccess) {
-    editTeamComponent = <Typography paragraph>Unable to view Team</Typography>;
+    editTeamComponent = <Typography component="p">Unable to view Team</Typography>;
 
     const onSubmit = async (updateTeamInput: UpdateTeamInput) => {
       updateTeamInput.organizationId = getTeamQuery.data.organization.id;

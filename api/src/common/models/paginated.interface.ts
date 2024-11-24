@@ -1,5 +1,4 @@
 export interface IEdge<T> {
-  cursor: string;
   node: T;
 }
 
@@ -11,8 +10,6 @@ export interface IPageInfo {
 }
 
 export interface IPaginated<T> {
-  previousCount: number;
-  currentCount: number;
   totalCount: number;
   edges: IEdge<T>[];
   pageInfo: IPageInfo;

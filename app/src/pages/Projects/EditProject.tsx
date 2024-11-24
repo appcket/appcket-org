@@ -8,17 +8,18 @@ import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
-import Page from 'src/common/components/Page';
-import PageHeader from 'src/common/components/PageHeader';
-import UpdateProjectInput from 'src/common/models/inputs/UpdateProjectInput';
 import { useGetProject, useUpdateProject } from 'src/common/api/project';
+import Page from 'src/common/components/Page';
+import CancelButton from 'src/common/components/buttons/CancelButton';
+import { FormTextField } from 'src/common/components/form/FormTextField';
+import Loading from 'src/common/components/Loading';
+import PageHeader from 'src/common/components/PageHeader';
+import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import UpdateProjectInput from 'src/common/models/inputs/UpdateProjectInput';
 import Project from 'src/common/models/Project';
 import User from 'src/common/models/User';
-import { FormTextField } from 'src/common/components/form/FormTextField';
-import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
 import { useStore } from 'src/common/store';
-import CancelButton from 'src/common/components/buttons/CancelButton';
-import Loading from 'src/common/components/Loading';
 
 const EditProject = () => {
   const params = useParams();
@@ -89,12 +90,15 @@ const EditProject = () => {
 
   if (getProjectQuery.isFetching) {
     editProjectComponent = <Loading />;
-  } else if (getProjectQuery.status === 'error' && getProjectQuery.error instanceof Error) {
+  } else if (
+    getProjectQuery.status === QueryStatuses.Error &&
+    getProjectQuery.error instanceof Error
+  ) {
     editProjectComponent = (
-      <Typography paragraph>Error: {getProjectQuery.error.message}</Typography>
+      <Typography component="p">Error: {getProjectQuery.error.message}</Typography>
     );
   } else if (getProjectQuery.isSuccess) {
-    editProjectComponent = <Typography paragraph>Unable to view Project</Typography>;
+    editProjectComponent = <Typography component="p">Unable to view Project</Typography>;
 
     const onSubmit = async (updateProjectInput: UpdateProjectInput) => {
       updateProjectInput.organizationId = getProjectQuery.data.getProject.organization.id;

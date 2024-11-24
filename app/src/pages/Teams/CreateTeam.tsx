@@ -8,20 +8,20 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
 
-import { useUserInfo } from 'src/common/api/user';
-import Page from 'src/common/components/Page';
-import PageHeader from 'src/common/components/PageHeader';
-import CreateTeamInput from 'src/common/models/inputs/CreateTeamInput';
 import { useCreateTeam } from 'src/common/api/team';
-import Team from 'src/common/models/Team';
-import User from 'src/common/models/User';
-import { FormTextField } from 'src/common/components/form/FormTextField';
-import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
-import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
-import { useStore } from 'src/common/store';
-import UserInfoResponse from 'src/common/models/responses/UserInfoResponse';
+import { useUserInfo } from 'src/common/api/user';
 import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
+import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
+import { FormTextField } from 'src/common/components/form/FormTextField';
+import Page from 'src/common/components/Page';
+import PageHeader from 'src/common/components/PageHeader';
+import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import CreateTeamInput from 'src/common/models/inputs/CreateTeamInput';
+import Team from 'src/common/models/Team';
+import User from 'src/common/models/User';
+import { useStore } from 'src/common/store';
 
 const CreateTeam = () => {
   const navigate = useNavigate();
@@ -90,8 +90,8 @@ const CreateTeam = () => {
   if (userInfo.isLoading || userInfo.isFetching) {
     organizationSelectMenu = <Loading />;
     organizationUsersGrid = <Loading />;
-  } else if (userInfo.status === 'error' && userInfo.error instanceof Error) {
-    organizationSelectMenu = <Typography paragraph>Error: {userInfo.error.message}</Typography>;
+  } else if (userInfo.status === QueryStatuses.Error && userInfo.error instanceof Error) {
+    organizationSelectMenu = <Typography component="p">Error: {userInfo.error.message}</Typography>;
   } else if (userInfo.isSuccess) {
     const options = userInfo.data.organizations?.map((organization) => {
       return { id: organization.id, label: organization.name };

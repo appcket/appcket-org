@@ -7,15 +7,16 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 
+import { useGetTask, useUpdateTask } from 'src/common/api/task';
+import CancelButton from 'src/common/components/buttons/CancelButton';
+import { FormTextField } from 'src/common/components/form/FormTextField';
+import Loading from 'src/common/components/Loading';
+import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 import UpdateTaskInput from 'src/common/models/inputs/UpdateTaskInput';
-import { useGetTask, useUpdateTask } from 'src/common/api/task';
 import Task from 'src/common/models/Task';
-import { FormTextField } from 'src/common/components/form/FormTextField';
-import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
-import CancelButton from 'src/common/components/buttons/CancelButton';
-import Loading from 'src/common/components/Loading';
 
 const EditTask = () => {
   const params = useParams();
@@ -57,10 +58,10 @@ const EditTask = () => {
 
   if (getTaskQuery.isFetching) {
     editTaskComponent = <Loading />;
-  } else if (getTaskQuery.status === 'error' && getTaskQuery.error instanceof Error) {
-    editTaskComponent = <Typography paragraph>Error: {getTaskQuery.error.message}</Typography>;
+  } else if (getTaskQuery.status === QueryStatuses.Error && getTaskQuery.error instanceof Error) {
+    editTaskComponent = <Typography component="p">Error: {getTaskQuery.error.message}</Typography>;
   } else if (getTaskQuery.isSuccess) {
-    editTaskComponent = <Typography paragraph>Unable to view Task</Typography>;
+    editTaskComponent = <Typography component="p">Unable to view Task</Typography>;
 
     const taskStatusTypeOptions = getTaskQuery.data.getTaskStatusTypes.map((taskStatusType) => {
       return { id: taskStatusType.id, label: taskStatusType.name };

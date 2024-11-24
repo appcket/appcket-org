@@ -25,12 +25,6 @@ export function Paginated<T>(classRef: Type<T>): Type<IPaginated<T>> {
   @ObjectType({ isAbstract: true })
   abstract class PaginatedType implements IPaginated<T> {
     @Field(() => Int)
-    public previousCount: number;
-
-    @Field(() => Int)
-    public currentCount: number;
-
-    @Field(() => Int)
     public totalCount: number;
 
     @Field(() => [EdgeType])

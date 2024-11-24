@@ -99,13 +99,10 @@ type PageInfo {
 }
 
 type ProjectDtoEdge {
-  cursor: String!
   node: ProjectDto!
 }
 
 type PaginatedProjectDto {
-  previousCount: Int!
-  currentCount: Int!
   totalCount: Int!
   edges: [ProjectDtoEdge!]!
   pageInfo: PageInfo!
@@ -132,26 +129,20 @@ type TaskDto {
 }
 
 type TaskDtoEdge {
-  cursor: String!
   node: TaskDto!
 }
 
 type PaginatedTaskDto {
-  previousCount: Int!
-  currentCount: Int!
   totalCount: Int!
   edges: [TaskDtoEdge!]!
   pageInfo: PageInfo!
 }
 
 type TeamDtoEdge {
-  cursor: String!
   node: TeamDto!
 }
 
 type PaginatedTeamDto {
-  previousCount: Int!
-  currentCount: Int!
   totalCount: Int!
   edges: [TeamDtoEdge!]!
   pageInfo: PageInfo!

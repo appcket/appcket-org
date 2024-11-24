@@ -7,16 +7,17 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 
-import Page from 'src/common/components/Page';
-import PageHeader from 'src/common/components/PageHeader';
-import CreateTaskInput from 'src/common/models/inputs/CreateTaskInput';
-import { useCreateTask } from 'src/common/api/task';
 import { useGetProject } from 'src/common/api/project';
-import Task from 'src/common/models/Task';
-import { FormTextField } from 'src/common/components/form/FormTextField';
-import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
+import { useCreateTask } from 'src/common/api/task';
+import Page from 'src/common/components/Page';
 import CancelButton from 'src/common/components/buttons/CancelButton';
+import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
+import { FormTextField } from 'src/common/components/form/FormTextField';
 import Loading from 'src/common/components/Loading';
+import PageHeader from 'src/common/components/PageHeader';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import CreateTaskInput from 'src/common/models/inputs/CreateTaskInput';
+import Task from 'src/common/models/Task';
 
 const CreateTask = () => {
   const params = useParams();
@@ -58,10 +59,15 @@ const CreateTask = () => {
 
   if (getProjectQuery.isFetching) {
     createTaskComponent = <Loading />;
-  } else if (getProjectQuery.status === 'error' && getProjectQuery.error instanceof Error) {
-    createTaskComponent = <Typography paragraph>Error: {getProjectQuery.error.message}</Typography>;
+  } else if (
+    getProjectQuery.status === QueryStatuses.Error &&
+    getProjectQuery.error instanceof Error
+  ) {
+    createTaskComponent = (
+      <Typography component="p">Error: {getProjectQuery.error.message}</Typography>
+    );
   } else if (getProjectQuery.isSuccess) {
-    createTaskComponent = <Typography paragraph>Unable to get Project</Typography>;
+    createTaskComponent = <Typography component="p">Unable to get Project</Typography>;
 
     const taskStatusTypeOptions = getProjectQuery.data.getTaskStatusTypes.map((taskStatusType) => {
       return { id: taskStatusType.id, label: taskStatusType.name };

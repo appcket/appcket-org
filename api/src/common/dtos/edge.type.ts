@@ -5,9 +5,6 @@ import { IEdge } from 'src/common/models/paginated.interface';
 export function Edge<T>(classRef: Type<T>): Type<IEdge<T>> {
   @ObjectType({ isAbstract: true })
   abstract class EdgeType implements IEdge<T> {
-    @Field(() => String)
-    public cursor: string;
-
     @Field(() => classRef)
     public node: T;
   }

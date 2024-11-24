@@ -4,7 +4,6 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { Project } from 'src/project/project.entity';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 import { IPaginated } from 'src/common/models/paginated.interface';
-import { PaginationService } from 'src/common/services/pagination.service';
 import { SearchProjectsInput } from 'src/project/dtos/searchProjects.input';
 
 @Injectable()
@@ -12,7 +11,6 @@ export class SearchProjectsService {
   constructor(
     private getOrganizationService: GetOrganizationService,
     private readonly em: EntityManager,
-    private readonly paginationService: PaginationService,
   ) {}
 
   public async searchProjects(
@@ -32,20 +30,32 @@ export class SearchProjectsService {
           organization: organizationWhere,
         };
 
-    const query = this.em
-      .createQueryBuilder(Project, 'p')
-      .select('*')
-      .leftJoinAndSelect('p.createdBy', 'cb', null, ['username', 'email', 'firstName', 'lastName'])
-      .leftJoinAndSelect('p.organization', 'o')
-      .where(where);
+    const currentCursor = await this.em.findByCursor(Project, where, {
+      populate: ['organization', 'createdBy', 'updatedBy', 'projectUsers'],
+      first: input.first,
+      after: input.after,
+      orderBy: {
+        [input.orderBy[0]?.fieldName]: input.orderBy[0]?.direction.toLocaleLowerCase(),
+      },
+    });
 
-    return this.paginationService.queryBuilderPagination(
-      'project',
-      input.orderBy[0]?.fieldName,
-      input.first,
-      input.orderBy[0]?.direction,
-      query,
-      input.after,
-    );
+    const paginatedProjects: IPaginated<Project> = {
+      totalCount: currentCursor.totalCount,
+      pageInfo: {
+        endCursor: currentCursor.endCursor,
+        hasNextPage: currentCursor.hasNextPage,
+        hasPreviousPage: currentCursor.hasPrevPage,
+        startCursor: currentCursor.startCursor,
+      },
+      edges: [],
+    };
+
+    currentCursor.items.forEach((item) => {
+      paginatedProjects.edges.push({
+        node: item,
+      });
+    });
+
+    return paginatedProjects;
   }
 }

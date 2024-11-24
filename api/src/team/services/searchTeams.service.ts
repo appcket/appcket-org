@@ -4,7 +4,6 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { Team } from 'src/team/team.entity';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 import { IPaginated } from 'src/common/models/paginated.interface';
-import { PaginationService } from 'src/common/services/pagination.service';
 import { SearchTeamsInput } from 'src/team/dtos/searchTeams.input';
 
 @Injectable()
@@ -12,7 +11,6 @@ export class SearchTeamsService {
   constructor(
     private getOrganizationService: GetOrganizationService,
     private readonly em: EntityManager,
-    private readonly paginationService: PaginationService,
   ) {}
 
   public async searchTeams(input: SearchTeamsInput, userId: string): Promise<IPaginated<Team>> {
@@ -29,22 +27,32 @@ export class SearchTeamsService {
           organization: organizationWhere,
         };
 
-    const query = this.em
-      .createQueryBuilder(Team, 't')
-      .select('*')
-      .leftJoinAndSelect('t.createdBy', 'cb', null, ['username', 'email', 'firstName', 'lastName'])
-      .leftJoinAndSelect('t.organization', 'o')
-      .where(where);
+    const currentCursor = await this.em.findByCursor(Team, where, {
+      populate: ['organization', 'createdBy', 'updatedBy', 'teamUsers'],
+      first: input.first,
+      after: input.after,
+      orderBy: {
+        [input.orderBy[0]?.fieldName]: input.orderBy[0]?.direction.toLocaleLowerCase(),
+      },
+    });
 
-    return this.paginationService.queryBuilderPagination(
-      'team',
-      input.orderBy[0]?.fieldName,
-      input.first,
-      input.orderBy[0]?.direction,
-      query,
-      input.after,
-      false,
-      input.orderBy[0]?.innerFieldName,
-    );
+    const paginatedTeams: IPaginated<Team> = {
+      totalCount: currentCursor.totalCount,
+      pageInfo: {
+        endCursor: currentCursor.endCursor,
+        hasNextPage: currentCursor.hasNextPage,
+        hasPreviousPage: currentCursor.hasPrevPage,
+        startCursor: currentCursor.startCursor,
+      },
+      edges: [],
+    };
+
+    currentCursor.items.forEach((item) => {
+      paginatedTeams.edges.push({
+        node: item,
+      });
+    });
+
+    return paginatedTeams;
   }
 }

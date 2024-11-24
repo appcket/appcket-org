@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { GridRowsProp, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
@@ -12,6 +12,7 @@ import PageHeader from 'src/common/components/PageHeader';
 import { useSearchProjects } from 'src/common/api/project';
 import hasPermission from 'src/common/utils/hasPermission';
 import { ProjectPermission } from 'src/common/enums/permissions.enum';
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 import Resources from 'src/common/enums/resources.enum';
 import Permission from 'src/common/models/Permission';
 import { formatDatetime } from 'src/common/utils/general';
@@ -31,6 +32,16 @@ const ViewProjects = () => {
     searchFieldName: 'name',
   });
 
+  const [paginationData, setPaginationData] = useState({
+    totalCount: 0,
+    pageInfo: {
+      endCursor: '',
+      startCursor: '',
+      hasPreviousPage: false,
+      hasNextPage: false,
+    },
+  });
+
   const [currentPage, setCurrentPage] = useState(0);
 
   const { status, data, error } = useSearchProjects(
@@ -39,6 +50,25 @@ const ViewProjects = () => {
     queryOptions.cursor ? queryOptions.cursor : null,
     `[{ fieldName: "${queryOptions.orderByFieldName}", direction: ${queryOptions.orderByDirection} }]`,
   );
+
+  useEffect(() => {
+    if (status !== QueryStatuses.Pending) {
+      const totalCount = data?.totalCount ? data.totalCount : 0;
+      const pageInfo = data?.pageInfo
+        ? data.pageInfo
+        : {
+            endCursor: '',
+            startCursor: '',
+            hasPreviousPage: false,
+            hasNextPage: false,
+          };
+
+      setPaginationData({
+        totalCount,
+        pageInfo,
+      });
+    }
+  }, [data]);
 
   const createProjectPermission = hasPermission(
     userInfo.data?.permissions as Permission[],
@@ -143,23 +173,13 @@ const ViewProjects = () => {
 
   const rows: GridRowsProp = data?.edges ? data.edges : [];
 
-  const totalCount = data?.totalCount ? data.totalCount : 0;
-  const pageInfo = data?.pageInfo
-    ? data.pageInfo
-    : {
-        endCursor: '',
-        startCursor: '',
-        hasPreviousPage: false,
-        hasNextPage: false,
-      };
-
   const projectsGrid = (
     <PaginatedGrid
       status={status}
       rows={rows}
       columns={columns}
-      totalCount={totalCount}
-      pageInfo={pageInfo}
+      totalCount={paginationData.totalCount}
+      pageInfo={paginationData.pageInfo}
       currentPage={currentPage}
       pageSize={queryOptions.pageSize}
       onPaginate={handlePaginate}
