@@ -37,7 +37,6 @@ const PaginatedGrid = ({
   onFilter,
 }: Props) => {
   const PAGE_SIZE = 10;
-  let loading = true;
 
   const mapPageToNextCursor = useRef<{ [page: number]: string }>({});
 
@@ -99,13 +98,9 @@ const PaginatedGrid = ({
     onFilter(searchValue, searchFieldName);
   }, []);
 
-  if (status !== QueryStatuses.Pending) {
-    loading = false;
-  }
-
   return (
     <DataGrid
-      loading={loading}
+      loading={status === QueryStatuses.Pending ? true : false}
       disableRowSelectionOnClick
       rows={rows}
       getRowId={(row) => row.node.id}
