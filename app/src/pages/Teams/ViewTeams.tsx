@@ -12,12 +12,11 @@ import { useSearchTeams } from 'src/common/api/team';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import PaginatedGrid from 'src/common/components/PaginatedGrid';
-import { TeamPermission } from 'src/common/enums/permissions.enum';
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
-import Resources from 'src/common/enums/resources.enum';
+import { TeamPermission } from 'src/common/enums/Permissions';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
+import Resources from 'src/common/enums/Resources';
 import Permission from 'src/common/models/Permission';
 import hasPermission from 'src/common/utils/hasPermission';
-import { formatDatetime } from 'src/common/utils/general';
 
 const PAGE_SIZE = 10;
 
@@ -126,7 +125,7 @@ const ViewTeams = () => {
       filterable: false,
       flex: 0.25,
       renderCell: (cellValues) => {
-        return formatDatetime(cellValues.row.node.updatedAt);
+        return t('common.dateTime', { value: cellValues.row.node.updatedAt });
       },
     },
     {
@@ -135,7 +134,7 @@ const ViewTeams = () => {
       filterable: false,
       flex: 0.25,
       renderCell: (cellValues) => {
-        return formatDatetime(cellValues.row.node.createdAt);
+        return t('common.dateTime', { value: cellValues.row.node.createdAt });
       },
     },
   ];

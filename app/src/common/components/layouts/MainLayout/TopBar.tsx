@@ -19,6 +19,7 @@ import { useUserInfo } from 'src/common/api/user';
 import { displayUser } from 'src/common/utils/general';
 import ThemeColorModeToggler from 'src/common/components/buttons/ThemeColorModeToggler';
 import LocaleSwitcher from 'src/common/components/LocaleSwitcher';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -51,7 +52,7 @@ type Props = {
 const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
   const { t } = useTranslation();
   const auth = useAuth();
-  const { data } = useUserInfo();
+  const userInfo = useUserInfo();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -60,6 +61,12 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const Role = () => {
+    if (userInfo.status === QueryStatuses.Success) {
+      return t(`common.roles.${userInfo.data?.role.toLowerCase()}`);
+    }
   };
 
   return (
@@ -97,7 +104,7 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="User Settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 2 }}>
-              <Avatar alt={displayUser(data)} src="/images/avatars/avatar_1.png" />
+              <Avatar alt={displayUser(userInfo.data)} src="/images/avatars/avatar_1.png" />
             </IconButton>
           </Tooltip>
           <Menu
@@ -119,7 +126,7 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
             <MenuItem key="role">
               <FaUserShield title="Role" />
               <Typography sx={{ ml: '5px' }} textAlign="center">
-                {t(`common.roles.${data?.role.toLowerCase()}`)}
+                <Role />
               </Typography>
             </MenuItem>
             <MenuItem key="logout" onClick={() => auth.signoutRedirect()}>

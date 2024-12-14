@@ -13,12 +13,11 @@ import PageHeader from 'src/common/components/PageHeader';
 import { useSearchTasks } from 'src/common/api/task';
 import { useGetProject } from 'src/common/api/project';
 import hasPermission from 'src/common/utils/hasPermission';
-import { TaskPermission } from 'src/common/enums/permissions.enum';
-import Resources from 'src/common/enums/resources.enum';
+import { TaskPermission } from 'src/common/enums/Permissions';
+import Resources from 'src/common/enums/Resources';
 import Permission from 'src/common/models/Permission';
 import { displayUser } from 'src/common/utils/general';
 import PaginatedGrid from 'src/common/components/PaginatedGrid';
-import { formatDatetime } from 'src/common/utils/general';
 import { getOrderByInnerFieldName } from 'src/common/utils/general';
 
 const PAGE_SIZE = 10;
@@ -114,7 +113,7 @@ const ViewProjectTasks = () => {
       filterable: false,
       flex: 0.15,
       renderCell: (cellValues) => {
-        return formatDatetime(cellValues.row.node.updatedAt);
+        return t('common.dateTime', { value: cellValues.row.node.updatedAt });
       },
     },
     {
@@ -123,7 +122,7 @@ const ViewProjectTasks = () => {
       filterable: false,
       flex: 0.15,
       renderCell: (cellValues) => {
-        return formatDatetime(cellValues.row.node.createdAt);
+        return t('common.dateTime', { value: cellValues.row.node.createdAt });
       },
     },
   ];

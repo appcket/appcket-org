@@ -8,7 +8,7 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
 import PageInfo from 'src/common/models/responses/PageInfo';
 
 type Props = {

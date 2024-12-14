@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 
 import ProtectedRoute from 'src/common/components/ProtectedRoute';
-import Resources from 'src/common/enums/resources.enum';
-import { ProjectPermission, TaskPermission } from 'src/common/enums/permissions.enum';
+import Resources from 'src/common/enums/Resources';
+import { ProjectPermission, TaskPermission } from 'src/common/enums/Permissions';
 import ViewProjects from 'src/pages/Projects/ViewProjects';
 import ViewProject from 'src/pages/Projects/ViewProject';
 import EditProject from 'src/pages/Projects/EditProject';

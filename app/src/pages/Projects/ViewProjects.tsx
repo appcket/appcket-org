@@ -12,11 +12,10 @@ import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import { useSearchProjects } from 'src/common/api/project';
 import hasPermission from 'src/common/utils/hasPermission';
-import { ProjectPermission } from 'src/common/enums/permissions.enum';
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
-import Resources from 'src/common/enums/resources.enum';
+import { ProjectPermission } from 'src/common/enums/Permissions';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
+import Resources from 'src/common/enums/Resources';
 import Permission from 'src/common/models/Permission';
-import { formatDatetime } from 'src/common/utils/general';
 import PaginatedGrid from 'src/common/components/PaginatedGrid';
 
 const PAGE_SIZE = 10;
@@ -125,7 +124,7 @@ const ViewProjects = () => {
       filterable: false,
       flex: 0.25,
       renderCell: (cellValues) => {
-        return formatDatetime(cellValues.row.node.updatedAt);
+        return t('common.dateTime', { value: cellValues.row.node.updatedAt });
       },
     },
     {
@@ -134,7 +133,7 @@ const ViewProjects = () => {
       filterable: false,
       flex: 0.25,
       renderCell: (cellValues) => {
-        return formatDatetime(cellValues.row.node.createdAt);
+        return t('common.dateTime', { value: cellValues.row.node.createdAt });
       },
     },
   ];

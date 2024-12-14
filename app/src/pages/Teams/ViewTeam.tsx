@@ -15,9 +15,9 @@ import Loading from 'src/common/components/Loading';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import hasPermission from 'src/common/utils/hasPermission';
-import { TeamPermission } from 'src/common/enums/permissions.enum';
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
-import Resources from 'src/common/enums/resources.enum';
+import { TeamPermission } from 'src/common/enums/Permissions';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
+import Resources from 'src/common/enums/Resources';
 import Permission from 'src/common/models/Permission';
 import { displayUser } from 'src/common/utils/general';
 

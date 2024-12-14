@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request';
 
 import { useApiQuery } from 'src/common/api';
-import Resources from 'src/common/enums/resources.enum';
+import Resources from 'src/common/enums/Resources';
 import GetEntityHistoryResponse from 'src/common/models/responses/GetEntityHistoryResponse';
 import { IEntityHistory } from 'src/common/models/EntityHistory';
 

@@ -17,9 +17,10 @@ import FormSelectMenu from 'src/common/components/form/FormSelectMenu';
 import { FormTextField } from 'src/common/components/form/FormTextField';
 import Loading from 'src/common/components/Loading';
 import PageHeader from 'src/common/components/PageHeader';
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
 import CreateTaskInput from 'src/common/models/inputs/CreateTaskInput';
 import Task from 'src/common/models/Task';
+import { FormFields } from 'src/common/constants';
 
 const CreateTask = () => {
   const { t } = useTranslation();
@@ -134,9 +135,17 @@ const CreateTask = () => {
             control={control}
             label={t('pages.tasks.taskName')}
             rules={{
-              required: { value: true, message: 'This field is required' },
-              maxLength: { value: 100, message: 'This field must be less than 100 characters' },
-              minLength: { value: 1, message: 'This field must be more than 1 character' },
+              required: { value: true, message: t('messages.error.requiredField') },
+              maxLength: {
+                value: FormFields.task.name.maxLength,
+                message: t('messages.error.fieldLessThan_other', {
+                  count: FormFields.task.name.maxLength,
+                }),
+              },
+              minLength: {
+                value: FormFields.task.name.minLength,
+                message: t('messages.error.fieldMoreThan_one'),
+              },
             }}
           />
         </Grid>
@@ -149,7 +158,12 @@ const CreateTask = () => {
           multiline
           rows={3}
           rules={{
-            maxLength: { value: 5000, message: 'This field must be less than 5000 characters' },
+            maxLength: {
+              value: FormFields.task.description.maxLength,
+              message: t('messages.error.fieldLessThan_other', {
+                count: FormFields.task.description.maxLength,
+              }),
+            },
           }}
         />
 

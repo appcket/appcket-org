@@ -21,7 +21,7 @@ import { useUserInfo } from 'src/common/api/user';
 import ReactLogo from 'src/assets/logo.svg?react';
 import SideBarHeader from 'src/common/components/layouts/MainLayout/SideBar/Header';
 import NavItem from 'src/common/components/layouts/MainLayout/SideBar/NavItem';
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
 
 type Props = {
   open: boolean;

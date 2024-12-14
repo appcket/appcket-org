@@ -47,7 +47,12 @@
     "error": {
       "error": "Error",
       "unableView": "No se puede ver ",
-      "unableEdit": "No se puede editar "
+      "unableEdit": "No se puede editar ",
+      "requiredField": "Este campo es obligatorio",
+      "fieldLessThan_one": "Este campo debe tener menos de 1 carácter",
+      "fieldLessThan_other": "Este campo debe tener menos de {{count}} caracteres",
+      "fieldMoreThan_one": "Este campo debe tener más de 1 carácter",
+      "fieldMoreThan_other": "Este campo debe tener más de {{count}} caracteres"
     },
     "info": {
       "noUsersAssociatedWith": "No hay usuarios asociados con este",

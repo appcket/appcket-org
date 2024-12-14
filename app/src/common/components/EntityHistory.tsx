@@ -21,11 +21,10 @@ import { JsonViewer } from '@textea/json-viewer';
 import { useTranslation } from 'react-i18next';
 
 import Loading from 'src/common/components/Loading';
-import DateTime from 'src/common/components/DateTime';
 import { useGetEntityHistory } from 'src/common/api/entityHistory';
 import { IEntityHistoryChange } from 'src/common/models/EntityHistory';
-import Resources from 'src/common/enums/resources.enum';
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import Resources from 'src/common/enums/Resources';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
 import { isJson } from 'src/common/utils/general';
 
 type Props = {
@@ -136,7 +135,7 @@ const EntityHistory = ({ entityId, entityType }: Props) => {
           {data?.changes?.map((change: IEntityHistoryChange, index: number) => (
             <TimelineItem key={index}>
               <TimelineOppositeContent color="textSecondary">
-                <DateTime dateTimeString={change.changedAt} />
+                {t('common.dateTime', { value: change.changedAt })}
               </TimelineOppositeContent>
               <TimelineSeparator>
                 <TimelineDot />

@@ -7,6 +7,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 // have a look at the Quick start guide
 // for passing in lng and translations on init
 
+import formatters from 'src/i18n/formatters';
+
 export const supportedLngs = {
   en: 'English (United States)',
   'en-GB': 'English (United Kingdom)',
@@ -40,5 +42,9 @@ i18n
     },
     supportedLngs: Object.keys(supportedLngs),
   });
+
+Object.entries(formatters).forEach(([key, resolver]) => {
+  i18n.services.formatter?.add(key, resolver);
+});
 
 export default i18n;

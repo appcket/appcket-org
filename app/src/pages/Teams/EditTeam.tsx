@@ -17,11 +17,12 @@ import { FormTextField } from 'src/common/components/form/FormTextField';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 import ResourceUsersGrid from 'src/common/components/ResourceUsersGrid';
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
 import UpdateTeamInput from 'src/common/models/inputs/UpdateTeamInput';
 import Team from 'src/common/models/Team';
 import User from 'src/common/models/User';
 import { useStore } from 'src/common/store';
+import { FormFields } from 'src/common/constants';
 
 const EditTeam = () => {
   const { t } = useTranslation();
@@ -132,9 +133,17 @@ const EditTeam = () => {
             control={control}
             label={t('labels.teamName')}
             rules={{
-              required: { value: true, message: 'This field is required' },
-              maxLength: { value: 50, message: 'This field must be less than 50 characters' },
-              minLength: { value: 1, message: 'This field must be more than 1 character' },
+              required: { value: true, message: t('messages.error.requiredField') },
+              maxLength: {
+                value: FormFields.team.name.maxLength,
+                message: t('messages.error.fieldLessThan_other', {
+                  count: FormFields.team.name.maxLength,
+                }),
+              },
+              minLength: {
+                value: FormFields.team.name.minLength,
+                message: t('messages.error.fieldMoreThan_one'),
+              },
             }}
           />
         </Grid>
@@ -146,7 +155,12 @@ const EditTeam = () => {
           multiline
           rows={3}
           rules={{
-            maxLength: { value: 500, message: 'This field must be less than 500 characters' },
+            maxLength: {
+              value: FormFields.team.description.maxLength,
+              message: t('messages.error.fieldLessThan_other', {
+                count: FormFields.team.description.maxLength,
+              }),
+            },
           }}
         />
 

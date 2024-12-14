@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 
 import { useUserInfo } from 'src/common/api/user';
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
 import Permission from 'src/common/models/Permission';
 import hasPermission from 'src/common/utils/hasPermission';
 

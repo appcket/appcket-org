@@ -14,7 +14,7 @@ import { useUserInfo } from 'src/common/api/user';
 import { useCreateProject } from 'src/common/api/project';
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
-import QueryStatuses from 'src/common/enums/queryStatuses.enum';
+import QueryStatuses from 'src/common/enums/QueryStatuses';
 import CreateProjectInput from 'src/common/models/inputs/CreateProjectInput';
 import Project from 'src/common/models/Project';
 import Organization from 'src/common/models/Organization';
@@ -26,6 +26,7 @@ import { useStore } from 'src/common/store';
 import { resourcesToSelectMenuOptions } from 'src/common/utils/form';
 import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
+import { FormFields } from 'src/common/constants';
 
 const CreateProject = () => {
   const { t } = useTranslation();
@@ -112,7 +113,7 @@ const CreateProject = () => {
         label={t('labels.organization')}
         options={options}
         rules={{
-          required: { value: true, message: 'This field is required' },
+          required: { value: true, message: t('messages.error.requiredField') },
         }}
       />
     );
@@ -132,9 +133,17 @@ const CreateProject = () => {
           control={control}
           label={t('labels.projectName')}
           rules={{
-            required: { value: true, message: 'This field is required' },
-            maxLength: { value: 50, message: 'This field must be less than 50 characters' },
-            minLength: { value: 1, message: 'This field must be more than 1 character' },
+            required: { value: true, message: t('messages.error.requiredField') },
+            maxLength: {
+              value: FormFields.project.name.maxLength,
+              message: t('messages.error.fieldLessThan_other', {
+                count: FormFields.project.name.maxLength,
+              }),
+            },
+            minLength: {
+              value: FormFields.project.name.minLength,
+              message: t('messages.error.fieldMoreThan_one'),
+            },
           }}
         />
       </Grid>
@@ -146,7 +155,12 @@ const CreateProject = () => {
         multiline
         rows={3}
         rules={{
-          maxLength: { value: 500, message: 'This field must be less than 500 characters' },
+          maxLength: {
+            value: FormFields.project.description.maxLength,
+            message: t('messages.error.fieldLessThan_other', {
+              count: FormFields.project.description.maxLength,
+            }),
+          },
         }}
       />
 
