@@ -23,8 +23,4 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
-  test: {
-    environment: 'happy-dom',
-    globals: true,
-  },
 });

@@ -6,11 +6,13 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Tooltip from '@mui/material/Tooltip';
 import { PaletteMode } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'src/common/store';
 import { isNull } from 'lodash';
 
 export default function ToggleButtons() {
+  const { t } = useTranslation();
   const themeColorMode = useStore((state) => state.uiSettings.themeColorMode) as PaletteMode;
 
   const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -49,8 +51,8 @@ export default function ToggleButtons() {
       onChange={handleToggle}
       aria-label="Change Theme Color Mode"
     >
-      <ToggleButton value="light" aria-label="light mode">
-        <Tooltip title="Light Mode">
+      <ToggleButton value="light" aria-label={t('common.lightMode')}>
+        <Tooltip title={t('common.lightMode')}>
           <LightModeIcon
             style={{
               height: 18,
@@ -58,8 +60,8 @@ export default function ToggleButtons() {
           />
         </Tooltip>
       </ToggleButton>
-      <ToggleButton value="dark" aria-label="dark mode">
-        <Tooltip title="Dark Mode">
+      <ToggleButton value="dark" aria-label={t('common.darkMode')}>
+        <Tooltip title={t('common.darkMode')}>
           <ModeNightIcon
             style={{
               height: 18,

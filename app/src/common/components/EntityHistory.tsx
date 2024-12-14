@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid2';
+import Typography from '@mui/material/Typography';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
@@ -10,13 +11,14 @@ import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent, {
   timelineOppositeContentClasses,
 } from '@mui/lab/TimelineOppositeContent';
-import Typography from '@mui/material/Typography';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import History from '@mui/icons-material/History';
 import { isNull } from 'lodash';
 import { JsonViewer } from '@textea/json-viewer';
+import { useTranslation } from 'react-i18next';
 
 import Loading from 'src/common/components/Loading';
 import DateTime from 'src/common/components/DateTime';
@@ -31,15 +33,48 @@ type Props = {
   entityType: Resources;
 };
 
-const displayText = (change: IEntityHistoryChange, entityType: Resources): ReactNode => {
-  if (isNull(change.fieldName)) {
-    if (isNull(change.oldValue)) {
-      let newValue = JSON.parse(change.newValue);
-      return (
-        <div>
-          <Typography variant="body2">{change.changedBy.displayName}</Typography>
-          <Typography variant="subtitle2">created</Typography>
-          <Typography variant="body1">a new {entityType}:</Typography>
+const EntityHistory = ({ entityId, entityType }: Props) => {
+  const { t } = useTranslation();
+  const { status, data, error, isFetching } = useGetEntityHistory(entityId, entityType);
+
+  const displayText = (change: IEntityHistoryChange, entityType: Resources): ReactNode => {
+    if (isNull(change.fieldName)) {
+      if (isNull(change.oldValue)) {
+        let newValue = JSON.parse(change.newValue);
+        return (
+          <div>
+            <Typography variant="body2">{change.changedBy.displayName}</Typography>
+            <Typography variant="subtitle2">{t('common.created').toLowerCase()}</Typography>
+            <Typography variant="body1">
+              a new {t('entities.' + entityType.toLowerCase())}:
+            </Typography>
+            <JsonViewer
+              sx={{ backgroundColor: '#d9d9d9' }}
+              value={newValue}
+              displayDataTypes={false}
+              displaySize={false}
+              enableClipboard={false}
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            <Typography variant="body2">{change.changedBy.displayName}</Typography>
+            <Typography variant="subtitle2">{t('common.deleted').toLowerCase()}</Typography>
+            <Typography variant="body1">an {entityType}:</Typography>
+            <Typography variant="body1">{change.oldValue}</Typography>
+          </div>
+        );
+      }
+    } else {
+      let newValue = change.newValue;
+      let oldValue = change.oldValue;
+      let renderNewValue = <Typography variant="body1">{newValue}</Typography>;
+      let renderOldValue = <Typography variant="body1">{oldValue}</Typography>;
+      if (isJson(newValue)) {
+        newValue = JSON.parse(change.newValue);
+        renderNewValue = (
           <JsonViewer
             sx={{ backgroundColor: '#d9d9d9' }}
             value={newValue}
@@ -47,74 +82,48 @@ const displayText = (change: IEntityHistoryChange, entityType: Resources): React
             displaySize={false}
             enableClipboard={false}
           />
-        </div>
-      );
-    } else {
+        );
+      }
+      if (isJson(oldValue)) {
+        oldValue = JSON.parse(change.oldValue);
+        renderOldValue = (
+          <JsonViewer
+            sx={{ backgroundColor: '#d9d9d9' }}
+            value={oldValue}
+            displayDataTypes={false}
+            displaySize={false}
+            enableClipboard={false}
+          />
+        );
+      }
+
       return (
         <div>
           <Typography variant="body2">{change.changedBy.displayName}</Typography>
-          <Typography variant="subtitle2">deleted</Typography>
-          <Typography variant="body1">an {entityType}:</Typography>
-          <Typography variant="body1">{change.oldValue}</Typography>
+          <Typography variant="subtitle2">{t('common.updated').toLowerCase()}</Typography>
+          <Typography variant="body1">{change.fieldName}</Typography>
+          <Typography variant="subtitle2">{t('common.from')}</Typography>
+          {renderOldValue}
+          <Typography variant="subtitle2">{t('common.to')}</Typography>
+          {renderNewValue}
         </div>
       );
     }
-  } else {
-    let newValue = change.newValue;
-    let oldValue = change.oldValue;
-    let renderNewValue = <Typography variant="body1">{newValue}</Typography>;
-    let renderOldValue = <Typography variant="body1">{oldValue}</Typography>;
-    if (isJson(newValue)) {
-      newValue = JSON.parse(change.newValue);
-      renderNewValue = (
-        <JsonViewer
-          sx={{ backgroundColor: '#d9d9d9' }}
-          value={newValue}
-          displayDataTypes={false}
-          displaySize={false}
-          enableClipboard={false}
-        />
-      );
-    }
-    if (isJson(oldValue)) {
-      oldValue = JSON.parse(change.oldValue);
-      renderOldValue = (
-        <JsonViewer
-          sx={{ backgroundColor: '#d9d9d9' }}
-          value={oldValue}
-          displayDataTypes={false}
-          displaySize={false}
-          enableClipboard={false}
-        />
-      );
-    }
-
-    return (
-      <div>
-        <Typography variant="body2">{change.changedBy.displayName}</Typography>
-        <Typography variant="subtitle2">changed</Typography>
-        <Typography variant="body1">{change.fieldName}</Typography>
-        <Typography variant="subtitle2">from</Typography>
-        {renderOldValue}
-        <Typography variant="subtitle2">to</Typography>
-        {renderNewValue}
-      </div>
-    );
-  }
-};
-
-const EntityHistory = ({ entityId, entityType }: Props) => {
-  const { status, data, error, isFetching } = useGetEntityHistory(entityId, entityType);
+  };
 
   let content;
 
   if (isFetching) {
     content = <Loading />;
   } else if (status === QueryStatuses.Error && error instanceof Error) {
-    content = <Typography component="p">Error: {error.message}</Typography>;
+    content = (
+      <Typography component="p">
+        {t('messages.error.error')}: {error.message}
+      </Typography>
+    );
   } else {
     if (data?.changes?.length === 0) {
-      content = <Typography variant="subtitle2">No history yet</Typography>;
+      content = <Typography variant="subtitle2">{t('messages.info.noHistory')}</Typography>;
     } else {
       content = (
         <Timeline
@@ -150,7 +159,10 @@ const EntityHistory = ({ entityId, entityType }: Props) => {
             aria-controls="history-content"
             id="history-header"
           >
-            <Typography>History</Typography>
+            <div className="flex items-center">
+              <History />
+              <Typography sx={{ ml: 1 }}>{t('common.history')}</Typography>
+            </div>
           </AccordionSummary>
           <AccordionDetails>{content}</AccordionDetails>
         </Accordion>

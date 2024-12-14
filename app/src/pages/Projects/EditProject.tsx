@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Save, Undo } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 import { useGetProject, useUpdateProject } from 'src/common/api/project';
 import Page from 'src/common/components/Page';
@@ -22,6 +24,7 @@ import User from 'src/common/models/User';
 import { useStore } from 'src/common/store';
 
 const EditProject = () => {
+  const { t } = useTranslation();
   const params = useParams();
   let projectId = '';
   if (params.projectId) {
@@ -95,10 +98,16 @@ const EditProject = () => {
     getProjectQuery.error instanceof Error
   ) {
     editProjectComponent = (
-      <Typography component="p">Error: {getProjectQuery.error.message}</Typography>
+      <Typography component="p">
+        {t('messages.error.error')}: {getProjectQuery.error.message}
+      </Typography>
     );
   } else if (getProjectQuery.isSuccess) {
-    editProjectComponent = <Typography component="p">Unable to view Project</Typography>;
+    editProjectComponent = (
+      <Typography component="p">
+        {t('messages.error.unableEdit')} {t('resources.project')}
+      </Typography>
+    );
 
     const onSubmit = async (updateProjectInput: UpdateProjectInput) => {
       updateProjectInput.organizationId = getProjectQuery.data.getProject.organization.id;
@@ -112,9 +121,12 @@ const EditProject = () => {
         {
           onSuccess: (data) => {
             const updatedProject = data as Project;
-            enqueueSnackbar(`Project updated: ${updatedProject.name}`, {
-              variant: 'success',
-            });
+            enqueueSnackbar(
+              `${t('entities.project')} ${t('common.updated').toLowerCase()}: ${updatedProject.name}`,
+              {
+                variant: 'success',
+              },
+            );
             navigate('/projects');
           },
         },
@@ -129,13 +141,13 @@ const EditProject = () => {
           </Grid>
         </Grid>
         <Typography variant="body1" sx={{ mb: 3 }}>
-          Organization: {getProjectQuery.data.getProject.organization.name}
+          {t('labels.organization')}: {getProjectQuery.data.getProject.organization.name}
         </Typography>
         <Grid size={{ xs: 24, sm: 12 }} sx={{ mb: 2 }}>
           <FormTextField
             name="name"
             control={control}
-            label="Project Name"
+            label={t('labels.projectName')}
             rules={{
               required: { value: true, message: 'This field is required' },
               maxLength: { value: 50, message: 'This field must be less than 50 characters' },
@@ -147,7 +159,7 @@ const EditProject = () => {
         <FormTextField
           name="description"
           control={control}
-          label="Description"
+          label={t('labels.description')}
           multiline
           rows={3}
           rules={{
@@ -168,16 +180,18 @@ const EditProject = () => {
                 resetSelectedUserIds();
               }}
               variant="outlined"
+              startIcon={<Undo />}
             >
-              Reset
+              {t('common.reset')}
             </Button>
             <Button
               onClick={handleSubmit(onSubmit)}
               variant="contained"
               disabled={!isValid}
+              startIcon={<Save />}
               sx={{ mx: 1 }}
             >
-              Save
+              {t('common.save')}
             </Button>
           </Grid>
         </Grid>
@@ -186,8 +200,13 @@ const EditProject = () => {
   }
 
   return (
-    <Page title={`Edit Project - ${getProjectQuery?.data?.getProject?.name}`}>
-      <PageHeader title={getProjectQuery?.data?.getProject?.name} subTitle="Edit project details" />
+    <Page
+      title={`${t('pages.projects.editProject.titleFragment')} - ${getProjectQuery?.data?.getProject?.name}`}
+    >
+      <PageHeader
+        title={getProjectQuery?.data?.getProject?.name}
+        subTitle={t('pages.projects.editProject.subTitle')}
+      />
       <div>{editProjectComponent}</div>
     </Page>
   );

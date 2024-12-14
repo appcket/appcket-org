@@ -1,4 +1,3 @@
-import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
@@ -6,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useGetProject } from 'src/common/api/project';
 import { useUserInfo } from 'src/common/api/user';
@@ -22,6 +23,7 @@ import { displayUser } from 'src/common/utils/general';
 import EntityHistory from 'src/common/components/EntityHistory';
 
 const Project = () => {
+  const { t } = useTranslation();
   const params = useParams();
   const projectId = params.projectId || '';
   const userInfo = useUserInfo();
@@ -44,9 +46,17 @@ const Project = () => {
   if (isLoading || isFetching) {
     projectComponent = <Loading />;
   } else if (status === QueryStatuses.Error && error instanceof Error) {
-    projectComponent = <Typography component="p">Error: {error.message}</Typography>;
+    projectComponent = (
+      <Typography component="p">
+        {t('messages.error.error')}: {error.message}
+      </Typography>
+    );
   } else {
-    projectComponent = <Typography component="p">Unable to view Project</Typography>;
+    projectComponent = (
+      <Typography component="p">
+        {t('messages.error.unableView')} {t('resources.project')}
+      </Typography>
+    );
 
     let updateProjectButton = <EditButton linkTo="#" variant="outlined" isDisabled={true} />;
 
@@ -63,8 +73,10 @@ const Project = () => {
     const usersComponent = (
       <div>
         <Typography variant="body1">
-          Users:{' '}
-          {data?.getProject.users.length === 0 ? 'No users associated with this project' : null}
+          {t('labels.users')}:{' '}
+          {data?.getProject.users.length === 0
+            ? t('messages.info.noUsersAssociatedWith') + ' ' + t('entities.project')
+            : null}
         </Typography>
         <List>
           {data?.getProject.users.map((user) => (
@@ -78,7 +90,10 @@ const Project = () => {
 
     projectComponent = (
       <div>
-        <PageHeader title={data?.getProject.name} subTitle="Project details" />
+        <PageHeader
+          title={data?.getProject.name}
+          subTitle={t('pages.projects.viewProject.subTitle')}
+        />
 
         <Paper elevation={1} sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
           <Grid container justifyContent="flex-end">
@@ -86,12 +101,14 @@ const Project = () => {
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Typography variant="body1">
-              Organization: {data?.getProject.organization.name}
+              {t('entities.organization')}: {data?.getProject.organization.name}
             </Typography>
-            <Typography variant="body1">Description: {data?.getProject.description}</Typography>
+            <Typography variant="body1">
+              {t('labels.description')}: {data?.getProject.description}
+            </Typography>
             <Typography variant="body1">
               <Button component={Link} to={`tasks`}>
-                View Tasks
+                {t('pages.projects.viewProject.viewTasks')}
               </Button>
             </Typography>
             {usersComponent}
@@ -103,7 +120,7 @@ const Project = () => {
   }
 
   return (
-    <Page title={`Project - ${data?.getProject.name}`}>
+    <Page title={`${t('entities.project')} - ${data?.getProject.name}`}>
       <div>{projectComponent}</div>
     </Page>
   );

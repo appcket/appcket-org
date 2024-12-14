@@ -17,6 +17,7 @@ import NotFound from 'src/pages/NotFound';
 import Unauthorized from 'src/pages/Unauthorized';
 import { useStore } from 'src/common/store';
 import { UiSettingsConsumer } from 'src/common/components/UiSettingsConsumer';
+import './i18n/config';
 
 export const UiSettingsContext = createContext<ReturnType<typeof useStore> | null>(null);
 

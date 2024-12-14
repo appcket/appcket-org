@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Save, Undo } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
+import { useSnackbar } from 'notistack';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useGetTeam, useUpdateTeam } from 'src/common/api/team';
 import CancelButton from 'src/common/components/buttons/CancelButton';
@@ -22,6 +24,7 @@ import User from 'src/common/models/User';
 import { useStore } from 'src/common/store';
 
 const EditTeam = () => {
+  const { t } = useTranslation();
   const params = useParams();
   let teamId = '';
   if (params.teamId) {
@@ -85,7 +88,11 @@ const EditTeam = () => {
   } else if (getTeamQuery.status === QueryStatuses.Error && getTeamQuery.error instanceof Error) {
     editTeamComponent = <Typography component="p">Error: {getTeamQuery.error.message}</Typography>;
   } else if (getTeamQuery.isSuccess) {
-    editTeamComponent = <Typography component="p">Unable to view Team</Typography>;
+    editTeamComponent = (
+      <Typography component="p">
+        {t('messages.error.unableEdit')} {t('resources.team')}
+      </Typography>
+    );
 
     const onSubmit = async (updateTeamInput: UpdateTeamInput) => {
       updateTeamInput.organizationId = getTeamQuery.data.organization.id;
@@ -97,9 +104,12 @@ const EditTeam = () => {
         {
           onSuccess: (data) => {
             const updatedTeam = data as Team;
-            enqueueSnackbar(`Team updated: ${updatedTeam.name}`, {
-              variant: 'success',
-            });
+            enqueueSnackbar(
+              `${t('entities.team')} ${t('common.updated').toLowerCase()}: ${updatedTeam.name}`,
+              {
+                variant: 'success',
+              },
+            );
             navigate('/teams');
           },
         },
@@ -114,13 +124,13 @@ const EditTeam = () => {
           </Grid>
         </Grid>
         <Typography variant="body1" sx={{ mb: 3 }}>
-          Organization: {getTeamQuery.data.organization.name}
+          {t('labels.organization')}: {getTeamQuery.data.organization.name}
         </Typography>
         <Grid size={{ xs: 24, sm: 12 }} sx={{ mb: 2 }}>
           <FormTextField
             name="name"
             control={control}
-            label="Team Name"
+            label={t('labels.teamName')}
             rules={{
               required: { value: true, message: 'This field is required' },
               maxLength: { value: 50, message: 'This field must be less than 50 characters' },
@@ -132,7 +142,7 @@ const EditTeam = () => {
         <FormTextField
           name="description"
           control={control}
-          label="Description"
+          label={t('labels.description')}
           multiline
           rows={3}
           rules={{
@@ -143,7 +153,10 @@ const EditTeam = () => {
         {/* instead of passing selectedUsers prop to child components, we use zustand to hold local state.
             In this case, it tracks initially selected users and user-selected users so the 
             parent component can have this data and send it back to the api onSubmit*/}
-        <ResourceUsersGrid resourceType="Team" organizationId={getTeamQuery.data.organization.id} />
+        <ResourceUsersGrid
+          resourceType={t('entities.team')}
+          organizationId={getTeamQuery.data.organization.id}
+        />
 
         <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
           <Grid>
@@ -153,16 +166,18 @@ const EditTeam = () => {
                 resetSelectedUserIds();
               }}
               variant="outlined"
+              startIcon={<Undo />}
             >
-              Reset
+              {t('common.reset')}
             </Button>
             <Button
               onClick={handleSubmit(onSubmit)}
               variant="contained"
               disabled={!isValid}
+              startIcon={<Save />}
               sx={{ mx: 1 }}
             >
-              Save
+              {t('common.save')}
             </Button>
           </Grid>
         </Grid>
@@ -171,8 +186,8 @@ const EditTeam = () => {
   }
 
   return (
-    <Page title={`Edit Team - ${getTeamQuery.data?.name}`}>
-      <PageHeader title={getTeamQuery.data?.name} subTitle="Edit team details" />
+    <Page title={`${t('pages.teams.editTeam.titleFragment')} - ${getTeamQuery.data?.name}`}>
+      <PageHeader title={getTeamQuery.data?.name} subTitle={t('pages.teams.editTeam.subTitle')} />
       <div>{editTeamComponent}</div>
     </Page>
   );

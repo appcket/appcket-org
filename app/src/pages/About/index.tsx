@@ -3,14 +3,17 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid2';
 import Fade from '@mui/material/Fade';
 import Link from '@mui/material/Link';
+import { useTranslation } from 'react-i18next';
 
 import Page from 'src/common/components/Page';
 import PageHeader from 'src/common/components/PageHeader';
 
 const About = () => {
+  const { t } = useTranslation();
+
   return (
-    <Page title="About">
-      <PageHeader title="About" subTitle="Learn about the Appcket starter kit" />
+    <Page title={t('pages.about.title')}>
+      <PageHeader title={t('pages.about.title')} subTitle={t('pages.about.subTitle')} />
       <Container maxWidth={false}>
         <Fade
           in={true}

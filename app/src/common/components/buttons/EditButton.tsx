@@ -2,6 +2,7 @@ import Button, { ButtonPropsVariantOverrides } from '@mui/material/Button';
 import { OverridableStringUnion } from '@mui/types';
 import PropTypes from 'prop-types';
 import { HiOutlinePencil } from 'react-icons/hi';
+import { useTranslation } from 'react-i18next';
 
 import { Link } from 'react-router-dom';
 
@@ -13,6 +14,8 @@ type Props = {
 };
 
 const EditButton = ({ entityType, variant = 'contained', linkTo, isDisabled }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <Button
       variant={variant}
@@ -22,7 +25,7 @@ const EditButton = ({ entityType, variant = 'contained', linkTo, isDisabled }: P
       disabled={isDisabled}
       startIcon={<HiOutlinePencil />}
     >
-      Edit {entityType}
+      {t('common.edit')} {entityType}
     </Button>
   );
 };

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { Save, Undo } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
@@ -7,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 import { useUserInfo } from 'src/common/api/user';
 import { useCreateProject } from 'src/common/api/project';
@@ -26,6 +28,7 @@ import CancelButton from 'src/common/components/buttons/CancelButton';
 import Loading from 'src/common/components/Loading';
 
 const CreateProject = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const {
@@ -106,7 +109,7 @@ const CreateProject = () => {
         name="organizationId"
         className="mb-4"
         control={control}
-        label="Organization"
+        label={t('labels.organization')}
         options={options}
         rules={{
           required: { value: true, message: 'This field is required' },
@@ -127,7 +130,7 @@ const CreateProject = () => {
         <FormTextField
           name="name"
           control={control}
-          label="Project Name"
+          label={t('labels.projectName')}
           rules={{
             required: { value: true, message: 'This field is required' },
             maxLength: { value: 50, message: 'This field must be less than 50 characters' },
@@ -139,7 +142,7 @@ const CreateProject = () => {
       <FormTextField
         name="description"
         control={control}
-        label="Description"
+        label={t('labels.description')}
         multiline
         rows={3}
         rules={{
@@ -157,16 +160,18 @@ const CreateProject = () => {
               resetSelectedUserIds();
             }}
             variant="outlined"
+            startIcon={<Undo />}
           >
-            Reset
+            {t('common.reset')}
           </Button>
           <Button
             onClick={handleSubmit(onSubmit)}
             variant="contained"
             disabled={!isValid}
+            startIcon={<Save />}
             sx={{ mx: 1 }}
           >
-            Save
+            {t('common.save')}
           </Button>
         </Grid>
       </Grid>
@@ -174,8 +179,11 @@ const CreateProject = () => {
   );
 
   return (
-    <Page title="Create New Project">
-      <PageHeader title="New Project" subTitle="Create a new project for an organization">
+    <Page title={t('pages.projects.createProject.title')}>
+      <PageHeader
+        title={t('pages.projects.createProject.title')}
+        subTitle={t('pages.projects.createProject.subTitle')}
+      >
         <Grid container justifyContent="flex-end">
           <Grid>
             <CancelButton linkTo="../" />

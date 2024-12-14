@@ -1,4 +1,4 @@
-import { alpha, createTheme, lighten, darken, PaletteMode, PaletteOptions } from '@mui/material';
+import { createTheme, PaletteMode, PaletteOptions } from '@mui/material';
 
 import { colors, themeColors } from 'src/common/theme/colors';
 

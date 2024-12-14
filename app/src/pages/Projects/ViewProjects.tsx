@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import { Card } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 import { useUserInfo } from 'src/common/api/user';
 import Page from 'src/common/components/Page';
@@ -21,6 +22,7 @@ import PaginatedGrid from 'src/common/components/PaginatedGrid';
 const PAGE_SIZE = 10;
 
 const ViewProjects = () => {
+  const { t } = useTranslation();
   const userInfo = useUserInfo();
 
   const [queryOptions, setQueryOptions] = useState({
@@ -91,7 +93,7 @@ const ViewProjects = () => {
         to="create"
         startIcon={<AddCircleOutlineOutlined />}
       >
-        Create Project
+        {t('pages.projects.viewProjects.createProject')}
       </Button>
     );
   }
@@ -99,7 +101,7 @@ const ViewProjects = () => {
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('common.name'),
       flex: 0.25,
       renderCell: (cellValues) => {
         return (
@@ -109,7 +111,7 @@ const ViewProjects = () => {
     },
     {
       field: 'organization',
-      headerName: 'Organization',
+      headerName: t('entities.organization'),
       sortable: false,
       filterable: false,
       flex: 0.25,
@@ -119,7 +121,7 @@ const ViewProjects = () => {
     },
     {
       field: 'updatedAt',
-      headerName: 'Updated',
+      headerName: t('common.updated'),
       filterable: false,
       flex: 0.25,
       renderCell: (cellValues) => {
@@ -128,7 +130,7 @@ const ViewProjects = () => {
     },
     {
       field: 'createdAt',
-      headerName: 'Created',
+      headerName: t('common.created'),
       filterable: false,
       flex: 0.25,
       renderCell: (cellValues) => {
@@ -189,8 +191,11 @@ const ViewProjects = () => {
   );
 
   return (
-    <Page title="Projects">
-      <PageHeader title="Projects" subTitle="Manage projects for an organization">
+    <Page title={t('pages.projects.viewProjects.title')}>
+      <PageHeader
+        title={t('pages.projects.viewProjects.title')}
+        subTitle={t('pages.projects.viewProjects.subTitle')}
+      >
         <Grid container justifyContent="flex-end">
           <Grid>{createProjectButton}</Grid>
         </Grid>

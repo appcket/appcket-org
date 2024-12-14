@@ -1,0 +1,133 @@
+{
+  "common": {
+    "updated": "Actualizado",
+    "created": "Creado",
+    "deleted": "Eliminado",
+    "from": "de",
+    "to": "a",
+    "name": "Nombre",
+    "edit": "Editar",
+    "save": "Guardar",
+    "reset": "Restablecer",
+    "cancel": "Cancelar",
+    "history": "Historia",
+    "logout": "Cerrar sesión",
+    "lightMode": "Modo de Luz",
+    "darkMode": "Modo Oscuro",
+    "footerText": "Reservados todos los derechos",
+    "roles": {
+      "captain": "Capitán",
+      "manager": "Gerente",
+      "teammate": "Compañera de equipo",
+      "spectator": "Espectador"
+    },
+    "navigation": {
+      "home": "Inicio",
+      "teams": "Equipos",
+      "projects": "Proyectos",
+      "about": "Acerca"
+    }
+  },
+  "entities": {
+    "organization": "Organización",
+    "team": "Equipo",
+    "project": "Proyecto"
+  },
+  "labels": {
+    "assignedTo": "Asignado a",
+    "status": "Estado",
+    "organization": "Organización",
+    "teamName": "Equipo de Nombre",
+    "projectName": "Proyecto de Nombre",
+    "description": "Descripción",
+    "users": "Usuarios",
+    "tasks": "Tareas"
+  },
+  "messages": {
+    "error": {
+      "error": "Error",
+      "unableView": "No se puede ver ",
+      "unableEdit": "No se puede editar "
+    },
+    "info": {
+      "noUsersAssociatedWith": "No hay usuarios asociados con este",
+      "noHistory": "Aún no hay historial"
+    },
+    "warning": {}
+  },
+  "pages": {
+    "home": {
+      "title": "Inicio",
+      "subTitle": "Bienvenido a la página de inicio de Appcket",
+      "cardTitle": "Tarjeta de inicio",
+      "body": "Edite el contenido de su página de inicio en src/pages/Home/index.tsx."
+    },
+    "about": {
+      "title": "Acerca",
+      "subTitle": "Obtenga más información sobre el kit de inicio de Appcket"
+    },
+    "teams": {
+      "viewTeams": {
+        "title": "Equipos",
+        "subTitle": "Gestionar equipos para una organización",
+        "createTeam": "Crear Equipo"
+      },
+      "viewTeam": {
+        "titleFragment": "Equipo",
+        "subTitle": "Detalles del equipo"
+      },
+      "editTeam": {
+        "titleFragment": "Editar equipo",
+        "subTitle": "Editar detalles del equipo"
+      },
+      "createTeam": {
+        "title": "Nuevo equipo",
+        "subTitle": "Crear un nuevo equipo para una organización"
+      }
+    },
+    "projects": {
+      "viewProjects": {
+        "title": "Proyectos",
+        "subTitle": "Gestionar proyectos para una organización",
+        "createProject": "Crear Proyecto"
+      },
+      "viewProject": {
+        "titleFragment": "Proyecto",
+        "subTitle": "Detalles del proyecto",
+        "viewTasks": "Ver Tareas"
+      },
+      "createProject": {
+        "title": "Nuevo Proyecto",
+        "subTitle": "Crear un nuevo proyecto para una organización"
+      },
+      "editProject": {
+        "titleFragment": "Editar Proyecto",
+        "subTitle": "Editar detalles del proyecto"
+      }
+    },
+    "tasks": {
+      "taskName": "Nombre de la tarea",
+      "viewProjectTasks": {
+        "title": "Tareas",
+        "subTitle": "Administrar tareas para un proyecto",
+        "createTask": "Crear Tarea"
+      },
+      "viewTask": {
+        "titleFragment": "Tarea",
+        "subTitle": "Detalles del Tarea",
+        "viewTasks": "Ver tareas"
+      },
+      "createTask": {
+        "title": "Nuevo Tarea",
+        "subTitle": "Crear un nuevo tarea para una organización"
+      },
+      "editTask": {
+        "titleFragment": "Editar Tarea",
+        "subTitle": "Editar detalles del tarea"
+      }
+    }
+  },
+  "description": {
+    "part2": "😊"
+  }
+}

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
 import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import { Card } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Link, NavLink } from 'react-router-dom';
 
 import { useUserInfo } from 'src/common/api/user';
 import { useSearchTeams } from 'src/common/api/team';
@@ -21,6 +22,7 @@ import { formatDatetime } from 'src/common/utils/general';
 const PAGE_SIZE = 10;
 
 const ViewTeams = () => {
+  const { t } = useTranslation();
   const userInfo = useUserInfo();
 
   const [queryOptions, setQueryOptions] = useState({
@@ -92,7 +94,7 @@ const ViewTeams = () => {
         to="create"
         startIcon={<AddCircleOutlineOutlined />}
       >
-        Create Team
+        {t('pages.teams.viewTeams.createTeam')}
       </Button>
     );
   }
@@ -100,7 +102,7 @@ const ViewTeams = () => {
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('common.name'),
       flex: 0.25,
       renderCell: (cellValues) => {
         return (
@@ -110,7 +112,7 @@ const ViewTeams = () => {
     },
     {
       field: 'organization',
-      headerName: 'Organization',
+      headerName: t('entities.organization'),
       sortable: false,
       filterable: false,
       flex: 0.25,
@@ -120,7 +122,7 @@ const ViewTeams = () => {
     },
     {
       field: 'updatedAt',
-      headerName: 'Updated',
+      headerName: t('common.updated'),
       filterable: false,
       flex: 0.25,
       renderCell: (cellValues) => {
@@ -129,7 +131,7 @@ const ViewTeams = () => {
     },
     {
       field: 'createdAt',
-      headerName: 'Created',
+      headerName: t('common.created'),
       filterable: false,
       flex: 0.25,
       renderCell: (cellValues) => {
@@ -193,8 +195,11 @@ const ViewTeams = () => {
   );
 
   return (
-    <Page title="Teams">
-      <PageHeader title="Teams" subTitle="Manage teams for an organization">
+    <Page title={t('pages.teams.viewTeams.title')}>
+      <PageHeader
+        title={t('pages.teams.viewTeams.title')}
+        subTitle={t('pages.teams.viewTeams.subTitle')}
+      >
         <Grid container justifyContent="flex-end">
           <Grid>{createTeamButton}</Grid>
         </Grid>

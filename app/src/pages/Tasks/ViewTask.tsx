@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 
 import { useGetTask } from 'src/common/api/task';
 import { useUserInfo } from 'src/common/api/user';
@@ -19,6 +20,7 @@ import { displayUser } from 'src/common/utils/general';
 import hasPermission from 'src/common/utils/hasPermission';
 
 const Task = () => {
+  const { t } = useTranslation();
   const params = useParams();
   const taskId = params.taskId || '';
   const userInfo = useUserInfo();
@@ -64,19 +66,21 @@ const Task = () => {
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
           <Typography variant="body1" sx={{ mb: 3 }}>
-            Project:{' '}
+            {t('entities.project')}:{' '}
             <Button component={Link} to={`/projects/${data?.getTask?.project.id}`}>
               {data?.getTask?.project.name}
             </Button>
           </Typography>
           <Typography variant="body1">
-            Status:{' '}
+            {t('labels.status')}:{' '}
             {data?.getTask?.taskStatusType ? data?.getTask?.taskStatusType?.name : 'Status Not Set'}
           </Typography>
           <Typography variant="body1">
-            Assigned to: {displayedUser ? `${displayedUser}` : 'Unassigned'}
+            {t('labels.assignedTo')}: {displayedUser ? `${displayedUser}` : 'Unassigned'}
           </Typography>
-          <Typography variant="body1">Description: {data?.getTask?.description}</Typography>
+          <Typography variant="body1">
+            {t('labels.description')}: {data?.getTask?.description}
+          </Typography>
         </Grid>
         {entityHistoryComponent}
       </Paper>
@@ -84,8 +88,8 @@ const Task = () => {
   }
 
   return (
-    <Page title={`Task - ${data?.getTask?.name}`}>
-      <PageHeader title={data?.getTask?.name} subTitle="Task details" />
+    <Page title={`${t('pages.tasks.viewTask.titleFragment')} - ${data?.getTask?.name}`}>
+      <PageHeader title={data?.getTask?.name} subTitle={t('pages.tasks.viewTask.subTitle')} />
       {taskComponent}
     </Page>
   );

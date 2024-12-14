@@ -1,3 +1,4 @@
+import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import {
   DataGrid,
@@ -6,6 +7,7 @@ import {
   GRID_CHECKBOX_SELECTION_COL_DEF,
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import { useSearchUsers } from 'src/common/api/user';
 import { useStore } from 'src/common/store';
@@ -19,6 +21,7 @@ type Props = {
 const getFullName = (value: string, row: User) => `${row.firstName || ''} ${row.lastName || ''}`;
 
 const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
+  const { t } = useTranslation();
   const searchUsersQuery = useSearchUsers(organizationId);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
 
@@ -29,7 +32,7 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
     },
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('common.name'),
       flex: 1,
       minWidth: 150,
       valueGetter: getFullName,
@@ -42,7 +45,7 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
     return (
       <div>
         <Typography variant="body1" sx={{ mb: 2 }}>
-          {resourceType} Users:
+          {resourceType} {t('labels.users')}:
         </Typography>
         <DataGrid
           rows={rows}
@@ -62,7 +65,7 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
       </div>
     );
   } else {
-    return <div>Loading users...</div>;
+    return <Skeleton variant="rectangular" height={60} />;
   }
 };
 

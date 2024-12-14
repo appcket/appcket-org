@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import { useTranslation } from 'react-i18next';
 
 import { useGetTeam } from 'src/common/api/team';
 import { useUserInfo } from 'src/common/api/user';
@@ -21,6 +22,7 @@ import Permission from 'src/common/models/Permission';
 import { displayUser } from 'src/common/utils/general';
 
 const Team = () => {
+  const { t } = useTranslation();
   const params = useParams();
   const teamId = params.teamId || '';
   const userInfo = useUserInfo();
@@ -43,9 +45,17 @@ const Team = () => {
   if (isLoading || isFetching) {
     teamComponent = <Loading />;
   } else if (status === QueryStatuses.Error && error instanceof Error) {
-    teamComponent = <Typography component="p">Error: {error.message}</Typography>;
+    teamComponent = (
+      <Typography component="p">
+        {t('messages.error.error')}: {error.message}
+      </Typography>
+    );
   } else {
-    teamComponent = <Typography component="p">Unable to view Team</Typography>;
+    teamComponent = (
+      <Typography component="p">
+        {t('messages.error.unableView')} {t('resources.team')}
+      </Typography>
+    );
 
     let updateTeamButton = <EditButton linkTo="#" variant="outlined" isDisabled={true} />;
 
@@ -60,7 +70,10 @@ const Team = () => {
     const usersComponent = (
       <div>
         <Typography variant="body1">
-          Users: {data?.users.length === 0 ? 'No users associated with this team' : null}
+          {t('labels.users')}:{' '}
+          {data?.users.length === 0
+            ? t('messages.info.noUsersAssociatedWith') + ' ' + t('entities.team')
+            : null}
         </Typography>
         <List>
           {data?.users.map((user) => (
@@ -77,8 +90,12 @@ const Team = () => {
           <Grid>{updateTeamButton}</Grid>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Typography variant="body1">Organization: {data?.organization.name}</Typography>
-          <Typography variant="body1">Description: {data?.description}</Typography>
+          <Typography variant="body1">
+            {t('labels.organization')}: {data?.organization.name}
+          </Typography>
+          <Typography variant="body1">
+            {t('labels.description')}: {data?.description}
+          </Typography>
           {usersComponent}
         </Grid>
         {entityHistoryComponent}
@@ -87,8 +104,8 @@ const Team = () => {
   }
 
   return (
-    <Page title={`Team - ${data?.name}`}>
-      <PageHeader title={data?.name} subTitle="Team details" />
+    <Page title={`${t('pages.teams.viewTeam.titleFragment')} - ${data?.name}`}>
+      <PageHeader title={data?.name} subTitle={t('pages.teams.viewTeam.subTitle')} />
       {teamComponent}
     </Page>
   );

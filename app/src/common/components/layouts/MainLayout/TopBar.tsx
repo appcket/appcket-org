@@ -12,12 +12,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
-import Container from '@mui/material/Container';
-
 import { FaUserShield } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
+
 import { useUserInfo } from 'src/common/api/user';
 import { displayUser } from 'src/common/utils/general';
 import ThemeColorModeToggler from 'src/common/components/buttons/ThemeColorModeToggler';
+import LocaleSwitcher from 'src/common/components/LocaleSwitcher';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -48,6 +49,7 @@ type Props = {
 };
 
 const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const { data } = useUserInfo();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -88,7 +90,8 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
             {/* Top Toolbar */}
           </Typography>
         </Box>
-        <Box sx={{ mr: 2 }}>
+        <Box sx={{ mr: 1, display: 'inline-flex' }}>
+          <LocaleSwitcher />
           <ThemeColorModeToggler />
         </Box>
         <Box sx={{ flexGrow: 0 }}>
@@ -116,13 +119,13 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
             <MenuItem key="role">
               <FaUserShield title="Role" />
               <Typography sx={{ ml: '5px' }} textAlign="center">
-                {data?.role}
+                {t(`common.roles.${data?.role.toLowerCase()}`)}
               </Typography>
             </MenuItem>
             <MenuItem key="logout" onClick={() => auth.signoutRedirect()}>
               <LogoutOutlined />
               <Typography sx={{ ml: '5px' }} textAlign="center">
-                Logout
+                {t('common.logout')}
               </Typography>
             </MenuItem>
           </Menu>

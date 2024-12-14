@@ -4,44 +4,24 @@ import { RiHome4Line, RiInformationLine } from 'react-icons/ri';
 import { TbShirtSport } from 'react-icons/tb';
 import { CgBriefcase } from 'react-icons/cg';
 import { Scrollbars } from 'rc-scrollbars';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Drawer from '@mui/material/Drawer';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import { Menu as MenuIcon } from '@mui/icons-material';
-import { find } from 'lodash';
-
 import { grey } from '@mui/material/colors';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import Skeleton from '@mui/material/Skeleton';
+import Typography from '@mui/material/Typography';
+import { find } from 'lodash';
+import { useTranslation } from 'react-i18next';
+
 import { getTheme } from 'src/common/theme';
 import { useUserInfo } from 'src/common/api/user';
 import ReactLogo from 'src/assets/logo.svg?react';
 import SideBarHeader from 'src/common/components/layouts/MainLayout/SideBar/Header';
 import NavItem from 'src/common/components/layouts/MainLayout/SideBar/NavItem';
-
-const items = [
-  {
-    href: '/',
-    icon: RiHome4Line,
-    title: 'Home',
-  },
-  {
-    href: '/teams',
-    icon: TbShirtSport,
-    title: 'Teams',
-  },
-  {
-    href: '/projects',
-    icon: CgBriefcase,
-    title: 'Projects',
-  },
-  {
-    href: '/about',
-    icon: RiInformationLine,
-    title: 'About',
-  },
-];
+import QueryStatuses from 'src/common/enums/queryStatuses.enum';
 
 type Props = {
   open: boolean;
@@ -51,10 +31,34 @@ type Props = {
 };
 
 const SideBar = ({ open, handleSideBarClose, drawerWidth, lessThanSmall }: Props) => {
+  const { t } = useTranslation();
   const theme = getTheme();
-  const { data } = useUserInfo();
+  const userInfo = useUserInfo();
   const drawerVariant = lessThanSmall ? 'temporary' : 'persistent';
   const handleClose = () => handleSideBarClose();
+
+  const items = [
+    {
+      href: '/',
+      icon: RiHome4Line,
+      title: t('common.navigation.home'),
+    },
+    {
+      href: '/teams',
+      icon: TbShirtSport,
+      title: t('common.navigation.teams'),
+    },
+    {
+      href: '/projects',
+      icon: CgBriefcase,
+      title: t('common.navigation.projects'),
+    },
+    {
+      href: '/about',
+      icon: RiInformationLine,
+      title: t('common.navigation.about'),
+    },
+  ];
 
   return (
     <Drawer
@@ -114,12 +118,20 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth, lessThanSmall }: Props
             src="/images/avatars/avatar_1.png"
             to="/profile"
           />
-          <Typography className="text-slate-200 mt-4" variant="h4">
-            {data?.firstName} {data?.lastName}
-          </Typography>
-          <Typography className="text-slate-200" variant="body2">
-            {find(data?.attributes, { name: 'jobTitle' })?.value}
-          </Typography>
+          {userInfo?.status !== QueryStatuses.Pending ? (
+            <Typography className="text-slate-200 mt-4" variant="h4">
+              {userInfo?.data?.firstName} {userInfo?.data?.lastName}
+            </Typography>
+          ) : (
+            <Skeleton variant="rectangular" width={160} height={10} sx={{ mt: 3, mb: 1 }} />
+          )}
+          {userInfo?.status !== QueryStatuses.Pending ? (
+            <Typography className="text-slate-200" variant="body2">
+              {find(userInfo?.data?.attributes, { name: 'jobTitle' })?.value}
+            </Typography>
+          ) : (
+            <Skeleton variant="rectangular" width={160} height={10} />
+          )}
         </Box>
         <List>
           {items.map((item) => (

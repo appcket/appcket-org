@@ -2,6 +2,7 @@ import { styled, Theme } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
+import { useTranslation } from 'react-i18next';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -35,6 +36,8 @@ type Props = {
 };
 
 const BottomBar = ({ theme, open, drawerWidth, marginLeftSize, lessThanSmall }: Props) => {
+  const { t } = useTranslation();
+
   if (lessThanSmall) {
     drawerWidth = 0;
   }
@@ -52,7 +55,7 @@ const BottomBar = ({ theme, open, drawerWidth, marginLeftSize, lessThanSmall }: 
           {new Intl.DateTimeFormat('en-US', {
             year: 'numeric',
           }).format(new Date())}{' '}
-          Appcket. All rights reserved.
+          Appcket. {t('common.footerText')}.
         </Typography>
       </Toolbar>
     </AppBar>

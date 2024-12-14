@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { Save, Undo } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { get } from 'lodash';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import { useCreateTeam } from 'src/common/api/team';
 import { useUserInfo } from 'src/common/api/user';
@@ -24,6 +26,7 @@ import User from 'src/common/models/User';
 import { useStore } from 'src/common/store';
 
 const CreateTeam = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const {
@@ -101,7 +104,7 @@ const CreateTeam = () => {
         name="organizationId"
         className="mb-4"
         control={control}
-        label="Organization"
+        label={t('labels.organization')}
         options={options}
         rules={{
           required: { value: true, message: 'This field is required' },
@@ -122,7 +125,7 @@ const CreateTeam = () => {
         <FormTextField
           name="name"
           control={control}
-          label="Team Name"
+          label={t('labels.teamName')}
           rules={{
             required: { value: true, message: 'This field is required' },
             maxLength: { value: 50, message: 'This field must be less than 50 characters' },
@@ -134,7 +137,7 @@ const CreateTeam = () => {
       <FormTextField
         name="description"
         control={control}
-        label="Description"
+        label={t('labels.description')}
         multiline
         rows={3}
         rules={{
@@ -152,16 +155,18 @@ const CreateTeam = () => {
               resetSelectedUserIds();
             }}
             variant="outlined"
+            startIcon={<Undo />}
           >
-            Reset
+            {t('common.reset')}
           </Button>
           <Button
             onClick={handleSubmit(onSubmit)}
             variant="contained"
             disabled={!isValid}
+            startIcon={<Save />}
             sx={{ mx: 1 }}
           >
-            Save
+            {t('common.save')}
           </Button>
         </Grid>
       </Grid>
@@ -169,8 +174,11 @@ const CreateTeam = () => {
   );
 
   return (
-    <Page title="New Team">
-      <PageHeader title="New Team" subTitle="Create a new team for an organization">
+    <Page title={t('pages.teams.createTeam.title')}>
+      <PageHeader
+        title={t('pages.teams.createTeam.title')}
+        subTitle={t('pages.teams.createTeam.subTitle')}
+      >
         <Grid container justifyContent="flex-end">
           <Grid>
             <CancelButton linkTo="../" />

@@ -1,0 +1,136 @@
+{
+  "common": {
+    "updated": "Updated",
+    "created": "Created",
+    "deleted": "Deleted",
+    "from": "from",
+    "to": "to",
+    "name": "Name",
+    "edit": "Edit",
+    "save": "Save",
+    "reset": "Reset",
+    "cancel": "Cancel",
+    "history": "History",
+    "logout": "Logout",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "footerText": "All rights reserved",
+    "roles": {
+      "captain": "Captain",
+      "manager": "Manager",
+      "teammate": "Teammate",
+      "spectator": "Spectator"
+    },
+    "navigation": {
+      "home": "Home",
+      "teams": "Teams",
+      "projects": "Projects",
+      "about": "About"
+    }
+  },
+  "entities": {
+    "organization": "Organization",
+    "team": "Team",
+    "project": "Project",
+    "task": "Task"
+  },
+  "labels": {
+    "assignedTo": "Assigned To",
+    "status": "Status",
+    "organization": "Organization",
+    "teamName": "Team Name",
+    "projectName": "Project Name",
+    "description": "Description",
+    "users": "Users",
+    "tasks": "Tasks"
+  },
+  "messages": {
+    "error": {
+      "error": "Error",
+      "unableView": "Unable to view ",
+      "unableEdit": "Unable to edit "
+    },
+    "info": {
+      "noUsersAssociatedWith": "No users associated with this",
+      "noHistory": "No history yet"
+    },
+    "warning": {}
+  },
+  "pages": {
+    "home": {
+      "title": "Home",
+      "subTitle": "Welcome to the Appcket home page",
+      "cardTitle": "Home card",
+      "body": "Edit your homepage contents in src/pages/Home/index.tsx."
+    },
+    "about": {
+      "title": "About",
+      "subTitle": "Welcome to the Appcket home page"
+    },
+    "teams": {
+      "viewTeams": {
+        "title": "Teams",
+        "subTitle": "Manage teams for an organization",
+        "createTeam": "Create Team"
+      },
+      "viewTeam": {
+        "titleFragment": "Team",
+        "subTitle": "Team details"
+      },
+      "createTeam": {
+        "title": "New Team",
+        "subTitle": "Create a new team for an organization"
+      },
+      "editTeam": {
+        "titleFragment": "Edit Team",
+        "subTitle": "Edit team details"
+      }
+    },
+    "projects": {
+      "viewProjects": {
+        "title": "Projects",
+        "subTitle": "Manage projects for an organization",
+        "createProject": "Create Project"
+      },
+      "viewProject": {
+        "titleFragment": "Project",
+        "subTitle": "Project details",
+        "viewTasks": "View Tasks"
+      },
+      "createProject": {
+        "title": "New Project",
+        "subTitle": "Create a new project for an organization"
+      },
+      "editProject": {
+        "titleFragment": "Edit Project",
+        "subTitle": "Edit project details"
+      }
+    },
+    "tasks": {
+      "taskName": "Task Name",
+      "viewProjectTasks": {
+        "title": "Tasks",
+        "subTitle": "Manage tasks for a project",
+        "createTask": "Create Task"
+      },
+      "viewTask": {
+        "titleFragment": "Task",
+        "subTitle": "Task details",
+        "viewTasks": "View Tasks"
+      },
+      "createTask": {
+        "title": "New Task",
+        "subTitle": "Create a new task for an organization"
+      },
+      "editTask": {
+        "titleFragment": "Edit Task",
+        "subTitle": "Edit task details"
+      }
+    }
+  },
+  "color": "color",
+  "internationalization": "internationalization",
+  "description": {
+    "part2": "😉"
+  }
+}

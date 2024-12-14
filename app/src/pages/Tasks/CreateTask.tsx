@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Save, Undo } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 
 import { useGetProject } from 'src/common/api/project';
 import { useCreateTask } from 'src/common/api/task';
@@ -20,6 +22,7 @@ import CreateTaskInput from 'src/common/models/inputs/CreateTaskInput';
 import Task from 'src/common/models/Task';
 
 const CreateTask = () => {
+  const { t } = useTranslation();
   const params = useParams();
   let projectId = '';
   if (params.projectId) {
@@ -77,7 +80,7 @@ const CreateTask = () => {
         name="taskStatusTypeId"
         className="mb-4"
         control={control}
-        label="Status"
+        label={t('labels.status')}
         options={taskStatusTypeOptions}
       />
     );
@@ -90,7 +93,7 @@ const CreateTask = () => {
         name="assignedTo"
         className="mb-4"
         control={control}
-        label="Assigned To"
+        label={t('labels.assignedTo')}
         options={projectUserOptions}
       />
     );
@@ -103,7 +106,7 @@ const CreateTask = () => {
         {
           onSuccess: (data) => {
             const createdTask = data as Task;
-            enqueueSnackbar(`Task created: ${createdTask.name}`, {
+            enqueueSnackbar(`${t('entities.task')} ${t('common.created')}: ${createdTask.name}`, {
               variant: 'success',
             });
             navigate(`/tasks/${createdTask.id}`);
@@ -120,7 +123,7 @@ const CreateTask = () => {
           </Grid>
         </Grid>
         <Typography variant="body1" sx={{ mb: 3 }}>
-          Project:{' '}
+          {t('entities.project')}:{' '}
           <Button component={Link} to={`/projects/${getProjectQuery.data.getProject.id}`}>
             {getProjectQuery.data.getProject.name}
           </Button>
@@ -129,7 +132,7 @@ const CreateTask = () => {
           <FormTextField
             name="name"
             control={control}
-            label="Task Name"
+            label={t('pages.tasks.taskName')}
             rules={{
               required: { value: true, message: 'This field is required' },
               maxLength: { value: 100, message: 'This field must be less than 100 characters' },
@@ -142,7 +145,7 @@ const CreateTask = () => {
           name="description"
           className="mb-4"
           control={control}
-          label="Description"
+          label={t('labels.description')}
           multiline
           rows={3}
           rules={{
@@ -161,16 +164,18 @@ const CreateTask = () => {
                 reset();
               }}
               variant="outlined"
+              startIcon={<Undo />}
             >
-              Reset
+              {t('common.reset')}
             </Button>
             <Button
               onClick={handleSubmit(onSubmit)}
               variant="contained"
               disabled={!isValid}
+              startIcon={<Save />}
               sx={{ mx: 1 }}
             >
-              Save
+              {t('common.save')}
             </Button>
           </Grid>
         </Grid>
@@ -179,8 +184,11 @@ const CreateTask = () => {
   }
 
   return (
-    <Page title="Create New Task">
-      <PageHeader title="New Task" subTitle="Create a new task for a project" />
+    <Page title={t('pages.tasks.createTask.title')}>
+      <PageHeader
+        title={t('pages.tasks.createTask.title')}
+        subTitle={t('pages.tasks.createTask.subTitle')}
+      />
       <div>{createTaskComponent}</div>
     </Page>
   );

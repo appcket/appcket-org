@@ -1,9 +1,9 @@
 import Button, { ButtonPropsVariantOverrides } from '@mui/material/Button';
 import { OverridableStringUnion } from '@mui/types';
 import PropTypes from 'prop-types';
-import { Undo } from '@mui/icons-material';
-
+import { TiCancel } from 'react-icons/ti';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   variant?: OverridableStringUnion<'text' | 'outlined' | 'contained', ButtonPropsVariantOverrides>;
@@ -12,6 +12,8 @@ type Props = {
 };
 
 const CancelButton = ({ variant = 'contained', linkTo, isDisabled }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <Button
       variant={variant}
@@ -19,9 +21,9 @@ const CancelButton = ({ variant = 'contained', linkTo, isDisabled }: Props) => {
       component={Link}
       to={linkTo}
       disabled={isDisabled}
-      startIcon={<Undo />}
+      startIcon={<TiCancel />}
     >
-      Cancel
+      {t('common.cancel')}
     </Button>
   );
 };

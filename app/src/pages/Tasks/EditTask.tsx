@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Save, Undo } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 
 import { useGetTask, useUpdateTask } from 'src/common/api/task';
 import CancelButton from 'src/common/components/buttons/CancelButton';
@@ -19,6 +21,7 @@ import UpdateTaskInput from 'src/common/models/inputs/UpdateTaskInput';
 import Task from 'src/common/models/Task';
 
 const EditTask = () => {
+  const { t } = useTranslation();
   const params = useParams();
   let taskId = '';
   if (params.taskId) {
@@ -71,7 +74,7 @@ const EditTask = () => {
         name="taskStatusTypeId"
         className="mb-4"
         control={control}
-        label="Status"
+        label={t('labels.status')}
         options={taskStatusTypeOptions}
       />
     );
@@ -98,7 +101,7 @@ const EditTask = () => {
         name="assignedTo"
         className="mb-4"
         control={control}
-        label="Assigned To"
+        label={t('labels.assignedTo')}
         options={projectUserOptions}
       />
     );
@@ -112,9 +115,12 @@ const EditTask = () => {
         {
           onSuccess: (data) => {
             const updatedTask = data as Task;
-            enqueueSnackbar(`Task updated: ${updatedTask.name}`, {
-              variant: 'success',
-            });
+            enqueueSnackbar(
+              `${t('entities.task')} ${t('common.updated').toLowerCase()}: ${updatedTask.name}`,
+              {
+                variant: 'success',
+              },
+            );
             navigate(`/tasks/${updatedTask.id}`);
           },
         },
@@ -129,7 +135,7 @@ const EditTask = () => {
           </Grid>
         </Grid>
         <Typography variant="body1" sx={{ mb: 3 }}>
-          Project:{' '}
+          {t('entities.project')}:{' '}
           <Button component={Link} to={`/projects/${getTaskQuery.data.getTask.project.id}`}>
             {getTaskQuery.data.getTask.project.name}
           </Button>
@@ -138,7 +144,7 @@ const EditTask = () => {
           <FormTextField
             name="name"
             control={control}
-            label="Task Name"
+            label={t('pages.tasks.taskName')}
             rules={{
               required: { value: true, message: 'This field is required' },
               maxLength: { value: 100, message: 'This field must be less than 100 characters' },
@@ -151,7 +157,7 @@ const EditTask = () => {
           name="description"
           className="mb-4"
           control={control}
-          label="Description"
+          label={t('labels.description')}
           multiline
           rows={3}
           rules={{
@@ -170,16 +176,18 @@ const EditTask = () => {
                 reset();
               }}
               variant="outlined"
+              startIcon={<Undo />}
             >
-              Reset
+              {t('common.reset')}
             </Button>
             <Button
               onClick={handleSubmit(onSubmit)}
               variant="contained"
               disabled={!isValid}
+              startIcon={<Save />}
               sx={{ mx: 1 }}
             >
-              Save
+              {t('common.save')}
             </Button>
           </Grid>
         </Grid>
@@ -188,8 +196,13 @@ const EditTask = () => {
   }
 
   return (
-    <Page title={`Edit Task - ${getTaskQuery?.data?.getTask?.name}`}>
-      <PageHeader title={getTaskQuery?.data?.getTask?.name} subTitle="Edit Task details" />
+    <Page
+      title={`${t('pages.tasks.editTask.titleFragment')} - ${getTaskQuery?.data?.getTask?.name}`}
+    >
+      <PageHeader
+        title={getTaskQuery?.data?.getTask?.name}
+        subTitle={t('pages.tasks.editTask.subTitle')}
+      />
       <div>{editTaskComponent}</div>
     </Page>
   );

@@ -4,6 +4,7 @@ import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Grid from '@mui/material/Grid2';
 import Button from '@mui/material/Button';
 import { Card } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 import { useUserInfo } from 'src/common/api/user';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
@@ -23,6 +24,7 @@ import { getOrderByInnerFieldName } from 'src/common/utils/general';
 const PAGE_SIZE = 10;
 
 const ViewProjectTasks = () => {
+  const { t } = useTranslation();
   const params = useParams();
   let projectId = '';
   if (params.projectId) {
@@ -61,7 +63,7 @@ const ViewProjectTasks = () => {
 
   let createTaskButton = (
     <Button variant="outlined" disabled>
-      Create
+      {t('pages.tasks.viewProjectTasks.createTask')}
     </Button>
   );
 
@@ -74,7 +76,7 @@ const ViewProjectTasks = () => {
         to="create"
         startIcon={<AddCircleOutlineOutlined />}
       >
-        Create Task
+        {t('pages.tasks.viewProjectTasks.createTask')}
       </Button>
     );
   }
@@ -82,7 +84,7 @@ const ViewProjectTasks = () => {
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('common.name'),
       flex: 0.25,
       renderCell: (cellValues) => {
         return (
@@ -92,7 +94,7 @@ const ViewProjectTasks = () => {
     },
     {
       field: 'assignedTo',
-      headerName: 'Assigned To',
+      headerName: t('labels.assignedTo'),
       flex: 0.2,
       renderCell: (cellValues) => {
         return `${displayUser(cellValues.row.node.assignedTo)}`;
@@ -100,7 +102,7 @@ const ViewProjectTasks = () => {
     },
     {
       field: 'taskStatusType',
-      headerName: 'Status',
+      headerName: t('labels.status'),
       flex: 0.15,
       renderCell: (cellValues) => {
         return `${cellValues.row.node.taskStatusType.name}`;
@@ -108,7 +110,7 @@ const ViewProjectTasks = () => {
     },
     {
       field: 'updatedAt',
-      headerName: 'Updated',
+      headerName: t('common.updated'),
       filterable: false,
       flex: 0.15,
       renderCell: (cellValues) => {
@@ -117,7 +119,7 @@ const ViewProjectTasks = () => {
     },
     {
       field: 'createdAt',
-      headerName: 'Created',
+      headerName: t('common.created'),
       filterable: false,
       flex: 0.15,
       renderCell: (cellValues) => {
@@ -191,10 +193,10 @@ const ViewProjectTasks = () => {
   );
 
   return (
-    <Page title={`${getProjectResult.data?.getProject.name} Tasks`}>
+    <Page title={`${getProjectResult.data?.getProject.name} ${t('labels.tasks')}`}>
       <PageHeader
-        title={`${getProjectResult.data?.getProject.name} Tasks`}
-        subTitle="Manage tasks for a project"
+        title={`${getProjectResult.data?.getProject.name} ${t('labels.tasks')}`}
+        subTitle={t('pages.tasks.viewProjectTasks.subTitle')}
       >
         <Grid container justifyContent="flex-end">
           <Grid>{createTaskButton}</Grid>
