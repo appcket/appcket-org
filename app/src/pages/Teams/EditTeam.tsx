@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Save, Undo } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { get } from 'lodash';
@@ -167,10 +167,6 @@ const EditTeam = () => {
         {/* instead of passing selectedUsers prop to child components, we use zustand to hold local state.
             In this case, it tracks initially selected users and user-selected users so the 
             parent component can have this data and send it back to the api onSubmit*/}
-        <ResourceUsersGrid
-          resourceType={t('entities.team')}
-          organizationId={getTeamQuery.data.organization.id}
-        />
 
         <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
           <Grid>

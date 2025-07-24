@@ -5,6 +5,8 @@ import {
   GridRowsProp,
   GridColDef,
   GRID_CHECKBOX_SELECTION_COL_DEF,
+  GridRowSelectionModel,
+  GridRowId,
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useSearchUsers } from 'src/common/api/user';
 import { useStore } from 'src/common/store';
 import User from '../models/User';
+import { useEffect, useState } from 'react';
 
 type Props = {
   resourceType: string;
@@ -24,6 +27,17 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
   const { t } = useTranslation();
   const searchUsersQuery = useSearchUsers(organizationId);
   const selectedUserIds = useStore((state) => state.resourceUsers.selectedUserIds);
+  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
+    type: 'include',
+    ids: new Set(),
+  });
+
+  useEffect(() => {
+    setRowSelectionModel({
+      type: 'include',
+      ids: new Set(selectedUserIds),
+    });
+  }, [rowSelectionModel]);
 
   const columns: GridColDef[] = [
     {
@@ -52,12 +66,13 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
           columns={columns}
           checkboxSelection
           disableRowSelectionOnClick
-          rowSelectionModel={selectedUserIds}
+          rowSelectionModel={rowSelectionModel}
           onRowSelectionModelChange={(userIds) => {
+            setRowSelectionModel(userIds);
             useStore.setState((state) => ({
               resourceUsers: {
                 ...state.resourceUsers,
-                selectedUserIds: userIds as string[],
+                selectedUserIds: userIds.ids as unknown as string[],
               },
             }));
           }}

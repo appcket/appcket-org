@@ -258,9 +258,9 @@ describe('CreateChangeAuditChangeService', () => {
 
     await service.createChange(changeInitial);
 
-    expect(mockChangeAuditEntityRepository.findOne).toBeCalledTimes(1);
-    expect(mockChangeAuditEntityRepository.create).toBeCalledTimes(1);
-    expect(mockEntityManager.persistAndFlush).toBeCalledTimes(1);
+    expect(mockChangeAuditEntityRepository.findOne).toHaveBeenCalledTimes(1);
+    expect(mockChangeAuditEntityRepository.create).toHaveBeenCalledTimes(1);
+    expect(mockEntityManager.persistAndFlush).toHaveBeenCalledTimes(1);
   });
 
   it('should not create changes for the initial version of an entity', async () => {
@@ -286,9 +286,9 @@ describe('CreateChangeAuditChangeService', () => {
 
     await service.createChange(changeInitial);
 
-    expect(mockChangeAuditChangeRepository.create).toBeCalledTimes(2);
-    expect(mockEntityManager.persist).toBeCalledTimes(2);
-    expect(mockEntityManager.flush).toBeCalledTimes(2);
+    expect(mockChangeAuditChangeRepository.create).toHaveBeenCalledTimes(2);
+    expect(mockEntityManager.persist).toHaveBeenCalledTimes(2);
+    expect(mockEntityManager.flush).toHaveBeenCalledTimes(2);
   });
 
   it('should insert correct changes for an updated entity', async () => {
@@ -317,15 +317,15 @@ describe('CreateChangeAuditChangeService', () => {
     updatedEntity.entity = JSON.parse(updatedEntity.entity);
     await service.createChange(changeUpdated);
 
-    expect(mockChangeAuditEntityRepository.findOne).toBeCalled();
-    expect(mockChangeAuditChangeRepository.create).toBeCalledTimes(8);
-    expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[0]);
-    expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[1]);
-    expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[2]);
-    expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[3]);
-    expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[4]);
-    expect(mockChangeAuditChangeRepository.create).toBeCalledWith(CHANGES[5]);
-    expect(mockEntityManager.persist).toBeCalledTimes(8);
-    expect(mockEntityManager.flush).toBeCalledTimes(3);
+    expect(mockChangeAuditEntityRepository.findOne).toHaveBeenCalled();
+    expect(mockChangeAuditChangeRepository.create).toHaveBeenCalledTimes(8);
+    expect(mockChangeAuditChangeRepository.create).toHaveBeenCalledWith(CHANGES[0]);
+    expect(mockChangeAuditChangeRepository.create).toHaveBeenCalledWith(CHANGES[1]);
+    expect(mockChangeAuditChangeRepository.create).toHaveBeenCalledWith(CHANGES[2]);
+    expect(mockChangeAuditChangeRepository.create).toHaveBeenCalledWith(CHANGES[3]);
+    expect(mockChangeAuditChangeRepository.create).toHaveBeenCalledWith(CHANGES[4]);
+    expect(mockChangeAuditChangeRepository.create).toHaveBeenCalledWith(CHANGES[5]);
+    expect(mockEntityManager.persist).toHaveBeenCalledTimes(8);
+    expect(mockEntityManager.flush).toHaveBeenCalledTimes(3);
   });
 });

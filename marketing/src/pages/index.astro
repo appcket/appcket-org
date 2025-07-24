@@ -1,16 +1,25 @@
 ---
-import Config from "../site.config.cjs"
+import '../styles/global.css';
+// Component Imports
+import Button from '../components/Button.astro';
 
-import Layout from "../layouts/Layout.astro"
-import Hero from "../components/home/Hero.astro"
-import Features from "../components/home/Features.astro"
-import Pricing from "../components/home/Pricing.astro"
+// Full Astro Component Syntax:
+// https://docs.astro.build/basics/astro-components/
 ---
 
-<Layout title={`${Config.siteTitle} - ${Config.tagLine}`}>
-  <main>
-    <Hero />
-    <Features />
-    <Pricing />
-  </main>
-</Layout>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Appcket - Typescript Full Stack Starter Kit</title>
+	</head>
+
+	<body>
+		<div class="grid place-items-center h-screen content-center">
+			<Button>Appcket 🤝 Astro</Button>
+			<a href="/markdown-page" class="p-4 underline">Markdown is also supported...</a>
+		</div>
+	</body>
+</html>

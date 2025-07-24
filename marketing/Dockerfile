@@ -1,4 +1,4 @@
-FROM node:20 as node
+FROM node:22 as node
 
 ARG env=production
 ENV NODE_ENV=$env
@@ -7,9 +7,9 @@ WORKDIR /src
 
 COPY . /src
 
-RUN yarn
+RUN npm install
 
-RUN yarn build
+RUN npm run build
 
 FROM nginx:stable-alpine
 

@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   registry:
     image: registry:2
@@ -22,5 +20,5 @@ services:
       - appcket-database:/var/lib/postgresql/data:Z
       - ./:/tmp
 volumes:
-    appcket-database:
-      external: true
+  appcket-database:
+    external: true

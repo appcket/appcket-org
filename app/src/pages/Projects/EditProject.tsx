@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Save, Undo } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
@@ -115,7 +115,7 @@ const EditProject = () => {
       updateProjectInput.id = getProjectQuery.data.getProject.id
         ? getProjectQuery.data.getProject.id
         : '';
-      updateProjectInput.userIds = selectedUserIds;
+      updateProjectInput.userIds = [...selectedUserIds];
 
       updateProject.mutate(
         { updateProjectInput },

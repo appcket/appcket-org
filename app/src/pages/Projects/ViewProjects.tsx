@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { GridRowsProp, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import { Card } from '@mui/material';
 import { useTranslation } from 'react-i18next';

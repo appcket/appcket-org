@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:22
 
 ARG env=production
 ENV NODE_ENV=$env
@@ -7,8 +7,8 @@ WORKDIR /src
 
 COPY . /src
 
-RUN yarn
+RUN npm install
 
-RUN yarn build
+RUN npm run build
 
 CMD ["node", "dist/main"]

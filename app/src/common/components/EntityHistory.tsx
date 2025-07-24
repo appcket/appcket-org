@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';

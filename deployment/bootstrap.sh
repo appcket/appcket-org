@@ -42,9 +42,9 @@ cp ${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost.pem ../accounts/tls.cr
 cp ${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost-key.pem ../accounts/tls.key
 chmod 0644 ../accounts/tls.key
 
-cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost.pem ../marketing/certs/tls.crt
-cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost-key.pem ../marketing/certs/tls.key
-chmod 0644 ../marketing/certs/tls.key
+cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost.pem ../marketing/app/certs/tls.crt
+cp ${CERTS_DIR}${PROJECT_MACHINE_NAME}.localhost-key.pem ../marketing/app/certs/tls.key
+chmod 0644 ../marketing/app/certs/tls.key
 
 # find root CA file and copy/rename to api/certs
 mkcert -CAROOT | awk '{print $1"/rootCA.pem"}' | xargs cp -t ../api/certs

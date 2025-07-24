@@ -1,24 +1,18 @@
 import { ReactNode, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Slide from '@mui/material/Slide';
 import PropTypes from 'prop-types';
 
-type Props = {
-  title?: string;
-  subTitle?: string;
-  children?: ReactNode;
-};
+type Props = { title?: string; subTitle?: string; children?: ReactNode };
 
 const PageHeader = ({ title, subTitle, children }: Props) => {
   const containerRef = useRef(null);
   return (
     <Box
-      className="p-5 mb-5 shadow-sm"
-      sx={{
-        bgcolor: 'background.pageHeader',
-      }}
+      className="drop-shadow-sm"
+      sx={{ bgcolor: 'background.pageHeader', pt: 10, pl: 5, pb: 5, pr: 5, mb: 5 }}
     >
       <Grid container spacing={2} className="pt-16">
         <Grid size={{ xs: 12, sm: 8 }}>

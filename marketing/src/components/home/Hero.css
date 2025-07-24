@@ -1,9 +1,0 @@
-#hero .text-gradient {
-  font-weight: 700;
-  background-image: linear-gradient(350deg, #0739c3, #b2c5fd);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 100% 200%;
-  background-position-y: 80%;
-  animation: pulse 4s ease-in-out infinite;
-}

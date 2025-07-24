@@ -6,18 +6,14 @@ import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from 'react-oidc-context';
 
-import 'tailwindcss/tailwind.css';
+import 'tailwindcss';
 
 import oidcConfig from 'src/common/oidc';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
 
 const rootElement = document.getElementById('root');
