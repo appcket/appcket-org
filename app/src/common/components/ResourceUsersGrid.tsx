@@ -37,7 +37,7 @@ const ResourceUsersGrid = ({ resourceType, organizationId }: Props) => {
       type: 'include',
       ids: new Set(selectedUserIds),
     });
-  }, [rowSelectionModel]);
+  }, [selectedUserIds]);
 
   const columns: GridColDef[] = [
     {

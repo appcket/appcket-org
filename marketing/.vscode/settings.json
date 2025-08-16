@@ -4,5 +4,8 @@
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "modificationsIfAvailable",
   "editor.tabSize": 2,
-  "prettier.documentSelectors": ["*.{astro}"]
+  "prettier.documentSelectors": ["*.{astro}"],
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  }
 }

@@ -1,0 +1,62 @@
+---
+import ThemeToggle from "./ThemeToggle";
+import { Button, buttonVariants } from "./ui/button";
+import { MobileNav } from "./MobileNav";
+import { Rocket, User } from "lucide-react";
+import { getLoginUrl } from "../lib/getLoginUrl.js";
+const LOGIN_URL = getLoginUrl(import.meta.env);
+---
+
+<nav
+  class="fixed top-0 left-0 right-0 z-50 w-full py-8 px-6 md:px-12 flex items-center justify-between border-b border-gray-200/30 dark:border-gray-800/30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm transition-all duration-200"
+>
+  <div class="flex items-center justify-between w-full md:hidden">
+    <a href="/" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400"
+      >Appcket</a
+    >
+    <MobileNav client:load />
+  </div>
+  <div class="hidden md:flex items-center justify-center flex-1 px-8">
+    <div class="flex items-center space-x-6">
+      <a
+        href="/"
+        class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 shrink-0 mr-30"
+        >Appcket</a
+      >
+      <a
+        href="/product"
+        class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+        >Product</a
+      >
+      <a
+        href="/about"
+        class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+        >About Us</a
+      >
+      <a
+        href="/pricing"
+        class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+        >Pricing</a
+      >
+      <a
+        href="/blog"
+        class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+        >Blog</a
+      >
+      <a
+        href="/faq"
+        class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+        >FAQ</a
+      >
+    </div>
+    <div class="flex items-center space-x-4 shrink-0 ml-30">
+      <ThemeToggle client:load />
+
+      <a href={LOGIN_URL} class={buttonVariants({ variant: "outline" })}
+        >Login <User className="inline-block ml-1 h-4 w-4" /></a
+      >
+
+      <Button>Get Started <Rocket className="ml-2 h-4 w-4" /></Button>
+    </div>
+  </div>
+</nav>

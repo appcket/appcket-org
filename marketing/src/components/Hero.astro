@@ -1,0 +1,36 @@
+---
+import { Rocket } from "lucide-react";
+import { Button } from "./ui/button";
+---
+
+<section
+  class="w-full px-6 pt-32 pb-24 md:px-12 md:pt-40 md:pb-32 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800"
+>
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 font-arvo">
+        Full stack. Typescript. Starter kit.
+      </h1>
+      <p
+        class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto"
+      >
+        Appcket is the full stack Typescript starter kit of your dreams
+      </p>
+      <Button size="lg">
+        Get Started
+        <Rocket className="ml-2 h-4 w-4" />
+      </Button>
+    </div>
+    <div class="relative">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-4xl mx-auto"
+      >
+        <img
+          src="/preview.png"
+          alt="Appcket Preview"
+          class="w-full rounded-lg"
+        />
+      </div>
+    </div>
+  </div>
+</section>

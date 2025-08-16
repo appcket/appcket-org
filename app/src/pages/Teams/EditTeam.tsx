@@ -98,7 +98,7 @@ const EditTeam = () => {
     const onSubmit = async (updateTeamInput: UpdateTeamInput) => {
       updateTeamInput.organizationId = getTeamQuery.data.organization.id;
       updateTeamInput.id = getTeamQuery.data.id ? getTeamQuery.data.id : '';
-      updateTeamInput.userIds = selectedUserIds;
+      updateTeamInput.userIds = [...selectedUserIds];
 
       updateTeam.mutate(
         { updateTeamInput },
@@ -167,6 +167,10 @@ const EditTeam = () => {
         {/* instead of passing selectedUsers prop to child components, we use zustand to hold local state.
             In this case, it tracks initially selected users and user-selected users so the 
             parent component can have this data and send it back to the api onSubmit*/}
+        <ResourceUsersGrid
+          resourceType={t('entities.team')}
+          organizationId={getTeamQuery.data.organization.id}
+        />
 
         <Grid container justifyContent="flex-end" sx={{ mt: 3 }}>
           <Grid>
