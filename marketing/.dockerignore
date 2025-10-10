@@ -1,7 +1,8 @@
 node_modules/
-yarn.lock
 public/
 .git/
 .gitmodules/
 .gitignore
+.pnpm-store/
 certs/rootCA.crt
+pnpm-lock.yaml

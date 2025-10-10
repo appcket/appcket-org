@@ -3,12 +3,13 @@
   "configurations": [
     {
       "type": "node",
-      "request": "attach",
-      "name": "Attach Node 9229 WS",
-      "port": 9229,
-      "restart": true,
-      "stopOnEntry": true,
-      "protocol": "inspector"
+      "request": "launch",
+      "name": "Run Start Debugging",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "start:debug"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }

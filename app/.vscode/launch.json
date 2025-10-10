@@ -3,6 +3,16 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Start app",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm start",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "FORCE_COLOR": "1"
+      }
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Debug Current Test File",

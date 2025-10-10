@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:24
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y \
   make \
   vim \
   net-tools
+
+RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
 
 # Clean up after install
 RUN apt-get clean && \

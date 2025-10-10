@@ -1,3 +1,4 @@
+# Ignore all crt, key, and pem files across the repository
 **.crt
 **.key
 **.pem
