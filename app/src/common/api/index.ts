@@ -1,10 +1,9 @@
 import { useAuth } from 'react-oidc-context';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { GraphQLClient, Variables } from 'graphql-request';
-import { get } from 'lodash';
 import { useSnackbar } from 'notistack';
 
-const endpoint = get(import.meta.env, 'VITE_API_URL', 'https://api.appcket.org');
+const endpoint = import.meta.env?.VITE_API_URL ?? 'https://api.appcket.org';
 
 export const useApiQuery = <T, U>(
   queryKey: string[],

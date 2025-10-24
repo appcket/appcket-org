@@ -16,7 +16,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import History from '@mui/icons-material/History';
-import { isNull } from 'lodash';
 import { JsonViewer } from '@textea/json-viewer';
 import { useTranslation } from 'react-i18next';
 
@@ -37,8 +36,8 @@ const EntityHistory = ({ entityId, entityType }: Props) => {
   const { status, data, error, isFetching } = useGetEntityHistory(entityId, entityType);
 
   const displayText = (change: IEntityHistoryChange, entityType: Resources): ReactNode => {
-    if (isNull(change.fieldName)) {
-      if (isNull(change.oldValue)) {
+    if (change.fieldName === null) {
+      if (change.oldValue === null) {
         let newValue = JSON.parse(change.newValue);
         return (
           <div>

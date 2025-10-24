@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
-import { FaUserShield } from 'react-icons/fa';
+import { FaUserCog, FaUserShield } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
 import { useUserInfo } from 'src/common/api/user';
@@ -20,6 +20,7 @@ import { displayUser } from 'src/common/utils/general';
 import ThemeColorModeToggler from 'src/common/components/buttons/ThemeColorModeToggler';
 import LocaleSwitcher from 'src/common/components/LocaleSwitcher';
 import QueryStatuses from 'src/common/enums/QueryStatuses';
+import { Link } from '@mui/material';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -102,7 +103,7 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
           <ThemeColorModeToggler />
         </Box>
         <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="User Settings">
+          <Tooltip title={t('common.userInformation')}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 2 }}>
               <Avatar alt={displayUser(userInfo.data)} src="/images/avatars/avatar_1.png" />
             </IconButton>
@@ -124,16 +125,27 @@ const TopBar = ({ open, drawerWidth, handleSideBarOpen }: Props) => {
             onClose={handleCloseUserMenu}
           >
             <MenuItem key="role">
-              <FaUserShield title="Role" />
-              <Typography sx={{ ml: '5px' }} textAlign="center">
+              <FaUserShield title="Role" style={{ marginRight: '5px' }} />
+              <Typography textAlign="center">
                 <Role />
               </Typography>
             </MenuItem>
+            <MenuItem key="userProfile">
+              <Link
+                href={`${import.meta.env.VITE_ACCOUNTS_URL}/realms/${import.meta.env.VITE_ACCOUNTS_REALM_NAME}/account`}
+                color="inherit"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Typography textAlign="center">
+                  <FaUserCog style={{ marginRight: '5px' }} />
+                  {t('common.userProfile')}
+                </Typography>
+              </Link>
+            </MenuItem>
             <MenuItem key="logout" onClick={() => auth.signoutRedirect()}>
-              <LogoutOutlined />
-              <Typography sx={{ ml: '5px' }} textAlign="center">
-                {t('common.logout')}
-              </Typography>
+              <LogoutOutlined style={{ marginRight: '5px' }} />
+              <Typography textAlign="center">{t('common.logout')}</Typography>
             </MenuItem>
           </Menu>
         </Box>

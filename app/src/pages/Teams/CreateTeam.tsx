@@ -6,7 +6,6 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
-import { get } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -56,7 +55,7 @@ const CreateTeam = () => {
     key,
   ): string[] => {
     if (items) {
-      return items.map((item) => get(item, key));
+      return items.map((item) => (item as any)?.[key] as string);
     }
     return [];
   };
@@ -72,7 +71,7 @@ const CreateTeam = () => {
   }, [reset]);
 
   const onSubmit = async (createTeamInput: CreateTeamInput) => {
-    createTeamInput.userIds = selectedUserIds;
+    createTeamInput.userIds = Array.from(selectedUserIds);
 
     createTeam.mutate(
       { createTeamInput },

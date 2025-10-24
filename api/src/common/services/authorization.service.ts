@@ -4,13 +4,15 @@ import { ConfigService } from '@nestjs/config';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { URLSearchParams } from 'url';
 import { lastValueFrom, Observable } from 'rxjs';
-import { each, find } from 'lodash';
 
 import UserPermissionsResponse from 'src/common/models/responses/userPermissionsResponse';
 
 @Injectable()
 export class AuthorizationService {
-  constructor(private httpService: HttpService, private configService: ConfigService) {}
+  constructor(
+    private httpService: HttpService,
+    private configService: ConfigService,
+  ) {}
 
   public async checkPermission(permissions: string[], token: string): Promise<boolean> {
     const config: AxiosRequestConfig = {
@@ -25,7 +27,7 @@ export class AuthorizationService {
     formData.append('grant_type', 'urn:ietf:params:oauth:grant-type:uma-ticket');
     formData.append('audience', 'appcket_api');
     formData.append('response_mode', 'decision');
-    each(permissions, (perm: string) => {
+    (permissions || []).forEach((perm: string) => {
       formData.append('permission', perm);
     });
 
@@ -88,7 +90,7 @@ export class AuthorizationService {
     let role = null;
 
     if (response.data.realmMappings) {
-      role = find(response.data.realmMappings, (roleMapping) => {
+      role = response.data.realmMappings.find((roleMapping) => {
         return ['Manager', 'Captain', 'Teammate', 'Spectator'].includes(roleMapping.name);
       });
 

@@ -7,7 +7,6 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
-import { get } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { useGetProject, useUpdateProject } from 'src/common/api/project';
@@ -57,7 +56,7 @@ const EditProject = () => {
     key,
   ): string[] => {
     if (items) {
-      return items.map((item) => get(item, key));
+      return items.map((item) => (item as any)?.[key] as string);
     }
     return [];
   };

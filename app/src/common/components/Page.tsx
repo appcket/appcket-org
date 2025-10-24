@@ -1,5 +1,5 @@
 import { forwardRef, ReactNode } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from '@dr.pogodin/react-helmet';
 
 type Props = {
   children: ReactNode | ReactNode[];

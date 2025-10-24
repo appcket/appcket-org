@@ -7,7 +7,6 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import { get } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { useUserInfo } from 'src/common/api/user';
@@ -58,7 +57,7 @@ const CreateProject = () => {
     key,
   ): string[] => {
     if (items) {
-      return items.map((item) => get(item, key));
+      return items.map((item) => (item as any)?.[key] as string);
     }
     return [];
   };
@@ -74,7 +73,7 @@ const CreateProject = () => {
   }, [reset]);
 
   const onSubmit = async (createProjectInput: CreateProjectInput) => {
-    createProjectInput.userIds = selectedUserIds;
+    createProjectInput.userIds = Array.from(selectedUserIds);
 
     createProject.mutate(
       { createProjectInput },

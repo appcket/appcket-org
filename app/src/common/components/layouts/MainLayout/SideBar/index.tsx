@@ -13,7 +13,6 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
-import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { getTheme } from 'src/common/theme';
@@ -77,7 +76,7 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth, lessThanSmall }: Props
     >
       <SideBarHeader className="w-fit py-3">
         <Link to="/">
-          <ReactLogo width={140} className="mt-1 ml-2" />
+          <ReactLogo width={129} className="mt-1 ml-2" />
         </Link>
         <IconButton
           sx={{ color: grey[300], marginLeft: { xs: '24px' } }}
@@ -127,7 +126,7 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth, lessThanSmall }: Props
           )}
           {userInfo?.status !== QueryStatuses.Pending ? (
             <Typography className="text-slate-200" variant="body2">
-              {find(userInfo?.data?.attributes, { name: 'jobTitle' })?.value}
+              {userInfo?.data?.attributes?.find((attr: any) => attr?.name === 'jobTitle')?.value}
             </Typography>
           ) : (
             <Skeleton variant="rectangular" width={160} height={10} />

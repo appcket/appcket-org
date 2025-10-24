@@ -128,6 +128,13 @@ export const getTheme = (mode: PaletteMode = 'light') => {
           },
         },
       },
+      MuiLink: {
+        styleOverrides: {
+          root: {
+            textDecoration: 'none',
+          },
+        },
+      },
       MuiPaper: {
         styleOverrides: {
           root: {

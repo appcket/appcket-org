@@ -1,33 +1,40 @@
 {
+  "color": "color",
+  "description": {
+    "part2": "😉"
+  },
+  "internationalization": "internationalization",
   "common": {
-    "updated": "Updated",
-    "created": "Created",
-    "deleted": "Deleted",
-    "from": "from",
-    "to": "to",
-    "name": "Name",
-    "edit": "Edit",
-    "save": "Save",
-    "reset": "Reset",
     "cancel": "Cancel",
-    "history": "History",
-    "logout": "Logout",
-    "lightMode": "Light Mode",
+    "created": "Created",
     "darkMode": "Dark Mode",
-    "footerText": "All rights reserved",
     "dateTime": "{{value, datetime(year: numeric; month: numeric; day: numeric; hour: numeric; minute: numeric; second: numeric)}}",
+    "deleted": "Deleted",
+    "edit": "Edit",
+    "footerText": "All rights reserved",
+    "from": "from",
+    "history": "History",
+    "lightMode": "Light Mode",
+    "logout": "Logout",
+    "name": "Name",
+    "navigation": {
+      "home": "Home",
+      "teams": "Teams",
+      "projects": "Projects",
+      "about": "About"
+    },
+    "reset": "Reset",
     "roles": {
       "captain": "Captain",
       "manager": "Manager",
       "teammate": "Teammate",
       "spectator": "Spectator"
     },
-    "navigation": {
-      "home": "Home",
-      "teams": "Teams",
-      "projects": "Projects",
-      "about": "About"
-    }
+    "save": "Save",
+    "to": "to",
+    "updated": "Updated",
+    "userInformation": "User Information",
+    "userProfile": "User Profile"
   },
   "entities": {
     "organization": "Organization",
@@ -71,7 +78,7 @@
     },
     "about": {
       "title": "About",
-      "subTitle": "Welcome to the Appcket home page"
+      "subTitle": "About the Appcket project"
     },
     "teams": {
       "viewTeams": {
@@ -133,10 +140,5 @@
         "subTitle": "Edit task details"
       }
     }
-  },
-  "color": "color",
-  "internationalization": "internationalization",
-  "description": {
-    "part2": "😉"
   }
 }

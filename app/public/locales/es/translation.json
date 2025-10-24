@@ -26,7 +26,9 @@
       "teams": "Equipos",
       "projects": "Proyectos",
       "about": "Acerca"
-    }
+    },
+    "userInformation": "Información del usuario",
+    "userProfile": "Perfil de usuario"
   },
   "entities": {
     "organization": "Organización",

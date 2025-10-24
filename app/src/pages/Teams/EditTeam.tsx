@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { get } from 'lodash';
 import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -55,7 +54,7 @@ const EditTeam = () => {
     key,
   ): string[] => {
     if (items) {
-      return items.map((item) => get(item, key));
+      return items.map((item) => (item as any)?.[key] as string);
     }
     return [];
   };

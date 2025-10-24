@@ -74,9 +74,6 @@ importers:
       keycloak-connect:
         specifier: ^26.1.1
         version: 26.1.1
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       nestjs-pino:
         specifier: ^4.4.1
         version: 4.4.1(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(pino-http@11.0.0)(pino@10.0.0)(rxjs@7.8.2)
@@ -1910,8 +1907,8 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
 
-  chromedriver@141.0.0:
-    resolution: {integrity: sha512-w0U5jyWlLaRHV+dhaSikDz4x0qOwZcbles2HBu4oRdd+Eq7M43Uns4eoP/6dKu9Uc5ppcK9gA/E9GHROGXhgPg==}
+  chromedriver@141.0.4:
+    resolution: {integrity: sha512-pUpriiZRn+JXkBud54eTnhFwp2hRc9B7szSk7smN7swsqQq8aK9Q6WGeV8RcTpYqaZ+4/gMIUaZAUqe1Ds4W1w==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -6579,7 +6576,7 @@ snapshots:
 
   chrome-trace-event@1.0.4: {}
 
-  chromedriver@141.0.0:
+  chromedriver@141.0.4:
     dependencies:
       '@testim/chrome-version': 1.1.4
       axios: 1.12.2
@@ -8014,7 +8011,7 @@ snapshots:
     dependencies:
       jwk-to-pem: 2.0.7
     optionalDependencies:
-      chromedriver: 141.0.0
+      chromedriver: 141.0.4
     transitivePeerDependencies:
       - debug
       - supports-color

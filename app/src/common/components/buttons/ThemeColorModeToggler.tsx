@@ -9,7 +9,6 @@ import { PaletteMode } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'src/common/store';
-import { isNull } from 'lodash';
 
 export default function ToggleButtons() {
   const { t } = useTranslation();
@@ -33,7 +32,7 @@ export default function ToggleButtons() {
 
   const handleToggle = (event: React.MouseEvent<HTMLElement>, newThemeColorMode: PaletteMode) => {
     // only change the store value if value from toggle button is not null and different from the current theme mode
-    if (!isNull(newThemeColorMode) && themeColorMode !== newThemeColorMode) {
+    if (newThemeColorMode !== null && themeColorMode !== newThemeColorMode) {
       useStore.setState((state) => ({
         uiSettings: {
           ...state.uiSettings,

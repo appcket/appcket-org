@@ -43,7 +43,6 @@
     "graphql": "^16.11.0",
     "keycloak-connect": "^26.1.1",
     "json-diff-ts": "^4.8.2",
-    "lodash": "^4.17.21",
     "nestjs-pino": "^4.4.1",
     "postgraphile": "beta",
     "pino-http": "^11.0.0",
