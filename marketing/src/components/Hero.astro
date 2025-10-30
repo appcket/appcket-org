@@ -1,6 +1,6 @@
 ---
 import { Rocket } from "lucide-react";
-import { Button } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 ---
 
 <section
@@ -16,10 +16,12 @@ import { Button } from "./ui/button";
       >
         Appcket is the full stack Typescript starter kit of your dreams
       </p>
-      <Button size="lg">
-        Get Started
-        <Rocket className="ml-2 h-4 w-4" />
-      </Button>
+      <a
+        href={`${import.meta.env.PUBLIC_DOCS_URL}/docs/getting-started/prerequisites`}
+        target="_blank"
+        class={buttonVariants({ variant: "default", size: "lg" })}
+        >Get Started <Rocket className="ml-2 h-4 w-4" /></a
+      >
     </div>
     <div class="relative">
       <div

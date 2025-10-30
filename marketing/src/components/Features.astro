@@ -1,33 +1,92 @@
 ---
-import { ShieldCheck, Zap, Cloud } from "lucide-react";
+import {
+  BiLogoKubernetes,
+  BiLogoPostgresql,
+  BiLogoGraphql,
+  BiLogoReact,
+} from "react-icons/bi";
+import { SiAstro } from "react-icons/si";
+import { PiCertificate } from "react-icons/pi";
+import { LuShieldCheck, LuMonitorCog } from "react-icons/lu";
 ---
 
 <section class="w-full px-6 py-12 md:px-12 bg-white dark:bg-gray-900">
   <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-arvo font-bold text-center mb-12">Features</h2>
+    <h2 class="text-3xl font-arvo font-bold text-center mb-12">
+      Everything you need to start working on your app
+    </h2>
     <div class="grid md:grid-cols-3 gap-10">
       <div class="bg-blue-50 p-8 rounded-xl shadow flex flex-col items-center">
-        <ShieldCheck size={40} className="text-blue-600 mb-4" />
-        <h3 class="font-bold text-xl mb-2">Secure</h3>
+        <BiLogoKubernetes size={40} className="text-blue-900 mb-4" />
+        <h3 class="font-bold text-xl text-blue-900 mb-2">Kubernetes</h3>
         <p class="text-gray-600 text-center">
-          Production-ready authentication, authorization, and secure defaults so
-          you can ship safely.
+          Local development with k8s (just like in prod) and an easy setup
+          script to get you going fast.
         </p>
       </div>
       <div class="bg-blue-50 p-8 rounded-xl shadow flex flex-col items-center">
-        <Zap size={40} className="text-blue-600 mb-4" />
-        <h3 class="font-bold text-xl mb-2">Fast</h3>
+        <BiLogoPostgresql size={40} className="text-blue-900 mb-4" />
+        <h3 class="font-bold text-xl text-blue-900 mb-2">Postgres Database</h3>
         <p class="text-gray-600 text-center">
-          Optimized developer experience and performance tuned for real world
-          apps.
+          Data is stored in a Postgres database running locally with Docker
+          Compose.
         </p>
       </div>
       <div class="bg-blue-50 p-8 rounded-xl shadow flex flex-col items-center">
-        <Cloud size={40} className="text-blue-600 mb-4" />
-        <h3 class="font-bold text-xl mb-2">Cloud Ready</h3>
+        <BiLogoGraphql size={40} className="text-blue-900 mb-4" />
+        <h3 class="font-bold text-xl text-blue-900 mb-2">GraphQL API</h3>
         <p class="text-gray-600 text-center">
-          Built to deploy on modern cloud platforms with sensible defaults for
-          scaling.
+          API based on NestJS and MikroORM ready with example queries and
+          mutations.
+        </p>
+      </div>
+
+      <div class="bg-blue-50 p-8 rounded-xl shadow flex flex-col items-center">
+        <BiLogoReact size={40} className="text-blue-900 mb-4" />
+        <h3 class="font-bold text-xl text-blue-900 mb-2">React App</h3>
+        <p class="text-gray-600 text-center">
+          A fully working Typescript React SPA bootstrapped with Vite, MUI and
+          Tailwind that integrates with the API using React Query.
+        </p>
+      </div>
+      <div class="bg-blue-50 p-8 rounded-xl shadow flex flex-col items-center">
+        <SiAstro size={40} className="text-blue-900 mb-4" />
+        <h3 class="font-bold text-xl text-blue-900 mb-2">Marketing Site</h3>
+        <p class="text-gray-600 text-center">
+          Blazing fast static site based on Astro for marketing your app.
+        </p>
+      </div>
+      <div class="bg-blue-50 p-8 rounded-xl shadow flex flex-col items-center">
+        <PiCertificate size={40} className="text-blue-900 mb-4" />
+        <h3 class="font-bold text-xl text-blue-900 mb-2">
+          https:// Everywhere
+        </h3>
+        <p class="text-gray-600 text-center">
+          No fuss TLS certificates setup so you can work with https locally and
+          in production.
+        </p>
+      </div>
+
+      <div class="bg-blue-50 p-8 rounded-xl shadow flex flex-col items-center">
+        <LuShieldCheck size={40} className="text-blue-900 mb-4" />
+        <h3 class="font-bold text-xl text-blue-900 mb-2">Authn/Authz</h3>
+        <p class="text-gray-600 text-center">
+          User authentication and attribute-based authorization system that
+          works on the server and client already setup with roles and
+          permissions powered by a dedicated Keycloak instance.
+        </p>
+      </div>
+      <div class="bg-blue-50 p-8 rounded-xl shadow flex flex-col items-center">
+        <SiAstro size={40} className="text-blue-900 mb-4" />
+        <h3 class="font-bold text-xl text-blue-900 mb-2">Example App</h3>
+        <p class="text-gray-600 text-center">
+          Appcket brings it all together with a full-featured team task app when
+          you clone the <a
+            href={`${import.meta.env.PUBLIC_GITHUB_URL}`}
+            class="underline"
+            target="_blank">appcket-org repo</a
+          >. Get up and running quickly with how to create, read, update and
+          delete teams projects and tasks.
         </p>
       </div>
     </div>
@@ -43,9 +102,9 @@ import { ShieldCheck, Zap, Cloud } from "lucide-react";
       <div class="grid md:grid-cols-2 gap-12">
         <div>
           <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
-            Ship faster with an opinionated starter kit that includes tests, and
-            battle-tested patterns so you can focus on features instead of
-            wiring services together.
+            More marketing copy here. Ship faster with an opinionated starter
+            kit that includes tests, and battle-tested patterns so you can focus
+            on features instead of wiring services together.
           </p>
           <p class="text-lg text-gray-600 dark:text-gray-300">
             Modular services and clear interfaces make it easy to customize,
@@ -63,7 +122,7 @@ npx astro dev</code></pre>
 
     <div>
       <h2 class="text-3xl font-bold mb-12 font-arvo">
-        Flexible and extensible
+        Flexible and extensible - More Marketing Copy
       </h2>
       <div class="grid md:grid-cols-3 gap-8">
         <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">

@@ -1,6 +1,6 @@
 ---
 import ThemeToggle from "./ThemeToggle";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import { MobileNav } from "./MobileNav";
 import { Rocket, User } from "lucide-react";
 import { getLoginUrl } from "../lib/getLoginUrl.js";
@@ -11,9 +11,9 @@ const LOGIN_URL = getLoginUrl(import.meta.env);
   class="fixed top-0 left-0 right-0 z-50 w-full py-8 px-6 md:px-12 flex items-center justify-between border-b border-gray-200/30 dark:border-gray-800/30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm transition-all duration-200"
 >
   <div class="flex items-center justify-between w-full md:hidden">
-    <a href="/" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400"
-      >Appcket</a
-    >
+    <a href="/" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+      <img src="/logo.svg" width="150" />
+    </a>
     <MobileNav client:load />
   </div>
   <div class="hidden md:flex items-center justify-center flex-1 px-8">
@@ -21,8 +21,9 @@ const LOGIN_URL = getLoginUrl(import.meta.env);
       <a
         href="/"
         class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 shrink-0 mr-30"
-        >Appcket</a
       >
+        <img src="/logo.svg" width="150" />
+      </a>
       <a
         href="/product"
         class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
@@ -50,13 +51,21 @@ const LOGIN_URL = getLoginUrl(import.meta.env);
       >
     </div>
     <div class="flex items-center space-x-4 shrink-0 ml-30">
-      <ThemeToggle client:load />
+      <span class="mr-4"><ThemeToggle client:load /></span>
 
-      <a href={LOGIN_URL} class={buttonVariants({ variant: "outline" })}
+      <a
+        href={LOGIN_URL}
+        target="_blank"
+        class={buttonVariants({ variant: "outline" })}
         >Login <User className="inline-block ml-1 h-4 w-4" /></a
       >
 
-      <Button>Get Started <Rocket className="ml-2 h-4 w-4" /></Button>
+      <a
+        href={`${import.meta.env.PUBLIC_DOCS_URL}/docs/getting-started/prerequisites`}
+        target="_blank"
+        class={buttonVariants({ variant: "default" })}
+        >Get Started <Rocket className="ml-2 h-4 w-4" /></a
+      >
     </div>
   </div>
 </nav>
