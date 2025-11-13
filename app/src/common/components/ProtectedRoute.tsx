@@ -1,3 +1,4 @@
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { useUserInfo } from 'src/common/api/user';
@@ -9,7 +10,7 @@ const ProtectedRoute = ({
   children,
   permission,
 }: {
-  children: JSX.Element;
+  children: React.ReactNode;
   permission: string[];
 }) => {
   const userInfo = useUserInfo();
