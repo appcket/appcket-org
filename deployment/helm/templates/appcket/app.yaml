@@ -57,14 +57,19 @@ spec:
         stdin: true
         tty: true
         workingDir: /src
+        {{- if eq .Values.env "local" }}
         volumeMounts:
           - mountPath: /src
             name: src-volume
             readOnly: false
+        {{- end }}
+      {{- if eq .Values.env "local" }}
       volumes:
       - hostPath:
-          path: /run/desktop/mnt/host/wsl/docker-desktop-bind-mounts/Ubuntu/dev/appcket/app
+          path: /host_mnt/home/ryan/dev/appcket-org/main/app
+          type: DirectoryOrCreate
         name: src-volume
+      {{- end }}
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService

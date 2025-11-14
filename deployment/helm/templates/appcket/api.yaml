@@ -87,7 +87,6 @@ spec:
         stdin: true
         tty: true
         workingDir: /src
-        ports:
         {{- if eq .Values.env "local" }}
         volumeMounts:
           - mountPath: /src
@@ -97,7 +96,8 @@ spec:
       {{- if eq .Values.env "local" }}
       volumes:
       - hostPath:
-          path: /run/desktop/mnt/host/wsl/docker-desktop-bind-mounts/Ubuntu/dev/appcket/api
+          path: /host_mnt/home/ryan/dev/appcket-org/main/api
+          type: DirectoryOrCreate
         name: src-volume
       {{- end }}
 ---

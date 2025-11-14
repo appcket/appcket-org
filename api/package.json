@@ -35,7 +35,6 @@
     "@nestjs/graphql": "^13.2.0",
     "@nestjs/platform-express": "^11.1.8",
     "axios": "1.13.1",
-    "apollo-server-express": "^3.13.0",
     "ca-append": "^0.1.0",
     "class-validator": "^0.14.2",
     "class-transformer": "^0.5.1",

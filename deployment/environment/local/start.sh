@@ -8,17 +8,20 @@ PROJECT_MACHINE_NAME='appcket'
 
 ISTIOCTL=istioctl
 
-# Create bind mount
-echo '---------------------'
-echo 'Creating bind mount...'
+# Set kubectl namespace
+kubectl config set-context --current --namespace=${PROJECT_MACHINE_NAME}
 
-sudo mkdir -p /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/dev/${PROJECT_MACHINE_NAME}
-sudo mount --bind ~/dev/${PROJECT_MACHINE_NAME} /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/dev/${PROJECT_MACHINE_NAME}
+
+# Create bind mount
+# echo '---------------------'
+# echo 'Creating bind mount...'
+# sudo mkdir -p /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/dev/${PROJECT_MACHINE_NAME}
+# sudo mount --bind ~/dev/${PROJECT_MACHINE_NAME} /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/dev/${PROJECT_MACHINE_NAME}
 
 # Database and Registry containers
 echo '---------------------'
 echo 'Starting Database and Registry containers...'
-docker-compose -f ./environment/local/docker-compose.yml -p ${PROJECT_MACHINE_NAME} up --build -d
+docker compose -f ./environment/local/docker-compose.yml -p ${PROJECT_MACHINE_NAME} up --build -d
 
 # Istio
 echo '---------------------'

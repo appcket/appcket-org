@@ -3,5 +3,5 @@ public/
 .git/
 .gitmodules/
 .gitignore
-.pnpm-store/
-pnpm-lock.yaml
+*.md
+dist

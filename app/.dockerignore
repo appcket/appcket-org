@@ -3,4 +3,5 @@ node_modules/
 .gitmodules/
 .gitignore
 .pnpm-store/
-pnpm-lock.yaml
+*.md
+dist

@@ -1,6 +1,6 @@
 services:
   registry:
-    image: registry:2
+    image: registry:3
     ports:
       - 5000:5000
     stdin_open: true
@@ -17,7 +17,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - appcket-database:/var/lib/postgresql/data:Z
+      - appcket-database:/var/lib/postgresql:Z
       - ./:/tmp
 volumes:
   appcket-database:

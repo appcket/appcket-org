@@ -5,4 +5,5 @@ public/
 .gitignore
 .pnpm-store/
 certs/rootCA.crt
-pnpm-lock.yaml
+*.md
+dist

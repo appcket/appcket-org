@@ -1,24 +1,35 @@
-FROM node:24 AS node
+FROM node:24-slim AS base
 
 ARG env=production
 ENV NODE_ENV=$env
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 WORKDIR /src
 
 COPY . /src
 
-RUN npm install
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-RUN npm run build
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
+
+FROM base
+COPY --from=prod-deps /src/node_modules /src/node_modules
+COPY --from=build /src/dist /src/dist
 
 FROM nginx:stable-alpine
 
 RUN rm -rf /usr/share/nginx/html/*
 
-COPY --from=node /src/nginx.conf /etc/nginx/nginx.conf
-COPY --from=node /src/certs/tls.crt /etc/nginx/certs/tls.crt
-COPY --from=node /src/certs/tls.key /etc/nginx/certs/tls.key
+COPY --from=base /src/nginx.conf /etc/nginx/nginx.conf
+COPY --from=base /src/certs/tls.crt /etc/nginx/certs/tls.crt
+COPY --from=base /src/certs/tls.key /etc/nginx/certs/tls.key
 
-COPY --from=node /src/dist/ /usr/share/nginx/html
+COPY --from=base /src/dist/ /usr/share/nginx/html
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

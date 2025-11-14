@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:26.4.1 AS builder
+FROM quay.io/keycloak/keycloak:26.4.2 AS builder
 
 ENV KC_METRICS_ENABLED=true
 ENV KC_FEATURES=authorization,account,account-api,client-policies,impersonation,token-exchange
@@ -9,7 +9,7 @@ RUN touch -m --date=@1743465600 /opt/keycloak/providers/*
 
 RUN /opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:26.4.1
+FROM quay.io/keycloak/keycloak:26.4.2
 WORKDIR /opt/keycloak
 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
