@@ -96,7 +96,7 @@ spec:
       {{- if eq .Values.env "local" }}
       volumes:
       - hostPath:
-          path: /host_mnt/home/ryan/dev/appcket-org/main/api
+          path: {{ .Values.api.hostPath }}
           type: DirectoryOrCreate
         name: src-volume
       {{- end }}

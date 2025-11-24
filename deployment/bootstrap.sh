@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script should be run against a fresh clone of the appcket-org repository.
-# It will setup everything for local development (docker-compose, building images, Kubernetes secrets and volumes, Helm charts)
+# It will setup everything for local development (docker compose, building images, Kubernetes secrets and volumes, Helm charts)
 
 # PROJECT_MACHINE_NAME will also be used in creating the database and as the domain name
 PROJECT_MACHINE_NAME='appcket'
@@ -73,7 +73,7 @@ echo 'Setting up Docker...'
 
 docker volume create --name ${PROJECT_MACHINE_NAME}-database -d local
 
-docker-compose -f ./environment/local/docker-compose.yml -p ${PROJECT_MACHINE_NAME} up -d
+docker compose -f ./environment/local/docker-compose.yml -p ${PROJECT_MACHINE_NAME} up -d
 
 # Build images and push to local registry
 echo '---------------------'
@@ -98,12 +98,11 @@ kubectl create secret generic database-secret --from-literal=user=dbuser --from-
 kubectl create secret generic api-keycloak-client-secret --from-literal=clientsecret=${API_CLIENT_KEYCLOAK_SECRET} -n ${PROJECT_MACHINE_NAME}
 
 # Install istio
-${ISTIOCTL} install --set profile=default -y
-export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
-export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
+# Since we are using k3s, need to set the value: https://istio.io/latest/docs/ambient/install/platform-prerequisites/#k3s
+${ISTIOCTL} install --set profile=ambient --set values.global.platform=k3s --skip-confirmation
 
-kubectl label namespace ${PROJECT_MACHINE_NAME} istio-injection=enabled
+kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/experimental-install.yaml
 
 # Database setup, create the database, project schema, keycloak schema and insert sample keycloak data
 echo '---------------------'
