@@ -1,31 +1,93 @@
-apiVersion: networking.istio.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: {{ .Values.domain }}-gateway
-  namespace: {{ .Values.domain }}
+  name: {{ .Values.namespace }}-gateway
+  namespace: {{ .Values.namespace }}
 spec:
-  selector:
-    istio: ingressgateway
-  servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
+  gatewayClassName: istio
+  listeners:
+  - name: http-{{ .Values.domain | replace "." "-" }}
+    hostname: "{{ .Values.domain }}.{{ .Values.tld }}"
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: http-{{ .Values.accounts.subdomain }}
+    hostname: "{{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: http-{{ .Values.api.subdomain }}
+    hostname: "{{ .Values.api.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: http-{{ .Values.app.subdomain }}
+    hostname: "{{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-{{ .Values.domain | replace "." "-" }}
+    hostname: "{{ .Values.domain }}.{{ .Values.tld }}"
+    port: 443
+    protocol: TLS
     tls:
-      httpsRedirect: true # sends 301 redirect for http requests
-    hosts:
-    - {{ .Values.domain }}.{{ .Values.tld }}
-    - {{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
-    - {{ .Values.api.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
-    - {{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
-  - port:
-      number: 443
-      name: https
-      protocol: HTTPS
+      mode: Passthrough
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-{{ .Values.accounts.subdomain }}
+    hostname: "{{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+    port: 443
+    protocol: TLS
     tls:
-      mode: PASSTHROUGH
-    hosts:
-    - {{ .Values.domain }}.{{ .Values.tld }}
-    - {{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
-    - {{ .Values.api.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
-    - {{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
+      mode: Passthrough
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-{{ .Values.api.subdomain }}
+    hostname: "{{ .Values.api.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+    port: 443
+    protocol: TLS
+    tls:
+      mode: Passthrough
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-{{ .Values.app.subdomain }}
+    hostname: "{{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+    port: 443
+    protocol: TLS
+    tls:
+      mode: Passthrough
+    allowedRoutes:
+      namespaces:
+        from: All
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: https-redirect
+  namespace: {{ .Values.namespace }}
+spec:
+  parentRefs:
+  - name: {{ .Values.namespace }}-gateway
+    namespace: {{ .Values.namespace }}
+  hostnames:
+  - "{{ .Values.domain }}.{{ .Values.tld }}"
+  - "{{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+  - "{{ .Values.api.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+  - "{{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301

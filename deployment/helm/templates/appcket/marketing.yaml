@@ -62,22 +62,19 @@ spec:
         name: src-volume
       {{- end }}
 ---
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TLSRoute
 metadata:
   name: {{ .Values.marketing.name }}
+  namespace: {{ .Values.namespace }}
 spec:
-  hosts:
-  - {{ .Values.domain }}.{{ .Values.tld }}
-  gateways:
-  - {{ .Values.namespace }}-gateway
-  tls:
-  - match:
-    - port: 443
-      sniHosts:
-      - {{ .Values.domain }}.{{ .Values.tld }}
-    route:
-    - destination:
-        host: {{ .Values.marketing.name }}.{{ .Values.namespace }}.svc.cluster.local
-        port:
-          number: 443
+  parentRefs:
+  - name: {{ .Values.namespace }}-gateway
+    namespace: {{ .Values.namespace }}
+    sectionName: https-{{ .Values.domain }}
+  hostnames:
+  - "{{ .Values.domain }}.{{ .Values.tld }}"
+  rules:
+  - backendRefs:
+    - name: {{ .Values.marketing.name }}
+      port: 443

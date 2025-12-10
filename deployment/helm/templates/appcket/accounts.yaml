@@ -58,22 +58,19 @@ spec:
         stdin: true
         tty: true
 ---
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TLSRoute
 metadata:
   name: {{ .Values.accounts.name }}
+  namespace: {{ .Values.namespace }}
 spec:
-  hosts:
-  - {{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
-  gateways:
-  - {{ .Values.namespace }}-gateway
-  tls:
-  - match:
-    - port: 443
-      sniHosts:
-      - {{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
-    route:
-    - destination:
-        host: {{ .Values.accounts.name }}.{{ .Values.namespace }}.svc.cluster.local
-        port:
-          number: 443
+  parentRefs:
+  - name: {{ .Values.namespace }}-gateway
+    namespace: {{ .Values.namespace }}
+    sectionName: https-{{ .Values.accounts.subdomain }}
+  hostnames:
+  - "{{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+  rules:
+  - backendRefs:
+    - name: {{ .Values.accounts.name }}
+      port: 443
