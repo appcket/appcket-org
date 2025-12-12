@@ -10,36 +10,28 @@ PROJECT_HUMAN_NAME='Appcket'
 # DATABASE_PASSWORD
 DATABASE_PASSWORD='Ch@ng3To@StrongP@ssw0rd'
 
-# Resolve script directory and repository root
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." >/dev/null 2>&1 && pwd)"
-echo "Using REPO_ROOT=${REPO_ROOT} and SCRIPT_DIR=${SCRIPT_DIR}"
-# Choose mkcert binary depending on platform: use mkcert.exe on Windows hosts, mkcert otherwise
-case "$(uname -s 2>/dev/null)" in
-	MINGW*|MSYS*|CYGWIN*|Windows_NT*)
-		MKCERT='mkcert.exe'
-		;;
-	*)
-		MKCERT='mkcert'
-		;;
-esac
+# This is specific to a Windows and WSL host environment, if using Linux or Mac as your main host, change to: mkcert
+MKCERT='mkcert.exe'
 
 # You shouldn't need to change anything below unless you have customized these values elsewhere
+
 #----------------------------------------------------------------------------------------------------------
 
-
-# CERTS_DIR='./certs/'
-CERTS_DIR="${SCRIPT_DIR}/certs/"
-mkdir -p "${CERTS_DIR}"
+# Keep this during initial setup, and change in Keycloak later if needed for local dev use. Definitely change for production use. See production deployment docs for more information.
 API_CLIENT_KEYCLOAK_SECRET='1SMHqsPrhtoxlMPLRYcHP39uJL16oGG1'
 
-# Rename in files to new project name but exlude renaming in this file
+CERTS_DIR="${SCRIPT_DIR}/certs/"
+mkdir -p "${CERTS_DIR}"
+
+# Rename in files to new project name but exclude renaming in this file
 echo '---------------------'
 echo 'Renaming in files...'
 
-find ../../../ -type f -name '*' ! -name 'bootstrap.sh' | xargs sed -i  "s/appcket/${PROJECT_MACHINE_NAME}/g"
-find ../../../ -type f -name '*' ! -name 'bootstrap.sh' | xargs sed -i  "s/Appcket/${PROJECT_HUMAN_NAME}/g"
-find ../../../ -type f -name '*' ! -name 'bootstrap.sh' | xargs sed -i  "s/Ch@ng3To@StrongP@ssw0rd/${DATABASE_PASSWORD}/g"
+# Use grep to find text files containing the search strings and print results as null-delimited.
+# This avoids issues with filenames containing spaces and skips binary files.
+grep -IrlZ --exclude='bootstrap.sh' --exclude-dir='.git' -e 'appcket' ../../../ | xargs -0 sed -i "s/appcket/${PROJECT_MACHINE_NAME}/g" || true
+grep -IrlZ --exclude='bootstrap.sh' --exclude-dir='.git' -e 'Appcket' ../../../ | xargs -0 sed -i "s/Appcket/${PROJECT_HUMAN_NAME}/g" || true
+grep -IrlZ --exclude='bootstrap.sh' --exclude-dir='.git' -e 'Ch@ng3To@StrongP@ssw0rd' ../../../ | xargs -0 sed -i "s/Ch@ng3To@StrongP@ssw0rd/${DATABASE_PASSWORD}/g" || true
 
 # Create certs
 echo '---------------------'
@@ -109,18 +101,16 @@ if [ ! -f "${ROOTCA_PATH}" ]; then
 	echo "Error: rootCA.pem not found at ${ROOTCA_PATH}" >&2
 	exit 1
 fi
-mkdir -p "${REPO_ROOT}/api/certs"
+
 cp "${ROOTCA_PATH}" -t "${REPO_ROOT}/api/certs"
 mv "${REPO_ROOT}/api/certs/rootCA.pem" "${REPO_ROOT}/api/certs/rootCA.crt"
 
-mkdir -p "${REPO_ROOT}/api/certs"
 cp "${CERTS_DIR}api.${PROJECT_MACHINE_NAME}.localhost.pem" "${REPO_ROOT}/api/certs/api.tls.crt"
 cp "${CERTS_DIR}api.${PROJECT_MACHINE_NAME}.localhost-key.pem" "${REPO_ROOT}/api/certs/api.tls.key"
 
 cp "${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost.pem" "${REPO_ROOT}/api/certs/accounts.tls.crt"
 cp "${CERTS_DIR}accounts.${PROJECT_MACHINE_NAME}.localhost-key.pem" "${REPO_ROOT}/api/certs/accounts.tls.key"
 
-mkdir -p "${REPO_ROOT}/app/certs"
 cp "${CERTS_DIR}app.${PROJECT_MACHINE_NAME}.localhost.pem" "${REPO_ROOT}/app/certs/app.tls.crt"
 cp "${CERTS_DIR}app.${PROJECT_MACHINE_NAME}.localhost-key.pem" "${REPO_ROOT}/app/certs/app.tls.key"
 
@@ -151,7 +141,7 @@ echo '---------------------'
 echo 'Setting up K8s for local development...'
 
 # Delete any previous configmaps named coredns
-# TODO: multiple projects able to run on same host at a time
+# TODO: multiple projects able to run at a time
 kubectl delete configmap coredns -n kube-system || true
 
 kubectl create namespace ${PROJECT_MACHINE_NAME} || true
@@ -164,6 +154,14 @@ kubectl create secret generic api-keycloak-client-secret --from-literal=clientse
 echo '---------------------'
 echo 'Setting up Keycloak schema...'
 
-psql -c "CREATE DATABASE ${PROJECT_MACHINE_NAME} WITH ENCODING 'UTF8'" "dbname=${PROJECT_MACHINE_NAME} user=dbuser password=${DATABASE_PASSWORD} host=localhost"
+# Check if the database already exists, and create if it doesn't
+DB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='${PROJECT_MACHINE_NAME}'" "dbname=postgres user=dbuser password=${DATABASE_PASSWORD} host=localhost" || true)
+if [ "${DB_EXISTS}" = "1" ]; then
+	echo "Database ${PROJECT_MACHINE_NAME} already exists; skipping create"
+else
+	echo "Creating database ${PROJECT_MACHINE_NAME}..."
+	psql -c "CREATE DATABASE ${PROJECT_MACHINE_NAME} WITH ENCODING 'UTF8'" "dbname=postgres user=dbuser password=${DATABASE_PASSWORD} host=localhost"
+fi
+
 psql -c "CREATE SCHEMA IF NOT EXISTS ${PROJECT_MACHINE_NAME}; CREATE SCHEMA IF NOT EXISTS keycloak" "dbname=${PROJECT_MACHINE_NAME} user=dbuser password=${DATABASE_PASSWORD} host=localhost"
 psql -f "${SCRIPT_DIR}/keycloak_dump.sql" "dbname=${PROJECT_MACHINE_NAME} user=dbuser password=${DATABASE_PASSWORD} host=localhost"
