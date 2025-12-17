@@ -16,6 +16,3 @@ COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
 COPY tls.crt /etc/x509/https/tls.crt
 COPY tls.key /etc/x509/https/tls.key
-
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
-CMD ["--optimized", "--proxy-headers=forwarded", "--http-enabled=true", "--https-certificate-key-file=/etc/x509/https/tls.key", "--https-certificate-file=/etc/x509/https/tls.crt"]

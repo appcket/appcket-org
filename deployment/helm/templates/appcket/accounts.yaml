@@ -32,11 +32,20 @@ spec:
       - image: "{{ .Values.image.repository }}/{{ .Values.accounts.image }}:{{ .Values.accounts.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Values.accounts.name }}
+        args: ["start", "--optimized"]
         env:
         - name: KEYCLOAK_LOGLEVEL
           value: {{ .Values.accounts.logLevel }}
         - name: PROXY_ADDRESS_FORWARDING
           value: "true"
+        - name: KC_PROXY_HEADERS
+          value: "forwarded"
+        - name: KC_HTTP_ENABLED
+          value: "true"
+        - name: KC_HTTPS_CERTIFICATE_FILE
+          value: "/etc/x509/https/tls.crt"
+        - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+          value: "/etc/x509/https/tls.key"
         - name: KC_DB_URL
           value: jdbc:postgresql://{{ .Values.database.address }}:{{ .Values.database.port }}/{{ .Values.database.name }}?currentSchema={{ .Values.database.schemaAccounts }}
         - name: KC_DB_USERNAME

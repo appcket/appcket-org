@@ -7,7 +7,7 @@ set -euo pipefail
 # PROJECT_MACHINE_NAME will also be used in creating the database and as the domain name
 PROJECT_MACHINE_NAME='appcket'
 PROJECT_HUMAN_NAME='Appcket'
-# DATABASE_PASSWORD
+DATABASE_USER='dbuser'
 DATABASE_PASSWORD='Ch@ng3To@StrongP@ssw0rd'
 
 # This is specific to a Windows and WSL host environment, if using Linux or Mac as your main host, change to: mkcert
@@ -20,6 +20,7 @@ MKCERT='mkcert.exe'
 # Keep this during initial setup, and change in Keycloak later if needed for local dev use. Definitely change for production use. See production deployment docs for more information.
 API_CLIENT_KEYCLOAK_SECRET='1SMHqsPrhtoxlMPLRYcHP39uJL16oGG1'
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 CERTS_DIR="${SCRIPT_DIR}/certs/"
 mkdir -p "${CERTS_DIR}"
 
@@ -146,7 +147,8 @@ kubectl delete configmap coredns -n kube-system || true
 
 kubectl create namespace ${PROJECT_MACHINE_NAME} || true
 
-kubectl create secret generic database-secret --from-literal=user=dbuser --from-literal=password=${DATABASE_PASSWORD} -n ${PROJECT_MACHINE_NAME} || true
+# create the db secret in two namespaces
+kubectl create secret generic database-secret --from-literal=user=${DATABASE_USER} --from-literal=password=${DATABASE_PASSWORD} -n ${PROJECT_MACHINE_NAME} || true
 
 kubectl create secret generic api-keycloak-client-secret --from-literal=clientsecret=${API_CLIENT_KEYCLOAK_SECRET} -n ${PROJECT_MACHINE_NAME} || true
 
@@ -155,13 +157,13 @@ echo '---------------------'
 echo 'Setting up Keycloak schema...'
 
 # Check if the database already exists, and create if it doesn't
-DB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='${PROJECT_MACHINE_NAME}'" "dbname=postgres user=dbuser password=${DATABASE_PASSWORD} host=localhost" || true)
+DB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='${PROJECT_MACHINE_NAME}'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
 if [ "${DB_EXISTS}" = "1" ]; then
 	echo "Database ${PROJECT_MACHINE_NAME} already exists; skipping create"
 else
 	echo "Creating database ${PROJECT_MACHINE_NAME}..."
-	psql -c "CREATE DATABASE ${PROJECT_MACHINE_NAME} WITH ENCODING 'UTF8'" "dbname=postgres user=dbuser password=${DATABASE_PASSWORD} host=localhost"
+	psql -c "CREATE DATABASE ${PROJECT_MACHINE_NAME} WITH ENCODING 'UTF8'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 fi
 
-psql -c "CREATE SCHEMA IF NOT EXISTS ${PROJECT_MACHINE_NAME}; CREATE SCHEMA IF NOT EXISTS keycloak" "dbname=${PROJECT_MACHINE_NAME} user=dbuser password=${DATABASE_PASSWORD} host=localhost"
-psql -f "${SCRIPT_DIR}/keycloak_dump.sql" "dbname=${PROJECT_MACHINE_NAME} user=dbuser password=${DATABASE_PASSWORD} host=localhost"
+psql -c "CREATE SCHEMA IF NOT EXISTS ${PROJECT_MACHINE_NAME}; CREATE SCHEMA IF NOT EXISTS keycloak" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+psql -f "${SCRIPT_DIR}/keycloak_dump.sql" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
