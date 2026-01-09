@@ -1,0 +1,8 @@
+# Prometheus values
+alertmanager:
+  enabled: false
+server:
+  persistentVolume:
+    enabled: false
+  # Use the chart's native retention field
+  retention: "6h"

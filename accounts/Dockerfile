@@ -13,6 +13,3 @@ FROM quay.io/keycloak/keycloak:26.4.7
 WORKDIR /opt/keycloak
 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
-
-COPY tls.crt /etc/x509/https/tls.crt
-COPY tls.key /etc/x509/https/tls.key

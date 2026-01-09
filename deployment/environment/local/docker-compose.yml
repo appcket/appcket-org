@@ -14,6 +14,7 @@ services:
       - POSTGRES_ROOT_PASSWORD=Ch@ng3To@StrongP@ssw0rd
       - POSTGRES_USER=dbuser
       - POSTGRES_PASSWORD=Ch@ng3To@StrongP@ssw0rd
+    command: ["postgres", "-c", "wal_level=logical"]
     ports:
       - 5432:5432
     volumes:

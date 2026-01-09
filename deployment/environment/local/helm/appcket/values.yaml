@@ -1,0 +1,122 @@
+# Default values for appcket.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: appcket
+domain: appcket
+tld: localhost
+env: local
+
+accounts:
+  name: accounts
+  subdomain: accounts
+  logLevel: DEBUG
+  tag: v0.0.1
+  image: appcket_accounts
+
+api:
+  name: api
+  subdomain: api
+  tag: v0.0.1
+  image: appcket_nodejs
+  hostPath: /mnt/wsl/rancher-desktop-bind-mounts/dev/appcket-org/edrt/api
+  keycloakClientSecretName: api-keycloak-client-secret
+  keycloakClientPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwVYWh7Jl6T9eyWNMfMX4L10KQu6Ulr0qqkEYKtw3GsOHOTRp0Q0C8OIN2HEwSV0/Fc00ToKIsyK6TC0PgSsWIZqQDTDyJ3rVENFck1rmsayBFVf53dcTcE6g/zA/TTrb2wD0k1FgLS66Irv/4+eYQITXC/LRmllpYTB2IVacZEhD7N5WXl70j7vxPsPerRGweDWHiTaGGTAZP83NEO7Hyec6Ko89nuyewsGr2ZnMrzTxgV9vurZ9QL6yGIs635RaM4Xf9ZCDK9gEVCU1X1nfALNr/0UiFheFJ9tTWhiqWXUbasD4dQd5lpuX8Ihw1pzSsFAIe/G9gOgqDH92v14JNQIDAQAB
+  appId: d1f3593d-aff4-409a-b297-961078a162c7,
+  redpandaBrokers: redpanda-0.redpanda.redpanda.svc.cluster.local:9093
+
+app:
+  name: app
+  subdomain: app
+  tag: v0.0.1
+  # change to appcket_nodejs if you want to develop the app (use appcket_app image to serve using nginx), and also need a change in the app helm yaml file
+  image: appcket_nodejs
+  # image: appcket_marketing
+  hostPath: /mnt/wsl/rancher-desktop-bind-mounts/dev/appcket-org/edrt/app
+
+database:
+  address: host.docker.internal
+  port: 5432
+  secretName: database-secret
+  name: appcket
+  schemaAccounts: keycloak
+  schemaApp: appcket
+  vendor: postgres
+  sslMode: false
+
+marketing:
+  name: marketing
+  tag: v0.0.1
+  # change to appcket_nodejs if you want to develop the marketing site (use appcket_marketing image to serve using nginx), and also need a change in the marketing helm yaml file
+  image: appcket_nodejs
+  # image: appcket_marketing
+  hostPath: /mnt/wsl/rancher-desktop-bind-mounts/dev/appcket-org/edrt/marketing
+
+replicaCount: 1
+
+image:
+  repository: localhost:5000
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: 'latest'
+
+imagePullSecrets: []
+nameOverride: ''
+fullnameOverride: ''
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ''
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  namespace: istio-system
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

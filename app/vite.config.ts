@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr';
 import tailwindcss from '@tailwindcss/vite';
-import fs from 'fs';
 
 // https://vitejs.dev/config/
 // eslint-disable-next-line import/no-unused-modules
@@ -16,10 +15,6 @@ export default defineConfig({
   server: {
     port: 3000,
     host: '0.0.0.0',
-    https: {
-      key: fs.readFileSync('certs/app.tls.key'),
-      cert: fs.readFileSync('certs/app.tls.crt'),
-    },
   },
   build: { sourcemap: true },
 });

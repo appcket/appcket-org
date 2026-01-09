@@ -38,4 +38,11 @@ export const config = {
     userRoleMappingsEndpointUrl,
     adminEndpointUrl,
   },
+  redpanda: {
+    brokers: process.env.REDPANDA_BROKERS
+      ? process.env.REDPANDA_BROKERS.split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : ['localhost:9092'],
+  },
 };

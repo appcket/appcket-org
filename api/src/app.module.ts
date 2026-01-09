@@ -1,8 +1,9 @@
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Keycloak from 'keycloak-connect';
 import * as session from 'express-session';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
@@ -87,6 +88,24 @@ caAppend.monkeyPatch();
       },
       inject: [ConfigService],
     }),
+    ClientsModule.registerAsync([
+      {
+        imports: [ConfigModule],
+        name: 'EVENT_SERVICE',
+        useFactory: async (configService: ConfigService) => ({
+          transport: Transport.KAFKA,
+          options: {
+            client: {
+              brokers: configService.get<string[]>('redpanda.brokers') || ['redpanda-0.redpanda.redpanda.svc.cluster.local:9093'],
+            },
+            consumer: {
+              groupId: configService.get<string>('redpanda.groupId') ?? 'default-group',
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
     EntityHistoryModule,
     OrganizationModule,
     PermissionModule,

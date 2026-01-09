@@ -1,0 +1,12 @@
+apiVersion: cluster.redpanda.com/v1alpha2
+kind: Topic
+metadata:
+  name: twitch-chat
+spec:
+  kafkaApiSpec:
+    brokers:
+      - "redpanda-0.redpanda.redpanda.svc.cluster.local:9093"
+    tls:
+      caCertSecretRef:
+        name: "redpanda-default-cert"
+        key: "ca.crt"

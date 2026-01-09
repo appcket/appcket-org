@@ -1,0 +1,11 @@
+# Kiali values
+external_services:
+  prometheus:
+    url: "http://prometheus-server.observability.svc.cluster.local"
+auth:
+  strategy: "anonymous" # For local development ease
+deployment:
+  view_only_mode: false
+  sidecar_resources: {}
+  instance_label_rev: true
+  accessible_namespaces: ["**"]

@@ -4,6 +4,5 @@ public/
 .gitmodules/
 .gitignore
 .pnpm-store/
-certs/rootCA.crt
 *.md
 dist

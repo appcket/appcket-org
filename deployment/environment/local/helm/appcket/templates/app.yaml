@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+    service: {{ .Values.app.name }}
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+    appProtocol: http
+    name: {{ .Values.app.name }}
+  selector:
+    app: {{ .Values.app.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+        version: v1
+    spec:
+      containers:
+      - name: {{ .Values.app.name }}
+        image: "{{ .Values.image.repository }}/{{ .Values.app.image }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if eq .Values.env "local" }}
+        command: ["/bin/bash"]
+        {{- end }}
+        env:
+        - name: NODE_ENV
+          {{- if eq .Values.env "local" }}
+          value: development
+          {{ else }}
+          value: {{ .Values.env }}
+          {{- end }}
+        - name: PORT
+          value: "3000"
+        - name: WDS_SOCKET_PORT
+          value: "0"
+        - name: GENERATE_SOURCEMAP
+          value: "false"
+        stdin: true
+        tty: true
+        workingDir: /src
+        {{- if eq .Values.env "local" }}
+        volumeMounts:
+          - mountPath: /src
+            name: src-volume
+            readOnly: false
+        {{- end }}
+      {{- if eq .Values.env "local" }}
+      volumes:
+      - hostPath:
+          path: {{ .Values.app.hostPath }}
+          type: DirectoryOrCreate
+        name: src-volume
+      {{- end }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  parentRefs:
+  - name: {{ .Values.ingress.namespace }}-gateway
+    namespace: {{ .Values.ingress.namespace }}
+    sectionName: https-wildcard
+  hostnames:
+  - "{{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+  rules:
+  - backendRefs:
+    - name: {{ .Values.app.name }}
+      port: 80

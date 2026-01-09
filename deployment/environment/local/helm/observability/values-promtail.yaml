@@ -1,0 +1,4 @@
+# Promtail values
+config:
+  clients:
+    - url: http://loki.observability.svc.cluster.local:3100/loki/api/v1/push

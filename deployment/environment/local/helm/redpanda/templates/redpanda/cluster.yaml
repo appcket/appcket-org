@@ -1,0 +1,17 @@
+apiVersion: cluster.redpanda.com/v1alpha2
+kind: Redpanda
+metadata:
+  name: redpanda
+  namespace: redpanda
+spec:
+  chartRef: {}
+  clusterSpec:
+    # Expose to Windows Host
+    external:
+      enabled: true
+      type: NodePort
+      domain: 127.0.0.1.nip.io
+    statefulset:
+      replicas: 1 # Reinforcing we only want 1 broker
+    tls:
+      enabled: false
