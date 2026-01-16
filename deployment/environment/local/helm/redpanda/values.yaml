@@ -2,10 +2,19 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-namespace: redpanda
 redpanda:
   name: redpanda
-  subdomain: redpanda
+  consoleSubdomain: redpanda
   hostPath: /tmp/redpanda-data
+  namespace: redpanda
 
 replicaCount: 1
+
+ingress:
+  namespace: istio-system
+
+main:
+  namespace: appcket
+  domain: appcket
+  tld: test
+  env: local

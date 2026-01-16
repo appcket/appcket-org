@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.outboxWatcher.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.outboxWatcher.name }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: {{ .Values.outboxWatcher.port }}
+      name: http
+  selector:
+    app: {{ .Values.outboxWatcher.name }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.outboxWatcher.name }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  config.yaml: |
+{{ .Files.Get "sequin.yaml" | indent 4 }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.outboxWatcher.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.outboxWatcher.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.outboxWatcher.name }}
+    spec:
+      containers:
+        - name: sequin
+          image: "{{ .Values.outboxWatcher.image }}:{{ .Values.outboxWatcher.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.outboxWatcher.port }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/sequin/config.yaml
+              subPath: config.yaml
+          env:
+            - name: CONFIG_FILE_PATH
+              value: /etc/sequin/config.yaml
+            - name: SEQUIN_TELEMETRY_DISABLED
+              value: "true"
+            - name: CRASH_REPORTING_DISABLED
+              value: "true"
+            - name: PG_HOSTNAME
+              value: {{ .Values.database.address }}
+            - name: PG_PORT
+              value: "{{ .Values.database.port }}"
+            - name: PG_DATABASE
+              value: {{ .Values.outboxWatcher.internalStore.database }}
+            - name: PG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.secretName }}
+                  key: user
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.secretName }}
+                  key: password
+            - name: REDIS_URL
+              value: "redis://{{ .Values.outboxWatcher.redis.host }}:{{ .Values.outboxWatcher.redis.port }}/0"
+            - name: SEQUIN_SECRET
+              value: {{ .Values.outboxWatcher.secret }}
+            - name: SECRET_KEY_BASE
+              value: {{ .Values.outboxWatcher.secret }}
+            - name: VAULT_KEY
+              value: {{ .Values.outboxWatcher.vaultKey }}
+            - name: SEQUIN_PORT
+              value: "{{ .Values.outboxWatcher.port }}"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.outboxWatcher.name }}-config
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Values.outboxWatcher.name }}-console
+  namespace: {{ .Values.outboxWatcher.namespace }}
+spec:
+  parentRefs:
+  - name: {{ .Values.ingress.namespace }}-gateway
+    namespace: {{ .Values.ingress.namespace }}
+    sectionName: https-wildcard
+  hostnames:
+  - "{{ .Values.outboxWatcher.consoleSubdomain }}.{{ .Values.domain }}.{{ .Values.tld }}"
+  rules:
+  - backendRefs:
+    - name: {{ .Values.outboxWatcher.name }}
+      port: 80

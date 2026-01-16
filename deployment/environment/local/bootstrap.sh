@@ -14,7 +14,7 @@ DATABASE_PASSWORD='Ch@ng3To@StrongP@ssw0rd'
 
 #----------------------------------------------------------------------------------------------------------
 
-# Keep this during initial setup, and change in Keycloak later if needed for local dev use. Definitely change for production use. See production deployment docs for more information.
+# Keep this during initial setup, and change via Keycloak admin console later if needed for local dev use. Definitely change for production use. See production deployment docs for more information.
 API_CLIENT_KEYCLOAK_SECRET='1SMHqsPrhtoxlMPLRYcHP39uJL16oGG1'
 
 # Resolve script directory and repository root so the script works when run from any CWD
@@ -27,9 +27,25 @@ echo 'Renaming in files...'
 
 # Use grep to find text files containing the search strings and print results as null-delimited.
 # This avoids issues with filenames containing spaces and skips binary files.
-grep -IrlZ --exclude='bootstrap.sh' --exclude-dir='.git' -e 'appcket' ../../../ | xargs -0 sed -i "s/appcket/${PROJECT_MACHINE_NAME}/g" || true
-grep -IrlZ --exclude='bootstrap.sh' --exclude-dir='.git' -e 'Appcket' ../../../ | xargs -0 sed -i "s/Appcket/${PROJECT_HUMAN_NAME}/g" || true
-grep -IrlZ --exclude='bootstrap.sh' --exclude-dir='.git' -e 'Ch@ng3To@StrongP@ssw0rd' ../../../ | xargs -0 sed -i "s/Ch@ng3To@StrongP@ssw0rd/${DATABASE_PASSWORD}/g" || true
+# Limit search to the repo root and exclude large dirs; show a dry-run count first.
+echo "Searching for occurrences in ${REPO_ROOT}..."
+grep -Irl --exclude='bootstrap.sh' --exclude-dir='.git' --exclude-dir='node_modules' --exclude-dir='dist' --exclude-dir='build' -e 'appcket' "${REPO_ROOT}" | wc -l
+
+# Portable replacement helper: run sed only when matches are found
+replace_if_matches() {
+  pattern="$1"
+  sed_expr="$2"
+  matches=$(grep -Irl --exclude='bootstrap.sh' --exclude-dir='.git' --exclude-dir='node_modules' --exclude-dir='dist' --exclude-dir='build' -e "$pattern" "${REPO_ROOT}" || true)
+  if [ -n "$matches" ]; then
+    printf "%s" "$matches" | tr '\n' '\0' | xargs -0 sed -i -- "$sed_expr"
+  else
+    echo "No matches for ${pattern}"
+  fi
+}
+
+replace_if_matches 'appcket' "s/appcket/${PROJECT_MACHINE_NAME}/g"
+replace_if_matches 'Appcket' "s/Appcket/${PROJECT_HUMAN_NAME}/g"
+replace_if_matches 'Ch@ng3To@StrongP@ssw0rd' "s|Ch@ng3To@StrongP@ssw0rd|${DATABASE_PASSWORD}|g"
 
 # Rename env files
 mv "${REPO_ROOT}/app/dot.env.local" "${REPO_ROOT}/app/.env.local"
@@ -60,11 +76,89 @@ echo 'Setting up K8s for local development...'
 
 kubectl create namespace ${PROJECT_MACHINE_NAME} || true
 
-kubectl label namespace ${PROJECT_MACHINE_NAME} istio.io/dataplane-mode=ambient
+kubectl label namespace ${PROJECT_MACHINE_NAME} istio.io/dataplane-mode=ambient || true
 
-kubectl label namespace ${PROJECT_MACHINE_NAME} istio.io/use-waypoint=waypoint
+kubectl label namespace ${PROJECT_MACHINE_NAME} istio.io/use-waypoint=waypoint || true
 
-# create necessary secrets
+echo "📡 Configuring CoreDNS for .test domain..."
+
+# 1. Define Variables
+GATEWAY_SVC="istio-system-gateway-istio.istio-system.svc.cluster.local"
+DOMAIN="appcket.test"
+
+# 2. DYNAMICALLY fetch the existing NodeHosts
+EXISTING_NODE_HOSTS=$(kubectl get configmap coredns -n kube-system -o jsonpath='{.data.NodeHosts}')
+
+# 3. Construct the new NodeHosts content
+# Start with existing content
+NODE_HOSTS_CONTENT="$EXISTING_NODE_HOSTS"
+
+# Extract the IP (first field of the first line)
+HOST_IP=$(echo "$EXISTING_NODE_HOSTS" | awk '{print $1}' | head -n 1)
+
+# Append host.docker.internal if it's not already there (Idempotency)
+if [[ "$NODE_HOSTS_CONTENT" != *"host.docker.internal"* ]]; then
+    NODE_HOSTS_CONTENT="${NODE_HOSTS_CONTENT}
+${HOST_IP} host.docker.internal"
+fi
+
+# 4. Indent the content for YAML (Add 4 spaces to the start of every line)
+# This is CRITICAL for valid YAML syntax in the block scalar
+INDENTED_NODE_HOSTS=$(echo "$NODE_HOSTS_CONTENT" | sed 's/^/    /')
+
+# 5. Create the temporary manifest
+# Note: ${INDENTED_NODE_HOSTS} is placed at the start of the line because it already contains the indentation.
+cat <<EOF > coredns-patch.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health
+        # Explicit Rewrites for each service (Robust & Reliable)
+        rewrite name accounts.${DOMAIN} ${GATEWAY_SVC}
+        rewrite name appcket.${DOMAIN} ${GATEWAY_SVC}
+        rewrite name api.${DOMAIN} ${GATEWAY_SVC}
+        rewrite name app.${DOMAIN} ${GATEWAY_SVC}
+        rewrite name redpanda.${DOMAIN} ${GATEWAY_SVC}
+        rewrite name sequin.${DOMAIN} ${GATEWAY_SVC}
+
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+        }
+        hosts /etc/coredns/NodeHosts {
+          ttl 60
+          reload 15s
+          fallthrough
+        }
+        prometheus :9153
+        cache 30
+        loop
+        reload
+        loadbalance
+        import /etc/coredns/custom/*.override
+        forward . /etc/resolv.conf
+    }
+    import /etc/coredns/custom/*.server
+  NodeHosts: |
+${INDENTED_NODE_HOSTS}
+EOF
+
+# 6. Apply and Restart
+kubectl apply -f coredns-patch.yaml
+kubectl rollout restart deployment coredns -n kube-system
+
+# Clean up
+rm coredns-patch.yaml
+echo "✅ CoreDNS configured."
+
+# Create necessary secrets
 kubectl create secret generic database-secret --from-literal=user=${DATABASE_USER} --from-literal=password=${DATABASE_PASSWORD} -n ${PROJECT_MACHINE_NAME} || true
 
 kubectl create secret generic api-keycloak-client-secret --from-literal=clientsecret=${API_CLIENT_KEYCLOAK_SECRET} -n ${PROJECT_MACHINE_NAME} || true
@@ -72,15 +166,46 @@ kubectl create secret generic api-keycloak-client-secret --from-literal=clientse
 # Deploy Redpanda Cluster
 echo "--------------------"
 echo "Deploying Redpanda cluster..."
-helm install redpanda "${REPO_ROOT}/deployment/environment/local/helm/redpanda" -f "${REPO_ROOT}/deployment/environment/local/helm/redpanda/values.yaml" -n redpanda
+helm install redpanda "${REPO_ROOT}/deployment/environment/local/helm/redpanda" -f "${REPO_ROOT}/deployment/environment/local/helm/redpanda/values.yaml" -n redpanda || true
 
-kubectl label namespace redpanda istio.io/dataplane-mode=ambient
+kubectl label namespace redpanda istio.io/dataplane-mode=ambient || true
 
-# Database setup, create the database, project schema, keycloak schema and insert sample keycloak data
+# Start Istio Gateway with helm chart
+# "istio-system" namespace must match the values.yaml file ingress.namespace value
 echo '---------------------'
-echo 'Create the database and populate Keycloak schema...'
+echo "Starting Istio Gateway..."
+helm upgrade --install istio-gateway "${REPO_ROOT}/deployment/environment/local/helm/istio-gateway" \
+-n istio-system \
+-f "${REPO_ROOT}/deployment/environment/local/helm/istio-gateway/values.yaml" || true
 
-# Check if the database already exists, and create if it doesn't
+# Apply cert issuer into cluster
+kubectl apply -f "${REPO_ROOT}/deployment/environment/local/helm/issuers.yaml" || true
+
+# Copy the root CA secret to the project namespace for local dev use, so api can call accounts service over mTLS
+echo "Waiting for root-ca-secret to be available..."
+for i in {1..30}; do
+    if kubectl get secret root-ca-secret -n cert-manager >/dev/null 2>&1; then
+        echo "root-ca-secret found, copying..."
+        kubectl get secret root-ca-secret -n cert-manager -o yaml \
+        | sed "s/namespace: cert-manager/namespace: ${PROJECT_MACHINE_NAME}/" \
+        | kubectl apply -f - || true
+        break
+    fi
+    echo "Waiting for root-ca-secret... ($i/30)"
+    sleep 1
+done
+
+# run the bootstrap-namespace chart to setup istio related resources for appcket namespace
+helm upgrade --install bootstrap-namespace "${REPO_ROOT}/deployment/environment/local/helm/bootstrap-namespace" \
+-n ${PROJECT_MACHINE_NAME} \
+-f "${REPO_ROOT}/deployment/environment/local/helm/bootstrap-namespace/values-appcket.yaml" || true
+
+# Database setup
+#create the databases, project schema, keycloak schema and insert sample keycloak data
+echo '---------------------'
+echo 'Create the databases and populate Keycloak schema...'
+
+# Check if the main database already exists, and create if it doesn't
 DB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='${PROJECT_MACHINE_NAME}'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
 if [ "${DB_EXISTS}" = "1" ]; then
 	echo "Database ${PROJECT_MACHINE_NAME} already exists; skipping create"
@@ -89,5 +214,61 @@ else
 	psql -c "CREATE DATABASE ${PROJECT_MACHINE_NAME} WITH ENCODING 'UTF8'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 fi
 
+# Check if the sequin database already exists, and create if it doesn't
+DB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='sequin'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
+if [ "${DB_EXISTS}" = "1" ]; then
+	echo "Database sequin already exists; skipping create"
+else
+	echo "Creating database sequin..."
+	psql -c "CREATE DATABASE sequin WITH ENCODING 'UTF8'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+fi
+
 psql -c "CREATE SCHEMA IF NOT EXISTS ${PROJECT_MACHINE_NAME}; CREATE SCHEMA IF NOT EXISTS keycloak" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+
 psql -f "${SCRIPT_DIR}/keycloak_dump.sql" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+
+# Setup Sequin replication slot and publication
+
+echo '---------------------'
+echo 'Setting up Sequin replication slot and publication...'
+
+SLOT_EXISTS=$(psql -tAc "SELECT 1 FROM pg_replication_slots WHERE slot_name='sequin_slot'" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
+
+if [ "${SLOT_EXISTS}" = "1" ]; then
+    echo "Replication slot sequin_slot already exists; skipping create"
+else
+    echo "Creating replication slot sequin_slot..."
+    psql -c "SELECT pg_create_logical_replication_slot('sequin_slot', 'pgoutput')" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+fi
+
+PUB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_publication WHERE pubname='sequin_pub'" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
+
+if [ "${PUB_EXISTS}" = "1" ]; then
+    echo "Publication sequin_pub already exists; skipping create"
+else
+    echo "Creating publication sequin_pub..."
+
+    psql -c "CREATE PUBLICATION sequin_pub FOR ALL TABLES" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+fi
+
+# Seed Database with sample application data
+echo '---------------------'
+echo 'Seeding database...'
+cd "${REPO_ROOT}/deployment/database"
+
+if ! command -v pnpm &> /dev/null; then
+    echo "pnpm could not be found. Please install pnpm to run the seeding script."
+    exit 1
+fi
+
+echo "Installing database dependencies..."
+pnpm install
+
+echo "Running schema refresh and seed..."
+export DB_ADDR=localhost DB_PORT=5432 DB_USER=${DATABASE_USER} DB_PASSWORD=${DATABASE_PASSWORD} DB_NAME=${PROJECT_MACHINE_NAME}
+pnpm run schema-seed
+
+echo "Running post-seed script..."
+pnpm run post-seed
+
+echo "✅ Database seeded successfully."

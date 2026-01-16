@@ -1778,10 +1778,10 @@ INSERT INTO keycloak.client VALUES ('6b0c8bef-0c61-487f-ac1d-dc77f3f97278', true
 INSERT INTO keycloak.client VALUES ('dc634090-4b2a-41e1-b8bc-35ea7cfc1102', true, false, 'appcket-realm', 0, false, NULL, NULL, true, NULL, false, 'master', NULL, 0, false, false, 'appcket Realm', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('e801cbf0-541f-4466-80e1-fcce640df2a8', true, false, 'account', 0, false, '**********', '/realms/appcket/account/', false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_account}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('26f802c3-b7af-4e78-b785-40493ae2483a', true, false, 'account-console', 0, true, '**********', '/realms/appcket/account/', false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_account-console}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
-INSERT INTO keycloak.client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', true, true, 'appcket_app', 0, true, NULL, '/', false, 'https://app.appcket.localhost', false, 'appcket', 'openid-connect', -1, false, false, 'Appcket App', false, 'client-secret', 'https://app.appcket.localhost', NULL, NULL, true, false, true, false);
+INSERT INTO keycloak.client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', true, true, 'appcket_app', 0, true, NULL, '/', false, 'https://app.appcket.test', false, 'appcket', 'openid-connect', -1, false, false, 'Appcket App', false, 'client-secret', 'https://app.appcket.test', NULL, NULL, true, false, true, false);
 INSERT INTO keycloak.client VALUES ('70da96f3-abee-4ade-a7f3-d22e04437a0a', true, false, 'broker', 0, false, '**********', NULL, false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_broker}', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('5ab9f6c1-1f4a-4e68-9ca4-59caf655bbe8', true, false, 'realm-management', 0, false, '**********', NULL, true, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_realm-management}', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
-INSERT INTO keycloak.client VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', true, true, 'appcket_api', 0, false, '1SMHqsPrhtoxlMPLRYcHP39uJL16oGG1', NULL, false, 'https://api.appcket.localhost', false, 'appcket', 'openid-connect', -1, false, false, 'Appcket API', true, 'client-secret', 'https://api.appcket.localhost', NULL, NULL, true, false, true, false);
+INSERT INTO keycloak.client VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', true, true, 'appcket_api', 0, false, '1SMHqsPrhtoxlMPLRYcHP39uJL16oGG1', NULL, false, 'https://api.appcket.test', false, 'appcket', 'openid-connect', -1, false, false, 'Appcket API', true, 'client-secret', 'https://api.appcket.test', NULL, NULL, true, false, true, false);
 INSERT INTO keycloak.client VALUES ('01818753-ed45-4903-93e9-8ebffc711cd8', true, true, 'security-admin-console', 0, true, NULL, '/admin/master/console/', false, NULL, false, 'master', 'openid-connect', 0, false, false, '${client_security-admin-console}', false, 'client-secret', '${authAdminUrl}', NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('bfd838d0-4aef-44ac-8947-978c45bb4f26', true, true, 'admin-cli', 0, true, NULL, NULL, false, NULL, false, 'master', 'openid-connect', 0, false, false, '${client_admin-cli}', false, 'client-secret', NULL, NULL, NULL, false, false, true, false);
 INSERT INTO keycloak.client VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', true, true, 'security-admin-console', 0, true, '**********', '/admin/appcket/console/', false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_security-admin-console}', false, 'client-secret', '${authAdminUrl}', NULL, NULL, true, false, false, false);
@@ -3411,8 +3411,8 @@ INSERT INTO keycloak.migration_model VALUES ('34rvi', '26.4.7', 1765814894);
 -- Data for Name: offline_client_session; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
 
-INSERT INTO keycloak.offline_client_session VALUES ('b29f15df-a432-da1a-eb66-c946429c00b7', '68d063b7-66bc-4e03-8ed0-38694d466ad3', '0', 1765495772, '{"authMethod":"openid-connect","redirectUri":"https://app.appcket.localhost","notes":{"clientId":"68d063b7-66bc-4e03-8ed0-38694d466ad3","scope":"openid","userSessionStartedAt":"1765495771","iss":"https://accounts.appcket.localhost/realms/appcket","startedAt":"1765495771","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","redirect_uri":"https://app.appcket.localhost","state":"3b3bb2177e3e40dba038c8678345019a","code_challenge":"R01QYbc7ONyb4NEO9bZlrj9pAsi798R05j35LbbUrLY"}}', 'local', 'local', 1);
-INSERT INTO keycloak.offline_client_session VALUES ('5368e245-2c96-42e8-0084-baf5a11209e5', '01818753-ed45-4903-93e9-8ebffc711cd8', '0', 1765815426, '{"authMethod":"openid-connect","redirectUri":"https://accounts.appcket.localhost/admin/master/console/","notes":{"clientId":"01818753-ed45-4903-93e9-8ebffc711cd8","iss":"https://accounts.appcket.localhost/realms/master","startedAt":"1765815425","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","nonce":"217c193a-283e-4410-b8f7-575c6854a54f","response_mode":"query","scope":"openid","userSessionStartedAt":"1765815425","redirect_uri":"https://accounts.appcket.localhost/admin/master/console/","state":"797a005d-d474-4ac8-ad13-3c0c2c5d8ddc","code_challenge":"pTydUi5M5ESYFbDflfMdTPzi7-dNAIGxw_Vr_c7jFB4"}}', 'local', 'local', 1);
+INSERT INTO keycloak.offline_client_session VALUES ('b29f15df-a432-da1a-eb66-c946429c00b7', '68d063b7-66bc-4e03-8ed0-38694d466ad3', '0', 1765495772, '{"authMethod":"openid-connect","redirectUri":"https://app.appcket.test","notes":{"clientId":"68d063b7-66bc-4e03-8ed0-38694d466ad3","scope":"openid","userSessionStartedAt":"1765495771","iss":"https://accounts.appcket.test/realms/appcket","startedAt":"1765495771","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","redirect_uri":"https://app.appcket.test","state":"3b3bb2177e3e40dba038c8678345019a","code_challenge":"R01QYbc7ONyb4NEO9bZlrj9pAsi798R05j35LbbUrLY"}}', 'local', 'local', 1);
+INSERT INTO keycloak.offline_client_session VALUES ('5368e245-2c96-42e8-0084-baf5a11209e5', '01818753-ed45-4903-93e9-8ebffc711cd8', '0', 1765815426, '{"authMethod":"openid-connect","redirectUri":"https://accounts.appcket.test/admin/master/console/","notes":{"clientId":"01818753-ed45-4903-93e9-8ebffc711cd8","iss":"https://accounts.appcket.test/realms/master","startedAt":"1765815425","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","nonce":"217c193a-283e-4410-b8f7-575c6854a54f","response_mode":"query","scope":"openid","userSessionStartedAt":"1765815425","redirect_uri":"https://accounts.appcket.test/admin/master/console/","state":"797a005d-d474-4ac8-ad13-3c0c2c5d8ddc","code_challenge":"pTydUi5M5ESYFbDflfMdTPzi7-dNAIGxw_Vr_c7jFB4"}}', 'local', 'local', 1);
 
 
 --
@@ -4001,8 +4001,8 @@ INSERT INTO keycloak.realm_attribute VALUES ('client-policies.policies', 'appcke
 INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.contentSecurityPolicyReportOnly', 'appcket', '');
 INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.xContentTypeOptions', 'appcket', 'nosniff');
 INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.xRobotsTag', 'appcket', 'none');
-INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.xFrameOptions', 'appcket', 'ALLOW-FROM https://accounts.appcket.localhost https://accounts.appcket.com');
-INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.contentSecurityPolicy', 'appcket', 'frame-src https://accounts.appcket.localhost https://accounts.appcket.com');
+INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.xFrameOptions', 'appcket', 'ALLOW-FROM https://accounts.appcket.test https://accounts.appcket.com');
+INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.contentSecurityPolicy', 'appcket', 'frame-src https://accounts.appcket.test https://accounts.appcket.com');
 INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.xXSSProtection', 'appcket', '1; mode=block');
 INSERT INTO keycloak.realm_attribute VALUES ('_browser_header.strictTransportSecurity', 'appcket', 'max-age=31536000; includeSubDomains');
 INSERT INTO keycloak.realm_attribute VALUES ('firstBrokerLoginFlowId', 'master', 'e2034074-1b98-46ad-8d9f-5a96b770b7db');
@@ -4087,11 +4087,11 @@ INSERT INTO keycloak.redirect_uris VALUES ('235e5d2b-515a-422c-b23c-6d9c3abddfa5
 INSERT INTO keycloak.redirect_uris VALUES ('01818753-ed45-4903-93e9-8ebffc711cd8', '/admin/master/console/*');
 INSERT INTO keycloak.redirect_uris VALUES ('e801cbf0-541f-4466-80e1-fcce640df2a8', '/realms/appcket/account/*');
 INSERT INTO keycloak.redirect_uris VALUES ('26f802c3-b7af-4e78-b785-40493ae2483a', '/realms/appcket/account/*');
-INSERT INTO keycloak.redirect_uris VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'https://app.appcket.localhost/*');
-INSERT INTO keycloak.redirect_uris VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'https://appcket.localhost');
+INSERT INTO keycloak.redirect_uris VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'https://app.appcket.test/*');
+INSERT INTO keycloak.redirect_uris VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'https://appcket.test');
 INSERT INTO keycloak.redirect_uris VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', '/admin/appcket/console/*');
-INSERT INTO keycloak.redirect_uris VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'https://api.appcket.localhost/*');
-INSERT INTO keycloak.redirect_uris VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'http://api.appcket.localhost/*');
+INSERT INTO keycloak.redirect_uris VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'https://api.appcket.test/*');
+INSERT INTO keycloak.redirect_uris VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'http://api.appcket.test/*');
 
 
 --
@@ -4499,10 +4499,10 @@ INSERT INTO keycloak.user_role_mapping VALUES ('97caa102-e9d8-44de-94a1-74e5ea7b
 --
 
 INSERT INTO keycloak.web_origins VALUES ('01818753-ed45-4903-93e9-8ebffc711cd8', '+');
-INSERT INTO keycloak.web_origins VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'https://app.appcket.localhost');
+INSERT INTO keycloak.web_origins VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'https://app.appcket.test');
 INSERT INTO keycloak.web_origins VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', '+');
-INSERT INTO keycloak.web_origins VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'http://api.appcket.localhost/');
-INSERT INTO keycloak.web_origins VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'https://api.appcket.localhost');
+INSERT INTO keycloak.web_origins VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'http://api.appcket.test/');
+INSERT INTO keycloak.web_origins VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'https://api.appcket.test');
 
 
 --

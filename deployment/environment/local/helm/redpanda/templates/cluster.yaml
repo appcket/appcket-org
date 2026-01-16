@@ -1,8 +1,8 @@
 apiVersion: cluster.redpanda.com/v1alpha2
 kind: Redpanda
 metadata:
-  name: redpanda
-  namespace: redpanda
+  name: {{ .Values.redpanda.name }}
+  namespace: {{ .Values.redpanda.namespace }}
 spec:
   chartRef: {}
   clusterSpec:

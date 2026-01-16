@@ -47,6 +47,8 @@ spec:
         env:
         - name: NODE_ENV
           value: {{ .Values.env }}
+        - name: NODE_EXTRA_CA_CERTS
+          value: /etc/ssl/certs/root-ca.crt
         - name: PORT
           value: "3000"
         - name: DB_ADDR
@@ -81,13 +83,11 @@ spec:
         - name: APP_URL
           value: https://{{ .Values.app.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
         - name: ACCOUNTS_URL
-          value: http://{{ .Values.accounts.name }}.{{ .Values.namespace }}.svc.cluster.local
+          value: https://{{ .Values.accounts.subdomain }}.{{ .Values.domain }}.{{ .Values.tld }}
         - name: APP_ID
           value: {{ .Values.api.appId }}
         - name: REDPANDA_BROKERS
           value: {{ .Values.api.redpandaBrokers }}
-        # - name: REDPANDA_CERTS_PATH
-        #   value: /etc/redpanda/certs
         stdin: true
         tty: true
         workingDir: /src
@@ -96,20 +96,23 @@ spec:
           - mountPath: /src
             name: src-volume
             readOnly: false
-          # - name: redpanda-certs-volume
-          #   mountPath: /etc/redpanda/certs
-          #   readOnly: true
+          - name: root-ca-volume
+            mountPath: /etc/ssl/certs
+            readOnly: true
         {{- end }}
-      # {{- if eq .Values.env "local" }}
+      {{- if eq .Values.env "local" }}
       volumes:
       - hostPath:
           path: {{ .Values.api.hostPath }}
           type: DirectoryOrCreate
         name: src-volume
-      # - name: redpanda-certs-volume
-      #   secret:
-      #     secretName: redpanda-default-cert
-      # {{- end }}
+      - name: root-ca-volume
+        secret:
+          secretName: root-ca-secret
+          items:
+          - key: ca.crt
+            path: root-ca.crt
+      {{- end }}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute

@@ -1,0 +1,8 @@
+# Default values for appcket bootstrap-namespace.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: appcket
+
+ingress:
+  namespace: istio-system

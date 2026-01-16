@@ -1,0 +1,26 @@
+account:
+  name: "Appcket"
+
+users:
+  - account: "Appcket"
+    email: "admin@appcket.com"
+    password: "Ch@ng3To@StrongP@ssw0rd"
+
+databases:
+  - name: "appcket-db"
+    url: "postgres://dbuser:Ch@ng3To@StrongP@ssw0rd@host.docker.internal:5432/appcket"
+    slot_name: "sequin_slot"
+    publication_name: "sequin_pub"
+
+sinks:
+  - name: "redpanda-sink"
+    database: "appcket-db"
+    source:
+      include_tables:
+        - "appcket.outbox"
+    actions:
+      - insert # Only new rows inserted into the outbox table will be sent to redpanda
+    destination:
+      type: "kafka"
+      hosts: "redpanda-0.redpanda.redpanda.svc.cluster.local:9093"
+      topic: "outbox-events"

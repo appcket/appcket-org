@@ -9,6 +9,7 @@ import { ChangeAuditEntity } from './entities/ChangeAuditEntity';
 import { ChangeAuditOperationType } from './entities/ChangeAuditOperationType';
 import { Organization } from './entities/Organization';
 import { OrganizationUser } from './entities/OrganizationUser';
+import { Outbox } from './entities/Outbox';
 import { Project } from './entities/Project';
 import { ProjectUser } from './entities/ProjectUser';
 import { Task } from './entities/Task';
@@ -24,6 +25,7 @@ const config: Options = {
     ChangeAuditOperationType,
     Organization,
     OrganizationUser,
+    Outbox,
     Project,
     ProjectUser,
     Task,
@@ -31,14 +33,14 @@ const config: Options = {
     Team,
     TeamUser
   ],
-  dbName: 'appcket',
-  schema: 'appcket',
+  dbName: process.env.DB_NAME || 'appcket',
+  schema: process.env.DB_SCHEMA || 'appcket',
   driver: PostgreSqlDriver,
-  user: 'dbuser',
-  password: 'Ch@ng3To@StrongP@ssw0rd',
-  host: 'localhost',
-  port: 5432,
-  debug: true,
+  user: process.env.DB_USER || 'dbuser',
+  password: process.env.DB_PASSWORD || 'Ch@ng3To@StrongP@ssw0rd',
+  host: process.env.DB_ADDR || 'localhost',
+  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
+  debug: process.env.MIKRO_ORM_DEBUG === 'true' || true,
   extensions: [SeedManager],
   seeder: {
     pathTs: './seeders', // path to the folder with seeders

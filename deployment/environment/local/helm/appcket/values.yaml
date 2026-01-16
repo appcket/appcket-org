@@ -4,7 +4,7 @@
 
 namespace: appcket
 domain: appcket
-tld: localhost
+tld: test
 env: local
 
 accounts:
@@ -51,6 +51,20 @@ marketing:
   image: appcket_nodejs
   # image: appcket_marketing
   hostPath: /mnt/wsl/rancher-desktop-bind-mounts/dev/appcket-org/edrt/marketing
+
+outboxWatcher:
+  name: main-outbox-watcher
+  image: sequin/sequin
+  consoleSubdomain: sequin
+  tag: latest
+  secret: "JrikXbg8khgo6tn/ffOk/6qjNaDCyQbOvC5tJR2EW05Lithh5pHm6E7MVnR1a5LAlxLN1BYl+eOgpeXnBl8pcA==" # >64 bytes Base64
+  vaultKey: "mv/z89qPTWLRLjsS+yXbkzYlcgS0yAiz+T4A9CE+VyE=" # 32 bytes Base64
+  port: 7376
+  internalStore:
+    database: sequin
+  redis:
+    host: host.docker.internal
+    port: 6379
 
 replicaCount: 1
 

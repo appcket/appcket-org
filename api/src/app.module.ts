@@ -96,7 +96,9 @@ caAppend.monkeyPatch();
           transport: Transport.KAFKA,
           options: {
             client: {
-              brokers: configService.get<string[]>('redpanda.brokers') || ['redpanda-0.redpanda.redpanda.svc.cluster.local:9093'],
+              brokers: configService.get<string[]>('redpanda.brokers') || [
+                'redpanda-0.redpanda.redpanda.svc.cluster.local:9093',
+              ],
             },
             consumer: {
               groupId: configService.get<string>('redpanda.groupId') ?? 'default-group',

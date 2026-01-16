@@ -47,4 +47,4 @@ fi
 echo ""
 echo "3. After importing, restart your Chromium browser completely (close all windows) for the changes to take effect."
 echo ""
-echo "🎉 You're all set! Your browser should now trust https://appcket.localhost and https://*.appcket.localhost."
+echo "🎉 You're all set! Your browser should now trust https://appcket.test and https://*.appcket.test."
