@@ -14,6 +14,9 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." >/dev/null 2>&1 && pwd)"
 # Create bind mount to share your Ubuntu home dev folder with Rancher Desktop's WSL distro
 mkdir -p /mnt/wsl/rancher-desktop-bind-mounts/dev && sudo mount --bind ~/dev /mnt/wsl/rancher-desktop-bind-mounts/dev
 
+# Configure CoreDNS
+"${SCRIPT_DIR}/patch-coredns.sh"
+
 # Set kubectl namespace
 kubectl config set-context --current --namespace=${PROJECT_MACHINE_NAME}
 

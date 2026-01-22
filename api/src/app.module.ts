@@ -21,6 +21,7 @@ import { TaskModule } from './task/task.module';
 import { TaskStatusTypeModule } from './taskStatusType/taskStatusType.module';
 import { TeamModule } from './team/team.module';
 import { UserModule } from './user/user.module';
+import { UiGatewayModule } from './uiGateway/uiGateway.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -49,7 +50,12 @@ caAppend.monkeyPatch();
           },
         };
       },
-      installSubscriptionHandlers: true,
+      // CRITICAL: Keep this FALSE.
+      // Enabling GraphQL Subscriptions (installSubscriptionHandlers: true) creates a WebSocket server
+      // that conflicts with the Socket.io Adapter used by UiGateway on the same port/path.
+      // This conflict causes "Invalid frame header" errors for Socket.io clients.
+      // We use Socket.io (via UiGateway) for all realtime events, not GraphQL Subscriptions.
+      installSubscriptionHandlers: false,
       path: '/',
     }),
     LoggerModule.forRoot({
@@ -116,6 +122,7 @@ caAppend.monkeyPatch();
     TaskStatusTypeModule,
     TeamModule,
     UserModule,
+    UiGatewayModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -11,7 +11,7 @@ spec:
   - port: 80
     targetPort: 3000
     appProtocol: http
-    name: {{ .Values.api.name }}
+    name: {{ .Values.api.name }}-http
   - port: 9229
     targetPort: 9229
     appProtocol: http

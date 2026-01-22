@@ -6,6 +6,8 @@ import { useAuth } from 'react-oidc-context';
 import { ThemeProvider } from '@mui/material/styles';
 
 import { getTheme } from 'src/common/theme';
+import { SocketProvider } from 'src/context/SocketProvider';
+import GlobalEventHandler from 'src/common/components/GlobalEventHandler';
 import Loading from 'src/common/components/Loading';
 import MainLayout from 'src/common/components/layouts/MainLayout';
 import Home from 'src/pages/Home';
@@ -45,34 +47,37 @@ export default function App() {
       <UiSettingsContext.Provider value={store}>
         <UiSettingsConsumer />
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <SnackbarProvider
-            maxSnack={3}
-            autoHideDuration={7000}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            iconVariant={{
-              success: '✅ ',
-              error: '✖️ ',
-              warning: '⚠️ ',
-              info: 'ℹ️ ',
-            }}
-          >
-            <Routes>
-              <Route path="/" element={<MainLayout />}>
-                <Route index element={<Home />} />
-                <Route path="about" element={<About />} />
-                <Route path="teams/*" element={<Teams />} />
-                <Route path="projects/*" element={<Projects />} />
-                <Route path="tasks/*" element={<Tasks />} />
-                <Route path="unauthorized" element={<Unauthorized />} />
-                <Route path="404" element={<NotFound />} />
-                <Route path="*" element={<Navigate to="/404" />} />
-              </Route>
-            </Routes>
-          </SnackbarProvider>
+          <SocketProvider>
+            <GlobalEventHandler />
+            <CssBaseline />
+            <SnackbarProvider
+              maxSnack={3}
+              autoHideDuration={7000}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              iconVariant={{
+                success: '✅ ',
+                error: '✖️ ',
+                warning: '⚠️ ',
+                info: 'ℹ️ ',
+              }}
+            >
+              <Routes>
+                <Route path="/" element={<MainLayout />}>
+                  <Route index element={<Home />} />
+                  <Route path="about" element={<About />} />
+                  <Route path="teams/*" element={<Teams />} />
+                  <Route path="projects/*" element={<Projects />} />
+                  <Route path="tasks/*" element={<Tasks />} />
+                  <Route path="unauthorized" element={<Unauthorized />} />
+                  <Route path="404" element={<NotFound />} />
+                  <Route path="*" element={<Navigate to="/404" />} />
+                </Route>
+              </Routes>
+            </SnackbarProvider>
+          </SocketProvider>
         </ThemeProvider>
       </UiSettingsContext.Provider>
     );
