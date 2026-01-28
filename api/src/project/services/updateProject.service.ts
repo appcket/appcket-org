@@ -10,10 +10,10 @@ import { ProjectUser } from 'src/project/projectUser.entity';
 import { UpdateProjectInput } from 'src/project/dtos/updateProject.input';
 import { GetProjectService } from 'src/project/services/getProject.service';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { CreateChangeAuditChangeService } from 'src/changeAudit/services/createChangeAuditChange.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
 import { CommonService } from 'src/common/services/common.service';
+import { Outbox } from 'src/common/models/outbox.entity';
 
 @Injectable()
 export class UpdateProjectService {
@@ -25,7 +25,6 @@ export class UpdateProjectService {
     private readonly projectRepository: EntityRepository<Project>,
     private getProjectService: GetProjectService,
     private getOrganizationService: GetOrganizationService,
-    private createChangeAuditChangeService: CreateChangeAuditChangeService,
     private configService: ConfigService,
     private commonService: CommonService,
   ) {}
@@ -110,7 +109,7 @@ export class UpdateProjectService {
     });
     const sortedUsers = this.commonService.sortCollection(usersToSort, 'id');
 
-    const projectChangeAudit = {
+    const projectEventPayload = {
       appId: this.configService.get('appId'),
       operationType: ChangeAuditOperationTypes.Update,
       entity: {
@@ -129,7 +128,12 @@ export class UpdateProjectService {
       },
       timestamp: new Date(),
     };
-    this.createChangeAuditChangeService.createChange(projectChangeAudit);
+    
+    this.em.create(Outbox, {
+      payload: projectEventPayload,
+    });
+
+    await this.em.flush();
 
     return updatedProject;
   }

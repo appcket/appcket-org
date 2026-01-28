@@ -9,9 +9,9 @@ import { Task } from 'src/task/task.entity';
 import { UpdateTaskInput } from 'src/task/dtos/updateTask.input';
 import { GetTaskService } from 'src/task/services/getTask.service';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { CreateChangeAuditChangeService } from 'src/changeAudit/services/createChangeAuditChange.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
+import { Outbox } from 'src/common/models/outbox.entity';
 
 @Injectable()
 export class UpdateTaskService {
@@ -23,7 +23,6 @@ export class UpdateTaskService {
     private readonly taskRepository: EntityRepository<Task>,
     private getTaskService: GetTaskService,
     private getOrganizationService: GetOrganizationService,
-    private createChangeAuditChangeService: CreateChangeAuditChangeService,
     private configService: ConfigService,
   ) {}
 
@@ -49,7 +48,7 @@ export class UpdateTaskService {
 
     this.logger.log(`${Task.name} updated successfully. id: ${updatedTask.id}`);
 
-    const taskChangeAudit = {
+    const taskEventPayload = {
       appId: this.configService.get('appId'),
       operationType: ChangeAuditOperationTypes.Update,
       entity: {
@@ -80,7 +79,12 @@ export class UpdateTaskService {
       },
       timestamp: new Date(),
     };
-    this.createChangeAuditChangeService.createChange(taskChangeAudit);
+    
+    this.em.create(Outbox, {
+      payload: taskEventPayload,
+    });
+
+    await this.em.flush();
 
     return updatedTask;
   }

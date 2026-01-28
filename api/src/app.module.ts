@@ -12,7 +12,8 @@ import * as caAppend from 'ca-append';
 import { readFileSync } from 'fs';
 
 import { configuration } from 'src/config';
-import { CommonModule } from 'src/common/common.module';
+import { CommonModule } from 'src/common/modules/common.module';
+import { ClickHouseModule } from 'src/common/modules/clickhouse.module';
 import { EntityHistoryModule } from 'src/entityHistory/entityHistory.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PermissionModule } from './permission/permission.module';
@@ -30,6 +31,7 @@ caAppend.monkeyPatch();
 @Module({
   imports: [
     CommonModule,
+    ClickHouseModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],

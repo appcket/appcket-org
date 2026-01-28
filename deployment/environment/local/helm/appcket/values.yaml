@@ -34,6 +34,13 @@ app:
   # image: appcket_marketing
   hostPath: /mnt/wsl/rancher-desktop-bind-mounts/dev/appcket-org/edrt/app
 
+clickhouse:
+  address: host.docker.internal
+  port: 8123
+  secretName: clickhouse-secret
+  database: appcket
+  sslMode: false
+
 database:
   address: host.docker.internal
   port: 5432

@@ -7,7 +7,7 @@ spec:
   ports:
   - port: 80
     targetPort: 8080
-    name: {{ .Values.accounts.name }}
+    name: {{ .Values.accounts.name }}-http
     appProtocol: http
   selector:
     app: {{ .Values.accounts.name }}

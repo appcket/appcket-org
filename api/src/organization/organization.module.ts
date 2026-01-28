@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { AuthorizationService } from 'src/common/services/authorization.service';
-import { CommonModule } from 'src/common/common.module';
+import { CommonModule } from 'src/common/modules/common.module';
 import { OrganizationResolver } from 'src/organization/organization.resolver';
 import { Organization } from 'src/organization/organization.entity';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';

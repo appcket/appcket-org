@@ -3,7 +3,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { AuthorizationService } from 'src/common/services/authorization.service';
 import { UserService } from 'src/user/services/user.service';
-import { CommonModule } from 'src/common/common.module';
+import { CommonModule } from 'src/common/modules/common.module';
 import { UserResolver } from 'src/user/user.resolver';
 import { User } from 'src/user/user.entity';
 

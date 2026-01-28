@@ -9,6 +9,8 @@ PROJECT_MACHINE_NAME='appcket'
 PROJECT_HUMAN_NAME='Appcket'
 DATABASE_USER='dbuser'
 DATABASE_PASSWORD='Ch@ng3To@StrongP@ssw0rd'
+CLICKHOUSE_USER='dbuser'
+CLICKHOUSE_PASSWORD='Ch@ng3To@StrongP@ssw0rd'
 
 # You shouldn't need to change anything below unless you have customized these values elsewhere
 
@@ -87,6 +89,8 @@ kubectl label namespace ${PROJECT_MACHINE_NAME} istio.io/use-waypoint=waypoint |
 kubectl create secret generic database-secret --from-literal=user=${DATABASE_USER} --from-literal=password=${DATABASE_PASSWORD} -n ${PROJECT_MACHINE_NAME} || true
 
 kubectl create secret generic api-keycloak-client-secret --from-literal=clientsecret=${API_CLIENT_KEYCLOAK_SECRET} -n ${PROJECT_MACHINE_NAME} || true
+
+kubectl create secret generic clickhouse-secret --from-literal=user=${CLICKHOUSE_USER} --from-literal=password=${CLICKHOUSE_PASSWORD} -n ${PROJECT_MACHINE_NAME} || true
 
 # Deploy Redpanda Cluster
 echo "--------------------"
@@ -174,6 +178,12 @@ else
 
     psql -c "CREATE PUBLICATION sequin_pub FOR ALL TABLES" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 fi
+
+# Setup ClickHouse
+echo '---------------------'
+echo 'Setting up ClickHouse...'
+chmod +x "${SCRIPT_DIR}/setup-clickhouse.sh"
+"${SCRIPT_DIR}/setup-clickhouse.sh"
 
 # Seed Database with sample application data
 echo '---------------------'

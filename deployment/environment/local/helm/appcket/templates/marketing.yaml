@@ -11,7 +11,7 @@ spec:
   - port: 80
     targetPort: 3000
     appProtocol: http
-    name: {{ .Values.marketing.name }}
+    name: {{ .Values.marketing.name }}-http
   selector:
     app: {{ .Values.marketing.name }}
 ---

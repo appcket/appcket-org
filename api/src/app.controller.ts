@@ -26,14 +26,14 @@ export class AppController implements OnModuleInit, OnModuleDestroy {
   // Fire-and-forget test endpoint
   @Post('send-event')
   sendTestEvent() {
-    this.client.emit('twitch-chat', { hello: 'world!!!' });
+    this.client.emit('outbox-events', { hello: 'world!!!' });
     return { status: 'sent' };
   }
 
   // Request-response example (await the reply)
   @Post('send-request')
   async sendRequest() {
-    const response$ = this.client.send('twitch-chat', { ping: 'pong' });
+    const response$ = this.client.send('outbox-events', { ping: 'pong' });
     const res = await lastValueFrom(response$);
     return res;
   }

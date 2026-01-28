@@ -88,6 +88,24 @@ spec:
           value: {{ .Values.api.appId }}
         - name: REDPANDA_BROKERS
           value: {{ .Values.api.redpandaBrokers }}
+        - name: CLICKHOUSE_ADDR
+          value: {{ .Values.clickhouse.address }}
+        - name: CLICKHOUSE_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.clickhouse.secretName }}
+              key: user
+        - name: CLICKHOUSE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.clickhouse.secretName }}
+              key: password
+        - name: CLICKHOUSE_DATABASE
+          value: {{ .Values.clickhouse.database }}
+        - name: CLICKHOUSE_PORT
+          value: "{{ .Values.clickhouse.port }}"
+        - name: CLICKHOUSE_SSL_MODE
+          value: "{{ .Values.clickhouse.sslMode }}"
         stdin: true
         tty: true
         workingDir: /src

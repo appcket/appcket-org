@@ -10,7 +10,8 @@ spec:
   ports:
     - port: 80
       targetPort: {{ .Values.outboxWatcher.port }}
-      name: http
+      appProtocol: http
+      name: {{ .Values.outboxWatcher.name }}-http
   selector:
     app: {{ .Values.outboxWatcher.name }}
 ---
