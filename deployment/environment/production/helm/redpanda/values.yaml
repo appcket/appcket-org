@@ -1,0 +1,11 @@
+# Default values for redpanda.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: redpanda
+redpanda:
+  name: redpanda
+  subdomain: redpanda
+  hostPath: /tmp/redpanda-data
+
+replicaCount: 1

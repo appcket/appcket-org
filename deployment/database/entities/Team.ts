@@ -1,6 +1,7 @@
 import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 import { BaseEntity } from './Base';
 import { Organization } from './Organization';
+import { User } from './User';
 
 @Entity({ schema: 'appcket' })
 export class Team extends BaseEntity {

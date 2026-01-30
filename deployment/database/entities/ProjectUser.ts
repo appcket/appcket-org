@@ -1,12 +1,13 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne } from '@mikro-orm/core';
 import { BaseEntity } from './Base';
 import { Project } from './Project';
+import { User } from './User';
 
 @Entity({ schema: 'appcket' })
 export class ProjectUser extends BaseEntity {
   @ManyToOne({ entity: () => Project, fieldName: 'project_id', updateRule: 'cascade' })
-  projectId!: Project;
+  project!: Project;
 
-  @Property({ length: 36 })
-  userId!: string;
+  @ManyToOne({ entity: () => User, fieldName: 'user_id', updateRule: 'cascade' })
+  user!: User;
 }

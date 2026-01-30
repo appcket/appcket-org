@@ -1,0 +1,15 @@
+#apiVersion: networking.istio.io/v1
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: external-db
+  namespace: {{ .Values.namespace }}
+spec:
+  hosts:
+  - {{ .Values.database.address }}
+  location: MESH_EXTERNAL
+  ports:
+  - number: 5432
+    name: tcp-postgres
+    protocol: TCP
+  resolution: DNS

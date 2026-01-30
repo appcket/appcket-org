@@ -8,9 +8,8 @@ import { Project } from 'src/project/project.entity';
 import { ProjectUser } from 'src/project/projectUser.entity';
 import { Team } from 'src/team/team.entity';
 import { TeamUser } from 'src/team/teamUser.entity';
-import { UserAttribute } from 'src/user/userAttribute.entity';
 
-@Entity({ schema: 'keycloak', tableName: 'user_entity' })
+@Entity({ schema: 'appcket'})
 export class User {
   @PrimaryKey({ length: 36 })
   id: string;
@@ -30,6 +29,12 @@ export class User {
   @Property({ length: 255, persist: false })
   role: string;
 
+  @Property({ columnType: 'jsonb', nullable: true })
+  attributes?: any;
+
+  @Property({ nullable: true })
+  lastSyncedAt?: Date;
+
   @ManyToMany({
     entity: () => Organization,
     pivotEntity: () => OrganizationUser,
@@ -43,9 +48,6 @@ export class User {
 
   @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
   teams = new Collection<Team>(this);
-
-  @OneToMany({ entity: () => UserAttribute, mappedBy: 'user' })
-  attributes = new Collection<UserAttribute>(this);
 
   permissions?: Permission[];
 }

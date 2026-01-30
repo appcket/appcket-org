@@ -27,8 +27,6 @@ FROM nginx:stable-alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=base /src/nginx.conf /etc/nginx/nginx.conf
-COPY --from=base /src/certs/tls.crt /etc/nginx/certs/tls.crt
-COPY --from=base /src/certs/tls.key /etc/nginx/certs/tls.key
 
 COPY --from=base /src/dist/ /usr/share/nginx/html
 

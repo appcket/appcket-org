@@ -86,8 +86,7 @@ export const useGetProject = (projectId: string) => {
             firstName
             lastName
             attributes {
-              name
-              value
+              jobTitle
             }
           }
         }

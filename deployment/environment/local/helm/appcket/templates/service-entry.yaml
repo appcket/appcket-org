@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: external-services
+  namespace: {{ .Values.namespace }}
+spec:
+  hosts:
+  - {{ .Values.database.address }} # Shared host (e.g., host.docker.internal)
+  location: MESH_EXTERNAL
+  ports:
+  - number: {{ .Values.database.port }}
+    name: tcp-postgres
+    protocol: TCP
+  - number: {{ .Values.outboxWatcher.redis.port }}
+    name: tcp-redis
+    protocol: TCP
+  - number: {{ .Values.clickhouse.port }}
+    name: http-clickhouse
+    protocol: HTTP
+  resolution: DNS

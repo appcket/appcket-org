@@ -2,8 +2,7 @@ import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { AuthorizationService } from 'src/common/services/authorization.service';
-import { CommonModule } from 'src/common/common.module';
-import { ChangeAuditModule } from 'src/changeAudit/changeAudit.module';
+import { CommonModule } from 'src/common/modules/common.module';
 import { TeamResolver } from 'src/team/team.resolver';
 import { UserService } from 'src/user/services/user.service';
 import { UpdateTeamService } from 'src/team/services/updateTeam.service';
@@ -16,12 +15,14 @@ import { TeamUser } from 'src/team/teamUser.entity';
 import { User } from 'src/user/user.entity';
 import { Organization } from 'src/organization/organization.entity';
 import { OrganizationUser } from 'src/organization/organizationUser.entity';
+import { Outbox } from 'src/common/models/outbox.entity';
 
 @Module({
   imports: [
-    ChangeAuditModule,
     CommonModule,
-    MikroOrmModule.forFeature({ entities: [Organization, OrganizationUser, Team, User, TeamUser] }),
+    MikroOrmModule.forFeature({
+      entities: [Organization, OrganizationUser, Team, User, TeamUser, Outbox],
+    }),
   ],
   providers: [
     AuthorizationService,

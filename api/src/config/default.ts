@@ -38,4 +38,17 @@ export const config = {
     userRoleMappingsEndpointUrl,
     adminEndpointUrl,
   },
+  redpanda: {
+    brokers: process.env.REDPANDA_BROKERS
+      ? process.env.REDPANDA_BROKERS.split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : ['localhost:9092'],
+  },
+  clickhouse: {
+    url: `${process.env.CLICKHOUSE_SSL_MODE === 'true' ? 'https' : 'http'}://${process.env.CLICKHOUSE_ADDR}:${process.env.CLICKHOUSE_PORT}`,
+    username: process.env.CLICKHOUSE_USER,
+    password: process.env.CLICKHOUSE_PASSWORD,
+    database: process.env.CLICKHOUSE_DATABASE,
+  },
 };

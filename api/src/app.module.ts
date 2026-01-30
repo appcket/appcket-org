@@ -1,8 +1,9 @@
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MiddlewareConsumer, Module, RequestMethod, Logger } from '@nestjs/common';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Keycloak from 'keycloak-connect';
 import * as session from 'express-session';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
@@ -11,7 +12,8 @@ import * as caAppend from 'ca-append';
 import { readFileSync } from 'fs';
 
 import { configuration } from 'src/config';
-import { CommonModule } from 'src/common/common.module';
+import { CommonModule } from 'src/common/modules/common.module';
+import { ClickHouseModule } from 'src/common/modules/clickhouse.module';
 import { EntityHistoryModule } from 'src/entityHistory/entityHistory.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PermissionModule } from './permission/permission.module';
@@ -20,6 +22,7 @@ import { TaskModule } from './task/task.module';
 import { TaskStatusTypeModule } from './taskStatusType/taskStatusType.module';
 import { TeamModule } from './team/team.module';
 import { UserModule } from './user/user.module';
+import { UiGatewayModule } from './uiGateway/uiGateway.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -28,6 +31,7 @@ caAppend.monkeyPatch();
 @Module({
   imports: [
     CommonModule,
+    ClickHouseModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
@@ -48,8 +52,22 @@ caAppend.monkeyPatch();
           },
         };
       },
-      installSubscriptionHandlers: true,
+      // CRITICAL: Keep this FALSE.
+      // Enabling GraphQL Subscriptions (installSubscriptionHandlers: true) creates a WebSocket server
+      // that conflicts with the Socket.io Adapter used by UiGateway on the same port/path.
+      // This conflict causes "Invalid frame header" errors for Socket.io clients.
+      // We use Socket.io (via UiGateway) for all realtime events, not GraphQL Subscriptions.
+      installSubscriptionHandlers: false,
       path: '/',
+      formatError: (error) => {
+        const logger = new Logger('GraphQL');
+        logger.error(
+          `GraphQL Error: ${error.message}`,
+          error.extensions?.stacktrace,
+          JSON.stringify(error.extensions),
+        );
+        return error;
+      },
     }),
     LoggerModule.forRoot({
       pinoHttp: {
@@ -87,6 +105,26 @@ caAppend.monkeyPatch();
       },
       inject: [ConfigService],
     }),
+    ClientsModule.registerAsync([
+      {
+        imports: [ConfigModule],
+        name: 'EVENT_SERVICE',
+        useFactory: async (configService: ConfigService) => ({
+          transport: Transport.KAFKA,
+          options: {
+            client: {
+              brokers: configService.get<string[]>('redpanda.brokers') || [
+                'redpanda-0.redpanda.redpanda.svc.cluster.local:9093',
+              ],
+            },
+            consumer: {
+              groupId: configService.get<string>('redpanda.groupId') ?? 'default-group',
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
     EntityHistoryModule,
     OrganizationModule,
     PermissionModule,
@@ -95,6 +133,7 @@ caAppend.monkeyPatch();
     TaskStatusTypeModule,
     TeamModule,
     UserModule,
+    UiGatewayModule,
   ],
   controllers: [AppController],
   providers: [AppService],

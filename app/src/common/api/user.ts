@@ -23,8 +23,7 @@ export const useUserInfo = () => {
           lastName
           role
           attributes {
-            name
-            value
+            jobTitle
           }
           permissions {
             rsname
@@ -60,8 +59,7 @@ export const useSearchUsers = (organizationId: string) => {
           firstName
           lastName
           attributes {
-            name
-            value
+            jobTitle
           }
         }
       }

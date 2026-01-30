@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Values.redpanda.name }}-console
+  namespace: {{ .Values.redpanda.namespace }}
+spec:
+  parentRefs:
+  - name: {{ .Values.ingress.namespace }}-gateway
+    namespace: {{ .Values.ingress.namespace }}
+    sectionName: https-wildcard
+  hostnames:
+  - "{{ .Values.redpanda.consoleSubdomain }}.{{ .Values.main.domain }}.{{ .Values.main.tld }}"
+  rules:
+  - backendRefs:
+    - name: {{ .Values.redpanda.name }}-console
+      port: 8080

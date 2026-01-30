@@ -16,6 +16,6 @@ export class OrganizationUser extends BaseEntity {
   })
   organization!: Organization;
 
-  @ManyToOne()
+  @ManyToOne({ entity: () => User, updateRule: 'cascade' })
   user!: User;
 }

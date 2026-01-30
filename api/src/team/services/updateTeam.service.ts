@@ -10,10 +10,10 @@ import { TeamUser } from 'src/team/teamUser.entity';
 import { UpdateTeamInput } from 'src/team/dtos/updateTeam.input';
 import { GetTeamService } from 'src/team/services/getTeam.service';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { CreateChangeAuditChangeService } from 'src/changeAudit/services/createChangeAuditChange.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
 import { CommonService } from 'src/common/services/common.service';
+import { Outbox } from 'src/common/models/outbox.entity';
 
 @Injectable()
 export class UpdateTeamService {
@@ -25,7 +25,6 @@ export class UpdateTeamService {
     private readonly teamUserRepository: EntityRepository<TeamUser>,
     private getTeamService: GetTeamService,
     private getOrganizationService: GetOrganizationService,
-    private createChangeAuditChangeService: CreateChangeAuditChangeService,
     private configService: ConfigService,
     private commonService: CommonService,
   ) {}
@@ -102,7 +101,7 @@ export class UpdateTeamService {
     });
     const sortedUsers = this.commonService.sortCollection(usersToSort, 'id');
 
-    const teamChangeAudit = {
+    const teamEventPayload = {
       appId: this.configService.get('appId'),
       operationType: ChangeAuditOperationTypes.Update,
       entity: {
@@ -121,7 +120,12 @@ export class UpdateTeamService {
       },
       timestamp: new Date(),
     };
-    this.createChangeAuditChangeService.createChange(teamChangeAudit);
+
+    this.em.create(Outbox, {
+      payload: teamEventPayload,
+    });
+
+    await this.em.flush();
 
     return updatedTeam;
   }

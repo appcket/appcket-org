@@ -10,9 +10,9 @@ import { Project } from 'src/project/project.entity';
 import { ProjectUser } from 'src/project/projectUser.entity';
 import { CreateProjectInput } from 'src/project/dtos/createProject.input';
 import { GetProjectService } from 'src/project/services/getProject.service';
-import { CreateChangeAuditChangeService } from 'src/changeAudit/services/createChangeAuditChange.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
+import { Outbox } from 'src/common/models/outbox.entity';
 
 @Injectable()
 export class CreateProjectService {
@@ -24,7 +24,6 @@ export class CreateProjectService {
     private readonly projectRepository: EntityRepository<Project>,
     private getProjectService: GetProjectService,
     private getOrganizationService: GetOrganizationService,
-    private createChangeAuditChangeService: CreateChangeAuditChangeService,
     private configService: ConfigService,
   ) {}
 
@@ -55,7 +54,7 @@ export class CreateProjectService {
 
     this.logger.log(`${Project.name} created successfully. id: ${createdProject.id}`);
 
-    const projectChangeAudit = {
+    const projectEventPayload = {
       appId: this.configService.get('appId'),
       operationType: ChangeAuditOperationTypes.Create,
       entity: {
@@ -80,7 +79,12 @@ export class CreateProjectService {
       },
       timestamp: new Date(),
     };
-    this.createChangeAuditChangeService.createChange(projectChangeAudit);
+    
+    this.em.create(Outbox, {
+      payload: projectEventPayload,
+    });
+
+    await this.em.flush();
 
     return createdProject;
   }

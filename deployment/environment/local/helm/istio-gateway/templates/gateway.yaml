@@ -1,0 +1,40 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ .Values.ingress.namespace }}-gateway
+  namespace: {{ .Values.ingress.namespace }}
+spec:
+  gatewayClassName: istio
+  listeners:
+  listeners:
+    # 1. The HTTP Redirect Listener (Catch-all)
+    - name: http
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All # Allow Routes from ANY namespace to attach
+    # 2. The HTTPS Apex Listener
+    - name: https-apex
+      hostname: "{{ .Values.domain }}.{{ .Values.tld }}"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+        - name: gateway-cert-tls
+      allowedRoutes:
+        namespaces:
+          from: All # Allow Routes from ANY namespace to attach
+    # 2. The HTTPS Wildcard Listener
+    - name: https-wildcard
+      hostname: "*.{{ .Values.domain }}.{{ .Values.tld }}"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+        - name: gateway-cert-tls
+      allowedRoutes:
+        namespaces:
+          from: All # Allow Routes from ANY namespace to attach
