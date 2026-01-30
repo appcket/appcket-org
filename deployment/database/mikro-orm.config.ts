@@ -3,10 +3,6 @@ import { Options } from '@mikro-orm/core';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { SeedManager } from '@mikro-orm/seeder';
 
-import { ChangeAuditApp } from './entities/ChangeAuditApp';
-import { ChangeAuditChange } from './entities/ChangeAuditChange';
-import { ChangeAuditEntity } from './entities/ChangeAuditEntity';
-import { ChangeAuditOperationType } from './entities/ChangeAuditOperationType';
 import { Organization } from './entities/Organization';
 import { OrganizationUser } from './entities/OrganizationUser';
 import { Outbox } from './entities/Outbox';
@@ -16,13 +12,10 @@ import { Task } from './entities/Task';
 import { TaskStatusType } from './entities/TaskStatusType';
 import { Team } from './entities/Team';
 import { TeamUser } from './entities/TeamUser';
+import { User } from './entities/User';
 
 const config: Options = {
   entities: [
-    ChangeAuditApp,
-    ChangeAuditChange,
-    ChangeAuditEntity,
-    ChangeAuditOperationType,
     Organization,
     OrganizationUser,
     Outbox,
@@ -31,7 +24,8 @@ const config: Options = {
     Task,
     TaskStatusType,
     Team,
-    TeamUser
+    TeamUser,
+    User
   ],
   dbName: process.env.DB_NAME || 'appcket',
   schema: process.env.DB_SCHEMA || 'appcket',

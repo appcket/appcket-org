@@ -137,24 +137,33 @@ echo 'Create the databases and populate Keycloak schema...'
 # Check if the main database already exists, and create if it doesn't
 DB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='${PROJECT_MACHINE_NAME}'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
 if [ "${DB_EXISTS}" = "1" ]; then
-	echo "Database ${PROJECT_MACHINE_NAME} already exists; skipping create"
+    echo "Database ${PROJECT_MACHINE_NAME} already exists; skipping create"
 else
-	echo "Creating database ${PROJECT_MACHINE_NAME}..."
-	psql -c "CREATE DATABASE ${PROJECT_MACHINE_NAME} WITH ENCODING 'UTF8'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+    echo "Creating database ${PROJECT_MACHINE_NAME}..."
+    psql -c "CREATE DATABASE ${PROJECT_MACHINE_NAME} WITH ENCODING 'UTF8'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 fi
 
 # Check if the sequin database already exists, and create if it doesn't
 DB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='sequin'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
 if [ "${DB_EXISTS}" = "1" ]; then
-	echo "Database sequin already exists; skipping create"
+    echo "Database sequin already exists; skipping create"
 else
-	echo "Creating database sequin..."
-	psql -c "CREATE DATABASE sequin WITH ENCODING 'UTF8'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+    echo "Creating database sequin..."
+    psql -c "CREATE DATABASE sequin WITH ENCODING 'UTF8'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 fi
 
-psql -c "CREATE SCHEMA IF NOT EXISTS ${PROJECT_MACHINE_NAME}; CREATE SCHEMA IF NOT EXISTS keycloak" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+# Check if the keycloak database already exists, and create if it doesn't
+DB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='keycloak'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
+if [ "${DB_EXISTS}" = "1" ]; then
+    echo "Database keycloak already exists; skipping create"
+else
+    echo "Creating database keycloak..."
+    psql -c "CREATE DATABASE keycloak WITH ENCODING 'UTF8'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+fi
 
-psql -f "${SCRIPT_DIR}/keycloak_dump.sql" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+psql -c "CREATE SCHEMA IF NOT EXISTS ${PROJECT_MACHINE_NAME}" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
+
+psql -f "${SCRIPT_DIR}/keycloak_dump.sql" "dbname=keycloak user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 
 # Setup Sequin replication slot and publication
 echo '---------------------'
@@ -200,7 +209,7 @@ pnpm install
 
 echo "Running schema refresh and seed..."
 export DB_ADDR=localhost DB_PORT=5432 DB_USER=${DATABASE_USER} DB_PASSWORD=${DATABASE_PASSWORD} DB_NAME=${PROJECT_MACHINE_NAME}
-# pnpm run schema-seed
+pnpm run schema-seed
 
 echo "Running post-seed script..."
 pnpm run post-seed

@@ -57,6 +57,7 @@ export class TaskResolver {
         username: task.createdBy.username,
         firstName: task.createdBy.firstName,
         lastName: task.createdBy.lastName,
+        attributes: task.createdBy.attributes,
       };
     }
 
@@ -67,6 +68,7 @@ export class TaskResolver {
         username: task.updatedBy.username,
         firstName: task.updatedBy.firstName,
         lastName: task.updatedBy.lastName,
+        attributes: task.updatedBy.attributes,
       };
     }
 
@@ -88,6 +90,7 @@ export class TaskResolver {
         username: task.assignedTo.username,
         firstName: task.assignedTo.firstName,
         lastName: task.assignedTo.lastName,
+        attributes: task.assignedTo.attributes,
       },
       project: {
         id: task.project.id,
@@ -104,6 +107,7 @@ export class TaskResolver {
           email: projectUser.user.email,
           firstName: projectUser.user.firstName,
           lastName: projectUser.user.lastName,
+          attributes: projectUser.user['attributes'],
         })),
       },
     };

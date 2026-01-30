@@ -2,9 +2,20 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 import { OrganizationDto } from 'src/organization/organization.dto';
 import { PermissionDto } from 'src/permission/permission.dto';
-import { UserAttributeDto } from 'src/user/userAttribute.dto';
 import { TeamDto } from 'src/team/dtos/team.dto';
 import { ProjectDto } from 'src/project/dtos/project.dto';
+
+@ObjectType()
+export class UserAttributesDto {
+  @Field({ nullable: true })
+  id?: string;
+
+  @Field({ nullable: true })
+  name?: string;
+
+  @Field({ nullable: true })
+  jobTitle?: string;
+}
 
 @ObjectType()
 export class UserDto {
@@ -26,8 +37,8 @@ export class UserDto {
   @Field({ nullable: true })
   role?: string;
 
-  @Field(() => [UserAttributeDto], { nullable: true })
-  attributes?: UserAttributeDto[];
+  @Field(() => UserAttributesDto, { nullable: true })
+  attributes?: UserAttributesDto;
 
   @Field(() => [PermissionDto])
   permissions?: PermissionDto[];

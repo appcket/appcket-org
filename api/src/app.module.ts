@@ -1,5 +1,5 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod, Logger } from '@nestjs/common';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -59,6 +59,15 @@ caAppend.monkeyPatch();
       // We use Socket.io (via UiGateway) for all realtime events, not GraphQL Subscriptions.
       installSubscriptionHandlers: false,
       path: '/',
+      formatError: (error) => {
+        const logger = new Logger('GraphQL');
+        logger.error(
+          `GraphQL Error: ${error.message}`,
+          error.extensions?.stacktrace,
+          JSON.stringify(error.extensions),
+        );
+        return error;
+      },
     }),
     LoggerModule.forRoot({
       pinoHttp: {

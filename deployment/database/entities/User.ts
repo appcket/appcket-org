@@ -1,15 +1,13 @@
 import { Collection, Entity, ManyToMany, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
 
-import { Organization } from 'src/organization/organization.entity';
-import { OrganizationUser } from 'src/organization/organizationUser.entity';
+import { Organization } from './Organization';
+import { OrganizationUser } from './OrganizationUser';
+import { Project } from './Project';
+import { ProjectUser } from './ProjectUser';
+import { Team } from './Team';
+import { TeamUser } from './TeamUser';
 
-import { Permission } from 'src/permission/permission.model';
-import { Project } from 'src/project/project.entity';
-import { ProjectUser } from 'src/project/projectUser.entity';
-import { Team } from 'src/team/team.entity';
-import { TeamUser } from 'src/team/teamUser.entity';
-
-@Entity({ schema: 'appcket'})
+@Entity({ schema: 'appcket' })
 export class User {
   @PrimaryKey({ length: 36 })
   id: string;
@@ -25,9 +23,6 @@ export class User {
 
   @Property({ length: 255 })
   username: string;
-
-  @Property({ length: 255, persist: false })
-  role: string;
 
   @Property({ columnType: 'jsonb', nullable: true })
   attributes?: any;
@@ -48,6 +43,4 @@ export class User {
 
   @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
   teams = new Collection<Team>(this);
-
-  permissions?: Permission[];
 }

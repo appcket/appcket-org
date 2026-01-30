@@ -46,6 +46,7 @@ database:
   port: 5432
   secretName: database-secret
   name: appcket
+  keycloakName: keycloak
   schemaAccounts: keycloak
   schemaApp: appcket
   vendor: postgres

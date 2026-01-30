@@ -1,10 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ClickHouseClient } from '@clickhouse/client';
 
 import { EntityHistory } from 'src/entityHistory/entityHistory.entity';
-import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
 import { UserService } from 'src/user/services/user.service';
 import { CommonService } from 'src/common/services/common.service';
 import { CLICKHOUSE_CLIENT } from 'src/common/modules/clickhouse.module';
@@ -19,7 +17,6 @@ export class EntityHistoryService {
     @Inject(CLICKHOUSE_CLIENT)
     private readonly clickhouse: ClickHouseClient,
     private userService: UserService,
-    private configService: ConfigService,
     private commonService: CommonService,
   ) {}
 

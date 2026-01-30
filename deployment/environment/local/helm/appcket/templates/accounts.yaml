@@ -43,7 +43,7 @@ spec:
         - name: KC_HTTP_ENABLED
           value: "true"
         - name: KC_DB_URL
-          value: jdbc:postgresql://{{ .Values.database.address }}:{{ .Values.database.port }}/{{ .Values.database.name }}?currentSchema={{ .Values.database.schemaAccounts }}
+          value: jdbc:postgresql://{{ .Values.database.address }}:{{ .Values.database.port }}/{{ .Values.database.keycloakName }}?currentSchema={{ .Values.database.schemaAccounts }}
         - name: KC_DB_USERNAME
           valueFrom:
             secretKeyRef:

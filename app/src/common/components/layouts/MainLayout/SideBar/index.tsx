@@ -126,7 +126,7 @@ const SideBar = ({ open, handleSideBarClose, drawerWidth, lessThanSmall }: Props
           )}
           {userInfo?.status !== QueryStatuses.Pending ? (
             <Typography className="text-slate-200" variant="body2">
-              {userInfo?.data?.attributes?.find((attr: any) => attr?.name === 'jobTitle')?.value}
+              {userInfo?.data?.attributes?.jobTitle}
             </Typography>
           ) : (
             <Skeleton variant="rectangular" width={160} height={10} />

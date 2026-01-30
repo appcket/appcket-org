@@ -35,12 +35,6 @@ type PermissionDto {
   scopes: [String!]
 }
 
-type UserAttributeDto {
-  id: String!
-  name: String!
-  value: String!
-}
-
 type TeamDto {
   id: String!
   createdAt: DateTime!
@@ -69,6 +63,12 @@ type ProjectDto {
   users: [UserDto!]!
 }
 
+type UserAttributesDto {
+  id: String
+  name: String
+  jobTitle: String
+}
+
 type UserDto {
   id: String!
   email: String!
@@ -76,7 +76,7 @@ type UserDto {
   lastName: String
   username: String!
   role: String
-  attributes: [UserAttributeDto!]
+  attributes: UserAttributesDto
   permissions: [PermissionDto!]!
   organizations: [OrganizationDto!]
   team: [TeamDto!]!

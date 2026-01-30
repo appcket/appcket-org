@@ -2,6 +2,7 @@ import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 import { BaseEntity } from './Base';
 import { Project } from './Project';
 import { TaskStatusType } from './TaskStatusType';
+import { User } from './User';
 
 @Entity({ schema: 'appcket' })
 export class Task extends BaseEntity {
@@ -11,8 +12,8 @@ export class Task extends BaseEntity {
   @Property({ columnType: 'text', length: 500, nullable: true })
   description?: string;
 
-  @Property({ length: 36, nullable: true })
-  assignedTo?: string;
+  @ManyToOne({ entity: () => User, fieldName: 'assigned_to', updateRule: 'cascade', nullable: true })
+  assignedTo?: User;
 
   @ManyToOne({ entity: () => TaskStatusType, fieldName: 'task_status_type_id', updateRule: 'cascade', nullable: true })
   taskStatusTypeId!: TaskStatusType;
