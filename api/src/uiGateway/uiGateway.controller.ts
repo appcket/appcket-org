@@ -34,6 +34,7 @@ export class UiGatewayController {
         'unknown',
       action: data.action || 'insert',
       id: businessPayload.id || businessPayload.entity?.id,
+      correlationId: outboxRecord.correlationId,
       payload: businessPayload,
       timestamp: outboxRecord.createdAt || data.metadata?.commit_timestamp,
     };

@@ -20,6 +20,11 @@ export interface EventEnvelope<T = any> {
   id?: string;
 
   /**
+   * Trace the event across systems
+   */
+  correlationId?: string;
+
+  /**
    * The actual data payload associated with the event (from the outbox table)
    */
   payload?: T;

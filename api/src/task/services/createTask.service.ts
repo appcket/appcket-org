@@ -12,7 +12,7 @@ import { GetProjectService } from 'src/project/services/getProject.service';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
-import { Outbox } from 'src/common/models/outbox.entity';
+import { OutboxService } from 'src/common/services/outbox.service';
 
 @Injectable()
 export class CreateTaskService {
@@ -26,71 +26,72 @@ export class CreateTaskService {
     private getProjectService: GetProjectService,
     private getOrganizationService: GetOrganizationService,
     private configService: ConfigService,
+    private outboxService: OutboxService,
   ) {}
 
   public async createTask(data: CreateTaskInput, userId: string): Promise<Task> {
-    // validate userId is associated with data.projectId
-    const taskProject = await this.getProjectService.getProject(data.projectId, userId);
+    return this.em.transactional(async (em) => {
+      // validate userId is associated with data.projectId
+      const taskProject = await this.getProjectService.getProject(data.projectId, userId);
 
-    // validate data.assignedTo is associated with data.project.organization.id
-    if (data.assignedTo) {
-      await this.getOrganizationService.getOrganizationUsers(taskProject.organization.id, [
-        data.assignedTo,
-      ]);
-    }
+      // validate data.assignedTo is associated with data.project.organization.id
+      if (data.assignedTo) {
+        await this.getOrganizationService.getOrganizationUsers(taskProject.organization.id, [
+          data.assignedTo,
+        ]);
+      }
 
-    const newTask = this.taskRepository.create({
-      name: data.name,
-      description: data.description,
-      project: data.projectId,
-      taskStatusType: data.taskStatusTypeId ? data.taskStatusTypeId : null,
-      assignedTo: data.assignedTo ? data.assignedTo : null,
-    });
+      const newTask = em.create(Task, {
+        name: data.name,
+        description: data.description,
+        project: data.projectId,
+        taskStatusType: data.taskStatusTypeId ? data.taskStatusTypeId : null,
+        assignedTo: data.assignedTo ? data.assignedTo : null,
+      });
 
-    await this.em.persistAndFlush(newTask);
+      em.persist(newTask);
 
-    const createdTask = await this.getTaskService.getTask(newTask.id, userId);
+      await em.flush();
 
-    this.logger.log(`${Task.name} created successfully. id: ${createdTask.id}`);
+      const createdTask = await this.getTaskService.getTask(newTask.id, userId);
 
-    const taskEventPayload = {
-      appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.Create,
-      entity: {
-        id: createdTask.id.toString(),
-        type: Resources.Task,
-        data: {
-          id: createdTask.id,
-          name: createdTask.name,
-          description: createdTask.description,
-          assignedTo: {
-            id: createdTask.assignedTo.id,
-            username: createdTask.assignedTo.username,
-            email: createdTask.assignedTo.email,
-            firstName: createdTask.assignedTo.firstName,
-            lastName: createdTask.assignedTo.lastName,
-          },
-          taskStatusType: {
-            id: createdTask.taskStatusType.id,
-            name: createdTask.taskStatusType.name,
-          },
-          project: {
-            id: createdTask.project.id,
+      this.logger.log(`${Task.name} created successfully. id: ${createdTask.id}`);
+
+      const taskEventPayload = {
+        appId: this.configService.get('appId'),
+        operationType: ChangeAuditOperationTypes.Create,
+        entity: {
+          id: createdTask.id.toString(),
+          type: Resources.Task,
+          data: {
+            id: createdTask.id,
+            name: createdTask.name,
+            description: createdTask.description,
+            assignedTo: createdTask.assignedTo ? {
+              id: createdTask.assignedTo.id,
+              username: createdTask.assignedTo.username,
+              email: createdTask.assignedTo.email,
+              firstName: createdTask.assignedTo.firstName,
+              lastName: createdTask.assignedTo.lastName,
+            } : null,
+            taskStatusType: createdTask.taskStatusType ? {
+              id: createdTask.taskStatusType.id,
+              name: createdTask.taskStatusType.name,
+            } : null,
+            project: {
+              id: createdTask.project.id,
+            },
           },
         },
-      },
-      user: {
-        id: userId.toString(),
-      },
-      timestamp: new Date(),
-    };
-    
-    this.em.create(Outbox, {
-      payload: taskEventPayload,
+        user: {
+          id: userId.toString(),
+        },
+        timestamp: new Date(),
+      };
+      
+      await this.outboxService.create(taskEventPayload);
+
+      return createdTask;
     });
-
-    await this.em.flush();
-
-    return createdTask;
   }
 }

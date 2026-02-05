@@ -6,7 +6,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./registry:/var/lib/registry
+      - appcket-registry-data:/var/lib/registry
   database:
     image: postgres:18
     environment:
@@ -33,7 +33,7 @@ services:
       - "8123:8123" # HTTP interface
       - "9000:9000" # Native client interface
     volumes:
-      - ./data:/var/lib/clickhouse
+      - appcket-clickhouse-data:/var/lib/clickhouse
       - ./logs:/var/log/clickhouse-server
     ulimits:
       nofile:
@@ -49,5 +49,9 @@ services:
       - "host.docker.internal:host-gateway"
 volumes:
   appcket-database:
+    external: true
+  appcket-registry-data:
+    external: true
+  appcket-clickhouse-data:
     external: true
   appcket-redis-data:

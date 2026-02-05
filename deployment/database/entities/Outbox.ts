@@ -8,6 +8,9 @@ export class Outbox {
   @Property({ columnType: 'jsonb' })
   payload!: any;
 
+  @Property({ columnType: 'uuid', nullable: true })
+  correlationId?: string;
+
   @Property({ onCreate: () => new Date(), defaultRaw: 'now()' })
   createdAt: Date = new Date();
 }

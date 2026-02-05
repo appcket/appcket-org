@@ -13,7 +13,7 @@ import { GetOrganizationService } from 'src/organization/services/getOrganizatio
 import { Resources } from 'src/common/enums/resources.enum';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
 import { CommonService } from 'src/common/services/common.service';
-import { Outbox } from 'src/common/models/outbox.entity';
+import { OutboxService } from 'src/common/services/outbox.service';
 
 @Injectable()
 export class UpdateTeamService {
@@ -27,106 +27,103 @@ export class UpdateTeamService {
     private getOrganizationService: GetOrganizationService,
     private configService: ConfigService,
     private commonService: CommonService,
+    private outboxService: OutboxService,
   ) {}
 
   public async updateTeam(data: UpdateTeamInput, userId: string): Promise<Team> {
-    // validate userId is associated with data.organizationId in organization_user table
-    await this.getOrganizationService.getOrganization(data.organizationId, userId);
+    return this.em.transactional(async (em) => {
+      // validate userId is associated with data.organizationId in organization_user table
+      await this.getOrganizationService.getOrganization(data.organizationId, userId);
 
-    // validate data.userIds are associated with data.organizationId
-    await this.getOrganizationService.getOrganizationUsers(data.organizationId, data.userIds);
+      // validate data.userIds are associated with data.organizationId
+      await this.getOrganizationService.getOrganizationUsers(data.organizationId, data.userIds);
 
-    const team = await this.getTeamService.getTeam(data.id, userId);
+      const team = await this.getTeamService.getTeam(data.id, userId);
 
-    let teamUsersUpdated = [];
+      let teamUsersUpdated = [];
 
-    teamUsersUpdated = data.userIds.map((id) => {
-      return {
-        user: id,
-        team: team.id,
-      };
-    });
-
-    // if teamUsersUpdated item is not found in the existing team.teamUsers, insert
-    teamUsersUpdated.forEach((teamUserUpdated) => {
-      if (!team.teamUsers.toArray().find((teamUser) => teamUser.user.id == teamUserUpdated.user)) {
-        this.em.create(TeamUser, {
-          user: teamUserUpdated.user,
+      teamUsersUpdated = data.userIds.map((id) => {
+        return {
+          user: id,
           team: team.id,
-          createdAt: new Date(),
-          createdBy: userId,
-        });
-      }
-    });
+        };
+      });
 
-    // if existing team.teamUser record is not found in teamUsersUpdated, soft delete
-    team.teamUsers.getItems().forEach((teamUser) => {
-      if (!teamUsersUpdated.find((teamUserUpdated) => teamUserUpdated.user == teamUser.user.id)) {
-        const newTeamUser = this.em.assign(teamUser, {
-          deletedAt: new Date(),
-          deletedBy: userId,
-        });
-        this.em.persist(newTeamUser);
-      }
-    });
+      // if teamUsersUpdated item is not found in the existing team.teamUsers, insert
+      teamUsersUpdated.forEach((teamUserUpdated) => {
+        if (!team.teamUsers.toArray().find((teamUser) => teamUser.user.id == teamUserUpdated.user)) {
+          em.create(TeamUser, {
+            user: teamUserUpdated.user,
+            team: team.id,
+            createdAt: new Date(),
+            createdBy: userId,
+          });
+        }
+      });
 
-    await this.em.flush();
+      // if existing team.teamUser record is not found in teamUsersUpdated, soft delete
+      team.teamUsers.getItems().forEach((teamUser) => {
+        if (!teamUsersUpdated.find((teamUserUpdated) => teamUserUpdated.user == teamUser.user.id)) {
+          const newTeamUser = em.assign(teamUser, {
+            deletedAt: new Date(),
+            deletedBy: userId,
+          });
+          em.persist(newTeamUser);
+        }
+      });
 
-    this.em.assign(team, {
-      updatedAt: new Date(),
-      name: data.name,
-      description: data.description,
-      organization: data.organizationId,
-      updatedBy: userId,
-    });
+      em.assign(team, {
+        updatedAt: new Date(),
+        name: data.name,
+        description: data.description,
+        organization: data.organizationId,
+        updatedBy: userId,
+      });
 
-    await this.em.persistAndFlush(team);
+      em.persist(team);
 
-    const updatedTeam = await this.getTeamService.getTeam(data.id, userId);
+      const updatedTeam = await this.getTeamService.getTeam(data.id, userId);
 
-    this.logger.log(`${Team.name} updated successfully. id: ${updatedTeam.id}`);
+      this.logger.log(`${Team.name} updated successfully. id: ${updatedTeam.id}`);
 
-    // sort here so change audit diff process doesn't generate a change based on a different order of users
-    const usersToSort = [];
-    updatedTeam.teamUsers.toArray().forEach((teamUser) => {
-      if (teamUser.deletedAt === null || teamUser.deletedAt === undefined) {
-        usersToSort.push({
-          id: teamUser.user.id,
-          username: teamUser.user.username,
-          email: teamUser.user.email,
-          firstName: teamUser.user.firstName,
-          lastName: teamUser.user.lastName,
-        });
-      }
-    });
-    const sortedUsers = this.commonService.sortCollection(usersToSort, 'id');
+      // sort here so change audit diff process doesn't generate a change based on a different order of users
+      const usersToSort = [];
+      updatedTeam.teamUsers.toArray().forEach((teamUser) => {
+        if (teamUser.deletedAt === null || teamUser.deletedAt === undefined) {
+          usersToSort.push({
+            id: teamUser.user.id,
+            username: teamUser.user.username,
+            email: teamUser.user.email,
+            firstName: teamUser.user.firstName,
+            lastName: teamUser.user.lastName,
+          });
+        }
+      });
+      const sortedUsers = this.commonService.sortCollection(usersToSort, 'id');
 
-    const teamEventPayload = {
-      appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.Update,
-      entity: {
-        id: data.id.toString(),
-        type: Resources.Team,
-        data: {
-          id: updatedTeam.id,
-          name: updatedTeam.name,
-          description: updatedTeam.description,
-          organizationId: updatedTeam.organization.id,
-          users: sortedUsers,
+      const teamEventPayload = {
+        appId: this.configService.get('appId'),
+        operationType: ChangeAuditOperationTypes.Update,
+        entity: {
+          id: data.id.toString(),
+          type: Resources.Team,
+          data: {
+            id: updatedTeam.id,
+            name: updatedTeam.name,
+            description: updatedTeam.description,
+            organizationId: updatedTeam.organization.id,
+            users: sortedUsers,
+          },
         },
-      },
-      user: {
-        id: userId.toString(),
-      },
-      timestamp: new Date(),
-    };
+        user: {
+          id: userId.toString(),
+        },
+        timestamp: new Date(),
+      };
 
-    this.em.create(Outbox, {
-      payload: teamEventPayload,
+      await this.outboxService.create(teamEventPayload);
+
+      return updatedTeam;
     });
-
-    await this.em.flush();
-
-    return updatedTeam;
   }
 }

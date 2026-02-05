@@ -60,6 +60,8 @@ echo '---------------------'
 echo 'Setting up Docker...'
 
 docker volume create --name ${PROJECT_MACHINE_NAME}-database -d local
+docker volume create --name ${PROJECT_MACHINE_NAME}-registry-data -d local
+docker volume create --name ${PROJECT_MACHINE_NAME}-clickhouse-data -d local
 
 docker compose -f "${SCRIPT_DIR}/docker-compose.yml" -p ${PROJECT_MACHINE_NAME} up -d
 
@@ -70,6 +72,8 @@ echo 'Building and pushing images...'
 chmod +x "${SCRIPT_DIR}/start.sh"
 chmod +x "${SCRIPT_DIR}/build.sh"
 chmod +x "${SCRIPT_DIR}/trust-local-ca.sh"
+chmod +x "${SCRIPT_DIR}/patch-coredns.sh"
+chmod +x "${SCRIPT_DIR}/setup-clickhouse.sh"
 "${SCRIPT_DIR}/build.sh" -e local
 
 # Set up for using k8s for local development
@@ -169,24 +173,22 @@ psql -f "${SCRIPT_DIR}/keycloak_dump.sql" "dbname=keycloak user=${DATABASE_USER}
 echo '---------------------'
 echo 'Setting up Sequin replication slot and publication...'
 
-SLOT_EXISTS=$(psql -tAc "SELECT 1 FROM pg_replication_slots WHERE slot_name='sequin_slot'" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
+# Force recreate the replication slot to ensure a fresh start
+echo "Dropping replication slot sequin_slot if it exists..."
+# First, terminate any process actively using the slot so we can drop it
+psql -c "SELECT pg_terminate_backend(active_pid) FROM pg_replication_slots WHERE slot_name = 'sequin_slot';" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true
+# Now drop the slot
+psql -c "SELECT pg_drop_replication_slot('sequin_slot') WHERE EXISTS (SELECT 1 FROM pg_replication_slots WHERE slot_name = 'sequin_slot');" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true
 
-if [ "${SLOT_EXISTS}" = "1" ]; then
-    echo "Replication slot sequin_slot already exists; skipping create"
-else
-    echo "Creating replication slot sequin_slot..."
-    psql -c "SELECT pg_create_logical_replication_slot('sequin_slot', 'pgoutput')" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
-fi
+echo "Creating replication slot sequin_slot..."
+psql -c "SELECT pg_create_logical_replication_slot('sequin_slot', 'pgoutput')" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 
-PUB_EXISTS=$(psql -tAc "SELECT 1 FROM pg_publication WHERE pubname='sequin_pub'" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
+# Force recreate the publication
+echo "Dropping publication sequin_pub if it exists..."
+psql -c "DROP PUBLICATION IF EXISTS sequin_pub" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 
-if [ "${PUB_EXISTS}" = "1" ]; then
-    echo "Publication sequin_pub already exists; skipping create"
-else
-    echo "Creating publication sequin_pub..."
-
-    psql -c "CREATE PUBLICATION sequin_pub FOR ALL TABLES" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
-fi
+echo "Creating publication sequin_pub..."
+psql -c "CREATE PUBLICATION sequin_pub FOR ALL TABLES" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 
 # Setup ClickHouse
 echo '---------------------'
@@ -215,3 +217,71 @@ echo "Running post-seed script..."
 pnpm run post-seed
 
 echo "✅ Database seeded successfully."
+
+# # Setup Observability
+# echo '---------------------'
+# echo 'Setting up observability tools...'
+
+# # 1. Create the namespace:
+# kubectl create namespace observability --dry-run=client -o yaml | kubectl apply -f -
+
+# # 2. Install Loki (Log Storage):
+# helm upgrade --install loki grafana/loki \
+# --namespace observability \
+# -f "${REPO_ROOT}/deployment/environment/local/helm/observability/values-loki.yaml"
+
+# # 3. Install Promtail (Log Shipping):
+# helm upgrade --install promtail grafana/promtail \
+# --namespace observability \
+# -f "${REPO_ROOT}/deployment/environment/local/helm/observability/values-promtail.yaml"
+
+# # 4. Install Grafana (Dashboard to query and view logs):
+# helm upgrade --install grafana grafana/grafana \
+# --namespace observability \
+# -f "${REPO_ROOT}/deployment/environment/local/helm/observability/values-grafana.yaml"
+
+# # 5. Install Kiali (Mesh Visualization):
+# helm upgrade --install kiali-server kiali/kiali-server \
+# --namespace observability \
+# -f "${REPO_ROOT}/deployment/environment/local/helm/observability/values-kiali.yaml"
+
+# # 6. Install Prometheus (Metrics):
+# helm upgrade --install prometheus prometheus-community/prometheus \
+# --namespace observability \
+# -f "${REPO_ROOT}/deployment/environment/local/helm/observability/values-prometheus.yaml"
+
+#   Once these commands finish, all pods in the observability namespace should be running.
+
+#   Accessing the Dashboards
+
+#   To access the UIs, you can use port-forwarding:
+
+#    * Grafana: kubectl port-forward svc/grafana -n observability 3000:80
+#       * http://localhost:3000 (User: admin, Password: admin)
+#    * Kiali: kubectl port-forward svc/kiali -n observability 20001:20001
+#       * http://localhost:20001
+
+# Option 1: The "Pause" (Scale to 0)
+# Run these commands to stop the heavy hitters:
+
+#   1 # Scale down Deployments
+#   2 kubectl scale deployment prometheus-server -n observability --replicas=0
+#   3 kubectl scale deployment prometheus-prometheus-pushgateway -n observability --replicas=0
+#   4 kubectl scale deployment prometheus-kube-state-metrics -n observability --replicas=0
+#   5 kubectl scale deployment grafana -n observability --replicas=0
+#   6 kubectl scale deployment kiali -n observability --replicas=0
+#   7
+#   8 # Scale down Loki (StatefulSet)
+#   9 kubectl scale statefulset loki -n observability --replicas=0
+
+# Note: `promtail` is a DaemonSet, so it doesn't support scaling to 0. It uses very little RAM, but if you want it gone too, you should use Option 2.
+
+# To spin them back up later:
+# Just run the same commands but change --replicas=0 to --replicas=1.
+
+# ---
+
+# Option 2: The "Clean Slate" (Uninstall)
+# If you aren't planning on using them for a while, just uninstall the Helm releases. Since we used ephemeral storage (no PVCs), this will completely wipe their footprint:
+
+#   1 helm uninstall prometheus loki promtail grafana kiali-server -n observability

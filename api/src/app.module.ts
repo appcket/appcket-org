@@ -13,18 +13,20 @@ import { readFileSync } from 'fs';
 
 import { configuration } from 'src/config';
 import { CommonModule } from 'src/common/modules/common.module';
+import { CorrelationContext } from 'src/common/services/correlation-context.service';
+import { CorrelationMiddleware } from 'src/common/middleware/correlation.middleware';
 import { ClickHouseModule } from 'src/common/modules/clickhouse.module';
 import { EntityHistoryModule } from 'src/entityHistory/entityHistory.module';
-import { OrganizationModule } from './organization/organization.module';
-import { PermissionModule } from './permission/permission.module';
-import { ProjectModule } from './project/project.module';
-import { TaskModule } from './task/task.module';
-import { TaskStatusTypeModule } from './taskStatusType/taskStatusType.module';
-import { TeamModule } from './team/team.module';
-import { UserModule } from './user/user.module';
-import { UiGatewayModule } from './uiGateway/uiGateway.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { OrganizationModule } from 'src/organization/organization.module';
+import { PermissionModule } from 'src/permission/permission.module';
+import { ProjectModule } from 'src/project/project.module';
+import { TaskModule } from 'src/task/task.module';
+import { TaskStatusTypeModule } from 'src/taskStatusType/taskStatusType.module';
+import { TeamModule } from 'src/team/team.module';
+import { UserModule } from 'src/user/user.module';
+import { UiGatewayModule } from 'src/uiGateway/uiGateway.module';
+import { AppController } from 'src/app.controller';
+import { AppService } from 'src/app.service';
 
 caAppend.monkeyPatch();
 
@@ -42,13 +44,14 @@ caAppend.monkeyPatch();
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       context: ({ req }) => {
         return {
+          correlationId: req.headers['x-correlation-id'],
           user: {
-            id: req.kauth.grant.access_token.content.sub,
-            firstName: req.kauth.grant.access_token.content.firstName,
-            lastName: req.kauth.grant.access_token.content.lastName,
-            email: req.kauth.grant.access_token.content.email,
-            username: req.kauth.grant.access_token.content.preferred_username,
-            roles: req.kauth.grant.access_token.content.realm_access.roles,
+            id: req.kauth?.grant?.access_token?.content?.sub,
+            firstName: req.kauth?.grant?.access_token?.content?.firstName,
+            lastName: req.kauth?.grant?.access_token?.content?.lastName,
+            email: req.kauth?.grant?.access_token?.content?.email,
+            username: req.kauth?.grant?.access_token?.content?.preferred_username,
+            roles: req.kauth?.grant?.access_token?.content?.realm_access?.roles,
           },
         };
       },
@@ -69,11 +72,19 @@ caAppend.monkeyPatch();
         return error;
       },
     }),
-    LoggerModule.forRoot({
-      pinoHttp: {
-        // don't log the authorization Bearer token
-        redact: ['req.headers.authorization'],
-      },
+    LoggerModule.forRootAsync({
+      imports: [CommonModule],
+      inject: [CorrelationContext],
+      useFactory: (context: CorrelationContext) => ({
+        pinoHttp: {
+          // don't log the authorization Bearer token
+          redact: ['req.headers.authorization'],
+          // Attach correlationId from our context to every log message
+          customProps: () => ({
+            correlationId: context.id,
+          }),
+        },
+      }),
     }),
     MikroOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -144,6 +155,8 @@ export class AppModule {
     const memoryStore = new session.MemoryStore();
     // initialize keycloak using configuration service
     const keycloak = new Keycloak({ store: memoryStore }, this.configService.get('keycloak'));
+
+    consumer.apply(CorrelationMiddleware).forRoutes('*');
 
     consumer
       // @ts-ignore

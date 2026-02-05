@@ -12,6 +12,7 @@ import { GetTeamService } from 'src/team/services/getTeam.service';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 import { Resources } from 'src/common/enums/resources.enum';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
+import { OutboxService } from 'src/common/services/outbox.service';
 
 @Injectable()
 export class CreateTeamService {
@@ -24,63 +25,70 @@ export class CreateTeamService {
     private getTeamService: GetTeamService,
     private getOrganizationService: GetOrganizationService,
     private configService: ConfigService,
+    private outboxService: OutboxService,
   ) {}
 
   public async createTeam(data: CreateTeamInput, userId: string): Promise<Team> {
-    // validate userId is associated with data.organizationId in organization_user table
-    await this.getOrganizationService.getOrganization(data.organizationId, userId);
+    return this.em.transactional(async (em) => {
+      // validate userId is associated with data.organizationId in organization_user table
+      await this.getOrganizationService.getOrganization(data.organizationId, userId);
 
-    // validate data.userIds are associated with data.organizationId
-    await this.getOrganizationService.getOrganizationUsers(data.organizationId, data.userIds);
+      // validate data.userIds are associated with data.organizationId
+      await this.getOrganizationService.getOrganizationUsers(data.organizationId, data.userIds);
 
-    const newTeam = this.teamRepository.create({
-      name: data.name,
-      description: data.description,
-      organization: data.organizationId,
-      createdBy: userId,
-    });
-
-    await this.em.persistAndFlush(newTeam);
-
-    data.userIds.map((userId) => {
-      this.em.create(TeamUser, {
-        team: newTeam.id,
-        user: userId,
+      const newTeam = em.create(Team, {
+        name: data.name,
+        description: data.description,
+        organization: data.organizationId,
+        createdBy: userId,
       });
-    });
 
-    await this.em.flush();
+      em.persist(newTeam);
 
-    const createdTeam = await this.getTeamService.getTeam(newTeam.id, userId);
+      data.userIds.map((id) => {
+        em.create(TeamUser, {
+          team: newTeam,
+          user: id,
+        });
+      });
 
-    this.logger.log(`${Team.name} created successfully. id: ${createdTeam.id}`);
+      // Flush once to generate the ID if needed (though UUIDs are usually client-side or pre-generated)
+      // but to ensure we can fetch the 'createdTeam' with relations for the payload.
+      await em.flush();
 
-    const teamEventPayload = {
-      appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.Create,
-      entity: {
-        id: createdTeam.id.toString(),
-        type: Resources.Team,
-        data: {
-          id: createdTeam.id,
-          name: createdTeam.name,
-          description: createdTeam.description,
-          organizationId: createdTeam.organization.id,
-          users: createdTeam.teamUsers.toArray().map((teamUser) => ({
-            id: teamUser.user.id,
-            username: teamUser.user.username,
-            email: teamUser.user.email,
-            firstName: teamUser.user.firstName,
-            lastName: teamUser.user.lastName,
-          })),
+      const createdTeam = await this.getTeamService.getTeam(newTeam.id, userId);
+
+      this.logger.log(`${Team.name} created successfully. id: ${createdTeam.id}`);
+
+      const teamEventPayload = {
+        appId: this.configService.get('appId'),
+        operationType: ChangeAuditOperationTypes.Create,
+        entity: {
+          id: createdTeam.id.toString(),
+          type: Resources.Team,
+          data: {
+            id: createdTeam.id,
+            name: createdTeam.name,
+            description: createdTeam.description,
+            organizationId: createdTeam.organization.id,
+            users: createdTeam.teamUsers.toArray().map((teamUser) => ({
+              id: teamUser.user.id,
+              username: teamUser.user.username,
+              email: teamUser.user.email,
+              firstName: teamUser.user.firstName,
+              lastName: teamUser.user.lastName,
+            })),
+          },
         },
-      },
-      user: {
-        id: userId.toString(),
-      },
-      timestamp: new Date(),
-    };
+        user: {
+          id: userId.toString(),
+        },
+        timestamp: new Date(),
+      };
 
-    return createdTeam;
+      await this.outboxService.create(teamEventPayload);
+
+      return createdTeam;
+    });
   }
 }

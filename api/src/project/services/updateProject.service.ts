@@ -13,7 +13,7 @@ import { GetOrganizationService } from 'src/organization/services/getOrganizatio
 import { Resources } from 'src/common/enums/resources.enum';
 import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
 import { CommonService } from 'src/common/services/common.service';
-import { Outbox } from 'src/common/models/outbox.entity';
+import { OutboxService } from 'src/common/services/outbox.service';
 
 @Injectable()
 export class UpdateProjectService {
@@ -27,114 +27,113 @@ export class UpdateProjectService {
     private getOrganizationService: GetOrganizationService,
     private configService: ConfigService,
     private commonService: CommonService,
+    private outboxService: OutboxService,
   ) {}
 
   public async updateProject(data: UpdateProjectInput, userId: string): Promise<Project> {
-    // validate userId is associated with data.organizationId in organization_user table
-    await this.getOrganizationService.getOrganization(data.organizationId, userId);
+    return this.em.transactional(async (em) => {
+      // validate userId is associated with data.organizationId in organization_user table
+      await this.getOrganizationService.getOrganization(data.organizationId, userId);
 
-    // validate data.userIds are associated with data.organizationId
-    await this.getOrganizationService.getOrganizationUsers(data.organizationId, data.userIds);
+      // validate data.userIds are associated with data.organizationId
+      await this.getOrganizationService.getOrganizationUsers(data.organizationId, data.userIds);
 
-    const project = await this.getProjectService.getProject(data.id, userId);
+      const project = await this.getProjectService.getProject(data.id, userId);
 
-    let projectUsersUpdated = [];
+      let projectUsersUpdated = [];
 
-    projectUsersUpdated = data.userIds.map((id) => {
-      return {
-        user: id,
-        project: project.id,
-      };
-    });
-
-    // if projectUsersUpdated item is not found in the existing project.projectUsers, insert
-    projectUsersUpdated.forEach((projectUserUpdated) => {
-      if (
-        !project.projectUsers
-          .toArray()
-          .find((projectUser) => projectUser.user.id == projectUserUpdated.user)
-      ) {
-        this.em.create(ProjectUser, {
-          user: projectUserUpdated.user,
+      projectUsersUpdated = data.userIds.map((id) => {
+        return {
+          user: id,
           project: project.id,
-          createdAt: new Date(),
-          createdBy: userId,
-        });
-      }
-    });
+        };
+      });
 
-    // if existing project.projectUser record is not found in projectUsersUpdated, soft delete
-    project.projectUsers.getItems().forEach((projectUser) => {
-      if (
-        !projectUsersUpdated.find(
-          (projectUserUpdated) => projectUserUpdated.user == projectUser.user.id,
-        )
-      ) {
-        const newProjectUser = this.em.assign(projectUser, {
-          deletedAt: new Date(),
-          deletedBy: userId,
-        });
-        this.em.persist(newProjectUser);
-      }
-    });
+      // if projectUsersUpdated item is not found in the existing project.projectUsers, insert
+      projectUsersUpdated.forEach((projectUserUpdated) => {
+        if (
+          !project.projectUsers
+            .toArray()
+            .find((projectUser) => projectUser.user.id == projectUserUpdated.user)
+        ) {
+          em.create(ProjectUser, {
+            user: projectUserUpdated.user,
+            project: project.id,
+            createdAt: new Date(),
+            createdBy: userId,
+          });
+        }
+      });
 
-    await this.em.flush();
+      // if existing project.projectUser record is not found in projectUsersUpdated, soft delete
+      project.projectUsers.getItems().forEach((projectUser) => {
+        if (
+          !projectUsersUpdated.find(
+            (projectUserUpdated) => projectUserUpdated.user == projectUser.user.id,
+          )
+        ) {
+          const newProjectUser = em.assign(projectUser, {
+            deletedAt: new Date(),
+            deletedBy: userId,
+          });
+          em.persist(newProjectUser);
+        }
+      });
 
-    this.em.assign(project, {
-      updatedAt: new Date(),
-      name: data.name,
-      description: data.description,
-      organization: data.organizationId,
-      updatedBy: userId,
-    });
+      em.assign(project, {
+        updatedAt: new Date(),
+        name: data.name,
+        description: data.description,
+        organization: data.organizationId,
+        updatedBy: userId,
+      });
 
-    await this.em.persistAndFlush(project);
+      em.persist(project);
 
-    const updatedProject = await this.getProjectService.getProject(data.id, userId);
+      await em.flush();
 
-    this.logger.log(`${Project.name} updated successfully. id: ${updatedProject.id}`);
+      const updatedProject = await this.getProjectService.getProject(data.id, userId);
 
-    // sort here so change audit diff process doesn't generate a change based on a different order of users
-    const usersToSort = [];
-    updatedProject.projectUsers.toArray().forEach((projectUser) => {
-      if (projectUser.deletedAt === null || projectUser.deletedAt === undefined) {
-        usersToSort.push({
-          id: projectUser.user.id,
-          username: projectUser.user.username,
-          email: projectUser.user.email,
-          firstName: projectUser.user.firstName,
-          lastName: projectUser.user.lastName,
-        });
-      }
-    });
-    const sortedUsers = this.commonService.sortCollection(usersToSort, 'id');
+      this.logger.log(`${Project.name} updated successfully. id: ${updatedProject.id}`);
 
-    const projectEventPayload = {
-      appId: this.configService.get('appId'),
-      operationType: ChangeAuditOperationTypes.Update,
-      entity: {
-        id: data.id.toString(),
-        type: Resources.Project,
-        data: {
-          id: updatedProject.id,
-          name: updatedProject.name,
-          description: updatedProject.description,
-          organizationId: updatedProject.organization.id,
-          users: sortedUsers,
+      // sort here so change audit diff process doesn't generate a change based on a different order of users
+      const usersToSort = [];
+      updatedProject.projectUsers.toArray().forEach((projectUser) => {
+        if (projectUser.deletedAt === null || projectUser.deletedAt === undefined) {
+          usersToSort.push({
+            id: projectUser.user.id,
+            username: projectUser.user.username,
+            email: projectUser.user.email,
+            firstName: projectUser.user.firstName,
+            lastName: projectUser.user.lastName,
+          });
+        }
+      });
+      const sortedUsers = this.commonService.sortCollection(usersToSort, 'id');
+
+      const projectEventPayload = {
+        appId: this.configService.get('appId'),
+        operationType: ChangeAuditOperationTypes.Update,
+        entity: {
+          id: data.id.toString(),
+          type: Resources.Project,
+          data: {
+            id: updatedProject.id,
+            name: updatedProject.name,
+            description: updatedProject.description,
+            organizationId: updatedProject.organization.id,
+            users: sortedUsers,
+          },
         },
-      },
-      user: {
-        id: userId.toString(),
-      },
-      timestamp: new Date(),
-    };
-    
-    this.em.create(Outbox, {
-      payload: projectEventPayload,
+        user: {
+          id: userId.toString(),
+        },
+        timestamp: new Date(),
+      };
+      
+      await this.outboxService.create(projectEventPayload);
+
+      return updatedProject;
     });
-
-    await this.em.flush();
-
-    return updatedProject;
   }
 }

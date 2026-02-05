@@ -21,6 +21,7 @@ export const useApiQuery = <T, U>(
       const graphQLClient = new GraphQLClient(endpoint, {
         headers: {
           authorization: `Bearer ${auth.user?.access_token}`,
+          'X-Correlation-ID': crypto.randomUUID(),
         },
       });
 
@@ -41,6 +42,7 @@ export const useApiMutation = <T, U>(mutation: string, processData?: (data: T) =
       const graphQLClient = new GraphQLClient(endpoint, {
         headers: {
           authorization: `Bearer ${auth.user?.access_token}`,
+          'X-Correlation-ID': crypto.randomUUID(),
         },
       });
 
