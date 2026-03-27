@@ -1,21 +1,21 @@
-/// <reference types="vitest" />
-
+import { paraglideVitePlugin } from '@inlang/paraglide-js';
+// vite.config.ts
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import svgrPlugin from 'vite-plugin-svgr';
-import tailwindcss from '@tailwindcss/vite';
+import tsConfigPaths from 'vite-tsconfig-paths';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import viteReact from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
-// eslint-disable-next-line import/no-unused-modules
 export default defineConfig({
-  envDir: './',
-  plugins: [react(), tsconfigPaths(), svgrPlugin(), tailwindcss()],
-  optimizeDeps: {},
   server: {
     port: 3000,
-    host: '0.0.0.0',
+    host: true,
     allowedHosts: ['app.appcket.test', 'app.appcket.com'],
   },
-  build: { sourcemap: true },
+  plugins: [
+    paraglideVitePlugin({ project: './project.inlang', outdir: './src/paraglide' }),
+    tsConfigPaths(),
+    tanstackStart(),
+    // react's vite plugin must come after start's vite plugin
+    viteReact(),
+  ],
 });

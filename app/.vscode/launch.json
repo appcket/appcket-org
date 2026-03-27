@@ -1,27 +1,15 @@
 {
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
+  "version": "0.1.0",
   "configurations": [
-    {
-      "name": "Start app",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "pnpm start",
-      "cwd": "${workspaceFolder}",
-      "env": {
-        "FORCE_COLOR": "1"
-      }
-    },
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug Current Test File",
-      "autoAttachChildProcesses": true,
-      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
-      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
-      "args": ["run", "${relativeFile}", "--mode", "development"],
-      "smartStep": true,
-      "console": "integratedTerminal"
+      "name": "Run Start Debugging",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }

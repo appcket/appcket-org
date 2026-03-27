@@ -28,7 +28,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: config.get('appUrl'),
+    origin: [config.get('appUrl')],
   });
   app.useGlobalPipes(new ValidationPipe());
   app.useLogger(app.get(Logger));

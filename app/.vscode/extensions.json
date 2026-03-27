@@ -2,8 +2,8 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "csstools.postcss",
-    "bradlc.vscode-tailwindcss",
+    "vunguyentuan.vscode-postcss",
+    "vunguyentuan.vscode-css-variables",
     "editorconfig.editorconfig"
   ]
 }

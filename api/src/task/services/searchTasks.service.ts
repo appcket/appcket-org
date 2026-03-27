@@ -10,9 +10,10 @@ export class SearchTasksService {
   constructor(private readonly em: EntityManager) {}
 
   public async searchTasks(input: SearchTasksInput, userId: string): Promise<IPaginated<Task>> {
-    const where = input.searchString
+    const searchString = input.searchString?.toLowerCase();
+    const where = searchString
       ? {
-          name: { $like: `%${input.searchString}%` },
+          name: { $ilike: `%${searchString}%` },
           deletedAt: null,
           project: { $in: input.projectIds },
         }

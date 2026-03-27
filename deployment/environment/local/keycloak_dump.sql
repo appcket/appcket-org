@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict 8pe9eER8z6xiReghDcTHa50U4uM0AIrNpKrgHGadfQvZvQTwfWGGQL1zkhrcOqq
+\restrict kykVo9Q8rmaAwaTLJMa5JgexgUqnZkyK0q1AeyV5chVIGd3KxvIEMLQgdbBhFdX
 
 -- Dumped from database version 18.1 (Debian 18.1-1.pgdg13+2)
 -- Dumped by pg_dump version 18.1 (Debian 18.1-1.pgdg13+2)
 
--- Started on 2026-02-10 17:43:43 UTC
+-- Started on 2026-03-26 23:57:28 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1778,7 +1778,6 @@ INSERT INTO keycloak.client VALUES ('6b0c8bef-0c61-487f-ac1d-dc77f3f97278', true
 INSERT INTO keycloak.client VALUES ('dc634090-4b2a-41e1-b8bc-35ea7cfc1102', true, false, 'appcket-realm', 0, false, NULL, NULL, true, NULL, false, 'master', NULL, 0, false, false, 'appcket Realm', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('e801cbf0-541f-4466-80e1-fcce640df2a8', true, false, 'account', 0, false, '**********', '/realms/appcket/account/', false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_account}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('26f802c3-b7af-4e78-b785-40493ae2483a', true, false, 'account-console', 0, true, '**********', '/realms/appcket/account/', false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_account-console}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
-INSERT INTO keycloak.client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', true, true, 'appcket_app', 0, true, NULL, '/', false, 'https://app.appcket.test', false, 'appcket', 'openid-connect', -1, false, false, 'Appcket App', false, 'client-secret', 'https://app.appcket.test', NULL, NULL, true, false, true, false);
 INSERT INTO keycloak.client VALUES ('70da96f3-abee-4ade-a7f3-d22e04437a0a', true, false, 'broker', 0, false, '**********', NULL, false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_broker}', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('5ab9f6c1-1f4a-4e68-9ca4-59caf655bbe8', true, false, 'realm-management', 0, false, '**********', NULL, true, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_realm-management}', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', true, true, 'appcket_api', 0, false, '1SMHqsPrhtoxlMPLRYcHP39uJL16oGG1', NULL, false, 'https://api.appcket.test', false, 'appcket', 'openid-connect', -1, false, false, 'Appcket API', true, 'client-secret', 'https://api.appcket.test', NULL, NULL, true, false, true, false);
@@ -1786,6 +1785,7 @@ INSERT INTO keycloak.client VALUES ('01818753-ed45-4903-93e9-8ebffc711cd8', true
 INSERT INTO keycloak.client VALUES ('bfd838d0-4aef-44ac-8947-978c45bb4f26', true, true, 'admin-cli', 0, true, NULL, NULL, false, NULL, false, 'master', 'openid-connect', 0, false, false, '${client_admin-cli}', false, 'client-secret', NULL, NULL, NULL, false, false, true, false);
 INSERT INTO keycloak.client VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', true, true, 'security-admin-console', 0, true, '**********', '/admin/appcket/console/', false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_security-admin-console}', false, 'client-secret', '${authAdminUrl}', NULL, NULL, true, false, false, false);
 INSERT INTO keycloak.client VALUES ('544076b9-bf22-4731-8d85-2ddc0edbd41e', true, true, 'admin-cli', 0, true, '**********', NULL, false, NULL, false, 'appcket', 'openid-connect', 0, false, false, '${client_admin-cli}', false, 'client-secret', NULL, NULL, NULL, false, false, true, false);
+INSERT INTO keycloak.client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', true, true, 'appcket_app', 0, false, 'rzMpSE2IHOzzgWXFU89MlGxLARIwtV1A', '/', false, 'https://app.appcket.test', false, 'appcket', 'openid-connect', -1, true, false, 'Appcket App', false, 'client-secret', 'https://app.appcket.test', 'SSR app/ui for managing appcket data', NULL, true, false, false, false);
 
 
 --
@@ -1811,28 +1811,6 @@ INSERT INTO keycloak.client_attributes VALUES ('6518e1e7-19a8-4e2b-8718-18a075b4
 INSERT INTO keycloak.client_attributes VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'saml.authnstatement', 'false');
 INSERT INTO keycloak.client_attributes VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'display.on.consent.screen', 'false');
 INSERT INTO keycloak.client_attributes VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'saml.onetimeuse.condition', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'id.token.as.detached.signature', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.assertion.signature', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.force.post.binding', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.multivalued.roles', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.encrypt', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'oauth2.device.authorization.grant.enabled', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'backchannel.logout.revoke.offline.tokens', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.server.signature', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.server.signature.keyinfo.ext', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'use.refresh.tokens', 'true');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'exclude.session.state.from.auth.response', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'oidc.ciba.grant.enabled', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.artifact.binding', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'backchannel.logout.session.required', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'client_credentials.use_refresh_token', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml_force_name_id_format', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'require.pushed.authorization.requests', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.client.signature', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'tls.client.certificate.bound.access.tokens', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.authnstatement', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'display.on.consent.screen', 'false');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'saml.onetimeuse.condition', 'false');
 INSERT INTO keycloak.client_attributes VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', 'pkce.code.challenge.method', 'S256');
 INSERT INTO keycloak.client_attributes VALUES ('235e5d2b-515a-422c-b23c-6d9c3abddfa5', 'post.logout.redirect.uris', '+');
 INSERT INTO keycloak.client_attributes VALUES ('26f802c3-b7af-4e78-b785-40493ae2483a', 'post.logout.redirect.uris', '+');
@@ -1840,12 +1818,38 @@ INSERT INTO keycloak.client_attributes VALUES ('01818753-ed45-4903-93e9-8ebffc71
 INSERT INTO keycloak.client_attributes VALUES ('605fa94d-21d1-4569-8fa7-6bbb229b19f0', 'post.logout.redirect.uris', '+');
 INSERT INTO keycloak.client_attributes VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', 'post.logout.redirect.uris', '+');
 INSERT INTO keycloak.client_attributes VALUES ('e801cbf0-541f-4466-80e1-fcce640df2a8', 'post.logout.redirect.uris', '+');
-INSERT INTO keycloak.client_attributes VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'post.logout.redirect.uris', '+');
 INSERT INTO keycloak.client_attributes VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'post.logout.redirect.uris', '+');
 INSERT INTO keycloak.client_attributes VALUES ('01818753-ed45-4903-93e9-8ebffc711cd8', 'client.use.lightweight.access.token.enabled', 'true');
 INSERT INTO keycloak.client_attributes VALUES ('bfd838d0-4aef-44ac-8947-978c45bb4f26', 'client.use.lightweight.access.token.enabled', 'true');
 INSERT INTO keycloak.client_attributes VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', 'client.use.lightweight.access.token.enabled', 'true');
 INSERT INTO keycloak.client_attributes VALUES ('544076b9-bf22-4731-8d85-2ddc0edbd41e', 'client.use.lightweight.access.token.enabled', 'true');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'client.secret.creation.time', '1770918372');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'standard.token.exchange.enabled', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'oauth2.device.authorization.grant.enabled', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'oidc.ciba.grant.enabled', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'dpop.bound.access.tokens', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'post.logout.redirect.uris', '+');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'backchannel.logout.session.required', 'true');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'backchannel.logout.revoke.offline.tokens', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'realm_client', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'login_theme', 'keycloakify-starter');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'display.on.consent.screen', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'frontchannel.logout.session.required', 'true');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'use.jwks.url', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'access.token.header.type.rfc9068', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'id.token.as.detached.signature', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'request.object.signature.alg', 'any');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'request.object.encryption.alg', 'any');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'request.object.encryption.enc', 'any');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'request.object.required', 'not required');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'use.refresh.tokens', 'true');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'client_credentials.use_refresh_token', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'token.response.type.bearer.lower-case', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'tls.client.certificate.bound.access.tokens', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'require.pushed.authorization.requests', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'client.use.lightweight.access.token.enabled', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'client.introspection.response.allow.jwt.claim.enabled', 'false');
+INSERT INTO keycloak.client_attributes VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'acr.loa.map', '{}');
 
 
 --
@@ -2060,14 +2064,6 @@ INSERT INTO keycloak.client_scope_client VALUES ('6518e1e7-19a8-4e2b-8718-18a075
 INSERT INTO keycloak.client_scope_client VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', '4709e0fb-184a-4b47-a804-ae1556e53a73', false);
 INSERT INTO keycloak.client_scope_client VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', '1ddb5c58-3c5b-43bc-ae48-ba8947a6c108', false);
 INSERT INTO keycloak.client_scope_client VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'a15b2f14-004d-47f8-b137-7bca43fc8b30', false);
-INSERT INTO keycloak.client_scope_client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', '52312b11-3e69-46f2-93f2-b1e168214598', true);
-INSERT INTO keycloak.client_scope_client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', '2b5c02f3-e7a9-4455-a505-9fef19838927', true);
-INSERT INTO keycloak.client_scope_client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'aee86bba-572b-4335-8f5b-c9969c70cbce', true);
-INSERT INTO keycloak.client_scope_client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', '63984129-44c9-4bd1-97d1-da0df3407112', true);
-INSERT INTO keycloak.client_scope_client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'b2414a14-1f25-4d4b-9162-de66eeb6652d', false);
-INSERT INTO keycloak.client_scope_client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', '4709e0fb-184a-4b47-a804-ae1556e53a73', false);
-INSERT INTO keycloak.client_scope_client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', '1ddb5c58-3c5b-43bc-ae48-ba8947a6c108', false);
-INSERT INTO keycloak.client_scope_client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'a15b2f14-004d-47f8-b137-7bca43fc8b30', false);
 INSERT INTO keycloak.client_scope_client VALUES ('70da96f3-abee-4ade-a7f3-d22e04437a0a', '52312b11-3e69-46f2-93f2-b1e168214598', true);
 INSERT INTO keycloak.client_scope_client VALUES ('70da96f3-abee-4ade-a7f3-d22e04437a0a', '2b5c02f3-e7a9-4455-a505-9fef19838927', true);
 INSERT INTO keycloak.client_scope_client VALUES ('70da96f3-abee-4ade-a7f3-d22e04437a0a', 'aee86bba-572b-4335-8f5b-c9969c70cbce', true);
@@ -2099,10 +2095,19 @@ INSERT INTO keycloak.client_scope_client VALUES ('bfd838d0-4aef-44ac-8947-978c45
 INSERT INTO keycloak.client_scope_client VALUES ('e801cbf0-541f-4466-80e1-fcce640df2a8', 'a8ddb608-a41f-4ff6-bb20-14237bc37572', true);
 INSERT INTO keycloak.client_scope_client VALUES ('26f802c3-b7af-4e78-b785-40493ae2483a', 'a8ddb608-a41f-4ff6-bb20-14237bc37572', true);
 INSERT INTO keycloak.client_scope_client VALUES ('544076b9-bf22-4731-8d85-2ddc0edbd41e', 'a8ddb608-a41f-4ff6-bb20-14237bc37572', true);
-INSERT INTO keycloak.client_scope_client VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'a8ddb608-a41f-4ff6-bb20-14237bc37572', true);
 INSERT INTO keycloak.client_scope_client VALUES ('70da96f3-abee-4ade-a7f3-d22e04437a0a', 'a8ddb608-a41f-4ff6-bb20-14237bc37572', true);
 INSERT INTO keycloak.client_scope_client VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', 'a8ddb608-a41f-4ff6-bb20-14237bc37572', true);
 INSERT INTO keycloak.client_scope_client VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'a8ddb608-a41f-4ff6-bb20-14237bc37572', true);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'a8ddb608-a41f-4ff6-bb20-14237bc37572', true);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', '2b5c02f3-e7a9-4455-a505-9fef19838927', true);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', '52312b11-3e69-46f2-93f2-b1e168214598', true);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', '63984129-44c9-4bd1-97d1-da0df3407112', true);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'c03824d3-cc18-4529-90cd-968ab5d3653d', true);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'aee86bba-572b-4335-8f5b-c9969c70cbce', true);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'b2414a14-1f25-4d4b-9162-de66eeb6652d', false);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', '1ddb5c58-3c5b-43bc-ae48-ba8947a6c108', false);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'a15b2f14-004d-47f8-b137-7bca43fc8b30', false);
+INSERT INTO keycloak.client_scope_client VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', '4709e0fb-184a-4b47-a804-ae1556e53a73', false);
 
 
 --
@@ -2314,7 +2319,6 @@ INSERT INTO keycloak.composite_role VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d4
 INSERT INTO keycloak.composite_role VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', '395df0fe-9ce6-4af3-9d3f-a76b64e2c6b1');
 INSERT INTO keycloak.composite_role VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', 'f82082f8-ce8f-4514-a0df-08b916e08db3');
 INSERT INTO keycloak.composite_role VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', '241f95cd-d0a8-4b5e-b7d3-657f078175bb');
-INSERT INTO keycloak.composite_role VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', 'eee97160-4b67-4071-84f4-099bbcd704af');
 INSERT INTO keycloak.composite_role VALUES ('4be9e535-34e3-4ebc-8591-1f575899d346', '750a3b3a-0cbc-47dd-b3e5-0de2a88b8a82');
 INSERT INTO keycloak.composite_role VALUES ('934d2eb7-4ffa-406f-b8a9-155460dd9872', '14183e37-4d0d-4f80-89a9-d979c7676d6a');
 INSERT INTO keycloak.composite_role VALUES ('934d2eb7-4ffa-406f-b8a9-155460dd9872', '3fda9186-3fda-413f-900b-43b487d08732');
@@ -2324,6 +2328,8 @@ INSERT INTO keycloak.composite_role VALUES ('a1234e9b-ccf4-43c2-8c5a-f8d5964d9e2
 INSERT INTO keycloak.composite_role VALUES ('d0202d84-e5c0-4558-b385-c04149655885', 'a1516493-c8b5-4001-a15a-d2b4a53964cc');
 INSERT INTO keycloak.composite_role VALUES ('eee97160-4b67-4071-84f4-099bbcd704af', '934d2eb7-4ffa-406f-b8a9-155460dd9872');
 INSERT INTO keycloak.composite_role VALUES ('1250ac00-2380-4150-81a7-10a0ae105049', 'cbd7ba23-5f0a-4ec5-a795-25ecebc54a79');
+INSERT INTO keycloak.composite_role VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', '3a3efbeb-83dc-4f82-b78d-f00e954d7d40');
+INSERT INTO keycloak.composite_role VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', 'a1234e9b-ccf4-43c2-8c5a-f8d5964d9e22');
 
 
 --
@@ -2332,12 +2338,12 @@ INSERT INTO keycloak.composite_role VALUES ('1250ac00-2380-4150-81a7-10a0ae10504
 -- Data for Name: credential; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
 
-INSERT INTO keycloak.credential VALUES ('16c6dd96-ab0a-4db4-8b44-91e7e990e255', NULL, 'password', '83d2fae6-76d9-497c-bbf6-f177785e6195', 1645339374406, NULL, '{"value":"Um345AmXLsp0iq9EfpOz7faesppvoRTKeaaAErgowNM=","salt":"vRC/vRO2OMFUTJwzQkwURg==","additionalParameters":{}}', '{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}', 10, 0);
-INSERT INTO keycloak.credential VALUES ('bc89d0ee-57fd-4f08-8ae5-7b4cd446ab7b', NULL, 'password', 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9', 1645339358068, NULL, '{"value":"KeJK1wigxM3gAYqCfk0284BmpJYHcCSCtD1HZitWc7U=","salt":"IIoJ+h3niCnlfPNGczpFOw==","additionalParameters":{}}', '{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}', 10, 0);
 INSERT INTO keycloak.credential VALUES ('33ba8296-df38-46a8-b8ab-72b2f316db43', NULL, 'password', 'dc59cd47-1a7e-4ca2-96b8-96df2bfe9b12', 1645324291713, NULL, '{"value":"de9CAdtB3v2128dqwdFZ+OT6/LVFg0qEBAS/7T9Tka0=","salt":"E7b+oTPwaWypAOihDOdQVA==","additionalParameters":{}}', '{"hashIterations":5,"algorithm":"argon2","additionalParameters":{"hashLength":["32"],"memory":["7168"],"type":["id"],"version":["1.3"],"parallelism":["1"]}}', 10, 0);
 INSERT INTO keycloak.credential VALUES ('0e881b5d-b6ca-476c-abbc-3ad965594a94', NULL, 'password', 'de3127bc-dbe6-4775-9334-2f873f413d23', 1645339453331, NULL, '{"value":"La8jLnDb2a07GTdGT03ZGr9oWtWhzinWhucX362tBq0=","salt":"n2Rzz0HcCBhyZQc+0ueF1g==","additionalParameters":{}}', '{"hashIterations":5,"algorithm":"argon2","additionalParameters":{"hashLength":["32"],"memory":["7168"],"type":["id"],"version":["1.3"],"parallelism":["1"]}}', 10, 0);
 INSERT INTO keycloak.credential VALUES ('3ea2ae5a-5278-4f38-a91d-5a5ca660c263', NULL, 'password', 'ba3b17f0-2698-4455-b150-0dcfbf9fdcd8', 1645339408658, NULL, '{"value":"BzmIVeiVgyf/p5Dm7yqP3DqkIwBq2fVF1e24gz4rcHY=","salt":"JVTDrocanWV3vNpbbx3LBA==","additionalParameters":{}}', '{"hashIterations":5,"algorithm":"argon2","additionalParameters":{"hashLength":["32"],"memory":["7168"],"type":["id"],"version":["1.3"],"parallelism":["1"]}}', 10, 0);
 INSERT INTO keycloak.credential VALUES ('d0b228b2-b743-4851-952c-b8e213eb4507', NULL, 'password', '7e2e3888-b370-4309-b82c-403b6871a390', 1645339392136, NULL, '{"value":"3kfFedQz9NM5bPOgRiizR/mWQHvY0caIIiYEXWB0HSo=","salt":"dnsOsQxjcPc7xtJU+x3Hug==","additionalParameters":{}}', '{"hashIterations":5,"algorithm":"argon2","additionalParameters":{"hashLength":["32"],"memory":["7168"],"type":["id"],"version":["1.3"],"parallelism":["1"]}}', 10, 1);
+INSERT INTO keycloak.credential VALUES ('bc89d0ee-57fd-4f08-8ae5-7b4cd446ab7b', NULL, 'password', 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9', 1645339358068, NULL, '{"value":"A93+ivPFAkE3fX+nQ9JkHi1rCRjWTTGKdNFlbWpd14Q=","salt":"kucAyd119UJ9iUHRWUGTgA==","additionalParameters":{}}', '{"hashIterations":5,"algorithm":"argon2","additionalParameters":{"hashLength":["32"],"memory":["7168"],"type":["id"],"version":["1.3"],"parallelism":["1"]}}', 10, 1);
+INSERT INTO keycloak.credential VALUES ('16c6dd96-ab0a-4db4-8b44-91e7e990e255', NULL, 'password', '83d2fae6-76d9-497c-bbf6-f177785e6195', 1645339374406, NULL, '{"value":"ZyOCmFtWTf64QhsIeNF8JgyV/ifEYGSFGNyvrlRjH3Y=","salt":"GGJvdeVOj2GEznDDUuJroA==","additionalParameters":{}}', '{"hashIterations":5,"algorithm":"argon2","additionalParameters":{"hashLength":["32"],"memory":["7168"],"type":["id"],"version":["1.3"],"parallelism":["1"]}}', 10, 1);
 
 
 --
@@ -3276,7 +3282,7 @@ INSERT INTO keycloak.event_entity VALUES ('a6b6f6dc-f205-45e0-a417-5ec067598f5b'
 -- Data for Name: jgroups_ping; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
 
-INSERT INTO keycloak.jgroups_ping VALUES ('uuid://00000000-0000-0000-0000-000000000012', 'accounts-785944f87d-tltc7-11090', 'ISPN', '10.42.0.51:7800', true);
+INSERT INTO keycloak.jgroups_ping VALUES ('uuid://00000000-0000-0000-0000-00000000003e', 'accounts-785944f87d-b7mpq-30567', 'ISPN', '10.42.0.47:7800', true);
 
 
 --
@@ -3411,11 +3417,7 @@ INSERT INTO keycloak.migration_model VALUES ('34rvi', '26.4.7', 1765814894);
 -- Data for Name: offline_client_session; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
 
-INSERT INTO keycloak.offline_client_session VALUES ('932ce644-c9ab-e97f-ef37-62d3995fdc63', '68d063b7-66bc-4e03-8ed0-38694d466ad3', '0', 1770676321, '{"authMethod":"openid-connect","redirectUri":"https://app.appcket.test","notes":{"clientId":"68d063b7-66bc-4e03-8ed0-38694d466ad3","scope":"openid","userSessionStartedAt":"1770676306","iss":"https://accounts.appcket.test/realms/appcket","startedAt":"1770676306","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","redirect_uri":"https://app.appcket.test","state":"daf5c9f35c0447e69ea9a4ea9ef2c3b1","code_challenge":"d-J_GEwDmCI4Y0DvRw5qTEu6Axlgwfb5CydFcS_8XU4"}}', 'local', 'local', 1);
-INSERT INTO keycloak.offline_client_session VALUES ('44a9ee3e-cf0a-910f-f989-aec102fe47a6', '68d063b7-66bc-4e03-8ed0-38694d466ad3', '0', 1770742527, '{"authMethod":"openid-connect","redirectUri":"https://app.appcket.test","notes":{"clientId":"68d063b7-66bc-4e03-8ed0-38694d466ad3","scope":"openid","userSessionStartedAt":"1770742519","iss":"https://accounts.appcket.test/realms/appcket","startedAt":"1770742519","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","redirect_uri":"https://app.appcket.test","state":"2c793a9135474af6b06ea102fdf07e4d","code_challenge":"Np8p8e_qFYNRnpPAavPik8oQ9JacX_auBVZVIBKZN5A"}}', 'local', 'local', 1);
-INSERT INTO keycloak.offline_client_session VALUES ('906147e3-b13f-5b36-0018-f4551ff8876f', '68d063b7-66bc-4e03-8ed0-38694d466ad3', '0', 1770742380, '{"authMethod":"openid-connect","redirectUri":"https://app.appcket.test","notes":{"clientId":"68d063b7-66bc-4e03-8ed0-38694d466ad3","scope":"openid","userSessionStartedAt":"1770742315","iss":"https://accounts.appcket.test/realms/appcket","startedAt":"1770742315","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","redirect_uri":"https://app.appcket.test","state":"66a205cd70db4b4f8a80994b5f65db86","code_challenge":"eyfBxQYBNzuz78NdTVHjXBMo3mcc3XpOI8n7q8R0jYU","SSO_AUTH":"true"}}', 'local', 'local', 22);
-INSERT INTO keycloak.offline_client_session VALUES ('c7a56c00-a444-6752-b6a9-57b4d2f4bb54', '68d063b7-66bc-4e03-8ed0-38694d466ad3', '0', 1770678157, '{"authMethod":"openid-connect","redirectUri":"https://app.appcket.test","notes":{"clientId":"68d063b7-66bc-4e03-8ed0-38694d466ad3","scope":"openid","userSessionStartedAt":"1770678109","iss":"https://accounts.appcket.test/realms/appcket","startedAt":"1770678109","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","redirect_uri":"https://app.appcket.test","state":"059da353a65c48649a32512a0583b201","code_challenge":"wcy9U4I5mfD7OQnz1mVc4tYQwQK_sK_12YIQWs3N-Uo","SSO_AUTH":"true"}}', 'local', 'local', 6);
-INSERT INTO keycloak.offline_client_session VALUES ('812d2de3-65ab-c5e1-c5e1-3af6b40fce0b', '68d063b7-66bc-4e03-8ed0-38694d466ad3', '0', 1770742687, '{"authMethod":"openid-connect","redirectUri":"https://app.appcket.test","notes":{"clientId":"68d063b7-66bc-4e03-8ed0-38694d466ad3","iss":"https://accounts.appcket.test/realms/appcket","startedAt":"1770738763","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","scope":"openid","SSO_AUTH":"true","userSessionStartedAt":"1770676422","redirect_uri":"https://app.appcket.test","state":"e6faa79055bc4e4a981abc71ecb54425","code_challenge":"gkX3CxUPtqYNvR8gp6Xa31nwyB7PU9hlFMC1L_DXedA"}}', 'local', 'local', 38);
+INSERT INTO keycloak.offline_client_session VALUES ('7b24bde6-3c73-171b-ba33-ddd0e041e2f2', '01818753-ed45-4903-93e9-8ebffc711cd8', '0', 1774569416, '{"authMethod":"openid-connect","redirectUri":"https://accounts.appcket.test/admin/master/console/","notes":{"clientId":"01818753-ed45-4903-93e9-8ebffc711cd8","iss":"https://accounts.appcket.test/realms/master","startedAt":"1774568721","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","nonce":"ff14325a-e9ad-4a28-aac3-a26d15eacc33","response_mode":"query","scope":"openid","userSessionStartedAt":"1774568721","redirect_uri":"https://accounts.appcket.test/admin/master/console/","state":"2add39dd-dacb-4400-ac04-64e3cc43d622","code_challenge":"jCjAS4VvX3YbBnAP25i0asQYFMLlwsA_cNCFaHoO0KI","SSO_AUTH":"true"}}', 'local', 'local', 7);
 
 
 --
@@ -3424,11 +3426,8 @@ INSERT INTO keycloak.offline_client_session VALUES ('812d2de3-65ab-c5e1-c5e1-3af
 -- Data for Name: offline_user_session; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
 
-INSERT INTO keycloak.offline_user_session VALUES ('932ce644-c9ab-e97f-ef37-62d3995fdc63', 'ba3b17f0-2698-4455-b150-0dcfbf9fdcd8', 'appcket', 1770676306, '0', '{"ipAddress":"10.42.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxMC40Mi4wLjEiLCJvcyI6IldpbmRvd3MiLCJvc1ZlcnNpb24iOiIxMCIsImJyb3dzZXIiOiJDaHJvbWUvMTQ0LjAuMCIsImRldmljZSI6Ik90aGVyIiwibGFzdEFjY2VzcyI6MCwibW9iaWxlIjpmYWxzZX0=","AUTH_TIME":"1770676306","authenticators-completed":"{\"548402b3-ad06-4470-a9d3-b8aace7b5688\":1770676306}"},"state":"LOGGED_IN"}', 1770676321, NULL, 1);
-INSERT INTO keycloak.offline_user_session VALUES ('906147e3-b13f-5b36-0018-f4551ff8876f', '7e2e3888-b370-4309-b82c-403b6871a390', 'appcket', 1770742315, '0', '{"ipAddress":"10.42.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxMC40Mi4wLjEiLCJvcyI6IldpbmRvd3MiLCJvc1ZlcnNpb24iOiIxMCIsImJyb3dzZXIiOiJDaHJvbWUvMTQ0LjAuMCIsImRldmljZSI6Ik90aGVyIiwibGFzdEFjY2VzcyI6MCwibW9iaWxlIjpmYWxzZX0=","AUTH_TIME":"1770742315","authenticators-completed":"{\"548402b3-ad06-4470-a9d3-b8aace7b5688\":1770742315,\"3a501cb6-5d07-44c9-8969-2044ebc67ec5\":1770742380}"},"state":"LOGGED_IN"}', 1770742380, NULL, 14);
-INSERT INTO keycloak.offline_user_session VALUES ('44a9ee3e-cf0a-910f-f989-aec102fe47a6', '7e2e3888-b370-4309-b82c-403b6871a390', 'appcket', 1770742519, '0', '{"ipAddress":"10.42.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxMC40Mi4wLjEiLCJvcyI6IldpbmRvd3MiLCJvc1ZlcnNpb24iOiIxMCIsImJyb3dzZXIiOiJDaHJvbWUvMTQ0LjAuMCIsImRldmljZSI6Ik90aGVyIiwibGFzdEFjY2VzcyI6MCwibW9iaWxlIjpmYWxzZX0=","AUTH_TIME":"1770742519","authenticators-completed":"{\"548402b3-ad06-4470-a9d3-b8aace7b5688\":1770742519}"},"state":"LOGGED_IN"}', 1770742527, NULL, 1);
-INSERT INTO keycloak.offline_user_session VALUES ('812d2de3-65ab-c5e1-c5e1-3af6b40fce0b', 'de3127bc-dbe6-4775-9334-2f873f413d23', 'appcket', 1770676422, '0', '{"ipAddress":"10.42.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxMC40Mi4wLjEiLCJvcyI6IldpbmRvd3MiLCJvc1ZlcnNpb24iOiIxMCIsImJyb3dzZXIiOiJDaHJvbWUvMTQ0LjAuMCIsImRldmljZSI6Ik90aGVyIiwibGFzdEFjY2VzcyI6MCwibW9iaWxlIjpmYWxzZX0=","AUTH_TIME":"1770676422","authenticators-completed":"{\"548402b3-ad06-4470-a9d3-b8aace7b5688\":1770676422,\"3a501cb6-5d07-44c9-8969-2044ebc67ec5\":1770742684}"},"state":"LOGGED_IN"}', 1770742687, NULL, 48);
-INSERT INTO keycloak.offline_user_session VALUES ('c7a56c00-a444-6752-b6a9-57b4d2f4bb54', 'de3127bc-dbe6-4775-9334-2f873f413d23', 'appcket', 1770678109, '0', '{"ipAddress":"10.42.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxMC40Mi4wLjEiLCJvcyI6IldpbmRvd3MiLCJvc1ZlcnNpb24iOiIxMCIsImJyb3dzZXIiOiJDaHJvbWUvMTQ0LjAuMCIsImRldmljZSI6Ik90aGVyIiwibGFzdEFjY2VzcyI6MCwibW9iaWxlIjpmYWxzZX0=","AUTH_TIME":"1770678109","authenticators-completed":"{\"548402b3-ad06-4470-a9d3-b8aace7b5688\":1770678109,\"3a501cb6-5d07-44c9-8969-2044ebc67ec5\":1770678157}"},"state":"LOGGED_IN"}', 1770678157, NULL, 4);
+INSERT INTO keycloak.offline_user_session VALUES ('2b87df5d-2626-8731-1459-c17108353305', 'de3127bc-dbe6-4775-9334-2f873f413d23', 'appcket', 1774567874, '0', '{"ipAddress":"10.42.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxMC40Mi4wLjEiLCJvcyI6IldpbmRvd3MiLCJvc1ZlcnNpb24iOiIxMCIsImJyb3dzZXIiOiJDaHJvbWUvMTQ2LjAuMCIsImRldmljZSI6Ik90aGVyIiwibGFzdEFjY2VzcyI6MCwibW9iaWxlIjpmYWxzZX0=","AUTH_TIME":"1774567875","authenticators-completed":"{\"548402b3-ad06-4470-a9d3-b8aace7b5688\":1774567874}"},"state":"LOGGED_IN"}', 1774567877, NULL, 1);
+INSERT INTO keycloak.offline_user_session VALUES ('7b24bde6-3c73-171b-ba33-ddd0e041e2f2', 'dc59cd47-1a7e-4ca2-96b8-96df2bfe9b12', 'master', 1774568721, '0', '{"ipAddress":"10.42.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxMC40Mi4wLjEiLCJvcyI6IldpbmRvd3MiLCJvc1ZlcnNpb24iOiIxMCIsImJyb3dzZXIiOiJDaHJvbWUvMTQ2LjAuMCIsImRldmljZSI6Ik90aGVyIiwibGFzdEFjY2VzcyI6MCwibW9iaWxlIjpmYWxzZX0=","AUTH_TIME":"1774568721","authenticators-completed":"{\"430dedd4-9d4f-4d98-8d74-ef4b7a0c410c\":1774568721,\"4f62210b-2060-4ae6-ab83-cb42e00b3b8a\":1774569355}"},"state":"LOGGED_IN"}', 1774569416, NULL, 7);
 
 
 --
@@ -3527,7 +3526,6 @@ INSERT INTO keycloak.protocol_mapper VALUES ('ea9bb3c5-eb5c-4fe6-8124-b55fc225d9
 INSERT INTO keycloak.protocol_mapper VALUES ('f55bba66-f14f-4781-9295-981ccef3023d', 'Client ID', 'openid-connect', 'oidc-usersessionmodel-note-mapper', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 INSERT INTO keycloak.protocol_mapper VALUES ('cadcd86f-31bb-4bfe-9f09-b155027a8319', 'Client Host', 'openid-connect', 'oidc-usersessionmodel-note-mapper', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
 INSERT INTO keycloak.protocol_mapper VALUES ('795f38ba-3268-4e2f-a956-ca2ad1a0d3be', 'Client IP Address', 'openid-connect', 'oidc-usersessionmodel-note-mapper', '6518e1e7-19a8-4e2b-8718-18a075b49ac6', NULL);
-INSERT INTO keycloak.protocol_mapper VALUES ('9d14a67a-613b-4f8c-a8c4-1d34b23d595c', 'Audience for appcket_app', 'openid-connect', 'oidc-audience-mapper', '68d063b7-66bc-4e03-8ed0-38694d466ad3', NULL);
 INSERT INTO keycloak.protocol_mapper VALUES ('f600d7c2-c282-46c4-877f-12e54f486cb6', 'locale', 'openid-connect', 'oidc-usermodel-attribute-mapper', '4dd4c360-d5b9-4730-8091-78b394cea334', NULL);
 INSERT INTO keycloak.protocol_mapper VALUES ('487f106e-8394-4353-a39c-64890e759820', 'acr loa level', 'openid-connect', 'oidc-acr-mapper', NULL, 'f2af3385-b007-4e90-b783-54eaa0aac86d');
 INSERT INTO keycloak.protocol_mapper VALUES ('2d2a0c1c-6121-41c8-8c22-1625136dcf74', 'acr loa level', 'openid-connect', 'oidc-acr-mapper', NULL, 'c03824d3-cc18-4529-90cd-968ab5d3653d');
@@ -3542,6 +3540,7 @@ INSERT INTO keycloak.protocol_mapper VALUES ('7f645483-a504-42fe-8b10-b200dc729e
 INSERT INTO keycloak.protocol_mapper VALUES ('6996b23c-1237-4d74-ba60-3e88019994a6', 'Client Host', 'openid-connect', 'oidc-usersessionmodel-note-mapper', NULL, '1369464e-b99d-44c6-a384-d0fe6032cc35');
 INSERT INTO keycloak.protocol_mapper VALUES ('64ac83dd-480c-4514-b121-87a2a7e599a9', 'Client IP Address', 'openid-connect', 'oidc-usersessionmodel-note-mapper', NULL, '1369464e-b99d-44c6-a384-d0fe6032cc35');
 INSERT INTO keycloak.protocol_mapper VALUES ('5dc74f13-6682-4fe5-815d-2c6df8f39c03', 'jobTitle', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, 'aee86bba-572b-4335-8f5b-c9969c70cbce');
+INSERT INTO keycloak.protocol_mapper VALUES ('5e65fdf7-6883-4ded-85f9-a2367c4d795e', 'Audience for Appcket app', 'openid-connect', 'oidc-audience-mapper', '0c412799-64d9-4690-94db-bcc4d0f0b1ae', NULL);
 
 
 --
@@ -3853,10 +3852,6 @@ INSERT INTO keycloak.protocol_mapper_config VALUES ('f55bba66-f14f-4781-9295-981
 INSERT INTO keycloak.protocol_mapper_config VALUES ('f55bba66-f14f-4781-9295-981ccef3023d', 'true', 'access.token.claim');
 INSERT INTO keycloak.protocol_mapper_config VALUES ('f55bba66-f14f-4781-9295-981ccef3023d', 'clientId', 'claim.name');
 INSERT INTO keycloak.protocol_mapper_config VALUES ('f55bba66-f14f-4781-9295-981ccef3023d', 'String', 'jsonType.label');
-INSERT INTO keycloak.protocol_mapper_config VALUES ('9d14a67a-613b-4f8c-a8c4-1d34b23d595c', 'appcket_api', 'included.client.audience');
-INSERT INTO keycloak.protocol_mapper_config VALUES ('9d14a67a-613b-4f8c-a8c4-1d34b23d595c', 'false', 'id.token.claim');
-INSERT INTO keycloak.protocol_mapper_config VALUES ('9d14a67a-613b-4f8c-a8c4-1d34b23d595c', 'true', 'access.token.claim');
-INSERT INTO keycloak.protocol_mapper_config VALUES ('9d14a67a-613b-4f8c-a8c4-1d34b23d595c', 'false', 'userinfo.token.claim');
 INSERT INTO keycloak.protocol_mapper_config VALUES ('f600d7c2-c282-46c4-877f-12e54f486cb6', 'true', 'userinfo.token.claim');
 INSERT INTO keycloak.protocol_mapper_config VALUES ('f600d7c2-c282-46c4-877f-12e54f486cb6', 'locale', 'user.attribute');
 INSERT INTO keycloak.protocol_mapper_config VALUES ('f600d7c2-c282-46c4-877f-12e54f486cb6', 'true', 'id.token.claim');
@@ -3929,6 +3924,11 @@ INSERT INTO keycloak.protocol_mapper_config VALUES ('5dc74f13-6682-4fe5-815d-2c6
 INSERT INTO keycloak.protocol_mapper_config VALUES ('5dc74f13-6682-4fe5-815d-2c6df8f39c03', 'String', 'jsonType.label');
 INSERT INTO keycloak.protocol_mapper_config VALUES ('5dc74f13-6682-4fe5-815d-2c6df8f39c03', 'false', 'aggregate.attrs');
 INSERT INTO keycloak.protocol_mapper_config VALUES ('5dc74f13-6682-4fe5-815d-2c6df8f39c03', 'false', 'multivalued');
+INSERT INTO keycloak.protocol_mapper_config VALUES ('5e65fdf7-6883-4ded-85f9-a2367c4d795e', 'appcket_api', 'included.client.audience');
+INSERT INTO keycloak.protocol_mapper_config VALUES ('5e65fdf7-6883-4ded-85f9-a2367c4d795e', 'false', 'id.token.claim');
+INSERT INTO keycloak.protocol_mapper_config VALUES ('5e65fdf7-6883-4ded-85f9-a2367c4d795e', 'false', 'lightweight.claim');
+INSERT INTO keycloak.protocol_mapper_config VALUES ('5e65fdf7-6883-4ded-85f9-a2367c4d795e', 'true', 'access.token.claim');
+INSERT INTO keycloak.protocol_mapper_config VALUES ('5e65fdf7-6883-4ded-85f9-a2367c4d795e', 'true', 'introspection.token.claim');
 
 
 --
@@ -4104,11 +4104,13 @@ INSERT INTO keycloak.redirect_uris VALUES ('235e5d2b-515a-422c-b23c-6d9c3abddfa5
 INSERT INTO keycloak.redirect_uris VALUES ('01818753-ed45-4903-93e9-8ebffc711cd8', '/admin/master/console/*');
 INSERT INTO keycloak.redirect_uris VALUES ('e801cbf0-541f-4466-80e1-fcce640df2a8', '/realms/appcket/account/*');
 INSERT INTO keycloak.redirect_uris VALUES ('26f802c3-b7af-4e78-b785-40493ae2483a', '/realms/appcket/account/*');
-INSERT INTO keycloak.redirect_uris VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'https://app.appcket.test/*');
-INSERT INTO keycloak.redirect_uris VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'https://appcket.test');
 INSERT INTO keycloak.redirect_uris VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', '/admin/appcket/console/*');
 INSERT INTO keycloak.redirect_uris VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'https://api.appcket.test/*');
 INSERT INTO keycloak.redirect_uris VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'http://api.appcket.test/*');
+INSERT INTO keycloak.redirect_uris VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'https://app.appcket.test/');
+INSERT INTO keycloak.redirect_uris VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'https://app.appcket.test/login');
+INSERT INTO keycloak.redirect_uris VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'https://app.appcket.test/api/auth/oauth2/callback/keycloak');
+INSERT INTO keycloak.redirect_uris VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'https://app.appcket.test/api/callback');
 
 
 --
@@ -4372,8 +4374,8 @@ INSERT INTO keycloak.scope_policy VALUES ('d00976cc-8876-4c38-a585-5d14671c7db3'
 -- Data for Name: server_config; Type: TABLE DATA; Schema: keycloak; Owner: dbuser
 --
 
-INSERT INTO keycloak.server_config VALUES ('crt_jgroups', '{"prvKey":"MIIEogIBAAKCAQEAm5K+JdvNl8qxUJGUoa+pFnkFyZo74/0WHYlDsX37jjucTEyF4GbUNFjEB7+etPyCWz7z9Q+3MG9BaA/XSzVZsJJVDUKaXt+o4E+dIKjf3FmIXIXvwew4CiHYTq7MHxkhZwapYHfz33N8OiYKW59gvx/weAblgVJCiYmH5ghIBSnqbb/M9MafoPHArORb3M9YXY4c8mDhWuJVXDO7o3MNayO7r9wwWHlSOiEC/Xhs6l8ppVN1b0nA4bAGfi8nxSLPO30mqZ1uRDgFOXbYg7XVyTbxOttpqnc+ZkP/dEdE68Tx+W5QndG+iK30Fgar0KjoYZaxUWLAa6L+EDBT5Gef2wIDAQABAoIBAA0R/QutNc6k5tTABl63JVuP+15+qL10y+DbYWaOEQ5YD7+RRkYeHYHwWzfTb4ABHuqPlWtnUJqvHi2h9xKIfuqIwMCGcfW6kLOXvLm7tmMK2pv7XLNMJ0Eiqsuhf+C0+ctwEdba/RAu4ab4/zHHaBdmlYtf+PQudwybE2HOHE7inwIko5LLXyQxwgzf4UGQQ69DcrYuRS44Yb+tnWOfaZmoNIKal/lFEIdlt7yisNgzp3g+tDl7fU8zG/LtkBfsQPiRXIvRRr35cSk02GhGxTUne4Qis+QkEjUSvAAWnh8CbLoG1tvI/rvtliz4/kcHA85/ZtniNneRlRgDOYAJC7ECgYEA1qev/JNuWpBCJFEh51tU8o/fyXfYsgFankFrHVuvCMI+jFxJHe09vw0X7uclk+MW48aAmZHPrNtwSisBITgmBm7SEMBqzLKbdJJS3RpFJ2iEl6qQIGeVTbAnAsXpVdnNZ/WKKUJJjDZOpOJzsiv05h3N+6JaRbFfIi630Yqm6M8CgYEAuYnSLNaPgi3vk366FHk5bthqQkr3/O03vum2/l+4PqKsi+gHAMHZwmShtuU0jrA4kq80edh3/uI+Gfatj0Tnio0kGygRIP/LqG2UbJ7yhLjRkCqNre38JamED/wTz8AEkeX4AyfWMMp/8aDISwIY9OWfXBM57vl+4FzyKXyxAzUCgYACmcF+E+MwYbMLcZgxj1+2GJwjero7XdzVMgG0N1olhwTu+mdAX5Fx8RyrHk3MPuIWHF+OfL/BXl875s16s41yYoFVBp/Enx1XCjbKyvivg4qns79PRTH/4PR4CiHLknn0mnr0CQOPGVFWmg/AxtuOtim6tLrXQVDfvyUm+sEO7QKBgAsyYQepryFpCkM5a5tesXOaBdeYVJzj5/BShGOXfTPydz0+NGX8TNrpXcT+0gwmYFOh1SXhRWSRXLQOaezyeJKo79vfsCDwruasLj/b28DcsnDj0IcFjKjtMPYR/VQVP3FaknwGRGvPXKdFT7EPIFhvHw3cbyuXzOtXUJnmV3xdAoGATGI6/nEUTvj1CvoWWxQR+OXl6VIpnTWW3sz1pr9tuUCxy8OxuhVJqs/dAvfVLQEhNjmFEUEShUFiyNxSJnmiui4FQAsDTuFa2NeMhRARGQNw/E1GcABbU1PKkQroYDSlEWNv45SN5Zosr27S21yHYBBC57eTqgscei3K1BufBR4=","pubKey":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm5K+JdvNl8qxUJGUoa+pFnkFyZo74/0WHYlDsX37jjucTEyF4GbUNFjEB7+etPyCWz7z9Q+3MG9BaA/XSzVZsJJVDUKaXt+o4E+dIKjf3FmIXIXvwew4CiHYTq7MHxkhZwapYHfz33N8OiYKW59gvx/weAblgVJCiYmH5ghIBSnqbb/M9MafoPHArORb3M9YXY4c8mDhWuJVXDO7o3MNayO7r9wwWHlSOiEC/Xhs6l8ppVN1b0nA4bAGfi8nxSLPO30mqZ1uRDgFOXbYg7XVyTbxOttpqnc+ZkP/dEdE68Tx+W5QndG+iK30Fgar0KjoYZaxUWLAa6L+EDBT5Gef2wIDAQAB","crt":"MIICnTCCAYUCBgGcRF1YAzANBgkqhkiG9w0BAQsFADASMRAwDgYDVQQDDAdqZ3JvdXBzMB4XDTI2MDIwOTIxNDMxNFoXDTI2MDQxMDIxNDQ1MVowEjEQMA4GA1UEAwwHamdyb3VwczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJuSviXbzZfKsVCRlKGvqRZ5BcmaO+P9Fh2JQ7F9+447nExMheBm1DRYxAe/nrT8gls+8/UPtzBvQWgP10s1WbCSVQ1Cml7fqOBPnSCo39xZiFyF78HsOAoh2E6uzB8ZIWcGqWB3899zfDomClufYL8f8HgG5YFSQomJh+YISAUp6m2/zPTGn6DxwKzkW9zPWF2OHPJg4VriVVwzu6NzDWsju6/cMFh5UjohAv14bOpfKaVTdW9JwOGwBn4vJ8Uizzt9JqmdbkQ4BTl22IO11ck28Trbaap3PmZD/3RHROvE8fluUJ3Rvoit9BYGq9Co6GGWsVFiwGui/hAwU+Rnn9sCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAeb39ZB/SUsFT31DSyatgr6c9PIovaCyPUjVg/lDjZLvPiLit983HRItGuPl2smAa1BT5SqUnrFsJFGInvCBGehPYLTS/i8TYdtzAd5SD6Bv/7JXomF05n2JbBOdsM03oxfQZaM2BTA8kzmVJSzfvGj3xP0fNAAn/87VBHSccmxiFbHc1kDpiAnlnGAuSlDAZ3YpSdRynVjHedZD1AGCCs1v0PGKnujl7UFxnU94rChGJX/K8uZ8KRP4rYvhJvH8+npRLiU35SumJMwDk1a77AeyM1pEFWksTZtdzVLkA0Cw2ygi/RBne9W50YvnZKjO97/k2FRdwHECEnnD4U5YXgQ==","alias":"16967ae7-c958-4925-9e67-7162f6f3fc89","generatedMillis":1770673494340}', 2);
-INSERT INTO keycloak.server_config VALUES ('JGROUPS_ADDRESS_SEQUENCE', '18', 18);
+INSERT INTO keycloak.server_config VALUES ('crt_jgroups', '{"prvKey":"MIIEowIBAAKCAQEA0ilY4CiJzshah6WJiz9LVl3SMEThG6z/FpM9lMdqulxGbDik2oIwrzUJE5kBhQPm7kUAf5/KcAJTpS1KaTGZY6h9j5bGeB15NDwvaOQuz00OSQAPymV1PUUJMSY2j2raYdcndQ59mZqwTUtweJOoYEDL6sYRpKLleZ2GqXoVjhmAcC6tfGhLutncZl7rXgrhh36tyy+zUZ7sXIMe8KBi/K03zRyEeiJFG2dBcMKwoTI2hJfCYWPDoYrdAju5SqWQK/14NpqZP0PgVMqDiUCYillvGmfRBvTNYr0XfsvlZPlRGd10F6QKYz2msaDC0ZwVcOSaTURjcbJwFpIunzZ9LwIDAQABAoIBAAcFs6m1y7kERSYgLWLg6AsIPS7jYPmJmR0aKWYbGGFcFkxPw45mPZXfz0r/g1H8VI858K99rt15mRg9Va2t0cLHN/7Vb7ycENc30EZlzXycG1yWwHBSXeMAt12+5Ewm1V+Mjrh2Ff33xxP7b9Qk7EI0bWaNshGOvIfeRXLMmK4eni+3q6f1793K35MhKk2g4Or5hvDQ7bTQZzLZ96r7x9UjTFSSb8nVA1Sgniys5RjeqiN7cmpTOptcKyJo9JUw7kGVeC7/onhmogEiaXvMSz7ZT1XZGp4VYEp3Nqz0D0waAT+N59k4Gu8i0hCR5e8f3AuTc5hBAOlCFakO8UxFnukCgYEA6/47kVffRBiSggKvdrnwCNkj7QPSLZ9Jd8Cjt0K1AEQU6ZzUT1sCTTtfR9D0lRDDy4/wve9jGSohd7fJjLFxaPgGKO9LwNA9+BjV5Y6R0khmH1us+UElcJVJlIDLRXYLr5q8rUlWrQD4Wl4Wu8a++V9P+mPnRSWM+eEUI7Wn3PkCgYEA4/p9mOwZSjkJhsYILI4RFFuwvug7CHHZOWMEu+oSkea8uYWDQqGr2B6KsmBCfhpJ8VvFZ6U6hZKoNnEwaqhDZVDziZkLiCzN8NWYsoed6mw0Z8oOoMRZdcyr3ME+TRuH3TVECNKOHJJJ1XyinaakjBvtS7d+JNU8cWEzzlS/fWcCgYAWi5o7P27X/ZT5kLIcoJTa84uoGAZbT21gYGoDlv7dwKNS0iXCUwp8QGDQ5piHKSvbZav1KUqJW+oImulJZKZWBePowzu0dvCEpDLDFIS/1yTSeBqlUWD3SXvXERraTvW82AaQc4IxUvdnArgfRlR2VHG6lRLCG11FfghDhRY9WQKBgQDBIvf+cp5mO/XvIJvSKzUa+ya8RP+mAtVVgaaEECRVSJW/0fVGoLJ1sEIuJdCPBnR4LhgJ23e9q2YoYTH0WcJm9fKsMmULo3GAw2POc4f8DllDSHGmD1H+szsyFOBT8KvkYnjVxJMyb1hvrVwSlRe3vv0EdVo/mArRvthlx3RGpwKBgFXfCpEVLsKo/HOsmrcOAEUYizRA6DnRCHYXD+M3sKNled2H0J+Gr2pEJtLrjacqsFkDCQ8eQ413w4+DoR6FtCt0Bso+//g4lyCSQZ+UepNeXQaOALYI6+4mZkysgskOsMrCgpns1eVRx/HvC92yOST+ODbkQ74tf+ZjsSLhIBv/","pubKey":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0ilY4CiJzshah6WJiz9LVl3SMEThG6z/FpM9lMdqulxGbDik2oIwrzUJE5kBhQPm7kUAf5/KcAJTpS1KaTGZY6h9j5bGeB15NDwvaOQuz00OSQAPymV1PUUJMSY2j2raYdcndQ59mZqwTUtweJOoYEDL6sYRpKLleZ2GqXoVjhmAcC6tfGhLutncZl7rXgrhh36tyy+zUZ7sXIMe8KBi/K03zRyEeiJFG2dBcMKwoTI2hJfCYWPDoYrdAju5SqWQK/14NpqZP0PgVMqDiUCYillvGmfRBvTNYr0XfsvlZPlRGd10F6QKYz2msaDC0ZwVcOSaTURjcbJwFpIunzZ9LwIDAQAB","crt":"MIICnTCCAYUCBgGc3twbPjANBgkqhkiG9w0BAQsFADASMRAwDgYDVQQDDAdqZ3JvdXBzMB4XDTI2MDMxMTIxNDMxMloXDTI2MDUxMDIxNDQ1MlowEjEQMA4GA1UEAwwHamdyb3VwczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANIpWOAoic7IWoeliYs/S1Zd0jBE4Rus/xaTPZTHarpcRmw4pNqCMK81CROZAYUD5u5FAH+fynACU6UtSmkxmWOofY+WxngdeTQ8L2jkLs9NDkkAD8pldT1FCTEmNo9q2mHXJ3UOfZmasE1LcHiTqGBAy+rGEaSi5Xmdhql6FY4ZgHAurXxoS7rZ3GZe614K4Yd+rcsvs1Ge7FyDHvCgYvytN80chHoiRRtnQXDCsKEyNoSXwmFjw6GK3QI7uUqlkCv9eDaamT9D4FTKg4lAmIpZbxpn0Qb0zWK9F37L5WT5URnddBekCmM9prGgwtGcFXDkmk1EY3GycBaSLp82fS8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEABAQk99D4keQej+60T/7iknoEngHhxCqeGi79d21OabxGwUG4PtXhv++7B/2fOajjLAeIlNExWkL65jn9MUtstPFNMZA6p9yQhsqv2HMsR11IZtR0Nc51mjKW5qkug3iln9d1rx7A17qIN9/uujLyLa6Xxli1zUdwPYx176WoeIxYb3M6WMIGSwh9WZUFF6SoumL6Q5BjSLTLkG0ctLES377H3STdKQVUAG8U4WufzfBeu/oLFxd4RjRd1A6q5fdoh5NfSmgdqtMfZeCg2d4ssW0hJeIfIPFwF9oGBqX1GpNkwAH0e94vclbLEBablnVXZeO9Eaah7YF1Dc6y1r/7mw==","alias":"21c8f528-e12f-4be3-b7de-3a0296d6c485","generatedMillis":1773265493235}', 3);
+INSERT INTO keycloak.server_config VALUES ('JGROUPS_ADDRESS_SEQUENCE', '62', 62);
 
 
 --
@@ -4385,6 +4387,7 @@ INSERT INTO keycloak.server_config VALUES ('JGROUPS_ADDRESS_SEQUENCE', '18', 18)
 INSERT INTO keycloak.user_attribute VALUES ('jobTitle', 'CEO, Vandelay Industries', 'c83ccc8c-2c1f-4a7a-9506-eaf235a284e9', '9b5c4ab3-b16e-4ad4-a2b2-cf2d8fc60e30', NULL, NULL, NULL);
 INSERT INTO keycloak.user_attribute VALUES ('jobTitle', 'Regional Director, Manufacturing', '7e2e3888-b370-4309-b82c-403b6871a390', 'ba3efcb4-4e67-49f9-8772-44b0f519a403', NULL, NULL, NULL);
 INSERT INTO keycloak.user_attribute VALUES ('jobTitle', 'Assistant Vice President', 'de3127bc-dbe6-4775-9334-2f873f413d23', 'ea15cddd-ab22-43a4-8b27-8f17e52cec52', NULL, NULL, NULL);
+INSERT INTO keycloak.user_attribute VALUES ('jobTitle', 'Chewing Gum Connoisseur', 'ba3b17f0-2698-4455-b150-0dcfbf9fdcd8', '721ee924-b307-4a5d-b278-e60a9419d091', NULL, NULL, NULL);
 
 
 --
@@ -4415,7 +4418,7 @@ INSERT INTO keycloak.user_entity VALUES ('de3127bc-dbe6-4775-9334-2f873f413d23',
 INSERT INTO keycloak.user_entity VALUES ('c83ccc8c-2c1f-4a7a-9506-eaf235a284e9', 'art@vandelay.com', 'art@vandelay.com', true, true, NULL, 'Art', 'Vandelay', 'appcket', 'art', 1645326637710, NULL, 0);
 INSERT INTO keycloak.user_entity VALUES ('7e2e3888-b370-4309-b82c-403b6871a390', 'kel@appcket.org', 'kel@appcket.org', true, true, NULL, 'Kel', 'Varnson', 'appcket', 'kel', 1645327142592, NULL, 0);
 INSERT INTO keycloak.user_entity VALUES ('83d2fae6-76d9-497c-bbf6-f177785e6195', 'he@appcket.org', 'he@appcket.org', true, true, NULL, 'Horace', 'Pennypacker', 'appcket', 'he', 1645327257188, NULL, 0);
-INSERT INTO keycloak.user_entity VALUES ('ba3b17f0-2698-4455-b150-0dcfbf9fdcd8', 'lloyd@appcket.org', 'lloyd@appcket.org', true, true, NULL, 'Lloyd', 'Braun', 'appcket', 'lloyd', 1645327573137, NULL, 0);
+INSERT INTO keycloak.user_entity VALUES ('ba3b17f0-2698-4455-b150-0dcfbf9fdcd8', 'lloyd@appcket.org', 'lloyd@appcket.org', true, true, NULL, 'Lloyd', 'Braun', 'appcket', 'lloyd@appcket.org', 1645327573137, NULL, 0);
 
 
 --
@@ -4507,6 +4510,7 @@ INSERT INTO keycloak.user_role_mapping VALUES ('97caa102-e9d8-44de-94a1-74e5ea7b
 INSERT INTO keycloak.user_role_mapping VALUES ('a1234e9b-ccf4-43c2-8c5a-f8d5964d9e22', 'ba3b17f0-2698-4455-b150-0dcfbf9fdcd8');
 INSERT INTO keycloak.user_role_mapping VALUES ('eee97160-4b67-4071-84f4-099bbcd704af', '7e2e3888-b370-4309-b82c-403b6871a390');
 INSERT INTO keycloak.user_role_mapping VALUES ('97caa102-e9d8-44de-94a1-74e5ea7bccb5', '83d2fae6-76d9-497c-bbf6-f177785e6195');
+INSERT INTO keycloak.user_role_mapping VALUES ('3a3efbeb-83dc-4f82-b78d-f00e954d7d40', 'ba3b17f0-2698-4455-b150-0dcfbf9fdcd8');
 
 
 --
@@ -4516,10 +4520,10 @@ INSERT INTO keycloak.user_role_mapping VALUES ('97caa102-e9d8-44de-94a1-74e5ea7b
 --
 
 INSERT INTO keycloak.web_origins VALUES ('01818753-ed45-4903-93e9-8ebffc711cd8', '+');
-INSERT INTO keycloak.web_origins VALUES ('68d063b7-66bc-4e03-8ed0-38694d466ad3', 'https://app.appcket.test');
 INSERT INTO keycloak.web_origins VALUES ('4dd4c360-d5b9-4730-8091-78b394cea334', '+');
 INSERT INTO keycloak.web_origins VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'http://api.appcket.test/');
 INSERT INTO keycloak.web_origins VALUES ('6518e1e7-19a8-4e2b-8718-18a075b49ac6', 'https://api.appcket.test');
+INSERT INTO keycloak.web_origins VALUES ('0c412799-64d9-4690-94db-bcc4d0f0b1ae', 'https://app.appcket.test');
 
 
 --
@@ -6882,11 +6886,11 @@ ALTER TABLE ONLY keycloak.identity_provider_config
     ADD CONSTRAINT fkdc4897cf864c4e43 FOREIGN KEY (identity_provider_id) REFERENCES keycloak.identity_provider(internal_id);
 
 
--- Completed on 2026-02-10 17:43:44 UTC
+-- Completed on 2026-03-26 23:57:28 UTC
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 8pe9eER8z6xiReghDcTHa50U4uM0AIrNpKrgHGadfQvZvQTwfWGGQL1zkhrcOqq
+\unrestrict kykVo9Q8rmaAwaTLJMa5JgexgUqnZkyK0q1AeyV5chVIGd3KxvIEMLQgdbBhFdX
 

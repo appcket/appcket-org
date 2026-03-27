@@ -55,3 +55,4 @@ volumes:
   appcket-clickhouse-data:
     external: true
   appcket-redis-data:
+    external: true

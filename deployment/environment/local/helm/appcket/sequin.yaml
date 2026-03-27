@@ -24,3 +24,4 @@ sinks:
       type: "kafka"
       hosts: "redpanda-0.redpanda.redpanda.svc.cluster.local:9093"
       topic: "outbox-events"
+      compression: "none"

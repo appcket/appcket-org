@@ -15,6 +15,7 @@ CLICKHOUSE_USER = "dbuser"
 CLICKHOUSE_PASSWORD = "Ch@ng3To@StrongP@ssw0rd"
 CLICKHOUSE_HOST = "localhost:8123"
 API_CLIENT_KEYCLOAK_SECRET = "1SMHqsPrhtoxlMPLRYcHP39uJL16oGG1"
+APP_CLIENT_KEYCLOAK_SECRET = "rzMpSE2IHOzzgWXFU89MlGxLARIwtV1A"
 
 # -----------------------------------------------------------------------------
 # Main Workflows
@@ -66,56 +67,43 @@ echo "✅ Bootstrap Complete! Run 'mise run start' to begin development."
 '''
 
 [tasks.start]
-description = "Start daily dev session (Day 1+)"
+description = "Start daily dev session"
 run = '''
 #!/bin/bash
 set -e
 echo "🚀 Starting development environment..."
 
-# Ensure tools are installed
-mise install
+# 1. Bind Mount (WSL specific)
+echo "🪜 Ensuring WSL bind mount..."
+sudo mkdir -p /mnt/wsl/rancher-desktop-bind-mounts/dev
+sudo mount --bind $HOME/dev /mnt/wsl/rancher-desktop-bind-mounts/dev || true
 
-# Ensure Docker is up
-mise run infra:up
+# 2. Configure CoreDNS
+mise run k8s:patch-coredns
 
-# Ensure K8s namespace/secrets exist
-mise run k8s:init
+kubectl rollout restart daemonset ztunnel -n istio-system
+kubectl delete pod -n appcket -l app=waypoint
+kubectl rollout restart deployment istio-system-gateway-istio -n istio-system
 
-# Set current kubectl context so VS Code Attache to running Kubernetes container command works
+# 3. Set kubectl context
 kubectl config set-context --current --namespace=${PROJECT_MACHINE_NAME}
 
-# 1. Bind Mount (WSL specific) & Path Calculation
-HOST_MOUNT_PATH="$(pwd)"
-echo "🪜 Creating WSL bind mount..."
-mkdir -p /mnt/wsl/rancher-desktop-bind-mounts/dev
-sudo mount --bind ~/dev /mnt/wsl/rancher-desktop-bind-mounts/dev || true
+# 4. Database and Registry containers (with build)
+echo "🪜 Starting Database and Registry containers..."
+docker compose -f deployment/environment/local/docker-compose.yml -p ${PROJECT_MACHINE_NAME} up --build -d
 
-# Calculate the mount path for WSL
-CURRENT_DIR=$(pwd)
-RELATIVE_PATH="${CURRENT_DIR#$HOME/dev/}"
-HOST_MOUNT_PATH="/mnt/wsl/rancher-desktop-bind-mounts/dev/${RELATIVE_PATH}"
+# 5. Delete existing instance for clean slate
+echo "🪜 Deleting existing helm release..."
+helm delete ${PROJECT_MACHINE_NAME} -n ${PROJECT_MACHINE_NAME} || true
 
-echo "Using Host Mount Path: ${HOST_MOUNT_PATH}"
-
-# 2. Deploy App
-echo "🪜 Deploying Application..."
-# helm delete ${PROJECT_MACHINE_NAME} -n ${PROJECT_MACHINE_NAME}
-# helm package "deployment/environment/local/helm/appcket" -d "deployment/environment/local"
-# helm install appcket "deployment/environment/local/appcket-0.1.0.tgz" \
-#     -n appcket \
-#     -f deployment/environment/local/helm/appcket/values.yaml \
-#     --set api.hostPath="${HOST_MOUNT_PATH}/api" \
-#     --set app.hostPath="${HOST_MOUNT_PATH}/app" \
-#     --set marketing.hostPath="${HOST_MOUNT_PATH}/marketing"
-
-helm upgrade --install ${PROJECT_MACHINE_NAME} deployment/environment/local/helm/appcket \
+# 6. Package and Install Chart (proven way)
+echo "🪜 Packaging and Installing Helm chart..."
+helm package "deployment/environment/local/helm/appcket" -d "deployment/environment/local"
+helm install ${PROJECT_MACHINE_NAME} "deployment/environment/local/${PROJECT_MACHINE_NAME}-0.1.0.tgz" \
     -n ${PROJECT_MACHINE_NAME} \
-    -f deployment/environment/local/helm/appcket/values.yaml \
-    --set api.hostPath="${HOST_MOUNT_PATH}/api" \
-    --set app.hostPath="${HOST_MOUNT_PATH}/app" \
-    --set marketing.hostPath="${HOST_MOUNT_PATH}/marketing"
+    -f deployment/environment/local/helm/appcket/values.yaml
 
-echo "✅ Environment started! App URL: https://app.${PROJECT_MACHINE_NAME}.test"
+echo "✅ Local dev environment running!"
 '''
 
 # -----------------------------------------------------------------------------
@@ -138,6 +126,7 @@ mise run k8s:patch-coredns
 # Secrets
 kubectl create secret generic database-secret --from-literal=user=${DATABASE_USER} --from-literal=password=${DATABASE_PASSWORD} -n ${PROJECT_MACHINE_NAME} --dry-run=client -o yaml | kubectl apply -f -
 kubectl create secret generic api-keycloak-client-secret --from-literal=clientsecret=${API_CLIENT_KEYCLOAK_SECRET} -n ${PROJECT_MACHINE_NAME} --dry-run=client -o yaml | kubectl apply -f -
+kubectl create secret generic app-keycloak-client-secret --from-literal=clientsecret=${APP_CLIENT_KEYCLOAK_SECRET} -n ${PROJECT_MACHINE_NAME} --dry-run=client -o yaml | kubectl apply -f -
 kubectl create secret generic clickhouse-secret --from-literal=user=${CLICKHOUSE_USER} --from-literal=password=${CLICKHOUSE_PASSWORD} -n ${PROJECT_MACHINE_NAME} --dry-run=client -o yaml | kubectl apply -f -
 '''
 
@@ -256,7 +245,7 @@ helm upgrade --install redpanda deployment/environment/local/helm/redpanda \
 kubectl label namespace redpanda istio.io/dataplane-mode=ambient --overwrite || true
 
 # 5. Start Istio Gateway
-echo "Starting Istio Gateway..."
+echo "🪜 Starting Istio Gateway..."
 helm upgrade --install istio-gateway "deployment/environment/local/helm/istio-gateway" \
 -n istio-system \
 -f "deployment/environment/local/helm/istio-gateway/values.yaml" || true
@@ -282,11 +271,13 @@ description = "Deploy Bootstrap Namespace Chart"
 run = '''
 #!/bin/bash
 set -e
-HOST_MOUNT_PATH="$(pwd)"
+# Calculate Host Mount Path ( proven way for bootstrap)
+CURRENT_DIR=$(pwd)
 if grep -q "Microsoft" /proc/version; then
-    CURRENT_DIR=$(pwd)
-    RELATIVE_PATH="${CURRENT_DIR#$HOME/dev/}"
+    RELATIVE_PATH=$(echo "$CURRENT_DIR" | sed 's|.*/dev/||')
     HOST_MOUNT_PATH="/mnt/wsl/rancher-desktop-bind-mounts/dev/${RELATIVE_PATH}"
+else
+    HOST_MOUNT_PATH="${CURRENT_DIR}"
 fi
 
 helm upgrade --install bootstrap-namespace deployment/environment/local/helm/bootstrap-namespace \
@@ -296,7 +287,7 @@ helm upgrade --install bootstrap-namespace deployment/environment/local/helm/boo
     --set app.hostPath="${HOST_MOUNT_PATH}/app" \
     --set marketing.hostPath="${HOST_MOUNT_PATH}/marketing"
 
-echo "⏳ Waiting for main-outbox-watcher to be ready (this can take a few minutes on first pull)..."
+echo "⏳ Waiting for main-outbox-watcher to be ready..."
 kubectl wait --for=condition=ready pod -l app=main-outbox-watcher -n ${PROJECT_MACHINE_NAME} --timeout=300s
 '''
 
@@ -305,25 +296,27 @@ kubectl wait --for=condition=ready pod -l app=main-outbox-watcher -n ${PROJECT_M
 # -----------------------------------------------------------------------------
 
 [tasks."db:init"]
-description = "Initialize Databases (Postgres, Sequin, ClickHouse)"
+description = "Initialize Databases (Schemas, Dumps, Sequin Slots)"
 run = '''
 #!/bin/bash
 set -e
-echo "🪜 Initializing Databases..."
+echo "🪜 Initializing Database Schemas..."
 
+# Ensure DBs exist
 for db in "${PROJECT_MACHINE_NAME}" "sequin" "keycloak"; do
     exists=$(psql -tAc "SELECT 1 FROM pg_database WHERE datname='$db'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true)
     if [ "$exists" != "1" ]; then
-        echo "Creating database $db..."
+        echo "🪜 Creating database $db..."
         psql -c "CREATE DATABASE $db WITH ENCODING 'UTF8'" "dbname=postgres user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
     fi
 done
 
+# Schema and Dumps
 psql -c "CREATE SCHEMA IF NOT EXISTS ${PROJECT_MACHINE_NAME}" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 psql -f "deployment/environment/local/keycloak_dump.sql" "dbname=keycloak user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
 
-# Sequin Setup
-echo "🪜 Setting up Sequin..."
+# Sequin Setup (Destructive Reset)
+echo "🪜 Setting up Sequin replication slot..."
 psql -c "SELECT pg_terminate_backend(active_pid) FROM pg_replication_slots WHERE slot_name = 'sequin_slot';" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true
 psql -c "SELECT pg_drop_replication_slot('sequin_slot') WHERE EXISTS (SELECT 1 FROM pg_replication_slots WHERE slot_name = 'sequin_slot');" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost" || true
 psql -c "SELECT pg_create_logical_replication_slot('sequin_slot', 'pgoutput')" "dbname=${PROJECT_MACHINE_NAME} user=${DATABASE_USER} password=${DATABASE_PASSWORD} host=localhost"
@@ -336,63 +329,7 @@ mise run db:setup-clickhouse
 
 [tasks."db:setup-clickhouse"]
 description = "Configure ClickHouse schema and Kafka ingestion"
-run = '''
-#!/bin/bash
-set -e
-echo "🪜 Setting up ClickHouse..."
-
-run_query() {
-    curl -s -u "${CLICKHOUSE_USER}:${CLICKHOUSE_PASSWORD}" "${CLICKHOUSE_HOST}" -d "$1"
-}
-
-run_query "CREATE DATABASE IF NOT EXISTS appcket"
-run_query "DROP TABLE IF EXISTS appcket.outbox_events_mv"
-run_query "DROP TABLE IF EXISTS appcket.outbox_events_history"
-run_query "DROP TABLE IF EXISTS appcket.outbox_events_queue"
-
-run_query "CREATE TABLE appcket.outbox_events_history (
-    id String,
-    action String,
-    table_schema String,
-    table_name String,
-    correlation_id UUID,
-    entity_id String,
-    entity_type String,
-    user_id String,
-    payload String,
-    committed_at DateTime64(3),
-    ingested_at DateTime DEFAULT now()
-) ENGINE = MergeTree ORDER BY (entity_type, entity_id, committed_at)"
-
-KAFKA_PORT=$(kubectl get svc -n redpanda redpanda-external -o jsonpath='{.spec.ports[?(@.name=="kafka-default")].nodePort}')
-echo "Detected Redpanda External Port: $KAFKA_PORT"
-
-run_query "CREATE TABLE appcket.outbox_events_queue (
-    record String,
-    action String,
-    metadata String
-) ENGINE = Kafka SETTINGS kafka_broker_list = 'host.docker.internal:${KAFKA_PORT}',
-         kafka_topic_list = 'outbox-events',
-         kafka_group_name = 'clickhouse_consumer',
-         kafka_format = 'JSONEachRow',
-         kafka_skip_broken_messages = 1"
-
-run_query "CREATE MATERIALIZED VIEW appcket.outbox_events_mv TO appcket.outbox_events_history AS
-SELECT
-    JSONExtractString(record, 'id') as id,
-    action,
-    JSONExtractString(metadata, 'table_schema') as table_schema,
-    JSONExtractString(metadata, 'table_name') as table_name,
-    toUUIDOrZero(JSONExtractString(record, 'correlation_id')) as correlation_id,
-    JSONExtractString(record, 'payload', 'entity', 'id') as entity_id,
-    JSONExtractString(record, 'payload', 'entity', 'type') as entity_type,
-    JSONExtractString(record, 'payload', 'user', 'id') as user_id,
-    JSONExtractString(record, 'payload') as payload,
-    parseDateTime64BestEffortOrNull(JSONExtractString(metadata, 'commit_timestamp')) as committed_at
-FROM appcket.outbox_events_queue"
-
-echo "✅ ClickHouse configured."
-'''
+run = 'deployment/environment/local/setup-clickhouse.sh'
 
 [tasks."db:seed"]
 description = "Seed application data"
@@ -462,6 +399,7 @@ run = '''
 docker volume create --name ${PROJECT_MACHINE_NAME}-database -d local || true
 docker volume create --name ${PROJECT_MACHINE_NAME}-registry-data -d local || true
 docker volume create --name ${PROJECT_MACHINE_NAME}-clickhouse-data -d local || true
+docker volume create --name ${PROJECT_MACHINE_NAME}-redis-data -d local || true
 '''
 
 [tasks."infra:up"]

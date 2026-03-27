@@ -7,5 +7,12 @@
   "prettier.documentSelectors": ["*.{tsx,ts}", "*.{jsx,js}"],
   "prettier.jsxSingleQuote": false,
   "prettier.singleQuote": true,
-  "prettier.prettierPath": "./node_modules/prettier"
+  "prettier.prettierPath": "./node_modules/prettier",
+  "cssVariables.lookupFiles": [
+    "**/*.css",
+    "**/*.scss",
+    "**/*.sass",
+    "**/*.less",
+    "node_modules/@mantine/core/styles.css"
+  ]
 }

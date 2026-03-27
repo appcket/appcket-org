@@ -16,9 +16,10 @@ export class SearchTeamsService {
   public async searchTeams(input: SearchTeamsInput, userId: string): Promise<IPaginated<Team>> {
     const userOrganizationIds = await this.getOrganizationService.getUserOrganizationIds(userId);
     const organizationWhere = { $in: userOrganizationIds };
-    const where = input.searchString
+    const searchString = input.searchString?.toLowerCase();
+    const where = searchString
       ? {
-          name: { $like: `%${input.searchString}%` },
+          name: { $ilike: `%${searchString}%` },
           deletedAt: null,
           organization: organizationWhere,
         }
