@@ -71,13 +71,16 @@ export class CreateTeamService {
             name: createdTeam.name,
             description: createdTeam.description,
             organizationId: createdTeam.organization.id,
-            users: createdTeam.teamUsers.toArray().map((teamUser) => ({
-              id: teamUser.user.id,
-              username: teamUser.user.username,
-              email: teamUser.user.email,
-              firstName: teamUser.user.firstName,
-              lastName: teamUser.user.lastName,
-            })),
+            users: createdTeam.teamUsers.toArray().map((teamUser) => {
+              const u = teamUser.user as any;
+              return {
+                id: u.id,
+                username: u.username,
+                email: u.email,
+                firstName: u.firstName,
+                lastName: u.lastName,
+              };
+            }),
           },
         },
         user: {

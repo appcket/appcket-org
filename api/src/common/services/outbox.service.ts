@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
-import { CorrelationContext } from './correlation-context.service';
-import { Outbox } from '../models/outbox.entity';
+import { EntityManager } from '@mikro-orm/postgresql';
+import { CorrelationContext } from 'src/common/services/correlation-context.service';
+import { Outbox } from 'src/common/models/outbox.entity';
 
 @Injectable()
 export class OutboxService {

@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { Project } from 'src/project/project.entity';
 import { ProjectUser } from 'src/project/projectUser.entity';
+import { User } from 'src/user/user.entity';
 import { UpdateProjectInput } from 'src/project/dtos/updateProject.input';
 import { GetProjectService } from 'src/project/services/getProject.service';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
@@ -40,9 +41,7 @@ export class UpdateProjectService {
 
       const project = await this.getProjectService.getProject(data.id, userId);
 
-      let projectUsersUpdated = [];
-
-      projectUsersUpdated = data.userIds.map((id) => {
+      const projectUsersUpdated = data.userIds.map((id) => {
         return {
           user: id,
           project: project.id,
@@ -54,7 +53,11 @@ export class UpdateProjectService {
         if (
           !project.projectUsers
             .toArray()
-            .find((projectUser) => projectUser.user.id == projectUserUpdated.user)
+            .find((projectUser) => {
+              const u = projectUser.user as any;
+              const projectUserId = u.id || u;
+              return projectUserId === projectUserUpdated.user;
+            })
         ) {
           em.create(ProjectUser, {
             user: projectUserUpdated.user,
@@ -67,9 +70,12 @@ export class UpdateProjectService {
 
       // if existing project.projectUser record is not found in projectUsersUpdated, soft delete
       project.projectUsers.getItems().forEach((projectUser) => {
+        const u = projectUser.user as any;
+        const existingUserId = u.id || u;
+
         if (
           !projectUsersUpdated.find(
-            (projectUserUpdated) => projectUserUpdated.user == projectUser.user.id,
+            (projectUserUpdated) => projectUserUpdated.user === existingUserId,
           )
         ) {
           const newProjectUser = em.assign(projectUser, {
@@ -97,16 +103,26 @@ export class UpdateProjectService {
       this.logger.log(`${Project.name} updated successfully. id: ${updatedProject.id}`);
 
       // sort here so change audit diff process doesn't generate a change based on a different order of users
-      const usersToSort = [];
+      const usersToSort: Array<{
+        id: string;
+        username: string;
+        email: string;
+        firstName: string;
+        lastName: string;
+      }> = [];
       updatedProject.projectUsers.toArray().forEach((projectUser) => {
         if (projectUser.deletedAt === null || projectUser.deletedAt === undefined) {
-          usersToSort.push({
-            id: projectUser.user.id,
-            username: projectUser.user.username,
-            email: projectUser.user.email,
-            firstName: projectUser.user.firstName,
-            lastName: projectUser.user.lastName,
-          });
+          const user = projectUser.user as any;
+
+          if (typeof user !== 'string') {
+            usersToSort.push({
+              id: user.id,
+              username: user.username,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+            });
+          }
         }
       });
       const sortedUsers = this.commonService.sortCollection(usersToSort, 'id');

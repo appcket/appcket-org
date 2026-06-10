@@ -8,19 +8,19 @@ export abstract class BaseDto {
   id!: string;
 
   @Field(() => GraphQLISODateTime)
-  createdAt: Date = new Date();
+  createdAt?: Date = new Date();
+
+  @Field(() => GraphQLISODateTime)
+  updatedAt?: Date = new Date();
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  deletedAt?: Date;
 
   @Field(() => UserDto, { nullable: true })
   createdBy?: UserDto;
 
-  @Field(() => GraphQLISODateTime)
-  updatedAt: Date = new Date();
-
   @Field(() => UserDto, { nullable: true })
   updatedBy?: UserDto;
-
-  @Field(() => GraphQLISODateTime, { nullable: true })
-  deletedAt?: Date;
 
   @Field(() => UserDto, { nullable: true })
   deletedBy?: UserDto;

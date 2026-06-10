@@ -103,6 +103,9 @@ helm install ${PROJECT_MACHINE_NAME} "deployment/environment/local/${PROJECT_MAC
     -n ${PROJECT_MACHINE_NAME} \
     -f deployment/environment/local/helm/appcket/values.yaml
 
+echo "⏳ Waiting for main-outbox-watcher to be ready..."
+kubectl rollout status deployment/main-outbox-watcher -n ${PROJECT_MACHINE_NAME} --timeout=300s
+
 echo "✅ Local dev environment running!"
 '''
 
@@ -217,7 +220,7 @@ helm repo update
 helm upgrade --install cert-manager jetstack/cert-manager \
     --namespace cert-manager \
     --create-namespace \
-    --version v1.19.2 \
+    --version v1.20.2 \
     --set crds.enabled=true \
     --set securityContext.runAsNonRoot=false \
     --set webhook.securityContext.runAsNonRoot=false \
@@ -231,7 +234,7 @@ helm repo update
 helm upgrade --install redpanda-controller redpanda/operator \
 --namespace redpanda \
 --create-namespace \
---version v25.3.1 \
+--version 26.1.3 \
 --set crds.enabled=true
 
 kubectl rollout status deployment/redpanda-controller-operator -n redpanda --timeout=120s
@@ -256,8 +259,13 @@ echo "🪜 Waiting for root-ca-secret..."
 for i in {1..30}; do
     if kubectl get secret root-ca-secret -n cert-manager >/dev/null 2>&1; then
         echo "root-ca-secret found, copying..."
+
+        kubectl delete secret root-ca-secret -n ${PROJECT_MACHINE_NAME} --ignore-not-found
+
         kubectl get secret root-ca-secret -n cert-manager -o yaml \
         | sed "s/namespace: cert-manager/namespace: ${PROJECT_MACHINE_NAME}/" \
+        | sed '/resourceVersion/d' \
+        | sed '/uid/d' \
         | kubectl apply -f - || true
         break
     fi
@@ -286,9 +294,6 @@ helm upgrade --install bootstrap-namespace deployment/environment/local/helm/boo
     --set api.hostPath="${HOST_MOUNT_PATH}/api" \
     --set app.hostPath="${HOST_MOUNT_PATH}/app" \
     --set marketing.hostPath="${HOST_MOUNT_PATH}/marketing"
-
-echo "⏳ Waiting for main-outbox-watcher to be ready..."
-kubectl wait --for=condition=ready pod -l app=main-outbox-watcher -n ${PROJECT_MACHINE_NAME} --timeout=300s
 '''
 
 # -----------------------------------------------------------------------------
@@ -329,7 +334,63 @@ mise run db:setup-clickhouse
 
 [tasks."db:setup-clickhouse"]
 description = "Configure ClickHouse schema and Kafka ingestion"
-run = 'deployment/environment/local/setup-clickhouse.sh'
+run = '''
+#!/bin/bash
+set -e
+echo "🪜 Setting up ClickHouse..."
+
+run_query() {
+    curl -s -u "${CLICKHOUSE_USER}:${CLICKHOUSE_PASSWORD}" "${CLICKHOUSE_HOST}" -d "$1"
+}
+
+run_query "CREATE DATABASE IF NOT EXISTS appcket"
+run_query "DROP TABLE IF EXISTS appcket.outbox_events_mv"
+run_query "DROP TABLE IF EXISTS appcket.outbox_events_history"
+run_query "DROP TABLE IF EXISTS appcket.outbox_events_queue"
+
+run_query "CREATE TABLE appcket.outbox_events_history (
+    id String,
+    action String,
+    table_schema String,
+    table_name String,
+    correlation_id UUID,
+    entity_id String,
+    entity_type String,
+    user_id String,
+    payload String,
+    committed_at DateTime64(3),
+    ingested_at DateTime DEFAULT now()
+) ENGINE = MergeTree ORDER BY (entity_type, entity_id, committed_at)"
+
+KAFKA_PORT=$(kubectl get svc -n redpanda redpanda-external -o jsonpath='{.spec.ports[?(@.name=="kafka-default")].nodePort}')
+echo "Detected Redpanda External Port: $KAFKA_PORT"
+
+run_query "CREATE TABLE appcket.outbox_events_queue (
+    record String,
+    action String,
+    metadata String
+) ENGINE = Kafka SETTINGS kafka_broker_list = 'host.docker.internal:${KAFKA_PORT}',
+         kafka_topic_list = 'outbox-events',
+         kafka_group_name = 'clickhouse_consumer',
+         kafka_format = 'JSONEachRow',
+         kafka_skip_broken_messages = 1"
+
+run_query "CREATE MATERIALIZED VIEW appcket.outbox_events_mv TO appcket.outbox_events_history AS
+SELECT
+    JSONExtractString(record, 'id') as id,
+    action,
+    JSONExtractString(metadata, 'table_schema') as table_schema,
+    JSONExtractString(metadata, 'table_name') as table_name,
+    toUUIDOrZero(JSONExtractString(record, 'correlation_id')) as correlation_id,
+    JSONExtractString(record, 'payload', 'entity', 'id') as entity_id,
+    JSONExtractString(record, 'payload', 'entity', 'type') as entity_type,
+    JSONExtractString(record, 'payload', 'user', 'id') as user_id,
+    JSONExtractString(record, 'payload') as payload,
+    parseDateTime64BestEffortOrNull(JSONExtractString(metadata, 'commit_timestamp')) as committed_at
+FROM appcket.outbox_events_queue"
+
+echo "✅ ClickHouse configured."
+'''
 
 [tasks."db:seed"]
 description = "Seed application data"

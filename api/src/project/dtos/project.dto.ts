@@ -1,11 +1,12 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { GraphQLISODateTime, ObjectType, Field } from '@nestjs/graphql';
 
-import { BaseDto } from 'src/common/dtos/base.dto';
+// TODO: ProjectDto to extend BaseDto, and fix errors
+// import { BaseDto } from 'src/common/dtos/base.dto';
 import { OrganizationDto } from 'src/organization/organization.dto';
 import { UserDto } from 'src/user/user.dto';
 
 @ObjectType()
-export class ProjectDto extends BaseDto {
+export class ProjectDto {
   @Field()
   name!: string;
 
@@ -17,4 +18,25 @@ export class ProjectDto extends BaseDto {
 
   @Field(() => [UserDto])
   users?: UserDto[];
+
+  @Field()
+  id!: string;
+
+  @Field(() => GraphQLISODateTime)
+  createdAt: Date = new Date();
+
+  @Field(() => GraphQLISODateTime)
+  updatedAt: Date = new Date();
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  deletedAt?: Date;
+
+  @Field(() => UserDto, { nullable: true })
+  createdBy?: UserDto;
+
+  @Field(() => UserDto, { nullable: true })
+  updatedBy?: UserDto;
+
+  @Field(() => UserDto, { nullable: true })
+  deletedBy?: UserDto;
 }

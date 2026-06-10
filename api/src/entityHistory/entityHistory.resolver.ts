@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { Args, Context, Field, InputType, Query, Resolver } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
@@ -14,10 +13,10 @@ import { Permissions } from 'src/common/decorators/permissions.decorator';
 @InputType()
 class OrderByInput2 {
   @Field(() => String)
-  fieldName: string;
+  fieldName!: string;
 
   @Field(() => SortOrder)
-  direction: SortOrder;
+  direction!: SortOrder;
 }
 
 @Resolver(() => EntityHistory)

@@ -1,5 +1,4 @@
-import 'reflect-metadata';
-import { Context, Resolver, Query, Args } from '@nestjs/graphql';
+import { Context, Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 

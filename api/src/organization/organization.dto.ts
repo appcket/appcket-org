@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { ObjectType, Field } from '@nestjs/graphql';
 
 import { UserDto } from 'src/user/user.dto';
@@ -10,8 +9,8 @@ export class OrganizationDto {
   @Field()
   id!: string;
 
-  @Field()
-  name!: string;
+  @Field({ nullable: true })
+  name?: string;
 
   @Field(() => [ProjectDto], { nullable: true })
   projects?: ProjectDto[];
@@ -21,4 +20,13 @@ export class OrganizationDto {
 
   @Field(() => [UserDto], { nullable: true })
   users?: UserDto[];
+
+  @Field(() => UserDto, { nullable: true })
+  createdBy?: UserDto;
+
+  @Field(() => UserDto, { nullable: true })
+  updatedBy?: UserDto;
+
+  @Field(() => UserDto, { nullable: true })
+  deletedBy?: UserDto;
 }

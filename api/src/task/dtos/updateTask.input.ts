@@ -8,5 +8,5 @@ export class UpdateTaskInput extends CreateTaskInput {
   @Field()
   @IsUUID()
   @IsNotEmpty()
-  id: string;
+  id!: string;
 }

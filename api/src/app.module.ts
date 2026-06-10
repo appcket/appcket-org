@@ -1,39 +1,31 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MiddlewareConsumer, Module, RequestMethod, Logger } from '@nestjs/common';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { join } from 'path';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import * as Keycloak from 'keycloak-connect';
 import * as session from 'express-session';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { LoggerModule } from 'nestjs-pino';
-import * as caAppend from 'ca-append';
-import { readFileSync } from 'fs';
+import { join } from 'path';
 
-import { configuration } from 'src/config';
-import { CommonModule } from 'src/common/modules/common.module';
+import { AppController } from 'src/app.controller';
+import { AppService } from 'src/app.service';
+import configuration from 'src/config/configuration';
 import { CorrelationContext } from 'src/common/services/correlation-context.service';
 import { CorrelationMiddleware } from 'src/common/middleware/correlation.middleware';
-import { ClickHouseModule } from 'src/common/modules/clickhouse.module';
 import { EntityHistoryModule } from 'src/entityHistory/entityHistory.module';
+import { TeamModule } from 'src/team/team.module';
+import { TaskModule } from 'src/task/task.module';
 import { OrganizationModule } from 'src/organization/organization.module';
 import { PermissionModule } from 'src/permission/permission.module';
 import { ProjectModule } from 'src/project/project.module';
-import { TaskModule } from 'src/task/task.module';
 import { TaskStatusTypeModule } from 'src/taskStatusType/taskStatusType.module';
-import { TeamModule } from 'src/team/team.module';
-import { UserModule } from 'src/user/user.module';
 import { UiGatewayModule } from 'src/uiGateway/uiGateway.module';
-import { AppController } from 'src/app.controller';
-import { AppService } from 'src/app.service';
-
-caAppend.monkeyPatch();
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
-    CommonModule,
-    ClickHouseModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
@@ -73,7 +65,7 @@ caAppend.monkeyPatch();
       },
     }),
     LoggerModule.forRootAsync({
-      imports: [CommonModule],
+      providers: [CorrelationContext, CorrelationMiddleware],
       inject: [CorrelationContext],
       useFactory: (context: CorrelationContext) => ({
         pinoHttp: {
@@ -86,36 +78,7 @@ caAppend.monkeyPatch();
         },
       }),
     }),
-    MikroOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => {
-        const options = {
-          autoLoadEntities: true,
-          dbName: configService.get('orm.dbName'),
-          schema: configService.get('orm.schema'),
-          driver: configService.get('orm.driver'),
-          user: configService.get('orm.user'),
-          password: configService.get('orm.password'),
-          host: configService.get('orm.host'),
-          port: configService.get('orm.port'),
-          debug: configService.get('orm.debug'),
-          forceUtcTimezone: configService.get('orm.forceUtcTimezone'),
-        };
-
-        if (configService.get('orm.sslMode') === true) {
-          options['driverOptions'] = {
-            connection: {
-              ssl: {
-                caAppend: readFileSync('certs/ca-certificate.crt'),
-              },
-            },
-          };
-        }
-
-        return options;
-      },
-      inject: [ConfigService],
-    }),
+    MikroOrmModule.forRoot(configuration().orm),
     ClientsModule.registerAsync([
       {
         imports: [ConfigModule],
@@ -143,18 +106,21 @@ caAppend.monkeyPatch();
     TaskModule,
     TaskStatusTypeModule,
     TeamModule,
-    UserModule,
     UiGatewayModule,
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CorrelationContext, CorrelationMiddleware],
 })
 export class AppModule {
   constructor(private configService: ConfigService) {}
   configure(consumer: MiddlewareConsumer) {
     const memoryStore = new session.MemoryStore();
     // initialize keycloak using configuration service
-    const keycloak = new Keycloak({ store: memoryStore }, this.configService.get('keycloak'));
+    const keycloak = new Keycloak.default(
+      { store: memoryStore },
+      this.configService.get('keycloak'),
+    );
 
     consumer.apply(CorrelationMiddleware).forRoutes('*');
 

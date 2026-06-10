@@ -15,7 +15,8 @@ export class SearchTeamsService {
 
   public async searchTeams(input: SearchTeamsInput, userId: string): Promise<IPaginated<Team>> {
     const userOrganizationIds = await this.getOrganizationService.getUserOrganizationIds(userId);
-    const organizationWhere = { $in: userOrganizationIds };
+    const organizationIds = userOrganizationIds.map((org: any) => org.id || org);
+    const organizationWhere = { $in: organizationIds };
     const searchString = input.searchString?.toLowerCase();
     const where = searchString
       ? {
@@ -28,22 +29,26 @@ export class SearchTeamsService {
           organization: organizationWhere,
         };
 
-    const currentCursor = await this.em.findByCursor(Team, where, {
+    const orderField = input.orderBy?.[0]?.fieldName || 'id';
+    const orderDirection = input.orderBy?.[0]?.direction?.toLowerCase() || 'asc';
+
+    const currentCursor = await this.em.findByCursor(Team, {
+      where,
       populate: ['organization', 'createdBy', 'updatedBy', 'teamUsers'],
       first: input.first,
       after: input.after,
       orderBy: {
-        [input.orderBy[0]?.fieldName]: input.orderBy[0]?.direction.toLocaleLowerCase(),
+        [orderField]: orderDirection,
       },
     });
 
     const paginatedTeams: IPaginated<Team> = {
       totalCount: currentCursor.totalCount,
       pageInfo: {
-        endCursor: currentCursor.endCursor,
+        endCursor: currentCursor.endCursor ?? '',
         hasNextPage: currentCursor.hasNextPage,
         hasPreviousPage: currentCursor.hasPrevPage,
-        startCursor: currentCursor.startCursor,
+        startCursor: currentCursor.startCursor ?? '',
       },
       edges: [],
     };

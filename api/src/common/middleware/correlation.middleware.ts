@@ -1,7 +1,8 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import * as crypto from 'crypto';
-import { CorrelationContext } from '../services/correlation-context.service';
 import { Request, Response, NextFunction } from 'express';
+
+import { CorrelationContext } from 'src/common/services/correlation-context.service';
 
 @Injectable()
 export class CorrelationMiddleware implements NestMiddleware {

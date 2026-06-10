@@ -1,24 +1,46 @@
-import { config } from './default';
+import ormConfig from 'src/config/mikro-orm.config';
 
-export const util = {
-  isObject<T>(value: T): boolean {
-    return value !== null && typeof value === 'object' && !Array.isArray(value);
+const realm = process.env.KEYCLOAK_REALM;
+const authServerUrl = `${process.env.ACCOUNTS_URL}`;
+const tokenEndpointUrl = `${authServerUrl}/realms/${realm}/protocol/openid-connect/token`;
+const userAccountEndpointUrl = `${authServerUrl}/realms/${realm}/account`;
+const userRoleMappingsEndpointUrl = `${authServerUrl}/admin/realms/${realm}/users/__USER_ID__/role-mappings`;
+const adminEndpointUrl = `${authServerUrl}/admin/realms/${realm}`;
+
+const config = {
+  appUrl: process.env.APP_URL,
+  appId: process.env.APP_ID,
+  orm: ormConfig,
+  keycloak: {
+    realm,
+    'bearer-only': true,
+    'auth-server-url': authServerUrl,
+    'ssl-required': 'all',
+    resource: 'appcket_api',
+    'verify-token-audience': true,
+    'confidential-port': 0,
+    'use-resource-role-mappings': true,
+    'realm-public-key': process.env.KEYCLOAK_CLIENT_PUBLIC_KEY,
+    secret: process.env.KEYCLOAK_CLIENT_SECRET,
+    // custom keycloak config needed for authorization endpoint
+    tokenEndpointUrl,
+    userAccountEndpointUrl,
+    userRoleMappingsEndpointUrl,
+    adminEndpointUrl,
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  merge(target: Record<string, any>, source: Record<string, any>): Record<string, unknown> {
-    Object.keys(source).forEach((key: string) => {
-      if (this.isObject(target[key]) && this.isObject(source[key])) {
-        Object.assign(source[key], this.merge(target[key], source[key]));
-      }
-    });
-
-    return { ...target, ...source };
+  redpanda: {
+    brokers: process.env.REDPANDA_BROKERS
+      ? process.env.REDPANDA_BROKERS.split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : ['localhost:9092'],
+  },
+  clickhouse: {
+    url: `${process.env.CLICKHOUSE_SSL_MODE === 'true' ? 'https' : 'http'}://${process.env.CLICKHOUSE_ADDR}:${process.env.CLICKHOUSE_PORT}`,
+    username: process.env.CLICKHOUSE_USER,
+    password: process.env.CLICKHOUSE_PASSWORD,
+    database: process.env.CLICKHOUSE_DATABASE,
   },
 };
 
-export const configuration = async (): Promise<Record<string, unknown>> => {
-  const environment = await import(`./${process.env.NODE_ENV || 'local'}`);
-
-  // object deep merge
-  return util.merge(config, environment.config);
-};
+export default () => config;

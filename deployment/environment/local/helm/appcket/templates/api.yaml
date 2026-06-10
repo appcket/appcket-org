@@ -114,8 +114,8 @@ spec:
           - mountPath: /src
             name: src-volume
             readOnly: false
-          - name: root-ca-volume
-            mountPath: /etc/ssl/certs
+          - mountPath: /etc/ssl/certs
+            name: root-ca-volume
             readOnly: true
         {{- end }}
       {{- if eq .Values.env "local" }}

@@ -7,5 +7,5 @@ import { PaginatedSearchInput } from 'src/common/dtos/paginatedSearch.input';
 export class SearchTasksInput extends PartialType(PaginatedSearchInput) {
   @Field(() => [String], { nullable: true })
   @IsOptional()
-  projectIds: string[];
+  projectIds?: string[];
 }

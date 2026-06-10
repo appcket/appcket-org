@@ -46,9 +46,10 @@ export const useSearchUsers = (organizationId?: string) => {
 
   return useApiQuery<{ searchUsers: User[] }, User[]>({
     queryKey,
+    enabled: !!organizationId,
     query: gql`
-      query SearchUsers {
-        searchUsers(organizationId: "${organizationId}") {
+      query SearchUsers($organizationId: String!) {
+        searchUsers(organizationId: $organizationId) {
           id
           username
           email
@@ -60,6 +61,7 @@ export const useSearchUsers = (organizationId?: string) => {
         }
       }
     `,
+    variables: { organizationId },
     select: (data) => data.searchUsers,
     staleTime: Infinity,
     gcTime: 300000,

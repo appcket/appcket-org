@@ -81,17 +81,13 @@ function Projects() {
   const orderBy = search.orderBy || 'name';
   const orderDirection = search.orderDirection || 'ASC';
 
+  const orderByString = `[{ fieldName: "${orderBy}", innerFieldName: "${orderBy === 'organization' ? 'name' : ''}", direction: ${orderDirection} }]`;
+
   const { data, isLoading, isFetching, isPlaceholderData } = useSearchProjects(
     search.search || '',
     pageSize,
     search.cursor || null,
-    [
-      {
-        fieldName: orderBy,
-        innerFieldName: orderBy === 'organization' ? 'name' : '',
-        direction: orderDirection as 'ASC' | 'DESC',
-      },
-    ],
+    orderByString,
     keepPreviousData,
   );
 

@@ -4,6 +4,8 @@ metadata:
   name: root-ca
   namespace: cert-manager
 spec:
+  duration: 8760h # 1 year (24h * 365)
+  renewBefore: 720h # 30 days
   isCA: true
   commonName: my-selfsigned-ca
   secretName: root-ca-secret
@@ -21,6 +23,8 @@ metadata:
   name: gateway-cert
   namespace: {{ .Values.ingress.namespace }}
 spec:
+  duration: 8760h # 1 year
+  renewBefore: 720h # 30 days
   dnsNames:
   - "*.{{ .Values.domain }}.{{ .Values.tld }}"
   - "{{ .Values.domain }}.{{ .Values.tld }}"

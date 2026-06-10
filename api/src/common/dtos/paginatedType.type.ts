@@ -6,16 +6,16 @@ import { IPageInfo, IPaginated } from 'src/common/models/paginated.interface';
 @ObjectType('PageInfo')
 abstract class PageInfoType implements IPageInfo {
   @Field(() => String)
-  public startCursor: string;
+  public startCursor!: string;
 
   @Field(() => String)
-  public endCursor: string;
+  public endCursor!: string;
 
   @Field(() => Boolean)
-  public hasNextPage: boolean;
+  public hasNextPage!: boolean;
 
   @Field(() => Boolean)
-  public hasPreviousPage: boolean;
+  public hasPreviousPage!: boolean;
 }
 
 export function Paginated<T>(classRef: Type<T>): Type<IPaginated<T>> {
@@ -25,13 +25,13 @@ export function Paginated<T>(classRef: Type<T>): Type<IPaginated<T>> {
   @ObjectType({ isAbstract: true })
   abstract class PaginatedType implements IPaginated<T> {
     @Field(() => Int)
-    public totalCount: number;
+    public totalCount!: number;
 
     @Field(() => [EdgeType])
-    public edges: EdgeType[];
+    public edges!: EdgeType[];
 
     @Field(() => PageInfoType)
-    public pageInfo: PageInfoType;
+    public pageInfo!: PageInfoType;
   }
 
   return PaginatedType as Type<IPaginated<T>>;

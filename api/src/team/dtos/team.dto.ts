@@ -16,5 +16,5 @@ export class TeamDto extends BaseDto {
   organization!: OrganizationDto;
 
   @Field(() => [UserDto])
-  users: UserDto[];
+  users!: UserDto[];
 }

@@ -22,17 +22,17 @@ export class UserDto {
   @Field()
   id!: string;
 
-  @Field()
-  email: string;
-
-  @Field()
-  firstName: string;
+  @Field({ nullable: true })
+  email?: string;
 
   @Field({ nullable: true })
-  lastName: string;
+  firstName?: string;
 
-  @Field()
-  username: string;
+  @Field({ nullable: true })
+  lastName?: string;
+
+  @Field({ nullable: true })
+  username?: string;
 
   @Field({ nullable: true })
   role?: string;
@@ -40,7 +40,7 @@ export class UserDto {
   @Field(() => UserAttributesDto, { nullable: true })
   attributes?: UserAttributesDto;
 
-  @Field(() => [PermissionDto])
+  @Field(() => [PermissionDto], { nullable: true })
   permissions?: PermissionDto[];
 
   @Field(() => [OrganizationDto], { nullable: true })

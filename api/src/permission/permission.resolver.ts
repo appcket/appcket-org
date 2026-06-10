@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { Args, Context, Resolver, Query } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 

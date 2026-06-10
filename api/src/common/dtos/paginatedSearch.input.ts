@@ -8,23 +8,23 @@ export class PaginatedSearchInput<T> {
   @IsOptional() // needed for auto-validation https://docs.nestjs.com/techniques/validation#auto-validation
   @IsString()
   @MaxLength(50)
-  searchString: string;
+  searchString?: string;
 
   @Field(() => Number, { nullable: true })
   @IsOptional()
   @IsNumber()
   @Min(1)
   @Max(100)
-  first: number;
+  first?: number;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   @MaxLength(50)
   @MinLength(1)
-  after: string;
+  after?: string;
 
   @Field(() => [OrderByInput], { nullable: true })
   @IsOptional()
-  orderBy: OrderByInput<T>[];
+  orderBy?: OrderByInput<T>[];
 }

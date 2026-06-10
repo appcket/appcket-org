@@ -1,40 +1,12 @@
-import { Controller, Get, Post, Inject, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
-export class AppController implements OnModuleInit, OnModuleDestroy {
-  constructor(
-    private readonly appService: AppService,
-    @Inject('EVENT_SERVICE') private readonly client: ClientKafka,
-  ) {}
-
-  async onModuleInit() {
-    await this.client.connect();
-  }
-
-  async onModuleDestroy() {
-    await this.client.close();
-  }
+export class AppController {
+  constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  // Fire-and-forget test endpoint
-  @Post('send-event')
-  sendTestEvent() {
-    this.client.emit('outbox-events', { hello: 'world!!!' });
-    return { status: 'sent' };
-  }
-
-  // Request-response example (await the reply)
-  @Post('send-request')
-  async sendRequest() {
-    const response$ = this.client.send('outbox-events', { ping: 'pong' });
-    const res = await lastValueFrom(response$);
-    return res;
+  async getHello(): Promise<string> {
+    return await this.appService.getHello();
   }
 }

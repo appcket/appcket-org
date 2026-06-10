@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
@@ -16,11 +15,12 @@ import { GetTaskService } from 'src/task/services/getTask.service';
 import { CreateTaskService } from 'src/task/services/createTask.service';
 import { UpdateTaskService } from 'src/task/services/updateTask.service';
 import { PaginatedTaskDto } from 'src/task/dtos/paginatedTask.dto';
+import { UserDto } from 'src/user/user.dto';
 
 @InputType()
 export class TaskCreateInput {
   @Field()
-  name: string;
+  name!: string;
 }
 
 @Resolver(() => TaskDto)
@@ -47,68 +47,72 @@ export class TaskResolver {
   async getTask(@Args('id') id: string, @Context() ctx) {
     const task = await this.getTaskService.getTask(id, ctx.user.id);
 
-    let createdBy = null;
-    let updatedBy = null;
+    const createdBy = task.createdBy
+      ? {
+          id: task.createdBy.id,
+          email: (task.createdBy as UserDto).email,
+          username: (task.createdBy as UserDto).username,
+          firstName: (task.createdBy as UserDto).firstName,
+          lastName: (task.createdBy as UserDto).lastName,
+          attributes: (task.createdBy as UserDto).attributes,
+        }
+      : undefined;
 
-    if (task.createdBy) {
-      createdBy = {
-        id: task.createdBy.id,
-        email: task.createdBy.email,
-        username: task.createdBy.username,
-        firstName: task.createdBy.firstName,
-        lastName: task.createdBy.lastName,
-        attributes: task.createdBy.attributes,
-      };
-    }
-
-    if (task.updatedBy) {
-      updatedBy = {
-        id: task.updatedBy.id,
-        email: task.updatedBy.email,
-        username: task.updatedBy.username,
-        firstName: task.updatedBy.firstName,
-        lastName: task.updatedBy.lastName,
-        attributes: task.updatedBy.attributes,
-      };
-    }
+    const updatedBy = task.updatedBy
+      ? {
+          id: task.updatedBy.id,
+          email: (task.updatedBy as any).email,
+          username: (task.updatedBy as any).preferred_username || (task.updatedBy as any).username,
+          firstName: (task.updatedBy as any).firstName,
+          lastName: (task.updatedBy as any).lastName,
+          attributes: (task.updatedBy as any).attributes,
+        }
+      : undefined;
 
     const taskDto: TaskDto = {
       id: task.id,
-      createdAt: task.createdAt,
+      createdAt: task.createdAt!,
       createdBy,
-      updatedAt: task.updatedAt,
+      updatedAt: task.updatedAt!,
       updatedBy,
       name: task.name,
       description: task.description,
-      taskStatusType: {
-        id: task.taskStatusType.id,
-        name: task.taskStatusType.name,
-      },
-      assignedTo: {
-        id: task.assignedTo.id,
-        email: task.assignedTo.email,
-        username: task.assignedTo.username,
-        firstName: task.assignedTo.firstName,
-        lastName: task.assignedTo.lastName,
-        attributes: task.assignedTo.attributes,
-      },
+      taskStatusType: task.taskStatusType
+        ? {
+            id: task.taskStatusType.id,
+            name: task.taskStatusType.name,
+          }
+        : (null as unknown as any),
+      assignedTo: task.assignedTo
+        ? {
+            id: task.assignedTo.id,
+            email: task.assignedTo.email,
+            username: task.assignedTo.username,
+            firstName: task.assignedTo.firstName,
+            lastName: task.assignedTo.lastName,
+            attributes: task.assignedTo.attributes,
+          }
+        : undefined,
       project: {
         id: task.project.id,
         name: task.project.name,
-        createdAt: task.project.createdAt,
-        updatedAt: task.project.updatedAt,
-        users: task.project.projectUsers.toArray().map((projectUser) => ({
-          id: projectUser.user.id,
-          createdAt: projectUser.createdAt,
-          createdBy: projectUser.createdBy,
-          updatedAt: projectUser.updatedAt,
-          updatedBy: projectUser.updatedBy,
-          username: projectUser.user.username,
-          email: projectUser.user.email,
-          firstName: projectUser.user.firstName,
-          lastName: projectUser.user.lastName,
-          attributes: projectUser.user['attributes'],
-        })),
+        createdAt: task.project.createdAt!,
+        updatedAt: task.project.updatedAt!,
+        users: task.project.projectUsers.toArray().map((projectUser) => {
+          const u = projectUser.user as any;
+          return {
+            id: u.id,
+            createdAt: projectUser.createdAt,
+            createdBy: projectUser.createdBy ? { id: (projectUser.createdBy as any).id } : null,
+            updatedAt: projectUser.updatedAt,
+            updatedBy: projectUser.updatedBy ? { id: (projectUser.updatedBy as any).id } : null,
+            username: u.username,
+            email: u.email,
+            firstName: u.firstName,
+            lastName: u.lastName,
+            attributes: u.attributes,
+          };
+        }),
       },
     };
 

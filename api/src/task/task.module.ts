@@ -16,6 +16,7 @@ import { User } from 'src/user/user.entity';
 import { Project } from 'src/project/project.entity';
 import { Organization } from 'src/organization/organization.entity';
 import { OrganizationUser } from 'src/organization/organizationUser.entity';
+import { OutboxService } from 'src/common/services/outbox.service';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { OrganizationUser } from 'src/organization/organizationUser.entity';
     GetProjectService,
     GetTaskService,
     CreateTaskService,
+    OutboxService,
     SearchTasksService,
     UpdateTaskService,
     TaskResolver,

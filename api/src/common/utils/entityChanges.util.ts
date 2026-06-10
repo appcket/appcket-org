@@ -2,8 +2,8 @@ import { diff } from 'json-diff-ts';
 
 export class EntityChangesUtil {
   public getEntityChanges(entity1, entity2) {
-    let entityDiffs = null;
-    const changes = [];
+    let entityDiffs: any[] = [];
+    const changes: any[] = [];
 
     if (entity1) {
       entityDiffs = diff(entity1, entity2);
@@ -35,7 +35,7 @@ export class EntityChangesUtil {
         diffs: entityDiffs,
       };
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error instanceof Error ? error.message : String(error));
     }
   }
 }

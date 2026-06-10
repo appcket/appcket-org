@@ -29,38 +29,35 @@ type EntityHistory {
   changes: [EntityHistoryChange!]
 }
 
+type ProjectDto {
+  name: String!
+  description: String
+  organization: OrganizationDto!
+  users: [UserDto!]!
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  createdBy: UserDto
+  updatedBy: UserDto
+  deletedBy: UserDto
+}
+
+type OrganizationDto {
+  id: String!
+  name: String
+  projects: [ProjectDto!]
+  teams: [TeamDto!]
+  users: [UserDto!]
+  createdBy: UserDto
+  updatedBy: UserDto
+  deletedBy: UserDto
+}
+
 type PermissionDto {
   rsid: String!
   rsname: String!
   scopes: [String!]
-}
-
-type TeamDto {
-  id: String!
-  createdAt: DateTime!
-  createdBy: UserDto
-  updatedAt: DateTime!
-  updatedBy: UserDto
-  deletedAt: DateTime
-  deletedBy: UserDto
-  name: String!
-  description: String
-  organization: OrganizationDto!
-  users: [UserDto!]!
-}
-
-type ProjectDto {
-  id: String!
-  createdAt: DateTime!
-  createdBy: UserDto
-  updatedAt: DateTime!
-  updatedBy: UserDto
-  deletedAt: DateTime
-  deletedBy: UserDto
-  name: String!
-  description: String
-  organization: OrganizationDto!
-  users: [UserDto!]!
 }
 
 type UserAttributesDto {
@@ -71,24 +68,30 @@ type UserAttributesDto {
 
 type UserDto {
   id: String!
-  email: String!
-  firstName: String!
+  email: String
+  firstName: String
   lastName: String
-  username: String!
+  username: String
   role: String
   attributes: UserAttributesDto
-  permissions: [PermissionDto!]!
+  permissions: [PermissionDto!]
   organizations: [OrganizationDto!]
   team: [TeamDto!]!
   project: [ProjectDto!]!
 }
 
-type OrganizationDto {
+type TeamDto {
   id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  createdBy: UserDto
+  updatedBy: UserDto
+  deletedBy: UserDto
   name: String!
-  projects: [ProjectDto!]
-  teams: [TeamDto!]
-  users: [UserDto!]
+  description: String
+  organization: OrganizationDto!
+  users: [UserDto!]!
 }
 
 type PageInfo {
@@ -98,13 +101,13 @@ type PageInfo {
   hasPreviousPage: Boolean!
 }
 
-type ProjectDtoEdge {
-  node: ProjectDto!
+type TeamDtoEdge {
+  node: TeamDto!
 }
 
-type PaginatedProjectDto {
+type PaginatedTeamDto {
   totalCount: Int!
-  edges: [ProjectDtoEdge!]!
+  edges: [TeamDtoEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -116,10 +119,10 @@ type TaskStatusType {
 type TaskDto {
   id: String!
   createdAt: DateTime!
-  createdBy: UserDto
   updatedAt: DateTime!
-  updatedBy: UserDto
   deletedAt: DateTime
+  createdBy: UserDto
+  updatedBy: UserDto
   deletedBy: UserDto
   name: String!
   description: String
@@ -138,13 +141,13 @@ type PaginatedTaskDto {
   pageInfo: PageInfo!
 }
 
-type TeamDtoEdge {
-  node: TeamDto!
+type ProjectDtoEdge {
+  node: ProjectDto!
 }
 
-type PaginatedTeamDto {
+type PaginatedProjectDto {
   totalCount: Int!
-  edges: [TeamDtoEdge!]!
+  edges: [ProjectDtoEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -159,7 +162,7 @@ type Query {
   getTaskStatusTypes: [TaskStatusType!]!
   getTeam(id: String!): TeamDto
   searchTeams(searchTeamsInput: SearchTeamsInput!): PaginatedTeamDto!
-  userInfo: UserDto!
+  userInfo: UserDto
   searchUsers(organizationId: String!): [UserDto!]!
 }
 

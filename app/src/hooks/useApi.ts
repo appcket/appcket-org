@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { GraphQLClient, Variables } from 'graphql-request';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { QueryKey, useMutation, useQuery } from '@tanstack/react-query';
+
 import { getKeycloakToken } from 'src/lib/auth-tokens';
 
 const endpoint = `${import.meta.env.VITE_API_URL || 'https://api.appcket.test'}`;
@@ -25,13 +26,14 @@ export const callApi = createServerFn({ method: 'POST' })
   });
 
 interface ApiQueryOptions<T, U> {
-  queryKey: string[];
+  queryKey: QueryKey;
   query: string;
   variables?: Variables;
   select?: (data: T) => U;
   staleTime?: number;
   gcTime?: number;
   placeholderData?: any;
+  enabled?: boolean;
 }
 
 /**
@@ -45,14 +47,21 @@ export const useApiQuery = <T, U>({
   staleTime = 0,
   gcTime = 300000,
   placeholderData,
+  enabled = true,
 }: ApiQueryOptions<T, U>) => {
   return useQuery({
     queryKey,
     staleTime,
     gcTime,
+    enabled,
     queryFn: async () => {
-      const data = await callApi({ data: { query, variables } });
-      return data as T;
+      try {
+        const data = await callApi({ data: { query, variables } });
+        return data as T;
+      } catch (error) {
+        console.error(`useApiQuery Error [${queryKey.join(', ')}]:`, error);
+        throw error;
+      }
     },
     select,
     placeholderData,

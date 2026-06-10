@@ -74,7 +74,7 @@
   "pages_home_body": "Edit your homepage contents in src/pages/Home/index.tsx.",
   "pages_about_title": "About",
   "pages_about_subtitle": "About the Appcket project",
-  "pages_about_body_p1": "This is a sample React application which is part of the {link}. It's meant to give developers a foundation to start building a web app while serving as an example of how to authenticate and authorize with Keycloak and access a protected GraphQL API.",
+  "pages_about_body_p1": "This is a sample React application based on TanStack Start which is part of the {link}. It's meant to give developers a foundation to start building a web app while serving as an example of how to authenticate and authorize with Keycloak and access a protected GraphQL API.",
   "pages_about_body_p2": "Check out the {link} for more information.",
   "pages_teams_viewteams_title": "Teams",
   "pages_teams_viewteams_subtitle": "Manage teams for an organization",

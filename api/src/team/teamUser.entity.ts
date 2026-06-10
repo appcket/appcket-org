@@ -1,38 +1,25 @@
-import { Entity, ManyToOne, OneToOne } from '@mikro-orm/core';
+import { Entity, ManyToOne, Unique } from '@mikro-orm/decorators/legacy';
 
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Team } from 'src/team/team.entity';
 import { User } from 'src/user/user.entity';
 
-@Entity({ schema: 'appcket' })
+@Entity({ schema: 'appcket', tableName: 'team_user' })
+@Unique({ properties: ['team', 'user'] })
 export class TeamUser extends BaseEntity {
-  @OneToOne({
-    entity: () => User,
-    fieldName: 'created_by',
+  @ManyToOne({
+    entity: () => Team,
+    fieldName: 'team_id',
     updateRule: 'cascade',
-    nullable: true,
+    deleteRule: 'cascade',
   })
-  createdBy!: User;
-
-  @OneToOne({
-    entity: () => User,
-    fieldName: 'updated_by',
-    updateRule: 'cascade',
-    nullable: true,
-  })
-  updatedBy!: User;
-
-  @OneToOne({
-    entity: () => User,
-    fieldName: 'deleted_by',
-    updateRule: 'cascade',
-    nullable: true,
-  })
-  deletedBy!: User;
-
-  @ManyToOne({ entity: () => Team, updateRule: 'cascade' })
   team!: Team;
 
-  @ManyToOne({ entity: () => User, updateRule: 'cascade' })
+  @ManyToOne({
+    entity: () => User,
+    fieldName: 'user_id',
+    updateRule: 'cascade',
+    deleteRule: 'cascade',
+  })
   user!: User;
 }

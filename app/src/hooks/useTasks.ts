@@ -107,7 +107,7 @@ export const useSearchTasks = (
   searchString: string,
   first: number,
   after: string | null,
-  orderBy: { fieldName: string; innerFieldName?: string; direction: 'ASC' | 'DESC' }[],
+  orderBy: string,
   placeholderData?: any,
 ) => {
   const queryKey = ['searchTasks', { projectIds, searchString, first, after, orderBy }];
@@ -115,8 +115,14 @@ export const useSearchTasks = (
   return useApiQuery<SearchTasksResponse, SearchTasksPaginated>({
     queryKey,
     query: gql`
-      query SearchTasks($input: SearchTasksInput!) {
-        searchTasks(searchTasksInput: $input) {
+      {
+        searchTasks(searchTasksInput: {
+          projectIds: ${JSON.stringify(projectIds)},
+          searchString: "${searchString}",
+          first: ${first},
+          after: ${after ? `"${after}"` : 'null'},
+          orderBy: ${orderBy}
+        }) {
           totalCount
           pageInfo {
             endCursor
@@ -145,15 +151,6 @@ export const useSearchTasks = (
         }
       }
     `,
-    variables: {
-      input: {
-        projectIds,
-        searchString,
-        first,
-        after,
-        orderBy,
-      },
-    },
     select: (data) => data.searchTasks,
     placeholderData,
   });

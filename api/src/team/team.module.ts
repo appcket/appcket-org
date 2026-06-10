@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
+import { EntityHistoryService } from 'src/entityHistory/entityHistory.service';
 import { AuthorizationService } from 'src/common/services/authorization.service';
 import { CommonModule } from 'src/common/modules/common.module';
 import { TeamResolver } from 'src/team/team.resolver';
@@ -16,6 +17,7 @@ import { User } from 'src/user/user.entity';
 import { Organization } from 'src/organization/organization.entity';
 import { OrganizationUser } from 'src/organization/organizationUser.entity';
 import { Outbox } from 'src/common/models/outbox.entity';
+import { OutboxService } from 'src/common/services/outbox.service';
 
 @Module({
   imports: [
@@ -27,8 +29,10 @@ import { Outbox } from 'src/common/models/outbox.entity';
   providers: [
     AuthorizationService,
     CreateTeamService,
+    EntityHistoryService,
     GetOrganizationService,
     GetTeamService,
+    OutboxService,
     SearchTeamsService,
     TeamResolver,
     UpdateTeamService,

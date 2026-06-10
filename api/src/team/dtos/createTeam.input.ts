@@ -8,17 +8,17 @@ export class CreateTeamInput {
   @IsNotEmpty()
   @MaxLength(50)
   @MinLength(1)
-  name: string;
+  name!: string;
 
   @Field()
   @IsString()
   @MaxLength(500)
-  description: string;
+  description!: string;
 
   @Field()
   @IsUUID()
-  organizationId: string;
+  organizationId!: string;
 
   @Field(() => [String])
-  userIds: string[];
+  userIds!: string[];
 }

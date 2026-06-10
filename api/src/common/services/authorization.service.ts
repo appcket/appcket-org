@@ -33,7 +33,7 @@ export class AuthorizationService {
 
     try {
       const response$ = this.httpService.post(
-        this.configService.get('keycloak.tokenEndpointUrl'),
+        this.configService.get('keycloak.tokenEndpointUrl') || '',
         formData,
         config,
       );
@@ -43,6 +43,7 @@ export class AuthorizationService {
       if (response.data.result) {
         return true;
       }
+      return false;
     } catch (error) {
       console.log(error);
       return false;
@@ -64,7 +65,7 @@ export class AuthorizationService {
     formData.append('response_mode', 'permissions');
 
     const response$ = this.httpService.post(
-      this.configService.get('keycloak.tokenEndpointUrl'),
+      this.configService.get('keycloak.tokenEndpointUrl') || '',
       formData,
       config,
     );
@@ -72,7 +73,7 @@ export class AuthorizationService {
     return response$;
   }
 
-  public async getUserRole(token: string, userId: string): Promise<string> {
+  public async getUserRole(token: string, userId: string): Promise<string | null> {
     const config: AxiosRequestConfig = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -82,20 +83,23 @@ export class AuthorizationService {
     };
 
     const response$ = this.httpService.get(
-      this.configService.get('keycloak.userRoleMappingsEndpointUrl').replace('__USER_ID__', userId),
+      (this.configService.get('keycloak.userRoleMappingsEndpointUrl') || '').replace(
+        '__USER_ID__',
+        userId,
+      ),
       config,
     );
 
     const response = await lastValueFrom(response$);
-    let role = null;
+    let role: string | null = null;
 
     if (response.data.realmMappings) {
-      role = response.data.realmMappings.find((roleMapping) => {
+      const roleMapping = response.data.realmMappings.find((roleMapping) => {
         return ['Manager', 'Captain', 'Teammate', 'Spectator'].includes(roleMapping.name);
       });
 
-      if (role) {
-        role = role.name;
+      if (roleMapping) {
+        role = roleMapping.name;
       }
     }
 

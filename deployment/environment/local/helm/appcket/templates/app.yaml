@@ -45,6 +45,8 @@ spec:
           {{ else }}
           value: {{ .Values.env }}
           {{- end }}
+        - name: NODE_EXTRA_CA_CERTS
+          value: /etc/ssl/certs/root-ca.crt
         - name: PORT
           value: "3000"
         - name: WDS_SOCKET_PORT
@@ -70,6 +72,9 @@ spec:
           - mountPath: /src
             name: src-volume
             readOnly: false
+          - mountPath: /etc/ssl/certs
+            name: root-ca-volume
+            readOnly: true
         {{- end }}
       {{- if eq .Values.env "local" }}
       volumes:
@@ -77,6 +82,12 @@ spec:
           path: {{ .Values.app.hostPath }}
           type: DirectoryOrCreate
         name: src-volume
+      - name: root-ca-volume
+        secret:
+          secretName: root-ca-secret
+          items:
+          - key: ca.crt
+            path: root-ca.crt
       {{- end }}
 ---
 apiVersion: gateway.networking.k8s.io/v1

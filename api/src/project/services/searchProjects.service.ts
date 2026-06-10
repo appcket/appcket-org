@@ -5,6 +5,7 @@ import { Project } from 'src/project/project.entity';
 import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
 import { IPaginated } from 'src/common/models/paginated.interface';
 import { SearchProjectsInput } from 'src/project/dtos/searchProjects.input';
+import { Organization } from 'src/organization/organization.entity';
 
 @Injectable()
 export class SearchProjectsService {
@@ -18,7 +19,8 @@ export class SearchProjectsService {
     userId: string,
   ): Promise<IPaginated<Project>> {
     const userOrganizationIds = await this.getOrganizationService.getUserOrganizationIds(userId);
-    const organizationWhere = { $in: userOrganizationIds };
+    const organizationIds = userOrganizationIds.map((org: any) => org.id || org);
+    const organizationWhere = { $in: organizationIds };
     const searchString = input.searchString?.toLowerCase();
     const where = searchString
       ? {
@@ -31,29 +33,41 @@ export class SearchProjectsService {
           organization: organizationWhere,
         };
 
-    const currentCursor = await this.em.findByCursor(Project, where, {
+    const orderField = input.orderBy?.[0]?.fieldName || 'createdAt';
+    const orderDirection = input.orderBy?.[0]?.direction?.toLowerCase() || 'desc';
+
+    const currentCursor = await this.em.findByCursor(Project, {
+      where,
       populate: ['organization', 'createdBy', 'updatedBy', 'projectUsers'],
       first: input.first,
       after: input.after,
       orderBy: {
-        [input.orderBy[0]?.fieldName]: input.orderBy[0]?.direction.toLocaleLowerCase(),
+        [orderField]: orderDirection,
       },
     });
 
     const paginatedProjects: IPaginated<Project> = {
       totalCount: currentCursor.totalCount,
       pageInfo: {
-        endCursor: currentCursor.endCursor,
+        endCursor: currentCursor.endCursor ?? '',
         hasNextPage: currentCursor.hasNextPage,
         hasPreviousPage: currentCursor.hasPrevPage,
-        startCursor: currentCursor.startCursor,
+        startCursor: currentCursor.startCursor ?? '',
       },
       edges: [],
     };
 
     currentCursor.items.forEach((item) => {
       paginatedProjects.edges.push({
-        node: item,
+        node: {
+          ...item,
+          organization: item.organization
+            ? {
+                id: item.organization.id,
+                name: (item.organization as Organization).name,
+              }
+            : undefined,
+        } as any,
       });
     });
 

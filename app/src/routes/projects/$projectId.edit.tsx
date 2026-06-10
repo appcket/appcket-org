@@ -13,11 +13,11 @@ import {
   Text,
   Skeleton,
   MultiSelect,
+  rem,
 } from '@mantine/core';
 import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 import { notifications } from '@mantine/notifications';
-import { useSearchUsers } from 'src/hooks/useUser';
 import { useGetProject, updateProjectAction } from 'src/hooks/useProjects';
 import {
   HiOutlineCheck,
@@ -27,6 +27,7 @@ import {
 import * as m from 'src/paraglide/messages';
 import { useEffect } from 'react';
 import { PageHeader } from 'src/components/PageHeader';
+import { UserMultiSelect } from 'src/components/Form/UserMultiSelect';
 import { requirePermission, ProjectPermission } from 'src/lib/permissions';
 import { Resources } from 'src/hooks/useHistory';
 
@@ -77,9 +78,6 @@ function EditProject() {
     },
   });
 
-  const organizationId = project?.organization?.id || '';
-  const { data: users, isLoading: isUsersLoading } = useSearchUsers(organizationId);
-
   useEffect(() => {
     if (project) {
       form.reset({
@@ -91,11 +89,6 @@ function EditProject() {
       });
     }
   }, [project, form, projectId]);
-
-  const userOptions = (users || []).map((user) => ({
-    value: user.id,
-    label: `${user.firstName} ${user.lastName} (${user.username})`,
-  }));
 
   const breadcrumbs = [
     { title: m.common_navigation_projects(), to: '/projects' },
@@ -110,7 +103,7 @@ function EditProject() {
     </Anchor>
   ));
 
-  const isLoading = isProjectLoading || isUsersLoading;
+  const isLoading = isProjectLoading;
 
   const pageTitle = isLoading ? (
     <Skeleton height={rem(34)} width={300} radius="sm" />
@@ -215,17 +208,16 @@ function EditProject() {
                 <form.Field
                   name="userIds"
                   children={(field) => (
-                    <MultiSelect
-                      label={m.labels_users()}
-                      placeholder="..."
-                      data={userOptions}
-                      searchable
-                      disabled={isUsersLoading}
-                      nothingFoundMessage="..."
+                    <UserMultiSelect
+                      organizationId={project?.organization?.id || ''}
                       value={field.state.value}
-                      error={field.state.meta.isTouched && field.state.meta.errors.length > 0 ? field.state.meta.errors[0] : undefined}
-                      onBlur={field.handleBlur}
                       onChange={(values) => field.handleChange(values)}
+                      onBlur={field.handleBlur}
+                      error={
+                        field.state.meta.isTouched && field.state.meta.errors.length > 0
+                          ? field.state.meta.errors[0]
+                          : undefined
+                      }
                     />
                   )}
                 />

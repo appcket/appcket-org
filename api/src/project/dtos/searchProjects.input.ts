@@ -3,5 +3,3 @@ import { PaginatedSearchInput } from 'src/common/dtos/paginatedSearch.input';
 
 @InputType()
 export class SearchProjectsInput extends PartialType(PaginatedSearchInput) {}
-{
-}

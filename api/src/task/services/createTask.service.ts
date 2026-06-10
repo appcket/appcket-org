@@ -44,7 +44,7 @@ export class CreateTaskService {
       const newTask = em.create(Task, {
         name: data.name,
         description: data.description,
-        project: data.projectId,
+        project: taskProject,
         taskStatusType: data.taskStatusTypeId ? data.taskStatusTypeId : null,
         assignedTo: data.assignedTo ? data.assignedTo : null,
       });
@@ -67,17 +67,21 @@ export class CreateTaskService {
             id: createdTask.id,
             name: createdTask.name,
             description: createdTask.description,
-            assignedTo: createdTask.assignedTo ? {
-              id: createdTask.assignedTo.id,
-              username: createdTask.assignedTo.username,
-              email: createdTask.assignedTo.email,
-              firstName: createdTask.assignedTo.firstName,
-              lastName: createdTask.assignedTo.lastName,
-            } : null,
-            taskStatusType: createdTask.taskStatusType ? {
-              id: createdTask.taskStatusType.id,
-              name: createdTask.taskStatusType.name,
-            } : null,
+            assignedTo: createdTask.assignedTo
+              ? {
+                  id: createdTask.assignedTo.id,
+                  username: createdTask.assignedTo.username,
+                  email: createdTask.assignedTo.email,
+                  firstName: createdTask.assignedTo.firstName,
+                  lastName: createdTask.assignedTo.lastName,
+                }
+              : null,
+            taskStatusType: createdTask.taskStatusType
+              ? {
+                  id: createdTask.taskStatusType.id,
+                  name: createdTask.taskStatusType.name,
+                }
+              : null,
             project: {
               id: createdTask.project.id,
             },
@@ -88,7 +92,7 @@ export class CreateTaskService {
         },
         timestamp: new Date(),
       };
-      
+
       await this.outboxService.create(taskEventPayload);
 
       return createdTask;

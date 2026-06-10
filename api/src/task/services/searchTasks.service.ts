@@ -21,22 +21,25 @@ export class SearchTasksService {
           project: { $in: input.projectIds },
         };
 
-    const currentCursor = await this.em.findByCursor(Task, where, {
+    const currentCursor = await this.em.findByCursor(Task, {
+      where,
       populate: ['project', 'createdBy', 'updatedBy', 'taskStatusType', 'assignedTo'],
       first: input.first,
       after: input.after,
-      orderBy: {
-        [input.orderBy[0]?.fieldName]: input.orderBy[0]?.direction.toLocaleLowerCase(),
-      },
+      orderBy: input.orderBy?.[0]
+        ? {
+            [input.orderBy[0].fieldName]: input.orderBy[0].direction.toLocaleLowerCase(),
+          }
+        : undefined,
     });
 
     const paginatedTasks: IPaginated<Task> = {
       totalCount: currentCursor.totalCount,
       pageInfo: {
-        endCursor: currentCursor.endCursor,
+        endCursor: currentCursor.endCursor ?? '',
         hasNextPage: currentCursor.hasNextPage,
         hasPreviousPage: currentCursor.hasPrevPage,
-        startCursor: currentCursor.startCursor,
+        startCursor: currentCursor.startCursor ?? '',
       },
       edges: [],
     };

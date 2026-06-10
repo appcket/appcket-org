@@ -40,9 +40,7 @@ export class UpdateTeamService {
 
       const team = await this.getTeamService.getTeam(data.id, userId);
 
-      let teamUsersUpdated = [];
-
-      teamUsersUpdated = data.userIds.map((id) => {
+      const teamUsersUpdated: Array<{ user: string; team: string }> = data.userIds.map((id) => {
         return {
           user: id,
           team: team.id,
@@ -51,7 +49,7 @@ export class UpdateTeamService {
 
       // if teamUsersUpdated item is not found in the existing team.teamUsers, insert
       teamUsersUpdated.forEach((teamUserUpdated) => {
-        if (!team.teamUsers.toArray().find((teamUser) => teamUser.user.id == teamUserUpdated.user)) {
+        if (!team.teamUsers.toArray().find((teamUser) => (teamUser.user as any).id == teamUserUpdated.user)) {
           em.create(TeamUser, {
             user: teamUserUpdated.user,
             team: team.id,
@@ -63,7 +61,7 @@ export class UpdateTeamService {
 
       // if existing team.teamUser record is not found in teamUsersUpdated, soft delete
       team.teamUsers.getItems().forEach((teamUser) => {
-        if (!teamUsersUpdated.find((teamUserUpdated) => teamUserUpdated.user == teamUser.user.id)) {
+        if (!teamUsersUpdated.find((teamUserUpdated) => teamUserUpdated.user == (teamUser.user as any).id)) {
           const newTeamUser = em.assign(teamUser, {
             deletedAt: new Date(),
             deletedBy: userId,
@@ -87,15 +85,22 @@ export class UpdateTeamService {
       this.logger.log(`${Team.name} updated successfully. id: ${updatedTeam.id}`);
 
       // sort here so change audit diff process doesn't generate a change based on a different order of users
-      const usersToSort = [];
+      const usersToSort: Array<{
+        id: string;
+        username: string;
+        email: string;
+        firstName: string;
+        lastName: string;
+      }> = [];
       updatedTeam.teamUsers.toArray().forEach((teamUser) => {
         if (teamUser.deletedAt === null || teamUser.deletedAt === undefined) {
+          const u = teamUser.user as any;
           usersToSort.push({
-            id: teamUser.user.id,
-            username: teamUser.user.username,
-            email: teamUser.user.email,
-            firstName: teamUser.user.firstName,
-            lastName: teamUser.user.lastName,
+            id: u.id,
+            username: u.username,
+            email: u.email,
+            firstName: u.firstName,
+            lastName: u.lastName,
           });
         }
       });

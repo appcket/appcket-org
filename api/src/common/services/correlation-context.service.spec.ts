@@ -17,7 +17,7 @@ describe('CorrelationContext', () => {
 
   it('should store and retrieve the correlation ID within the run callback', (done) => {
     const testId = 'test-uuid-123';
-    
+
     service.run(testId, () => {
       expect(service.id).toBe(testId);
       done();

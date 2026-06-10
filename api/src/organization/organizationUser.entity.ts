@@ -1,21 +1,24 @@
-import { Entity, Index, ManyToOne, PrimaryKey } from '@mikro-orm/core';
-
-import { BaseEntity } from 'src/common/entities/base.entity';
-import { Organization } from './organization.entity';
+import { Entity, ManyToOne, Unique } from '@mikro-orm/decorators/legacy';
+import { Organization } from 'src/organization/organization.entity';
 import { User } from 'src/user/user.entity';
+import { BaseEntity } from 'src/common/entities/base.entity';
 
-@Entity({ schema: 'appcket' })
+@Entity({ schema: 'appcket', tableName: 'organization_user' })
+@Unique({ properties: ['organization', 'user'] })
 export class OrganizationUser extends BaseEntity {
-  @Index({ name: 'organization_user_id_idx' })
-  @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
-  id!: string;
-
   @ManyToOne({
     entity: () => Organization,
+    fieldName: 'organization_id',
     updateRule: 'cascade',
+    deleteRule: 'cascade',
   })
   organization!: Organization;
 
-  @ManyToOne({ entity: () => User, updateRule: 'cascade' })
+  @ManyToOne({
+    entity: () => User,
+    fieldName: 'user_id',
+    updateRule: 'cascade',
+    deleteRule: 'cascade',
+  })
   user!: User;
 }

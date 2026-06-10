@@ -6,7 +6,7 @@ export function Edge<T>(classRef: Type<T>): Type<IEdge<T>> {
   @ObjectType({ isAbstract: true })
   abstract class EdgeType implements IEdge<T> {
     @Field(() => classRef)
-    public node: T;
+    public node!: T;
   }
 
   return EdgeType as Type<IEdge<T>>;

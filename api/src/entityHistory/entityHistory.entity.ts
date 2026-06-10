@@ -1,34 +1,34 @@
 import { Field, ObjectType, GraphQLISODateTime } from '@nestjs/graphql';
-import { Property } from '@mikro-orm/core';
+import { Property } from '@mikro-orm/decorators/legacy';
 
 @ObjectType()
 class EntityHistoryUser {
   @Field(() => String, { nullable: true })
   @Property({ nullable: true, persist: false })
-  id?: string = null;
+  id?: string | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true, persist: false })
-  displayName?: string = null;
+  displayName?: string | null = null;
 }
 
 @ObjectType()
 class EntityHistoryChange {
   @Field(() => GraphQLISODateTime, { nullable: true })
   @Property({ nullable: true, persist: false })
-  changedAt?: Date = null;
+  changedAt?: Date | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true, persist: false })
-  fieldName?: string = null;
+  fieldName?: string | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true, persist: false })
-  oldValue?: string = null;
+  oldValue?: string | null = null;
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true, persist: false })
-  newValue?: string = null;
+  newValue?: string | null = null;
 
   @Field(() => EntityHistoryUser, { nullable: true })
   @Property({ nullable: true, persist: false })
@@ -39,15 +39,15 @@ class EntityHistoryChange {
 export class EntityHistory {
   @Field(() => String)
   @Property({ persist: false })
-  id: string;
+  id!: string;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
   @Property({ nullable: true, persist: false })
-  createdAt?: Date = null;
+  createdAt?: Date | null = null;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
   @Property({ nullable: true, persist: false })
-  updatedAt?: Date = null;
+  updatedAt?: Date | null = null;
 
   @Field(() => EntityHistoryUser, { nullable: true })
   @Property({ nullable: true, persist: false })

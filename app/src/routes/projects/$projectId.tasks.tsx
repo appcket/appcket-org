@@ -87,12 +87,14 @@ function ProjectTasks() {
   const orderBy = search.orderBy || 'name';
   const orderDirection = search.orderDirection || 'ASC';
 
+  const orderByString = `[{ fieldName: "${orderBy}", direction: ${orderDirection} }]`;
+
   const { data, isLoading, isFetching, isPlaceholderData } = useSearchTasks(
     [projectId],
     search.search || '',
     pageSize,
     search.cursor || null,
-    [{ fieldName: orderBy, direction: orderDirection as 'ASC' | 'DESC' }],
+    orderByString,
     keepPreviousData,
   );
 

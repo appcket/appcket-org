@@ -1,21 +1,48 @@
-import { Field, ObjectType, GraphQLISODateTime } from '@nestjs/graphql';
-import { PrimaryKey, Property } from '@mikro-orm/core';
+import { ObjectType } from '@nestjs/graphql';
+import { type Opt, type Ref } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
+
+import { User } from 'src/user/user.entity';
 
 @ObjectType()
+@Entity({ abstract: true })
 export abstract class BaseEntity {
-  @Field()
-  @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
-  id!: string;
+  @PrimaryKey({ type: 'uuid', defaultRaw: `gen_random_uuid()` })
+  id!: string & Opt;
 
-  @Field(() => GraphQLISODateTime)
-  @Property()
-  createdAt: Date = new Date();
+  @Property({ onCreate: () => new Date() })
+  createdAt: Date & Opt = new Date();
 
-  @Field(() => GraphQLISODateTime)
+  @ManyToOne({
+    entity: () => User,
+    ref: true,
+    fieldName: 'created_by',
+    updateRule: 'cascade',
+    nullable: true,
+  })
+  createdBy?: Ref<User> & Opt;
+
   @Property({ onUpdate: () => new Date() })
-  updatedAt: Date = new Date();
+  updatedAt: Date & Opt = new Date();
 
-  @Field(() => GraphQLISODateTime, { nullable: true })
-  @Property({ nullable: true })
-  deletedAt?: Date;
+  @ManyToOne({
+    entity: () => User,
+    ref: true,
+    fieldName: 'updated_by',
+    updateRule: 'cascade',
+    nullable: true,
+  })
+  updatedBy?: Ref<User> & Opt;
+
+  @Property({ nullable: true, type: 'datetime' })
+  deletedAt?: Date & Opt;
+
+  @ManyToOne({
+    entity: () => User,
+    ref: true,
+    fieldName: 'deleted_by',
+    updateRule: 'cascade',
+    nullable: true,
+  })
+  deletedBy?: Ref<User> & Opt;
 }

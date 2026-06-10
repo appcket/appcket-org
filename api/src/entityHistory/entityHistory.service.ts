@@ -8,6 +8,14 @@ import { CommonService } from 'src/common/services/common.service';
 import { CLICKHOUSE_CLIENT } from 'src/common/modules/clickhouse.module';
 import { EntityChangesUtil } from 'src/common/utils/entityChanges.util';
 
+interface HistoryChange {
+  changedAt: Date;
+  userId: string;
+  fieldName: string;
+  oldValue: any;
+  newValue: any;
+}
+
 @Injectable()
 export class EntityHistoryService {
   private readonly logger = new Logger(EntityHistoryService.name);
@@ -137,7 +145,7 @@ export class EntityHistoryService {
     // 2. Compute Diffs (Changes)
     // We will collect all user IDs found in changes to fetch them in bulk
     const changeUserIds = new Set<string>();
-    const historyChanges = [];
+    const historyChanges: HistoryChange[] = [];
 
     for (let i = 0; i < events.length; i++) {
       const currentEvent = events[i];
@@ -204,7 +212,9 @@ export class EntityHistoryService {
     });
 
     // Sort changes DESC (newest first)
-    entityHistory.changes.sort((a, b) => b.changedAt.getTime() - a.changedAt.getTime());
+    entityHistory.changes.sort(
+      (a, b) => (b.changedAt?.getTime() ?? 0) - (a.changedAt?.getTime() ?? 0),
+    );
 
     return entityHistory;
   }

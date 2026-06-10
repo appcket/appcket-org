@@ -9,14 +9,14 @@ export class OrderByInput<T> {
   @IsString()
   @MaxLength(50)
   @MinLength(1)
-  fieldName: keyof T;
+  fieldName!: keyof T;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   @MaxLength(50)
   @MinLength(1)
-  innerFieldName: keyof T;
+  innerFieldName?: keyof T;
 
   @Field(() => QueryOrderEnum)
   direction: QueryOrderEnum = QueryOrderEnum.ASC;

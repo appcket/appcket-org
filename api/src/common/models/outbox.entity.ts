@@ -1,16 +1,17 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
+import { type Opt } from '@mikro-orm/core';
 
-@Entity({ schema: 'appcket' })
+@Entity({ schema: 'appcket', tableName: 'outbox' })
 export class Outbox {
-  @PrimaryKey({ columnType: 'uuid', defaultRaw: `gen_random_uuid()` })
-  id!: string;
+  @PrimaryKey({ type: 'uuid', defaultRaw: `gen_random_uuid()` })
+  id!: string & Opt;
 
-  @Property({ columnType: 'jsonb' })
+  @Property({ type: 'json' })
   payload!: any;
 
-  @Property({ columnType: 'uuid', nullable: true })
+  @Property({ type: 'uuid', nullable: true, fieldName: 'correlation_id' })
   correlationId?: string;
 
-  @Property({ onCreate: () => new Date(), defaultRaw: 'now()' })
-  createdAt: Date = new Date();
+  @Property({ onCreate: () => new Date(), defaultRaw: 'now()', fieldName: 'created_at' })
+  createdAt: Date & Opt = new Date();
 }

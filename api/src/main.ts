@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
 import { Logger } from 'nestjs-pino';
 
-import { AppModule } from './app.module';
+import { AppModule } from 'src/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -30,6 +30,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [config.get('appUrl')],
   });
+  // TODO: when nestjs 12 releases, stop using class-transformer and class-validator and switch to the built in validation pipe that uses zod: https://github.com/nestjs/nest/pull/16120
   app.useGlobalPipes(new ValidationPipe());
   app.useLogger(app.get(Logger));
   app.enableShutdownHooks();

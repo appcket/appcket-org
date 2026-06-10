@@ -8,15 +8,6 @@ export const Route = createFileRoute('/about')({
 });
 
 function About() {
-  const breadcrumbs = [
-    { title: 'Home', to: '/' },
-    { title: m.pages_about_title(), to: '/about' },
-  ].map((item, index) => (
-    <Anchor key={index} href={item.to} size="sm">
-      {item.title}
-    </Anchor>
-  ));
-
   const p1Placeholder = '{link}';
   const p1Parts = m.pages_about_body_p1({ link: p1Placeholder }).split(p1Placeholder);
 
@@ -26,7 +17,6 @@ function About() {
   return (
     <Stack gap="xl">
       <Box>
-        <Breadcrumbs mb="xs">{breadcrumbs}</Breadcrumbs>
         <PageHeader title={m.pages_about_title()} subTitle={m.pages_about_subtitle()} />
       </Box>
 

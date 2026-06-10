@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
@@ -16,11 +15,12 @@ import { UpdateProjectService } from 'src/project/services/updateProject.service
 import { CreateProjectService } from 'src/project/services/createProject.service';
 import { PaginatedProjectDto } from 'src/project/dtos/paginatedProject.dto';
 import { SearchProjectsInput } from 'src/project/dtos/searchProjects.input';
+import { User } from 'src/user/user.entity';
 
 @InputType()
 export class ProjectCreateInput {
   @Field()
-  name: string;
+  name!: string;
 }
 
 @Resolver(() => ProjectDto)
@@ -38,54 +38,59 @@ export class ProjectResolver {
   async getProject(@Args('id') id: string, @Context() ctx) {
     const project = await this.getProjectService.getProject(id, ctx.user.id);
 
-    let createdBy = null;
-    let updatedBy = null;
+    const createdBy = project.createdBy
+      ? {
+          id: project.createdBy.id,
+          email: (project.createdBy as any).email,
+          username:
+            (project.createdBy as any).preferred_username || (project.createdBy as any).username,
+          firstName: (project.createdBy as any).firstName,
+          lastName: (project.createdBy as any).lastName,
+          attributes: (project.createdBy as any).attributes,
+        }
+      : undefined;
 
-    if (project.createdBy) {
-      createdBy = {
-        id: project.createdBy.id,
-        email: project.createdBy.email,
-        username: project.createdBy.username,
-        firstName: project.createdBy.firstName,
-        lastName: project.createdBy.lastName,
-      };
-    }
-
-    if (project.updatedBy) {
-      updatedBy = {
-        id: project.updatedBy.id,
-        email: project.updatedBy.email,
-        username: project.updatedBy.username,
-        firstName: project.updatedBy.firstName,
-        lastName: project.updatedBy.lastName,
-      };
-    }
+    const updatedBy = project.updatedBy
+      ? {
+          id: project.updatedBy.id,
+          email: (project.updatedBy as any).email,
+          username:
+            (project.updatedBy as any).preferred_username || (project.updatedBy as any).username,
+          firstName: (project.updatedBy as any).firstName,
+          lastName: (project.updatedBy as any).lastName,
+          attributes: (project.updatedBy as any).attributes,
+        }
+      : undefined;
 
     const ProjectDto: ProjectDto = {
       id: project.id,
-      createdAt: project.createdAt,
+      createdAt: project.createdAt!,
       createdBy,
-      updatedAt: project.updatedAt,
+      updatedAt: project.updatedAt!,
       updatedBy,
       name: project.name,
       description: project.description,
       organization: {
         id: project.organization.id,
-        name: project.organization.name,
+        name: (project.organization as any).name,
       },
-      users: project.projectUsers.toArray().map((projectUser) => ({
-        id: projectUser.user.id,
-        createdAt: projectUser.createdAt,
-        createdBy: projectUser.createdBy,
-        updatedAt: projectUser.updatedAt,
-        updatedBy: projectUser.updatedBy,
-        username: projectUser.user.username,
-        email: projectUser.user.email,
-        firstName: projectUser.user.firstName,
-        lastName: projectUser.user.lastName,
-        attributes: projectUser.user['attributes'],
-        role: projectUser.user.role,
-      })),
+      users: project.projectUsers.toArray().map((projectUser) => {
+        const user = projectUser.user as any;
+
+        return {
+          id: user.id,
+          createdAt: projectUser.createdAt,
+          createdBy: projectUser.createdBy,
+          updatedAt: projectUser.updatedAt,
+          updatedBy: projectUser.updatedBy,
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          attributes: user.attributes,
+          role: user.role,
+        };
+      }),
     };
 
     return ProjectDto;

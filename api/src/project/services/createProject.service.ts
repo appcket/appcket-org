@@ -69,13 +69,16 @@ export class CreateProjectService {
             name: createdProject.name,
             description: createdProject.description,
             organizationId: createdProject.organization.id,
-            users: createdProject.projectUsers.toArray().map((projectUser) => ({
-              id: projectUser.user.id,
-              username: projectUser.user.username,
-              email: projectUser.user.email,
-              firstName: projectUser.user.firstName,
-              lastName: projectUser.user.lastName,
-            })),
+            users: createdProject.projectUsers.toArray().map((projectUser) => {
+              const u = projectUser.user as any;
+              return {
+                id: u.id,
+                username: u.username,
+                email: u.email,
+                firstName: u.firstName,
+                lastName: u.lastName,
+              };
+            }),
           },
         },
         user: {
@@ -83,7 +86,7 @@ export class CreateProjectService {
         },
         timestamp: new Date(),
       };
-      
+
       await this.outboxService.create(projectEventPayload);
 
       return createdProject;

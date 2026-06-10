@@ -24,7 +24,11 @@ export class GetOrganizationService {
     });
 
     const organization = await this.organizationRepository.findOneOrFail(id, {
-      populate: ['users', 'users.attributes', 'projects', 'teams'],
+      populate: [
+        'organizationUsers.user',
+        'projects.projectUsers.user',
+        'teams.teamUsers.user',
+      ],
     });
 
     return organization;
@@ -47,7 +51,7 @@ export class GetOrganizationService {
       },
     );
 
-    const organizationUserIds = [];
+    const organizationUserIds: string[] = [];
     organizationUsers.forEach((organizationUser) => {
       organizationUserIds.push(organizationUser.user.id);
     });

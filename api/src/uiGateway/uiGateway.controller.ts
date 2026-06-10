@@ -12,15 +12,19 @@ export class UiGatewayController {
 
   @EventPattern('outbox-events')
   handleOutboxEvent(@Payload() data: any) {
-    this.logger.log('Received event from Redpanda outbox-events topic');
+    this.logger.debug('Received raw Kafka event');
+    
+    // Log the structure to see what we are dealing with
+    if (data) {
+      this.logger.debug(`Action: ${data.action}, Table: ${data.record?.table || 'unknown'}`);
+    }
 
-    // Transform Sequin/Outbox record into a standardized EventEnvelope for the UI
-    // Sequin data format: { record: { payload: { ... }, id: ... }, action: 'insert', ... }
     const outboxRecord = data?.record;
     const businessPayload = outboxRecord?.payload;
 
     if (!businessPayload) {
       this.logger.warn('Received outbox event without business payload, skipping');
+      // Some events like deletions might not have a payload in the same way
       return;
     }
 

@@ -8,5 +8,5 @@ export class UpdateTeamInput extends CreateTeamInput {
   @Field()
   @IsUUID()
   @IsNotEmpty()
-  id: string;
+  id!: string;
 }

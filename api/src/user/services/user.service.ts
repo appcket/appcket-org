@@ -8,6 +8,7 @@ import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 
 import { AuthorizationService } from 'src/common/services/authorization.service';
 import { User } from 'src/user/user.entity';
+import { OrganizationUser } from 'src/organization/organizationUser.entity';
 
 @Injectable()
 export class UserService {
@@ -22,7 +23,7 @@ export class UserService {
     private readonly userRepository: EntityRepository<User>,
   ) {}
 
-  public async getUserInfo(token: string): Promise<User> {
+  public async getUserInfo(token: string): Promise<User | null> {
     const config: AxiosRequestConfig = {
       headers: {
         Accept: 'application/json',
@@ -36,10 +37,14 @@ export class UserService {
       const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
       const { jobTitle, email, given_name, family_name, preferred_username } = tokenPayload;
 
-      const response$ = await this.httpService.get(
-        this.configService.get('keycloak.userAccountEndpointUrl'),
-        config,
+      const userAccountEndpointUrl = this.configService.get<string>(
+        'keycloak.userAccountEndpointUrl',
       );
+      if (!userAccountEndpointUrl) {
+        throw new Error('Keycloak user account endpoint URL is not configured');
+      }
+
+      const response$ = await this.httpService.get(userAccountEndpointUrl, config);
 
       const userPermissionsResponse$ = await this.authorizationService.getUserPermissions(token);
 
@@ -52,11 +57,11 @@ export class UserService {
           response.data.id,
         );
 
-        let dbUser: User = await this.userRepository.findOne(response.data.id, {
-          populate: ['organizations', 'projects', 'teams'],
+        let dbUser: User | null = await this.userRepository.findOne(response.data.id, {
+          populate: ['organizationUsers.organization', 'projectUsers.project', 'teamUsers.team'],
         });
 
-        // 2. If user doesn't exist locally (first time login), create them
+        // 2. If user doesn't exist locally (first time login), create them in the appcket.user table. This is a cache table for the appcket app. The real user data belongs to the IDP: Keycloak.
         if (!dbUser) {
           dbUser = this.userRepository.create({
             id: response.data.id,
@@ -64,7 +69,7 @@ export class UserService {
             firstName: given_name || response.data.firstName,
             lastName: family_name || response.data.lastName,
             username: preferred_username || response.data.username,
-          });
+          } as any);
         }
 
         // 3. Sync attributes and profile data from token
@@ -77,15 +82,18 @@ export class UserService {
         dbUser.lastName = family_name || dbUser.lastName;
         dbUser.lastSyncedAt = new Date();
 
-        await this.em.persistAndFlush(dbUser);
+        await this.em.persist(dbUser).flush();
 
-        dbUser.permissions = userPermissionsResponse.data;
-        dbUser.role = userRoleResponse;
+        dbUser.role = userRoleResponse ?? undefined;
+        dbUser.permissions = userPermissionsResponse.data || [];
 
         return dbUser;
       }
+
+      return null;
     } catch (error) {
-      this.logger.error('Error fetching/syncing user info', error.stack);
+      const errorStack = error instanceof Error ? error.stack : String(error);
+      this.logger.error('Error fetching/syncing user info', errorStack);
       return null;
     }
   }
@@ -94,7 +102,7 @@ export class UserService {
     const dbUser = await this.userRepository.findOneOrFail(
       { id: userId },
       {
-        populate: ['organizations', 'projects', 'teams'],
+        populate: ['organizationUsers.organization', 'projectUsers.project', 'teamUsers.team'],
       },
     );
     return dbUser;
@@ -106,12 +114,33 @@ export class UserService {
   }
 
   public async getOrganizationUsers(organizationId: string): Promise<User[]> {
-    const dbUsers = await this.userRepository.find(
-      { organizations: { id: organizationId } },
-      {
-        populate: ['projects', 'teams'],
-      },
-    );
-    return dbUsers;
+    this.logger.debug(`Searching users for organizationId: ${organizationId}`);
+
+    try {
+      const orgUsers = await this.em.find(
+        OrganizationUser,
+        { organization: organizationId },
+        {
+          populate: ['user'],
+        },
+      );
+
+      this.logger.debug(`Raw join records found: ${orgUsers.length}`);
+
+      const users = orgUsers.map((ou) => ou.user);
+
+      if (users.length > 0) {
+        this.logger.debug(
+          `Sample user: ${users[0].id} - ${users[0].firstName} ${users[0].lastName}`,
+        );
+      }
+
+      return users;
+    } catch (error: any) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorStack = error instanceof Error ? error.stack : '';
+      this.logger.error(`Error in getOrganizationUsers: ${errorMessage}`, errorStack);
+      return [];
+    }
   }
 }

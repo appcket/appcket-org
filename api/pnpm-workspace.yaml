@@ -1,0 +1,5 @@
+allowBuilds:
+  '@apollo/protobufjs': false
+  '@nestjs/core': false
+  chromedriver: false
+  unrs-resolver: false

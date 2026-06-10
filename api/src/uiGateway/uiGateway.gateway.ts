@@ -8,7 +8,8 @@ import {
 import { Server, Socket } from 'socket.io';
 import { Logger, Inject } from '@nestjs/common';
 import { UserService } from 'src/user/services/user.service';
-import { CreateRequestContext, MikroORM } from '@mikro-orm/core';
+import { MikroORM } from '@mikro-orm/core';
+import { CreateRequestContext } from '@mikro-orm/decorators/legacy';
 
 @WebSocketGateway({
   cors: {
@@ -18,7 +19,7 @@ import { CreateRequestContext, MikroORM } from '@mikro-orm/core';
 })
 export class UiGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
-  server: Server;
+  server!: Server;
 
   private readonly logger = new Logger(UiGateway.name);
 
@@ -45,7 +46,8 @@ export class UiGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
         socket.data.token = token;
         next();
       } catch (err) {
-        this.logger.error(`Failed to parse token for client ${socket.id}`, err.stack);
+        const error = err instanceof Error ? err : new Error(String(err));
+        this.logger.error(`Failed to parse token for client ${socket.id}`, error.stack);
         return next(new Error('Authentication error: Invalid token'));
       }
     });
@@ -56,31 +58,45 @@ export class UiGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     const userId = client.data.userId;
     if (!userId) {
       this.logger.error(`Connection refused for client ${client.id}: No userId in socket data`);
-      client.disconnect();
+      // Use set timeout to delay disconnect, allowing client to receive error event if needed
+      setTimeout(() => client.disconnect(), 1000);
       return;
     }
 
-    this.logger.log(`Client connected: ${client.id} (User: ${userId})`);
+    this.logger.log(`Client connecting: ${client.id} (User: ${userId})`);
 
     try {
       // Fetch user's organizations to join corresponding rooms
       const user = await this.userService.getUser(userId);
-      
-      if (user && user.organizations) {
-        const orgIds = user.organizations.getIdentifiers();
-        this.logger.debug(`Client ${client.id} joining rooms for organizations: ${orgIds.join(', ')}`);
+
+      if (user) {
+        // Ensure organizationUsers are loaded with nested organization data
+        if (!user.organizationUsers.isInitialized()) {
+          await user.organizationUsers.init();
+        }
+
+        const orgIds = user.organizationUsers.map((ou) => ou.organization.id);
+        this.logger.log(
+          `Client ${client.id} joining rooms for organizations: ${orgIds.join(', ')}`,
+        );
 
         orgIds.forEach((orgId) => {
           client.join(`org:${orgId}`);
         });
+
+        this.logger.log(`✅ Client ${client.id} (User: ${userId}) connected and joined rooms.`);
       } else {
-        this.logger.warn(`User ${userId} has no organizations or was not found.`);
+        this.logger.warn(`User ${userId} not found in database during connection setup.`);
+        // Don't disconnect, stay connected but without org rooms
       }
     } catch (err) {
-      this.logger.error(`Error during connection setup for client ${client.id}: ${err.message}`, err.stack);
-      // Optional: Don't disconnect if the error is non-fatal (like DB being slow)
-      // but for now let's see the error in your terminal
-      client.disconnect();
+      const error = err instanceof Error ? err : new Error(String(err));
+
+      this.logger.error(
+        `Error during connection setup for client ${client.id}: ${error.message}`,
+        error.stack,
+      );
+      // Stay connected even if DB fails
     }
   }
 
@@ -92,15 +108,22 @@ export class UiGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
    * Pushes a raw event from Redpanda to targeted UI clients based on organization.
    */
   emitEvent(payload: any) {
-    const orgId = payload.payload?.organizationId || payload.payload?.entity?.data?.organizationId;
+    // Extract orgId from various possible paths in the business payload
+    const orgId =
+      payload.payload?.entity?.data?.organizationId ||
+      payload.payload?.organizationId ||
+      payload.payload?.entity?.organizationId;
 
     if (orgId) {
-      this.logger.debug(`Pushing event to Org Room [org:${orgId}]: ${payload.resource}:${payload.action}`);
+      this.logger.log(
+        `Pushing event to Org Room [org:${orgId}]: ${payload.resource}:${payload.action}`,
+      );
       this.server.to(`org:${orgId}`).emit('events', payload);
     } else {
-      // Fallback: If no orgId is found, we might want to broadcast or ignore. 
-      // For now, let's log it.
-      this.logger.warn(`Received event without organizationId, broadcasting to all: ${payload.resource}:${payload.action}`);
+      // Fallback: If no orgId is found, broadcast to all authenticated clients
+      this.logger.warn(
+        `Received event without organizationId, broadcasting to all: ${payload.resource}:${payload.action}`,
+      );
       this.server.emit('events', payload);
     }
   }
