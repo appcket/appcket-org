@@ -2,13 +2,13 @@ import { Args, Context, Field, InputType, Query, Resolver } from '@nestjs/graphq
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { EntityHistory } from 'src/entityHistory/entityHistory.entity';
-import { EntityHistoryService } from 'src/entityHistory/entityHistory.service';
-import { SortOrder } from 'src/common/enums/sortOrder.enum';
-import { Resources } from 'src/common/enums/resources.enum';
-import { TeamPermission } from 'src/common/enums/permissions.enum';
-import { PermissionsGuard } from 'src/common/guards/permissions.guard';
-import { Permissions } from 'src/common/decorators/permissions.decorator';
+import { EntityHistory } from '@/entityHistory/entityHistory.entity';
+import { EntityHistoryService } from '@/entityHistory/entityHistory.service';
+import { SortOrder } from '@/common/enums/sortOrder.enum';
+import { Resources } from '@/common/enums/resources.enum';
+import { TeamPermission } from '@/common/enums/permissions.enum';
+import { PermissionsGuard } from '@/common/guards/permissions.guard';
+import { Permissions } from '@/common/decorators/permissions.decorator';
 
 @InputType()
 class OrderByInput2 {

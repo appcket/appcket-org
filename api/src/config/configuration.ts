@@ -1,4 +1,4 @@
-import ormConfig from 'src/config/mikro-orm.config';
+import ormConfig from '@/config/mikro-orm.config';
 
 const realm = process.env.KEYCLOAK_REALM;
 const authServerUrl = `${process.env.ACCOUNTS_URL}`;

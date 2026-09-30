@@ -1,9 +1,9 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 
-import { BaseDto } from 'src/common/dtos/base.dto';
-import { ProjectDto } from 'src/project/dtos/project.dto';
-import { TaskStatusType } from 'src/taskStatusType/taskStatusType.entity';
-import { UserDto } from 'src/user/user.dto';
+import { BaseDto } from '@/common/dtos/base.dto';
+import { ProjectDto } from '@/project/dtos/project.dto';
+import { TaskStatusType } from '@/taskStatusType/taskStatusType.entity';
+import { UserDto } from '@/user/user.dto';
 
 @ObjectType()
 export class TaskDto extends BaseDto {

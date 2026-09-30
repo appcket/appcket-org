@@ -2,20 +2,20 @@ import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nes
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { ProjectDto } from 'src/project/dtos/project.dto';
+import { ProjectDto } from '@/project/dtos/project.dto';
 import { UpdateProjectInput } from './dtos/updateProject.input';
 import { CreateProjectInput } from './dtos/createProject.input';
-import { Resources } from 'src/common/enums/resources.enum';
-import { ProjectPermission } from 'src/common/enums/permissions.enum';
-import { PermissionsGuard } from 'src/common/guards/permissions.guard';
-import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { GetProjectService } from 'src/project/services/getProject.service';
-import { SearchProjectsService } from 'src/project/services/searchProjects.service';
-import { UpdateProjectService } from 'src/project/services/updateProject.service';
-import { CreateProjectService } from 'src/project/services/createProject.service';
-import { PaginatedProjectDto } from 'src/project/dtos/paginatedProject.dto';
-import { SearchProjectsInput } from 'src/project/dtos/searchProjects.input';
-import { User } from 'src/user/user.entity';
+import { Resources } from '@/common/enums/resources.enum';
+import { ProjectPermission } from '@/common/enums/permissions.enum';
+import { PermissionsGuard } from '@/common/guards/permissions.guard';
+import { Permissions } from '@/common/decorators/permissions.decorator';
+import { GetProjectService } from '@/project/services/getProject.service';
+import { SearchProjectsService } from '@/project/services/searchProjects.service';
+import { UpdateProjectService } from '@/project/services/updateProject.service';
+import { CreateProjectService } from '@/project/services/createProject.service';
+import { PaginatedProjectDto } from '@/project/dtos/paginatedProject.dto';
+import { SearchProjectsInput } from '@/project/dtos/searchProjects.input';
+import { User } from '@/user/user.entity';
 
 @InputType()
 export class ProjectCreateInput {

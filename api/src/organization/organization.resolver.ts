@@ -2,12 +2,12 @@ import { Context, Resolver, Query, Args, ResolveField, Parent } from '@nestjs/gr
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { OrganizationDto } from 'src/organization/organization.dto';
-import { Resources } from 'src/common/enums/resources.enum';
-import { OrganizationPermission } from 'src/common/enums/permissions.enum';
-import { PermissionsGuard } from 'src/common/guards/permissions.guard';
-import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
+import { OrganizationDto } from '@/organization/organization.dto';
+import { Resources } from '@/common/enums/resources.enum';
+import { OrganizationPermission } from '@/common/enums/permissions.enum';
+import { PermissionsGuard } from '@/common/guards/permissions.guard';
+import { Permissions } from '@/common/decorators/permissions.decorator';
+import { GetOrganizationService } from '@/organization/services/getOrganization.service';
 
 @Resolver(OrganizationDto)
 export class OrganizationResolver {

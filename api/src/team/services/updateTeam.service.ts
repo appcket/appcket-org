@@ -5,15 +5,15 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { Team } from 'src/team/team.entity';
-import { TeamUser } from 'src/team/teamUser.entity';
-import { UpdateTeamInput } from 'src/team/dtos/updateTeam.input';
-import { GetTeamService } from 'src/team/services/getTeam.service';
-import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { Resources } from 'src/common/enums/resources.enum';
-import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
-import { CommonService } from 'src/common/services/common.service';
-import { OutboxService } from 'src/common/services/outbox.service';
+import { Team } from '@/team/team.entity';
+import { TeamUser } from '@/team/teamUser.entity';
+import { UpdateTeamInput } from '@/team/dtos/updateTeam.input';
+import { GetTeamService } from '@/team/services/getTeam.service';
+import { GetOrganizationService } from '@/organization/services/getOrganization.service';
+import { Resources } from '@/common/enums/resources.enum';
+import { ChangeAuditOperationTypes } from '@/common/enums/changeAuditOperationTypes.enum';
+import { CommonService } from '@/common/services/common.service';
+import { OutboxService } from '@/common/services/outbox.service';
 
 @Injectable()
 export class UpdateTeamService {
@@ -49,7 +49,11 @@ export class UpdateTeamService {
 
       // if teamUsersUpdated item is not found in the existing team.teamUsers, insert
       teamUsersUpdated.forEach((teamUserUpdated) => {
-        if (!team.teamUsers.toArray().find((teamUser) => (teamUser.user as any).id == teamUserUpdated.user)) {
+        if (
+          !team.teamUsers
+            .toArray()
+            .find((teamUser) => (teamUser.user as any).id == teamUserUpdated.user)
+        ) {
           em.create(TeamUser, {
             user: teamUserUpdated.user,
             team: team.id,
@@ -61,7 +65,11 @@ export class UpdateTeamService {
 
       // if existing team.teamUser record is not found in teamUsersUpdated, soft delete
       team.teamUsers.getItems().forEach((teamUser) => {
-        if (!teamUsersUpdated.find((teamUserUpdated) => teamUserUpdated.user == (teamUser.user as any).id)) {
+        if (
+          !teamUsersUpdated.find(
+            (teamUserUpdated) => teamUserUpdated.user == (teamUser.user as any).id,
+          )
+        ) {
           const newTeamUser = em.assign(teamUser, {
             deletedAt: new Date(),
             deletedBy: userId,

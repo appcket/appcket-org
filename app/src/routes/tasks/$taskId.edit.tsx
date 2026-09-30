@@ -18,16 +18,16 @@ import {
 import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 import { notifications } from '@mantine/notifications';
-import { updateTaskAction, useGetTask, useGetTaskStatusTypes } from 'src/hooks/useTasks';
+import { updateTaskAction, useGetTask, useGetTaskStatusTypes } from '@/hooks/useTasks';
 import {
   HiOutlineCheck,
   HiOutlineChevronLeft,
 } from 'react-icons/hi2';
-import * as m from 'src/paraglide/messages';
+import * as m from '@/paraglide/messages';
 import { useEffect } from 'react';
-import { PageHeader } from 'src/components/PageHeader';
-import { requirePermission, TaskPermission } from 'src/lib/permissions';
-import { Resources } from 'src/hooks/useHistory';
+import { PageHeader } from '@/components/PageHeader';
+import { requirePermission, TaskPermission } from '@/lib/permissions';
+import { Resources } from '@/hooks/useHistory';
 
 export const Route = createFileRoute('/tasks/$taskId/edit')({
   beforeLoad: requirePermission(Resources.Task, TaskPermission.update, '/projects'),

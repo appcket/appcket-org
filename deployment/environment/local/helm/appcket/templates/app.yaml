@@ -46,7 +46,7 @@ spec:
           value: {{ .Values.env }}
           {{- end }}
         - name: NODE_EXTRA_CA_CERTS
-          value: /etc/ssl/certs/root-ca.crt
+          value: /etc/appcket/certs/root-ca.crt
         - name: PORT
           value: "3000"
         - name: WDS_SOCKET_PORT
@@ -72,7 +72,7 @@ spec:
           - mountPath: /src
             name: src-volume
             readOnly: false
-          - mountPath: /etc/ssl/certs
+          - mountPath: /etc/appcket/certs
             name: root-ca-volume
             readOnly: true
         {{- end }}

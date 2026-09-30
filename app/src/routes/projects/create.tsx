@@ -15,20 +15,20 @@ import {
 import { useForm, useStore } from '@tanstack/react-form';
 import { z } from 'zod';
 import { notifications } from '@mantine/notifications';
-import { createProjectAction } from 'src/hooks/useProjects';
-import { useUserInfo } from 'src/hooks/useUser';
+import { createProjectAction } from '@/hooks/useProjects';
+import { useUserInfo } from '@/hooks/useUser';
 import { 
   HiOutlineCheck, 
   HiOutlineChevronLeft,
   HiOutlinePlus,
   HiOutlineBuildingOffice2,
 } from 'react-icons/hi2';
-import * as m from 'src/paraglide/messages';
-import { PageHeader } from 'src/components/PageHeader';
+import * as m from '@/paraglide/messages';
+import { PageHeader } from '@/components/PageHeader';
 import { useEffect } from 'react';
-import { UserMultiSelect } from 'src/components/Form/UserMultiSelect';
-import { requirePermission, ProjectPermission } from 'src/lib/permissions';
-import { Resources } from 'src/hooks/useHistory';
+import { UserMultiSelect } from '@/components/Form/UserMultiSelect';
+import { requirePermission, ProjectPermission } from '@/lib/permissions';
+import { Resources } from '@/hooks/useHistory';
 
 export const Route = createFileRoute('/projects/create')({
   beforeLoad: requirePermission(Resources.Project, ProjectPermission.create, '/projects'),

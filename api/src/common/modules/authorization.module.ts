@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { AuthorizationService } from 'src/common/services/authorization.service';
+import { AuthorizationService } from '@/common/services/authorization.service';
 
 @Module({
   imports: [HttpModule],

@@ -1,8 +1,8 @@
 import { Query, Resolver } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 
-import { TaskStatusType } from 'src/taskStatusType/taskStatusType.entity';
-import { GetTaskStatusTypesService } from 'src/taskStatusType/getTaskStatusTypes.service';
+import { TaskStatusType } from '@/taskStatusType/taskStatusType.entity';
+import { GetTaskStatusTypesService } from '@/taskStatusType/getTaskStatusTypes.service';
 
 @Resolver(() => TaskStatusType)
 export class TaskStatusTypeResolver {

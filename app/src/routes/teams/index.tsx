@@ -13,14 +13,17 @@ import {
   Skeleton,
 } from '@mantine/core';
 import { z } from 'zod';
-import { useSearchTeams, Team } from 'src/hooks/useTeams';
+import { useSearchTeams, Team } from '@/hooks/useTeams';
 import { useMemo, useState } from 'react';
-import * as m from 'src/paraglide/messages';
-import { formatDate, formatDateTime } from 'src/lib/i18n';
-import { PageHeader } from 'src/components/PageHeader';
+import * as m from '@/paraglide/messages';
+import { formatDate, formatDateTime } from '@/lib/i18n';
+import { PageHeader } from '@/components/PageHeader';
 import {
-  useReactTable,
-  getCoreRowModel,
+  useTable,
+  tableFeatures,
+  rowSortingFeature,
+  columnSizingFeature,
+  columnVisibilityFeature,
   flexRender,
   createColumnHelper,
 } from '@tanstack/react-table';
@@ -31,8 +34,8 @@ import {
   HiOutlineMagnifyingGlass,
   HiOutlinePlus,
 } from 'react-icons/hi2';
-import { hasPermission, TeamPermission } from 'src/lib/permissions';
-import { Resources } from 'src/hooks/useHistory';
+import { hasPermission, TeamPermission } from '@/lib/permissions';
+import { Resources } from '@/hooks/useHistory';
 import { keepPreviousData } from '@tanstack/react-query';
 
 const teamsSearchSchema = z.object({
@@ -65,7 +68,12 @@ export const Route = createFileRoute('/teams/')({
   component: Teams,
 });
 
-const columnHelper = createColumnHelper<Team>();
+const features = tableFeatures({
+  rowSortingFeature,
+  columnSizingFeature,
+  columnVisibilityFeature,
+});
+const columnHelper = createColumnHelper<typeof features, Team>();
 
 function Teams() {
   const search = Route.useSearch();
@@ -94,7 +102,7 @@ function Teams() {
   const showSkeletons = isFetching && (isLoading || isPlaceholderData);
 
   const columns = useMemo(
-    () => [
+    () => columnHelper.columns([
       columnHelper.accessor('name', {
         header: m.common_name(),
         cell: (info) => (
@@ -123,16 +131,16 @@ function Teams() {
         header: m.common_created(),
         cell: (info) => formatDate(info.getValue()),
       }),
-    ],
+    ]),
     [],
   );
 
   const tableData = useMemo(() => data?.edges.map((e) => e.node) || [], [data]);
 
-  const table = useReactTable({
+  const table = useTable({
     data: tableData,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    features,
     manualSorting: true,
     state: {
       sorting: [{ id: orderBy, desc: orderDirection === 'DESC' }],

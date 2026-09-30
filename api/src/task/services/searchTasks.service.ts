@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/postgresql';
 
-import { Task } from 'src/task/task.entity';
-import { SearchTasksInput } from 'src/task/dtos/searchTasks.input';
-import { IPaginated } from 'src/common/models/paginated.interface';
+import { Task } from '@/task/task.entity';
+import { SearchTasksInput } from '@/task/dtos/searchTasks.input';
+import { IPaginated } from '@/common/models/paginated.interface';
 
 @Injectable()
 export class SearchTasksService {

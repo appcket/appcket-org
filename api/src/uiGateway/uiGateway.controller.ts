@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { UiGateway } from './uiGateway.gateway';
 import { Logger } from '@nestjs/common';
-import { EventEnvelope } from 'src/common/models/eventEnvelope';
+import { EventEnvelope } from '@/common/models/eventEnvelope';
 
 @Controller()
 export class UiGatewayController {
@@ -13,7 +13,7 @@ export class UiGatewayController {
   @EventPattern('outbox-events')
   handleOutboxEvent(@Payload() data: any) {
     this.logger.debug('Received raw Kafka event');
-    
+
     // Log the structure to see what we are dealing with
     if (data) {
       this.logger.debug(`Action: ${data.action}, Table: ${data.record?.table || 'unknown'}`);

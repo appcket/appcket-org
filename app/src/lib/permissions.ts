@@ -1,6 +1,6 @@
 import { redirect } from '@tanstack/react-router';
 import { notifications } from '@mantine/notifications';
-import * as m from 'src/paraglide/messages';
+import * as m from '@/paraglide/messages';
 
 export interface Permission {
   rsname: string;

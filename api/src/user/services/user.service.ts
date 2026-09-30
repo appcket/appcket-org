@@ -1,14 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, isAxiosError } from 'axios';
+import { GraphQLError } from 'graphql';
 import { lastValueFrom } from 'rxjs';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 
-import { AuthorizationService } from 'src/common/services/authorization.service';
-import { User } from 'src/user/user.entity';
-import { OrganizationUser } from 'src/organization/organizationUser.entity';
+import { AuthorizationService } from '@/common/services/authorization.service';
+import { User } from '@/user/user.entity';
+import { OrganizationUser } from '@/organization/organizationUser.entity';
 
 @Injectable()
 export class UserService {
@@ -92,6 +93,15 @@ export class UserService {
 
       return null;
     } catch (error) {
+      // Keycloak can invalidate a session before its access token expires.
+      // Preserve this signal so the app can reauthenticate instead of treating
+      // it as a missing profile or retrying an unavailable service.
+      if (isAxiosError(error) && error.response?.status === 401) {
+        throw new GraphQLError('Your session is no longer valid. Please sign in again.', {
+          extensions: { code: 'UNAUTHENTICATED' },
+        });
+      }
+
       const errorStack = error instanceof Error ? error.stack : String(error);
       this.logger.error('Error fetching/syncing user info', errorStack);
       return null;

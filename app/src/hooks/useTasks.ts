@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request';
-import { useApiQuery, callApi } from 'src/hooks/useApi';
+import { useApiQuery, callApi } from '@/hooks/useApi';
 import { queryOptions } from '@tanstack/react-query';
 import { createServerFn } from '@tanstack/react-start';
 

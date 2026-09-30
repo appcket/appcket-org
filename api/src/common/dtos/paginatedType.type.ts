@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Edge } from 'src/common/dtos/edge.type';
-import { IPageInfo, IPaginated } from 'src/common/models/paginated.interface';
+import { Edge } from '@/common/dtos/edge.type';
+import { IPageInfo, IPaginated } from '@/common/models/paginated.interface';
 
 @ObjectType('PageInfo')
 abstract class PageInfoType implements IPageInfo {

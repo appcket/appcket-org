@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request';
-import { useApiQuery } from 'src/hooks/useApi';
+import { useApiQuery } from '@/hooks/useApi';
 
 export enum Resources {
   Organization = 'Organization',

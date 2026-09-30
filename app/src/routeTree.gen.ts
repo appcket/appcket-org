@@ -9,28 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TeamsIndexRouteImport } from './routes/teams/index'
-import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
-import { Route as TeamsCreateRouteImport } from './routes/teams/create'
-import { Route as TasksCreateRouteImport } from './routes/tasks/create'
-import { Route as ProjectsCreateRouteImport } from './routes/projects/create'
-import { Route as ApiLogoutRouteImport } from './routes/api/logout'
-import { Route as ApiLoginRouteImport } from './routes/api/login'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ApiCallbackRouteImport } from './routes/api/callback'
-import { Route as TeamsTeamIdIndexRouteImport } from './routes/teams/$teamId.index'
-import { Route as TasksTaskIdIndexRouteImport } from './routes/tasks/$taskId.index'
+import { Route as ApiLoginRouteImport } from './routes/api/login'
+import { Route as ApiLogoutRouteImport } from './routes/api/logout'
+import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
+import { Route as ProjectsCreateRouteImport } from './routes/projects/create'
+import { Route as TasksCreateRouteImport } from './routes/tasks/create'
+import { Route as TeamsIndexRouteImport } from './routes/teams/index'
+import { Route as TeamsCreateRouteImport } from './routes/teams/create'
 import { Route as ProjectsProjectIdIndexRouteImport } from './routes/projects/$projectId.index'
-import { Route as TeamsTeamIdEditRouteImport } from './routes/teams/$teamId.edit'
-import { Route as TasksTaskIdEditRouteImport } from './routes/tasks/$taskId.edit'
-import { Route as ProjectsProjectIdTasksRouteImport } from './routes/projects/$projectId.tasks'
 import { Route as ProjectsProjectIdEditRouteImport } from './routes/projects/$projectId.edit'
+import { Route as ProjectsProjectIdTasksRouteImport } from './routes/projects/$projectId.tasks'
+import { Route as TasksTaskIdIndexRouteImport } from './routes/tasks/$taskId.index'
+import { Route as TasksTaskIdEditRouteImport } from './routes/tasks/$taskId.edit'
+import { Route as TeamsTeamIdIndexRouteImport } from './routes/teams/$teamId.index'
+import { Route as TeamsTeamIdEditRouteImport } from './routes/teams/$teamId.edit'
 
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -38,44 +38,9 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TeamsIndexRoute = TeamsIndexRouteImport.update({
-  id: '/teams/',
-  path: '/teams/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
-  id: '/projects/',
-  path: '/projects/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TeamsCreateRoute = TeamsCreateRouteImport.update({
-  id: '/teams/create',
-  path: '/teams/create',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TasksCreateRoute = TasksCreateRouteImport.update({
-  id: '/tasks/create',
-  path: '/tasks/create',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsCreateRoute = ProjectsCreateRouteImport.update({
-  id: '/projects/create',
-  path: '/projects/create',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiLogoutRoute = ApiLogoutRouteImport.update({
-  id: '/api/logout',
-  path: '/api/logout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiLoginRoute = ApiLoginRouteImport.update({
-  id: '/api/login',
-  path: '/api/login',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiCallbackRoute = ApiCallbackRouteImport.update({
@@ -83,14 +48,39 @@ const ApiCallbackRoute = ApiCallbackRouteImport.update({
   path: '/api/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TeamsTeamIdIndexRoute = TeamsTeamIdIndexRouteImport.update({
-  id: '/teams/$teamId/',
-  path: '/teams/$teamId/',
+const ApiLoginRoute = ApiLoginRouteImport.update({
+  id: '/api/login',
+  path: '/api/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TasksTaskIdIndexRoute = TasksTaskIdIndexRouteImport.update({
-  id: '/tasks/$taskId/',
-  path: '/tasks/$taskId/',
+const ApiLogoutRoute = ApiLogoutRouteImport.update({
+  id: '/api/logout',
+  path: '/api/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsCreateRoute = ProjectsCreateRouteImport.update({
+  id: '/projects/create',
+  path: '/projects/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TasksCreateRoute = TasksCreateRouteImport.update({
+  id: '/tasks/create',
+  path: '/tasks/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamsIndexRoute = TeamsIndexRouteImport.update({
+  id: '/teams/',
+  path: '/teams/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamsCreateRoute = TeamsCreateRouteImport.update({
+  id: '/teams/create',
+  path: '/teams/create',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsProjectIdIndexRoute = ProjectsProjectIdIndexRouteImport.update({
@@ -98,14 +88,9 @@ const ProjectsProjectIdIndexRoute = ProjectsProjectIdIndexRouteImport.update({
   path: '/projects/$projectId/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TeamsTeamIdEditRoute = TeamsTeamIdEditRouteImport.update({
-  id: '/teams/$teamId/edit',
-  path: '/teams/$teamId/edit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TasksTaskIdEditRoute = TasksTaskIdEditRouteImport.update({
-  id: '/tasks/$taskId/edit',
-  path: '/tasks/$taskId/edit',
+const ProjectsProjectIdEditRoute = ProjectsProjectIdEditRouteImport.update({
+  id: '/projects/$projectId/edit',
+  path: '/projects/$projectId/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsProjectIdTasksRoute = ProjectsProjectIdTasksRouteImport.update({
@@ -113,9 +98,24 @@ const ProjectsProjectIdTasksRoute = ProjectsProjectIdTasksRouteImport.update({
   path: '/projects/$projectId/tasks',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsProjectIdEditRoute = ProjectsProjectIdEditRouteImport.update({
-  id: '/projects/$projectId/edit',
-  path: '/projects/$projectId/edit',
+const TasksTaskIdIndexRoute = TasksTaskIdIndexRouteImport.update({
+  id: '/tasks/$taskId/',
+  path: '/tasks/$taskId/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TasksTaskIdEditRoute = TasksTaskIdEditRouteImport.update({
+  id: '/tasks/$taskId/edit',
+  path: '/tasks/$taskId/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamsTeamIdIndexRoute = TeamsTeamIdIndexRouteImport.update({
+  id: '/teams/$teamId/',
+  path: '/teams/$teamId/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamsTeamIdEditRoute = TeamsTeamIdEditRouteImport.update({
+  id: '/teams/$teamId/edit',
+  path: '/teams/$teamId/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -266,11 +266,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -280,60 +280,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/teams/': {
-      id: '/teams/'
-      path: '/teams'
-      fullPath: '/teams/'
-      preLoaderRoute: typeof TeamsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects/': {
-      id: '/projects/'
-      path: '/projects'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof ProjectsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/teams/create': {
-      id: '/teams/create'
-      path: '/teams/create'
-      fullPath: '/teams/create'
-      preLoaderRoute: typeof TeamsCreateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tasks/create': {
-      id: '/tasks/create'
-      path: '/tasks/create'
-      fullPath: '/tasks/create'
-      preLoaderRoute: typeof TasksCreateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects/create': {
-      id: '/projects/create'
-      path: '/projects/create'
-      fullPath: '/projects/create'
-      preLoaderRoute: typeof ProjectsCreateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/logout': {
-      id: '/api/logout'
-      path: '/api/logout'
-      fullPath: '/api/logout'
-      preLoaderRoute: typeof ApiLogoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/login': {
-      id: '/api/login'
-      path: '/api/login'
-      fullPath: '/api/login'
-      preLoaderRoute: typeof ApiLoginRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/callback': {
@@ -343,18 +294,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/teams/$teamId/': {
-      id: '/teams/$teamId/'
-      path: '/teams/$teamId'
-      fullPath: '/teams/$teamId/'
-      preLoaderRoute: typeof TeamsTeamIdIndexRouteImport
+    '/api/login': {
+      id: '/api/login'
+      path: '/api/login'
+      fullPath: '/api/login'
+      preLoaderRoute: typeof ApiLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tasks/$taskId/': {
-      id: '/tasks/$taskId/'
-      path: '/tasks/$taskId'
-      fullPath: '/tasks/$taskId/'
-      preLoaderRoute: typeof TasksTaskIdIndexRouteImport
+    '/api/logout': {
+      id: '/api/logout'
+      path: '/api/logout'
+      fullPath: '/api/logout'
+      preLoaderRoute: typeof ApiLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/create': {
+      id: '/projects/create'
+      path: '/projects/create'
+      fullPath: '/projects/create'
+      preLoaderRoute: typeof ProjectsCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tasks/create': {
+      id: '/tasks/create'
+      path: '/tasks/create'
+      fullPath: '/tasks/create'
+      preLoaderRoute: typeof TasksCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teams/': {
+      id: '/teams/'
+      path: '/teams'
+      fullPath: '/teams/'
+      preLoaderRoute: typeof TeamsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teams/create': {
+      id: '/teams/create'
+      path: '/teams/create'
+      fullPath: '/teams/create'
+      preLoaderRoute: typeof TeamsCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/$projectId/': {
@@ -364,18 +350,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsProjectIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/teams/$teamId/edit': {
-      id: '/teams/$teamId/edit'
-      path: '/teams/$teamId/edit'
-      fullPath: '/teams/$teamId/edit'
-      preLoaderRoute: typeof TeamsTeamIdEditRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tasks/$taskId/edit': {
-      id: '/tasks/$taskId/edit'
-      path: '/tasks/$taskId/edit'
-      fullPath: '/tasks/$taskId/edit'
-      preLoaderRoute: typeof TasksTaskIdEditRouteImport
+    '/projects/$projectId/edit': {
+      id: '/projects/$projectId/edit'
+      path: '/projects/$projectId/edit'
+      fullPath: '/projects/$projectId/edit'
+      preLoaderRoute: typeof ProjectsProjectIdEditRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/$projectId/tasks': {
@@ -385,11 +364,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsProjectIdTasksRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/projects/$projectId/edit': {
-      id: '/projects/$projectId/edit'
-      path: '/projects/$projectId/edit'
-      fullPath: '/projects/$projectId/edit'
-      preLoaderRoute: typeof ProjectsProjectIdEditRouteImport
+    '/tasks/$taskId/': {
+      id: '/tasks/$taskId/'
+      path: '/tasks/$taskId'
+      fullPath: '/tasks/$taskId/'
+      preLoaderRoute: typeof TasksTaskIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tasks/$taskId/edit': {
+      id: '/tasks/$taskId/edit'
+      path: '/tasks/$taskId/edit'
+      fullPath: '/tasks/$taskId/edit'
+      preLoaderRoute: typeof TasksTaskIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teams/$teamId/': {
+      id: '/teams/$teamId/'
+      path: '/teams/$teamId'
+      fullPath: '/teams/$teamId/'
+      preLoaderRoute: typeof TeamsTeamIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teams/$teamId/edit': {
+      id: '/teams/$teamId/edit'
+      path: '/teams/$teamId/edit'
+      fullPath: '/teams/$teamId/edit'
+      preLoaderRoute: typeof TeamsTeamIdEditRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

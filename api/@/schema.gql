@@ -1,0 +1,266 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type EntityHistoryUser {
+  id: String
+  displayName: String
+}
+
+type EntityHistoryChange {
+  changedAt: DateTime
+  fieldName: String
+  oldValue: String
+  newValue: String
+  changedBy: EntityHistoryUser
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type EntityHistory {
+  id: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  createdBy: EntityHistoryUser
+  updatedBy: EntityHistoryUser
+  changes: [EntityHistoryChange!]
+}
+
+type ProjectDto {
+  name: String!
+  description: String
+  organization: OrganizationDto!
+  users: [UserDto!]!
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  createdBy: UserDto
+  updatedBy: UserDto
+  deletedBy: UserDto
+}
+
+type OrganizationDto {
+  id: String!
+  name: String
+  projects: [ProjectDto!]
+  teams: [TeamDto!]
+  users: [UserDto!]
+  createdBy: UserDto
+  updatedBy: UserDto
+  deletedBy: UserDto
+}
+
+type PermissionDto {
+  rsid: String!
+  rsname: String!
+  scopes: [String!]
+}
+
+type UserAttributesDto {
+  id: String
+  name: String
+  jobTitle: String
+}
+
+type UserDto {
+  id: String!
+  email: String
+  firstName: String
+  lastName: String
+  username: String
+  role: String
+  attributes: UserAttributesDto
+  permissions: [PermissionDto!]
+  organizations: [OrganizationDto!]
+  team: [TeamDto!]!
+  project: [ProjectDto!]!
+}
+
+type TeamDto {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  createdBy: UserDto
+  updatedBy: UserDto
+  deletedBy: UserDto
+  name: String!
+  description: String
+  organization: OrganizationDto!
+  users: [UserDto!]!
+}
+
+type PageInfo {
+  startCursor: String!
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type TeamDtoEdge {
+  node: TeamDto!
+}
+
+type PaginatedTeamDto {
+  totalCount: Int!
+  edges: [TeamDtoEdge!]!
+  pageInfo: PageInfo!
+}
+
+type TaskStatusType {
+  id: String!
+  name: String!
+}
+
+type TaskDto {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  createdBy: UserDto
+  updatedBy: UserDto
+  deletedBy: UserDto
+  name: String!
+  description: String
+  assignedTo: UserDto
+  taskStatusType: TaskStatusType
+  project: ProjectDto!
+}
+
+type TaskDtoEdge {
+  node: TaskDto!
+}
+
+type PaginatedTaskDto {
+  totalCount: Int!
+  edges: [TaskDtoEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectDtoEdge {
+  node: ProjectDto!
+}
+
+type PaginatedProjectDto {
+  totalCount: Int!
+  edges: [ProjectDtoEdge!]!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  getEntityHistory(id: String!, type: String!, orderBy: OrderByInput2): EntityHistory
+  getOrganization(id: String!): OrganizationDto
+  hasPermission(permissions: [String!]!): Boolean!
+  getProject(id: String!): ProjectDto
+  searchProjects(searchProjectsInput: SearchProjectsInput!): PaginatedProjectDto!
+  searchTasks(searchTasksInput: SearchTasksInput!): PaginatedTaskDto!
+  getTask(id: String!): TaskDto
+  getTaskStatusTypes: [TaskStatusType!]!
+  getTeam(id: String!): TeamDto
+  searchTeams(searchTeamsInput: SearchTeamsInput!): PaginatedTeamDto!
+  userInfo: UserDto
+  searchUsers(organizationId: String!): [UserDto!]!
+}
+
+input OrderByInput2 {
+  fieldName: String!
+  direction: SortOrder!
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input SearchProjectsInput {
+  searchString: String
+  first: Float
+  after: String
+  orderBy: [OrderByInput!]
+}
+
+input OrderByInput {
+  fieldName: String!
+  innerFieldName: String
+  direction: QueryOrder! = ASC
+}
+
+enum QueryOrder {
+  ASC
+  DESC
+}
+
+input SearchTasksInput {
+  searchString: String
+  first: Float
+  after: String
+  orderBy: [OrderByInput!]
+  projectIds: [String!]
+}
+
+input SearchTeamsInput {
+  searchString: String
+  first: Float
+  after: String
+  orderBy: [OrderByInput!]
+}
+
+type Mutation {
+  updateProject(updateProjectInput: UpdateProjectInput!): ProjectDto!
+  createProject(createProjectInput: CreateProjectInput!): ProjectDto!
+  createTask(createTaskInput: CreateTaskInput!): TaskDto!
+  updateTask(updateTaskInput: UpdateTaskInput!): TaskDto!
+  updateTeam(updateTeamInput: UpdateTeamInput!): TeamDto!
+  createTeam(createTeamInput: CreateTeamInput!): TeamDto!
+}
+
+input UpdateProjectInput {
+  name: String!
+  description: String
+  organizationId: String!
+  userIds: [String!]!
+  id: String!
+}
+
+input CreateProjectInput {
+  name: String!
+  description: String
+  organizationId: String!
+  userIds: [String!]!
+}
+
+input CreateTaskInput {
+  projectId: String!
+  name: String!
+  description: String
+  taskStatusTypeId: String
+  assignedTo: String
+}
+
+input UpdateTaskInput {
+  projectId: String!
+  name: String!
+  description: String
+  taskStatusTypeId: String
+  assignedTo: String
+  id: String!
+}
+
+input UpdateTeamInput {
+  name: String!
+  description: String!
+  organizationId: String!
+  userIds: [String!]!
+  id: String!
+}
+
+input CreateTeamInput {
+  name: String!
+  description: String!
+  organizationId: String!
+  userIds: [String!]!
+}

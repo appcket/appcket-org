@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { getOIDCConfig } from 'src/lib/oidc';
+import { getOIDCConfig, redirect_uri } from '@/lib/oidc';
 import { getIronSession } from 'iron-session';
-import { sessionOptions } from 'src/lib/session';
+import { sessionOptions } from '@/lib/session';
 
 export const Route = createFileRoute('/api/logout')({
   server: {
@@ -17,13 +17,12 @@ export const Route = createFileRoute('/api/logout')({
 
         // Destroy local session
         session.destroy();
-        await session.save();
 
         // Keycloak Logout URL
         const logoutUrl = new URL(config.serverMetadata().end_session_endpoint!);
-        logoutUrl.searchParams.set('post_logout_redirect_uri', new URL('/', request.url).href);
+        logoutUrl.searchParams.set('post_logout_redirect_uri', new URL('/', redirect_uri).href);
         // Add client_id as hint since we dropped id_token to save space
-        logoutUrl.searchParams.set('client_id', 'appcket_app');
+        logoutUrl.searchParams.set('client_id', config.clientMetadata().client_id);
 
         response.headers.set('Location', logoutUrl.href);
         return response;

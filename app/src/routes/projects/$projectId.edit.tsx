@@ -18,18 +18,18 @@ import {
 import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 import { notifications } from '@mantine/notifications';
-import { useGetProject, updateProjectAction } from 'src/hooks/useProjects';
+import { useGetProject, updateProjectAction } from '@/hooks/useProjects';
 import {
   HiOutlineCheck,
   HiOutlineArrowPath,
   HiOutlineChevronLeft,
 } from 'react-icons/hi2';
-import * as m from 'src/paraglide/messages';
+import * as m from '@/paraglide/messages';
 import { useEffect } from 'react';
-import { PageHeader } from 'src/components/PageHeader';
-import { UserMultiSelect } from 'src/components/Form/UserMultiSelect';
-import { requirePermission, ProjectPermission } from 'src/lib/permissions';
-import { Resources } from 'src/hooks/useHistory';
+import { PageHeader } from '@/components/PageHeader';
+import { UserMultiSelect } from '@/components/Form/UserMultiSelect';
+import { requirePermission, ProjectPermission } from '@/lib/permissions';
+import { Resources } from '@/hooks/useHistory';
 
 export const Route = createFileRoute('/projects/$projectId/edit')({
   beforeLoad: requirePermission(Resources.Project, ProjectPermission.update, '/projects'),

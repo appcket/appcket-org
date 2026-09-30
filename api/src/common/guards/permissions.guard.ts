@@ -2,11 +2,14 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Reflector } from '@nestjs/core';
 
-import { AuthorizationService } from 'src/common/services/authorization.service';
+import { AuthorizationService } from '@/common/services/authorization.service';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
-  constructor(private reflector: Reflector, private authorizationService: AuthorizationService) {}
+  constructor(
+    private reflector: Reflector,
+    private authorizationService: AuthorizationService,
+  ) {}
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const permissions = this.reflector.get<string[]>('permissions', context.getHandler());

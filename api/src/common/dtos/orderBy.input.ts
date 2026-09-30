@@ -1,6 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsString, MaxLength, MinLength, IsOptional } from 'class-validator';
-import { QueryOrderEnum } from 'src/common/enums/queryOrder.enum';
+import { QueryOrderEnum } from '@/common/enums/queryOrder.enum';
 
 @InputType()
 export class OrderByInput<T> {

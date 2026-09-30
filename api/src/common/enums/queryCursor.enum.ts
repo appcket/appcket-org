@@ -1,5 +1,5 @@
 import { registerEnumType } from '@nestjs/graphql';
-import { BaseEntity } from 'src/common/entities/base.entity';
+import { BaseEntity } from '@/common/entities/base.entity';
 
 export enum QueryCursorEnum {
   DATE = 'DATE',

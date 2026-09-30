@@ -66,6 +66,23 @@ mise run setup:trust-ca
 echo "✅ Bootstrap Complete! Run 'mise run start' to begin development."
 '''
 
+[tasks.restart]
+description = "Recover Istio connectivity after sleep while preserving application pods"
+run = '''
+#!/bin/bash
+set -euo pipefail
+
+echo "Refreshing Istio mesh certificates and connections..."
+kubectl rollout restart daemonset/ztunnel -n istio-system
+kubectl rollout status daemonset/ztunnel -n istio-system --timeout=120s
+
+kubectl rollout restart deployment/istio-system-gateway-istio -n istio-system
+kubectl rollout status deployment/istio-system-gateway-istio -n istio-system --timeout=120s
+
+echo "Istio connectivity refreshed. Application pods were preserved."
+echo "Reconnect VS Code and restart any dev servers that stopped during sleep."
+'''
+
 [tasks.start]
 description = "Start daily dev session"
 run = '''
@@ -83,7 +100,10 @@ mise run k8s:patch-coredns
 
 kubectl rollout restart daemonset ztunnel -n istio-system
 kubectl delete pod -n appcket -l app=waypoint
+# A rollout restart preserves the replica count, including zero.
+kubectl scale deployment istio-system-gateway-istio -n istio-system --replicas=1
 kubectl rollout restart deployment istio-system-gateway-istio -n istio-system
+kubectl rollout status deployment/istio-system-gateway-istio -n istio-system --timeout=120s
 
 # 3. Set kubectl context
 kubectl config set-context --current --namespace=${PROJECT_MACHINE_NAME}

@@ -1,6 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsString, Max, MaxLength, Min, MinLength, IsNumber, IsOptional } from 'class-validator';
-import { OrderByInput } from 'src/common/dtos/orderBy.input';
+import { OrderByInput } from '@/common/dtos/orderBy.input';
 
 @InputType()
 export class PaginatedSearchInput<T> {

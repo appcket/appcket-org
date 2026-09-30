@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Stack, Title, Text, Card } from '@mantine/core';
-import * as m from 'src/paraglide/messages';
-import { PageHeader } from 'src/components/PageHeader';
+import * as m from '@/paraglide/messages';
+import { PageHeader } from '@/components/PageHeader';
 
 export const Route = createFileRoute('/')({
   component: Home,

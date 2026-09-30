@@ -3,7 +3,7 @@ import { RiHome4Line, RiInformationLine } from 'react-icons/ri';
 import { TbShirtSport } from 'react-icons/tb';
 import { CgBriefcase } from 'react-icons/cg';
 import { Link, useLocation } from '@tanstack/react-router';
-import * as m from 'src/paraglide/messages';
+import * as m from '@/paraglide/messages';
 import classes from './MainSidebar.module.css';
 
 interface MainSidebarProps {

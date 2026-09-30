@@ -1,10 +1,10 @@
 import { Collection } from '@mikro-orm/core';
 import { Entity, OneToMany, Property } from '@mikro-orm/decorators/legacy';
 
-import { OrganizationUser } from 'src/organization/organizationUser.entity';
-import { BaseEntity } from 'src/common/entities/base.entity';
-import { Project } from 'src/project/project.entity';
-import { Team } from 'src/team/team.entity';
+import { OrganizationUser } from '@/organization/organizationUser.entity';
+import { BaseEntity } from '@/common/entities/base.entity';
+import { Project } from '@/project/project.entity';
+import { Team } from '@/team/team.entity';
 
 @Entity({ schema: 'appcket', tableName: 'organization' })
 export class Organization extends BaseEntity {

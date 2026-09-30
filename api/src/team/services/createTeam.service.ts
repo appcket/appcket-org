@@ -5,14 +5,14 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { Team } from 'src/team/team.entity';
-import { TeamUser } from 'src/team/teamUser.entity';
-import { CreateTeamInput } from 'src/team/dtos/createTeam.input';
-import { GetTeamService } from 'src/team/services/getTeam.service';
-import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { Resources } from 'src/common/enums/resources.enum';
-import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
-import { OutboxService } from 'src/common/services/outbox.service';
+import { Team } from '@/team/team.entity';
+import { TeamUser } from '@/team/teamUser.entity';
+import { CreateTeamInput } from '@/team/dtos/createTeam.input';
+import { GetTeamService } from '@/team/services/getTeam.service';
+import { GetOrganizationService } from '@/organization/services/getOrganization.service';
+import { Resources } from '@/common/enums/resources.enum';
+import { ChangeAuditOperationTypes } from '@/common/enums/changeAuditOperationTypes.enum';
+import { OutboxService } from '@/common/services/outbox.service';
 
 @Injectable()
 export class CreateTeamService {

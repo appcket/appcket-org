@@ -1,6 +1,6 @@
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 
-import { UserDto } from 'src/user/user.dto';
+import { UserDto } from '@/user/user.dto';
 
 @ObjectType()
 export abstract class BaseDto {

@@ -5,7 +5,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { URLSearchParams } from 'url';
 import { lastValueFrom, Observable } from 'rxjs';
 
-import UserPermissionsResponse from 'src/common/models/responses/userPermissionsResponse';
+import UserPermissionsResponse from '@/common/models/responses/userPermissionsResponse';
 
 @Injectable()
 export class AuthorizationService {

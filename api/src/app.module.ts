@@ -9,20 +9,20 @@ import * as session from 'express-session';
 import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
 
-import { AppController } from 'src/app.controller';
-import { AppService } from 'src/app.service';
-import configuration from 'src/config/configuration';
-import { CorrelationContext } from 'src/common/services/correlation-context.service';
-import { CorrelationMiddleware } from 'src/common/middleware/correlation.middleware';
-import { EntityHistoryModule } from 'src/entityHistory/entityHistory.module';
-import { TeamModule } from 'src/team/team.module';
-import { TaskModule } from 'src/task/task.module';
-import { OrganizationModule } from 'src/organization/organization.module';
-import { PermissionModule } from 'src/permission/permission.module';
-import { ProjectModule } from 'src/project/project.module';
-import { TaskStatusTypeModule } from 'src/taskStatusType/taskStatusType.module';
-import { UiGatewayModule } from 'src/uiGateway/uiGateway.module';
-import { UserModule } from 'src/user/user.module';
+import { AppController } from '@/app.controller';
+import { AppService } from '@/app.service';
+import configuration from '@/config/configuration';
+import { CorrelationContext } from '@/common/services/correlation-context.service';
+import { CorrelationMiddleware } from '@/common/middleware/correlation.middleware';
+import { EntityHistoryModule } from '@/entityHistory/entityHistory.module';
+import { TeamModule } from '@/team/team.module';
+import { TaskModule } from '@/task/task.module';
+import { OrganizationModule } from '@/organization/organization.module';
+import { PermissionModule } from '@/permission/permission.module';
+import { ProjectModule } from '@/project/project.module';
+import { TaskStatusTypeModule } from '@/taskStatusType/taskStatusType.module';
+import { UiGatewayModule } from '@/uiGateway/uiGateway.module';
+import { UserModule } from '@/user/user.module';
 
 @Module({
   imports: [
@@ -32,7 +32,7 @@ import { UserModule } from 'src/user/user.module';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: join(process.cwd(), '@/schema.gql'),
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       context: ({ req }) => {
         return {
@@ -54,6 +54,8 @@ import { UserModule } from 'src/user/user.module';
       // We use Socket.io (via UiGateway) for all realtime events, not GraphQL Subscriptions.
       installSubscriptionHandlers: false,
       path: '/',
+      // Disable CSRF protection since authentication is handled by Keycloak
+      csrfPrevention: false,
       formatError: (error) => {
         const logger = new Logger('GraphQL');
         logger.error(

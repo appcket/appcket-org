@@ -5,14 +5,14 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { Project } from 'src/project/project.entity';
-import { ProjectUser } from 'src/project/projectUser.entity';
-import { CreateProjectInput } from 'src/project/dtos/createProject.input';
-import { GetProjectService } from 'src/project/services/getProject.service';
-import { Resources } from 'src/common/enums/resources.enum';
-import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
-import { OutboxService } from 'src/common/services/outbox.service';
+import { GetOrganizationService } from '@/organization/services/getOrganization.service';
+import { Project } from '@/project/project.entity';
+import { ProjectUser } from '@/project/projectUser.entity';
+import { CreateProjectInput } from '@/project/dtos/createProject.input';
+import { GetProjectService } from '@/project/services/getProject.service';
+import { Resources } from '@/common/enums/resources.enum';
+import { ChangeAuditOperationTypes } from '@/common/enums/changeAuditOperationTypes.enum';
+import { OutboxService } from '@/common/services/outbox.service';
 
 @Injectable()
 export class CreateProjectService {

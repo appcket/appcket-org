@@ -2,8 +2,8 @@ import { BadRequestException, Logger, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 
-import { Organization } from 'src/organization/organization.entity';
-import { OrganizationUser } from 'src/organization/organizationUser.entity';
+import { Organization } from '@/organization/organization.entity';
+import { OrganizationUser } from '@/organization/organizationUser.entity';
 
 @Injectable()
 export class GetOrganizationService {
@@ -24,11 +24,7 @@ export class GetOrganizationService {
     });
 
     const organization = await this.organizationRepository.findOneOrFail(id, {
-      populate: [
-        'organizationUsers.user',
-        'projects.projectUsers.user',
-        'teams.teamUsers.user',
-      ],
+      populate: ['organizationUsers.user', 'projects.projectUsers.user', 'teams.teamUsers.user'],
     });
 
     return organization;

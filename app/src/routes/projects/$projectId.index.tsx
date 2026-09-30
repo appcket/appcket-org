@@ -19,13 +19,13 @@ import {
   HiOutlineBriefcase,
   HiOutlineUser,
 } from 'react-icons/hi2';
-import * as m from 'src/paraglide/messages';
-import { UserAvatar } from 'src/components/UserAvatar';
-import { EntityHistory } from 'src/components/EntityHistory';
-import { PageHeader } from 'src/components/PageHeader';
-import { Resources } from 'src/hooks/useHistory';
-import { useGetProject } from 'src/hooks/useProjects';
-import { hasPermission, ProjectPermission } from 'src/lib/permissions';
+import * as m from '@/paraglide/messages';
+import { UserAvatar } from '@/components/UserAvatar';
+import { EntityHistory } from '@/components/EntityHistory';
+import { PageHeader } from '@/components/PageHeader';
+import { Resources } from '@/hooks/useHistory';
+import { useGetProject } from '@/hooks/useProjects';
+import { hasPermission, ProjectPermission } from '@/lib/permissions';
 
 export const Route = createFileRoute('/projects/$projectId/')({
   component: ProjectDetail,

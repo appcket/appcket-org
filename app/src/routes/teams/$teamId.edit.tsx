@@ -17,13 +17,13 @@ import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 import { notifications } from '@mantine/notifications';
 import { HiOutlineCheck, HiOutlineArrowPath, HiOutlineChevronLeft } from 'react-icons/hi2';
-import * as m from 'src/paraglide/messages';
+import * as m from '@/paraglide/messages';
 import { useEffect } from 'react';
-import { PageHeader } from 'src/components/PageHeader';
-import { useGetTeam, updateTeamAction } from 'src/hooks/useTeams';
-import { UserMultiSelect } from 'src/components/Form/UserMultiSelect';
-import { requirePermission, TeamPermission } from 'src/lib/permissions';
-import { Resources } from 'src/hooks/useHistory';
+import { PageHeader } from '@/components/PageHeader';
+import { useGetTeam, updateTeamAction } from '@/hooks/useTeams';
+import { UserMultiSelect } from '@/components/Form/UserMultiSelect';
+import { requirePermission, TeamPermission } from '@/lib/permissions';
+import { Resources } from '@/hooks/useHistory';
 
 export const Route = createFileRoute('/teams/$teamId/edit')({
   beforeLoad: requirePermission(Resources.Team, TeamPermission.update, '/teams'),

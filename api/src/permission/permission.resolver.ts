@@ -1,7 +1,7 @@
 import { Args, Context, Resolver, Query } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 
-import { AuthorizationService } from 'src/common/services/authorization.service';
+import { AuthorizationService } from '@/common/services/authorization.service';
 
 @Resolver(Boolean)
 export class PermissionResolver {

@@ -2,11 +2,11 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { ClickHouseClient } from '@clickhouse/client';
 
-import { EntityHistory } from 'src/entityHistory/entityHistory.entity';
-import { UserService } from 'src/user/services/user.service';
-import { CommonService } from 'src/common/services/common.service';
-import { CLICKHOUSE_CLIENT } from 'src/common/modules/clickhouse.module';
-import { EntityChangesUtil } from 'src/common/utils/entityChanges.util';
+import { EntityHistory } from '@/entityHistory/entityHistory.entity';
+import { UserService } from '@/user/services/user.service';
+import { CommonService } from '@/common/services/common.service';
+import { CLICKHOUSE_CLIENT } from '@/common/modules/clickhouse.module';
+import { EntityChangesUtil } from '@/common/utils/entityChanges.util';
 
 interface HistoryChange {
   changedAt: Date;

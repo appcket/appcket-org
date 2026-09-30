@@ -2,7 +2,7 @@ import { ObjectType } from '@nestjs/graphql';
 import { type Opt, type Ref } from '@mikro-orm/core';
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 
-import { User } from 'src/user/user.entity';
+import { User } from '@/user/user.entity';
 
 @ObjectType()
 @Entity({ abstract: true })

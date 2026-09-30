@@ -1,6 +1,6 @@
 import { MultiSelect, Skeleton } from '@mantine/core';
-import { useSearchUsers } from 'src/hooks/useUser';
-import * as m from 'src/paraglide/messages';
+import { useSearchUsers } from '@/hooks/useUser';
+import * as m from '@/paraglide/messages';
 
 interface UserMultiSelectProps {
   organizationId: string;

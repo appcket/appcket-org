@@ -1,9 +1,9 @@
 import { GraphQLISODateTime, ObjectType, Field } from '@nestjs/graphql';
 
 // TODO: ProjectDto to extend BaseDto, and fix errors
-// import { BaseDto } from 'src/common/dtos/base.dto';
-import { OrganizationDto } from 'src/organization/organization.dto';
-import { UserDto } from 'src/user/user.dto';
+// import { BaseDto } from '@/common/dtos/base.dto';
+import { OrganizationDto } from '@/organization/organization.dto';
+import { UserDto } from '@/user/user.dto';
 
 @ObjectType()
 export class ProjectDto {

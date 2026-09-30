@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSocket } from 'src/components/SocketProvider';
+import { useSocket } from '@/components/SocketProvider';
 
 export interface EventEnvelope<T = any> {
   type: string;

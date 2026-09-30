@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CLICKHOUSE_CLIENT } from 'src/common/modules/clickhouse.module';
-import { EntityHistoryService } from 'src/entityHistory/entityHistory.service';
-import { UserService } from 'src/user/services/user.service';
-import { CommonService } from 'src/common/services/common.service';
+import { CLICKHOUSE_CLIENT } from '@/common/modules/clickhouse.module';
+import { EntityHistoryService } from '@/entityHistory/entityHistory.service';
+import { UserService } from '@/user/services/user.service';
+import { CommonService } from '@/common/services/common.service';
 
 describe('EntityHistoryService', () => {
   let service: EntityHistoryService;
@@ -105,7 +105,7 @@ describe('EntityHistoryService', () => {
     expect(clickhouseClient.query).toHaveBeenCalledTimes(1);
     // Basic verification of the result structure
     expect(result).toHaveLength(2);
-    
+
     // Check first item
     expect(result[0].id).toBe('65523d2a-f0df-470e-961d-f11958b08d18');
     expect(result[0].createdBy.displayName).toBe('Ryan');

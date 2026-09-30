@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request';
-import { useApiQuery } from 'src/hooks/useApi';
-import { User } from 'src/lib/session';
+import { useApiQuery } from '@/hooks/useApi';
+import { User } from '@/lib/session';
 
 interface UserInfoResponse {
   userInfo: User;

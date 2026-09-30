@@ -1,15 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router';
 import * as oidc from 'openid-client';
-import { getOIDCConfig, redirect_uri } from 'src/lib/oidc';
+import { getOIDCConfig, redirect_uri } from '@/lib/oidc';
 import { getIronSession } from 'iron-session';
-import { sessionOptions, SessionData } from 'src/lib/session';
+import { sessionOptions, SessionData } from '@/lib/session';
 
 export const Route = createFileRoute('/api/callback')({
   server: {
     handlers: {
       GET: async ({ request }) => {
         const config = await getOIDCConfig();
-        const url = new URL(request.url);
+        // Use the same public redirect URI as login; Istio terminates HTTPS.
+        const url = new URL(redirect_uri);
+        url.search = new URL(request.url).search;
 
         // 1. Create a dummy response to hold the session cookie
         const response = new Response(null, {

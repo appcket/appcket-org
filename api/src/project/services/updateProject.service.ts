@@ -5,16 +5,16 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { Project } from 'src/project/project.entity';
-import { ProjectUser } from 'src/project/projectUser.entity';
-import { User } from 'src/user/user.entity';
-import { UpdateProjectInput } from 'src/project/dtos/updateProject.input';
-import { GetProjectService } from 'src/project/services/getProject.service';
-import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { Resources } from 'src/common/enums/resources.enum';
-import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
-import { CommonService } from 'src/common/services/common.service';
-import { OutboxService } from 'src/common/services/outbox.service';
+import { Project } from '@/project/project.entity';
+import { ProjectUser } from '@/project/projectUser.entity';
+import { User } from '@/user/user.entity';
+import { UpdateProjectInput } from '@/project/dtos/updateProject.input';
+import { GetProjectService } from '@/project/services/getProject.service';
+import { GetOrganizationService } from '@/organization/services/getOrganization.service';
+import { Resources } from '@/common/enums/resources.enum';
+import { ChangeAuditOperationTypes } from '@/common/enums/changeAuditOperationTypes.enum';
+import { CommonService } from '@/common/services/common.service';
+import { OutboxService } from '@/common/services/outbox.service';
 
 @Injectable()
 export class UpdateProjectService {
@@ -51,13 +51,11 @@ export class UpdateProjectService {
       // if projectUsersUpdated item is not found in the existing project.projectUsers, insert
       projectUsersUpdated.forEach((projectUserUpdated) => {
         if (
-          !project.projectUsers
-            .toArray()
-            .find((projectUser) => {
-              const u = projectUser.user as any;
-              const projectUserId = u.id || u;
-              return projectUserId === projectUserUpdated.user;
-            })
+          !project.projectUsers.toArray().find((projectUser) => {
+            const u = projectUser.user as any;
+            const projectUserId = u.id || u;
+            return projectUserId === projectUserUpdated.user;
+          })
         ) {
           em.create(ProjectUser, {
             user: projectUserUpdated.user,
@@ -146,7 +144,7 @@ export class UpdateProjectService {
         },
         timestamp: new Date(),
       };
-      
+
       await this.outboxService.create(projectEventPayload);
 
       return updatedProject;

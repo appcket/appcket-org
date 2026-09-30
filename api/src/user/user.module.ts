@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { HttpModule } from '@nestjs/axios';
 
-import { AuthorizationService } from 'src/common/services/authorization.service';
-import { UserService } from 'src/user/services/user.service';
-import { UserResolver } from 'src/user/user.resolver';
-import { User } from 'src/user/user.entity';
-import { OrganizationUser } from 'src/organization/organizationUser.entity';
+import { AuthorizationService } from '@/common/services/authorization.service';
+import { UserService } from '@/user/services/user.service';
+import { UserResolver } from '@/user/user.resolver';
+import { User } from '@/user/user.entity';
+import { OrganizationUser } from '@/organization/organizationUser.entity';
 
 @Module({
   imports: [HttpModule, MikroOrmModule.forFeature([User, OrganizationUser])],

@@ -1,23 +1,23 @@
 import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
-import { EntityHistoryService } from 'src/entityHistory/entityHistory.service';
-import { AuthorizationService } from 'src/common/services/authorization.service';
-import { CommonModule } from 'src/common/modules/common.module';
-import { TeamResolver } from 'src/team/team.resolver';
-import { UserService } from 'src/user/services/user.service';
-import { UpdateTeamService } from 'src/team/services/updateTeam.service';
-import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { GetTeamService } from 'src/team/services/getTeam.service';
-import { CreateTeamService } from 'src/team/services/createTeam.service';
-import { SearchTeamsService } from 'src/team/services/searchTeams.service';
-import { Team } from 'src/team/team.entity';
-import { TeamUser } from 'src/team/teamUser.entity';
-import { User } from 'src/user/user.entity';
-import { Organization } from 'src/organization/organization.entity';
-import { OrganizationUser } from 'src/organization/organizationUser.entity';
-import { Outbox } from 'src/common/models/outbox.entity';
-import { OutboxService } from 'src/common/services/outbox.service';
+import { EntityHistoryService } from '@/entityHistory/entityHistory.service';
+import { AuthorizationService } from '@/common/services/authorization.service';
+import { CommonModule } from '@/common/modules/common.module';
+import { TeamResolver } from '@/team/team.resolver';
+import { UserService } from '@/user/services/user.service';
+import { UpdateTeamService } from '@/team/services/updateTeam.service';
+import { GetOrganizationService } from '@/organization/services/getOrganization.service';
+import { GetTeamService } from '@/team/services/getTeam.service';
+import { CreateTeamService } from '@/team/services/createTeam.service';
+import { SearchTeamsService } from '@/team/services/searchTeams.service';
+import { Team } from '@/team/team.entity';
+import { TeamUser } from '@/team/teamUser.entity';
+import { User } from '@/user/user.entity';
+import { Organization } from '@/organization/organization.entity';
+import { OrganizationUser } from '@/organization/organizationUser.entity';
+import { Outbox } from '@/common/models/outbox.entity';
+import { OutboxService } from '@/common/services/outbox.service';
 
 @Module({
   imports: [

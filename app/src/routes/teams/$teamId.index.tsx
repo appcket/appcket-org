@@ -14,14 +14,14 @@ import {
   rem,
   Skeleton,
 } from '@mantine/core';
-import { useGetTeam } from 'src/hooks/useTeams';
+import { useGetTeam } from '@/hooks/useTeams';
 import { HiOutlinePencilSquare, HiOutlineUser, HiOutlineChevronLeft } from 'react-icons/hi2';
-import * as m from 'src/paraglide/messages';
-import { UserAvatar } from 'src/components/UserAvatar';
-import { EntityHistory } from 'src/components/EntityHistory';
-import { PageHeader } from 'src/components/PageHeader';
-import { hasPermission, TeamPermission } from 'src/lib/permissions';
-import { Resources } from 'src/hooks/useHistory';
+import * as m from '@/paraglide/messages';
+import { UserAvatar } from '@/components/UserAvatar';
+import { EntityHistory } from '@/components/EntityHistory';
+import { PageHeader } from '@/components/PageHeader';
+import { hasPermission, TeamPermission } from '@/lib/permissions';
+import { Resources } from '@/hooks/useHistory';
 
 export const Route = createFileRoute('/teams/$teamId/')({
   component: TeamDetail,

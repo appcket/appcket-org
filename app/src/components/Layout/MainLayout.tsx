@@ -1,10 +1,10 @@
 import { AppShell } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ReactNode } from 'react';
-import { User } from 'src/lib/session';
-import { MainSidebar } from 'src/components/Layout/MainSidebar';
-import { MainHeader } from 'src/components/Layout/MainHeader';
-import { MainFooter } from 'src/components/Layout/MainFooter';
+import { User } from '@/lib/session';
+import { MainSidebar } from '@/components/Layout/MainSidebar';
+import { MainHeader } from '@/components/Layout/MainHeader';
+import { MainFooter } from '@/components/Layout/MainFooter';
 
 interface MainLayoutProps {
   children: ReactNode;

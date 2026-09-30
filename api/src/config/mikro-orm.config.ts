@@ -27,7 +27,7 @@ export default defineConfig({
     sslMode: process.env.DB_SSL_MODE === 'true' ? true : false,
   },
   entities: ['dist/**/*.entity.js'],
-  entitiesTs: ['src/**/*.entity.ts'],
+  entitiesTs: ['@/**/*.entity.ts'],
   // highlighter: new SqlHighlighter(),
   metadataProvider: TsMorphMetadataProvider,
 });

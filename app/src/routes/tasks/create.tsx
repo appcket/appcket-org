@@ -16,17 +16,17 @@ import {
 import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 import { notifications } from '@mantine/notifications';
-import { createTaskAction, useGetTaskStatusTypes } from 'src/hooks/useTasks';
-import { useGetProject } from 'src/hooks/useProjects';
+import { createTaskAction, useGetTaskStatusTypes } from '@/hooks/useTasks';
+import { useGetProject } from '@/hooks/useProjects';
 import { 
   HiOutlineCheck, 
   HiOutlineChevronLeft,
   HiOutlinePlus,
 } from 'react-icons/hi2';
-import * as m from 'src/paraglide/messages';
-import { PageHeader } from 'src/components/PageHeader';
-import { requirePermission, TaskPermission } from 'src/lib/permissions';
-import { Resources } from 'src/hooks/useHistory';
+import * as m from '@/paraglide/messages';
+import { PageHeader } from '@/components/PageHeader';
+import { requirePermission, TaskPermission } from '@/lib/permissions';
+import { Resources } from '@/hooks/useHistory';
 
 const createTaskSearchSchema = z.object({
   projectId: z.string(),

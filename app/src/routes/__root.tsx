@@ -11,19 +11,19 @@ import {
   useSearch,
   useNavigate,
 } from '@tanstack/react-router';
-import { getSession } from 'src/lib/auth-server';
-import { getLocale } from 'src/lib/i18n';
-import * as runtime from 'src/paraglide/runtime';
+import { getSession } from '@/lib/auth-server';
+import { getLocale } from '@/lib/i18n';
+import * as runtime from '@/paraglide/runtime';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { Notifications, notifications } from '@mantine/notifications';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { theme } from 'src/theme';
-import { MainLayout } from 'src/components/Layout/MainLayout';
-import { SocketProvider } from 'src/components/SocketProvider';
-import { GlobalEventHandler } from 'src/components/GlobalEventHandler';
+import { theme } from '@/theme';
+import { MainLayout } from '@/components/Layout/MainLayout';
+import { SocketProvider } from '@/components/SocketProvider';
+import { GlobalEventHandler } from '@/components/GlobalEventHandler';
 import { useEffect } from 'react';
-import * as m from 'src/paraglide/messages';
+import * as m from '@/paraglide/messages';
 
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
@@ -57,28 +57,14 @@ export const Route = createRootRoute({
       return;
     }
 
-    try {
-      const [session, locale] = await Promise.all([getSession(), getLocale()]);
+    const [session, locale] = await Promise.all([getSession(), getLocale()]);
 
-      if (!session) {
-        throw redirect({
-          to: '/login' as any,
-        });
-      }
-      return { session, locale };
-    } catch (error) {
-      // If getSession fails or throws (e.g. redirect), pass it through
-      if (
-        error instanceof Response ||
-        (typeof error === 'object' && error !== null && 'to' in error)
-      ) {
-        throw error;
-      }
-      // On error, redirect to login to be safe
+    if (!session) {
       throw redirect({
         to: '/login' as any,
       });
     }
+    return { session, locale };
   },
   head: () => ({
     meta: [

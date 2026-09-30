@@ -1,7 +1,7 @@
 import { getRequest } from '@tanstack/react-start/server';
 import { getIronSession } from 'iron-session';
 
-import { sessionOptions, SessionData } from 'src/lib/session';
+import { sessionOptions, SessionData } from '@/lib/session';
 
 /**
  * Server-only utility to retrieve the raw Keycloak Access Token.

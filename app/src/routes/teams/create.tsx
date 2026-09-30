@@ -15,20 +15,20 @@ import {
 import { useForm, useStore } from '@tanstack/react-form';
 import { z } from 'zod';
 import { notifications } from '@mantine/notifications';
-import { useUserInfo } from 'src/hooks/useUser';
+import { useUserInfo } from '@/hooks/useUser';
 import {
   HiOutlineCheck,
   HiOutlineChevronLeft,
   HiOutlinePlus,
   HiOutlineBuildingOffice2
 } from 'react-icons/hi2';
-import * as m from 'src/paraglide/messages';
-import { PageHeader } from 'src/components/PageHeader';
-import { createTeamAction } from 'src/hooks/useTeams';
-import { UserMultiSelect } from 'src/components/Form/UserMultiSelect';
+import * as m from '@/paraglide/messages';
+import { PageHeader } from '@/components/PageHeader';
+import { createTeamAction } from '@/hooks/useTeams';
+import { UserMultiSelect } from '@/components/Form/UserMultiSelect';
 import { redirect } from '@tanstack/react-router';
-import { requirePermission, TeamPermission } from 'src/lib/permissions';
-import { Resources } from 'src/hooks/useHistory';
+import { requirePermission, TeamPermission } from '@/lib/permissions';
+import { Resources } from '@/hooks/useHistory';
 
 export const Route = createFileRoute('/teams/create')({
   beforeLoad: requirePermission(Resources.Team, TeamPermission.create, '/teams'),

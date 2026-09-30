@@ -12,7 +12,7 @@ import {
 } from '@mantine/core';
 import { HiOutlineClock } from 'react-icons/hi2';
 import { MdHistory } from 'react-icons/md';
-import { useGetEntityHistory, Resources, IEntityHistoryChange } from 'src/hooks/useHistory';
+import { useGetEntityHistory, Resources, IEntityHistoryChange } from '@/hooks/useHistory';
 import dayjs from 'dayjs';
 
 interface EntityHistoryProps {

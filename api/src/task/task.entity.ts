@@ -1,9 +1,9 @@
 import { Entity, ManyToOne, Property } from '@mikro-orm/decorators/legacy';
 
-import { BaseEntity } from 'src/common/entities/base.entity';
-import { Project } from 'src/project/project.entity';
-import { TaskStatusType } from 'src/taskStatusType/taskStatusType.entity';
-import { User } from 'src/user/user.entity';
+import { BaseEntity } from '@/common/entities/base.entity';
+import { Project } from '@/project/project.entity';
+import { TaskStatusType } from '@/taskStatusType/taskStatusType.entity';
+import { User } from '@/user/user.entity';
 
 @Entity({ schema: 'appcket', tableName: 'task' })
 export class Task extends BaseEntity {

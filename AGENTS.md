@@ -40,4 +40,4 @@ The UI uses a GraphQL API to send queries and mutations to the eventbus (Redpand
 1. Current Status
 
 - Egress: Currently set to default (ALLOW_ANY). Attempted strict egress control but reverted it to stabilize the environment; Will revisit later.
-- Deployment: A bootstrap.sh is available for initial dev env setup and a start.sh script is for running the app locally after a computer restart for example. Need to look into automating the scripts with a more robust system like go-task.
+- Deployment: A `mise run bootstrap` task is available for initial dev env setup and a `mise run start` task is for running the app locally after a computer restart for example.

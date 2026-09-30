@@ -2,22 +2,22 @@ import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nes
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { Team } from 'src/team/team.entity';
-import { TeamDto } from 'src/team/dtos/team.dto';
-import { UpdateTeamInput } from 'src/team/dtos/updateTeam.input';
-import { CreateTeamInput } from 'src/team/dtos/createTeam.input';
-import { Resources } from 'src/common/enums/resources.enum';
-import { TeamPermission } from 'src/common/enums/permissions.enum';
-import { PermissionsGuard } from 'src/common/guards/permissions.guard';
-import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { GetTeamService } from 'src/team/services/getTeam.service';
-import { UpdateTeamService } from 'src/team/services/updateTeam.service';
-import { CreateTeamService } from 'src/team/services/createTeam.service';
-import { SearchTeamsService } from 'src/team/services/searchTeams.service';
-import { EntityHistoryService } from 'src/entityHistory/entityHistory.service';
-import { PaginatedTeamDto } from 'src/team/dtos/paginatedTeam.dto';
-import { SearchTeamsInput } from 'src/team/dtos/searchTeams.input';
-import { User } from 'src/user/user.entity';
+import { Team } from '@/team/team.entity';
+import { TeamDto } from '@/team/dtos/team.dto';
+import { UpdateTeamInput } from '@/team/dtos/updateTeam.input';
+import { CreateTeamInput } from '@/team/dtos/createTeam.input';
+import { Resources } from '@/common/enums/resources.enum';
+import { TeamPermission } from '@/common/enums/permissions.enum';
+import { PermissionsGuard } from '@/common/guards/permissions.guard';
+import { Permissions } from '@/common/decorators/permissions.decorator';
+import { GetTeamService } from '@/team/services/getTeam.service';
+import { UpdateTeamService } from '@/team/services/updateTeam.service';
+import { CreateTeamService } from '@/team/services/createTeam.service';
+import { SearchTeamsService } from '@/team/services/searchTeams.service';
+import { EntityHistoryService } from '@/entityHistory/entityHistory.service';
+import { PaginatedTeamDto } from '@/team/dtos/paginatedTeam.dto';
+import { SearchTeamsInput } from '@/team/dtos/searchTeams.input';
+import { User } from '@/user/user.entity';
 
 @InputType()
 export class TeamCreateInput {

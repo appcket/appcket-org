@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 
-import { Team } from 'src/team/team.entity';
-import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
+import { Team } from '@/team/team.entity';
+import { GetOrganizationService } from '@/organization/services/getOrganization.service';
 
 @Injectable()
 export class GetTeamService {

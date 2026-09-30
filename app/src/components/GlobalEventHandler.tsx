@@ -1,9 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { notifications } from '@mantine/notifications';
-import { useTopic, EventEnvelope } from 'src/hooks/useTopic';
-import { Resources } from 'src/hooks/useHistory';
+import { useTopic, EventEnvelope } from '@/hooks/useTopic';
+import { Resources } from '@/hooks/useHistory';
 import { HiOutlineInformationCircle } from 'react-icons/hi2';
-import * as m from 'src/paraglide/messages';
+import * as m from '@/paraglide/messages';
 
 /**
  * A headless component that listens for global events from the WebSocket stream

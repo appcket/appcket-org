@@ -2,20 +2,20 @@ import { Args, Context, Field, InputType, Mutation, Query, Resolver } from '@nes
 import { Inject } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 
-import { TaskDto } from 'src/task/dtos/task.dto';
-import { SearchTasksInput } from 'src/task/dtos/searchTasks.input';
-import { CreateTaskInput } from 'src/task/dtos/createTask.input';
-import { UpdateTaskInput } from 'src/task/dtos/updateTask.input';
-import { Resources } from 'src/common/enums/resources.enum';
-import { TaskPermission } from 'src/common/enums/permissions.enum';
-import { PermissionsGuard } from 'src/common/guards/permissions.guard';
-import { Permissions } from 'src/common/decorators/permissions.decorator';
-import { SearchTasksService } from 'src/task/services/searchTasks.service';
-import { GetTaskService } from 'src/task/services/getTask.service';
-import { CreateTaskService } from 'src/task/services/createTask.service';
-import { UpdateTaskService } from 'src/task/services/updateTask.service';
-import { PaginatedTaskDto } from 'src/task/dtos/paginatedTask.dto';
-import { UserDto } from 'src/user/user.dto';
+import { TaskDto } from '@/task/dtos/task.dto';
+import { SearchTasksInput } from '@/task/dtos/searchTasks.input';
+import { CreateTaskInput } from '@/task/dtos/createTask.input';
+import { UpdateTaskInput } from '@/task/dtos/updateTask.input';
+import { Resources } from '@/common/enums/resources.enum';
+import { TaskPermission } from '@/common/enums/permissions.enum';
+import { PermissionsGuard } from '@/common/guards/permissions.guard';
+import { Permissions } from '@/common/decorators/permissions.decorator';
+import { SearchTasksService } from '@/task/services/searchTasks.service';
+import { GetTaskService } from '@/task/services/getTask.service';
+import { CreateTaskService } from '@/task/services/createTask.service';
+import { UpdateTaskService } from '@/task/services/updateTask.service';
+import { PaginatedTaskDto } from '@/task/dtos/paginatedTask.dto';
+import { UserDto } from '@/user/user.dto';
 
 @InputType()
 export class TaskCreateInput {

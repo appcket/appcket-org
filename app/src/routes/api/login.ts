@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import * as oidc from 'openid-client';
-import { getOIDCConfig, redirect_uri } from 'src/lib/oidc';
+import { getOIDCConfig, redirect_uri } from '@/lib/oidc';
 import { getIronSession } from 'iron-session';
-import { sessionOptions } from 'src/lib/session';
+import { sessionOptions } from '@/lib/session';
 
 export const Route = createFileRoute('/api/login')({
   server: {

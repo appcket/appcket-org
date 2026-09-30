@@ -1,7 +1,7 @@
 import { Entity, ManyToOne, Unique } from '@mikro-orm/decorators/legacy';
-import { Organization } from 'src/organization/organization.entity';
-import { User } from 'src/user/user.entity';
-import { BaseEntity } from 'src/common/entities/base.entity';
+import { Organization } from '@/organization/organization.entity';
+import { User } from '@/user/user.entity';
+import { BaseEntity } from '@/common/entities/base.entity';
 
 @Entity({ schema: 'appcket', tableName: 'organization_user' })
 @Unique({ properties: ['organization', 'user'] })

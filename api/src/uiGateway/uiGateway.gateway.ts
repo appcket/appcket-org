@@ -7,7 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Logger, Inject } from '@nestjs/common';
-import { UserService } from 'src/user/services/user.service';
+import { UserService } from '@/user/services/user.service';
 import { MikroORM } from '@mikro-orm/core';
 import { CreateRequestContext } from '@mikro-orm/decorators/legacy';
 

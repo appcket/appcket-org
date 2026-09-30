@@ -1,9 +1,9 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
-import { OrganizationDto } from 'src/organization/organization.dto';
-import { PermissionDto } from 'src/permission/permission.dto';
-import { TeamDto } from 'src/team/dtos/team.dto';
-import { ProjectDto } from 'src/project/dtos/project.dto';
+import { OrganizationDto } from '@/organization/organization.dto';
+import { PermissionDto } from '@/permission/permission.dto';
+import { TeamDto } from '@/team/dtos/team.dto';
+import { ProjectDto } from '@/project/dtos/project.dto';
 
 @ObjectType()
 export class UserAttributesDto {

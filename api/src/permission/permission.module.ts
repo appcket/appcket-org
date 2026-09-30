@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { AuthorizationService } from 'src/common/services/authorization.service';
-import { CommonModule } from 'src/common/modules/common.module';
+import { AuthorizationService } from '@/common/services/authorization.service';
+import { CommonModule } from '@/common/modules/common.module';
 import { PermissionResolver } from './permission.resolver';
 
 @Module({

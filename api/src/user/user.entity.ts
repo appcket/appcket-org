@@ -1,12 +1,12 @@
 import { Collection } from '@mikro-orm/core';
 import { Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 
-import { OrganizationUser } from 'src/organization/organizationUser.entity';
-import { ProjectUser } from 'src/project/projectUser.entity';
-import { TeamUser } from 'src/team/teamUser.entity';
-import { Organization } from 'src/organization/organization.entity';
-import { Project } from 'src/project/project.entity';
-import { Team } from 'src/team/team.entity';
+import { OrganizationUser } from '@/organization/organizationUser.entity';
+import { ProjectUser } from '@/project/projectUser.entity';
+import { TeamUser } from '@/team/teamUser.entity';
+import { Organization } from '@/organization/organization.entity';
+import { Project } from '@/project/project.entity';
+import { Team } from '@/team/team.entity';
 
 @Entity({ schema: 'appcket', tableName: 'user' })
 export class User {

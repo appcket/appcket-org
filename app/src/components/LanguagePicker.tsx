@@ -2,8 +2,8 @@ import { Menu, UnstyledButton, Group, Text, rem } from '@mantine/core';
 import { HiChevronDown } from 'react-icons/hi2';
 import Flag from 'react-flagpack';
 import 'react-flagpack/dist/style.css';
-import * as runtime from 'src/paraglide/runtime';
-import { setLocale } from 'src/lib/i18n';
+import * as runtime from '@/paraglide/runtime';
+import { setLocale } from '@/lib/i18n';
 import { useRouter } from '@tanstack/react-router';
 
 const languageNames: Record<string, string> = {

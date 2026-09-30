@@ -15,11 +15,11 @@ import {
   HiOutlineIdentification,
 } from 'react-icons/hi2';
 import { Link } from '@tanstack/react-router';
-import * as m from 'src/paraglide/messages';
-import { ThemeToggle } from 'src/components/ThemeToggle';
-import { LanguagePicker } from 'src/components/LanguagePicker';
-import { UserAvatar } from 'src/components/UserAvatar';
-import { User } from 'src/lib/session';
+import * as m from '@/paraglide/messages';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguagePicker } from '@/components/LanguagePicker';
+import { UserAvatar } from '@/components/UserAvatar';
+import { User } from '@/lib/session';
 
 interface MainHeaderProps {
   user: User;

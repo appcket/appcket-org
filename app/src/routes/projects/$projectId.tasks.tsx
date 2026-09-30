@@ -15,15 +15,18 @@ import {
   Breadcrumbs,
 } from '@mantine/core';
 import { z } from 'zod';
-import { useSearchTasks, Task } from 'src/hooks/useTasks';
-import { useGetProject } from 'src/hooks/useProjects';
+import { useSearchTasks, Task } from '@/hooks/useTasks';
+import { useGetProject } from '@/hooks/useProjects';
 import { useMemo, useState } from 'react';
-import * as m from 'src/paraglide/messages';
-import { formatDate, formatDateTime } from 'src/lib/i18n';
-import { PageHeader } from 'src/components/PageHeader';
+import * as m from '@/paraglide/messages';
+import { formatDate, formatDateTime } from '@/lib/i18n';
+import { PageHeader } from '@/components/PageHeader';
 import {
-  useReactTable,
-  getCoreRowModel,
+  useTable,
+  tableFeatures,
+  rowSortingFeature,
+  columnSizingFeature,
+  columnVisibilityFeature,
   flexRender,
   createColumnHelper,
 } from '@tanstack/react-table';
@@ -35,8 +38,8 @@ import {
   HiOutlinePlus,
 } from 'react-icons/hi2';
 import { keepPreviousData } from '@tanstack/react-query';
-import { hasPermission, TaskPermission } from 'src/lib/permissions';
-import { Resources } from 'src/hooks/useHistory';
+import { hasPermission, TaskPermission } from '@/lib/permissions';
+import { Resources } from '@/hooks/useHistory';
 
 const tasksSearchSchema = z.object({
   page: z.number().optional(),
@@ -68,7 +71,12 @@ export const Route = createFileRoute('/projects/$projectId/tasks')({
   component: ProjectTasks,
 });
 
-const columnHelper = createColumnHelper<Task>();
+const features = tableFeatures({
+  rowSortingFeature,
+  columnSizingFeature,
+  columnVisibilityFeature,
+});
+const columnHelper = createColumnHelper<typeof features, Task>();
 
 function ProjectTasks() {
   const { projectId } = Route.useParams();
@@ -101,7 +109,7 @@ function ProjectTasks() {
   const showSkeletons = isFetching && (isLoading || isPlaceholderData);
 
   const columns = useMemo(
-    () => [
+    () => columnHelper.columns([
       columnHelper.accessor('name', {
         header: m.common_name(),
         cell: (info) => (
@@ -137,16 +145,16 @@ function ProjectTasks() {
         header: m.common_created(),
         cell: (info) => formatDate(info.getValue()),
       }),
-    ],
+    ]),
     [],
   );
 
   const tableData = useMemo(() => data?.edges.map((e) => e.node) || [], [data]);
 
-  const table = useReactTable({
+  const table = useTable({
     data: tableData,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    features,
     manualSorting: true,
     state: {
       sorting: [{ id: orderBy, desc: orderDirection === 'DESC' }],

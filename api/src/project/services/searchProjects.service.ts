@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/postgresql';
 
-import { Project } from 'src/project/project.entity';
-import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { IPaginated } from 'src/common/models/paginated.interface';
-import { SearchProjectsInput } from 'src/project/dtos/searchProjects.input';
-import { Organization } from 'src/organization/organization.entity';
+import { Project } from '@/project/project.entity';
+import { GetOrganizationService } from '@/organization/services/getOrganization.service';
+import { IPaginated } from '@/common/models/paginated.interface';
+import { SearchProjectsInput } from '@/project/dtos/searchProjects.input';
+import { Organization } from '@/organization/organization.entity';
 
 @Injectable()
 export class SearchProjectsService {

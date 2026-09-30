@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
 import { getRequest, setResponseHeader } from '@tanstack/react-start/server';
-import * as runtime from 'src/paraglide/runtime';
+import * as runtime from '@/paraglide/runtime';
 
 export const COOKIE_NAME = 'appcket_locale';
 

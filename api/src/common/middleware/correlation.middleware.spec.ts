@@ -1,5 +1,5 @@
-import { CorrelationMiddleware } from 'src/common/middleware/correlation.middleware';
-import { CorrelationContext } from 'src/common/services/correlation-context.service';
+import { CorrelationMiddleware } from '@/common/middleware/correlation.middleware';
+import { CorrelationContext } from '@/common/services/correlation-context.service';
 import { Request, Response } from 'express';
 
 describe('CorrelationMiddleware', () => {

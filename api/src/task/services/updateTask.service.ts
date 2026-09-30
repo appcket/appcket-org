@@ -5,13 +5,13 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { Task } from 'src/task/task.entity';
-import { UpdateTaskInput } from 'src/task/dtos/updateTask.input';
-import { GetTaskService } from 'src/task/services/getTask.service';
-import { GetOrganizationService } from 'src/organization/services/getOrganization.service';
-import { Resources } from 'src/common/enums/resources.enum';
-import { ChangeAuditOperationTypes } from 'src/common/enums/changeAuditOperationTypes.enum';
-import { OutboxService } from 'src/common/services/outbox.service';
+import { Task } from '@/task/task.entity';
+import { UpdateTaskInput } from '@/task/dtos/updateTask.input';
+import { GetTaskService } from '@/task/services/getTask.service';
+import { GetOrganizationService } from '@/organization/services/getOrganization.service';
+import { Resources } from '@/common/enums/resources.enum';
+import { ChangeAuditOperationTypes } from '@/common/enums/changeAuditOperationTypes.enum';
+import { OutboxService } from '@/common/services/outbox.service';
 
 @Injectable()
 export class UpdateTaskService {

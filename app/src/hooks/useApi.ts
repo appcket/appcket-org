@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start';
 import { GraphQLClient, Variables } from 'graphql-request';
 import { QueryKey, useMutation, useQuery } from '@tanstack/react-query';
 
-import { getKeycloakToken } from 'src/lib/auth-tokens';
+import { getKeycloakToken } from '@/lib/auth-tokens';
 
 const endpoint = `${import.meta.env.VITE_API_URL || 'https://api.appcket.test'}`;
 
