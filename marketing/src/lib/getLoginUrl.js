@@ -10,12 +10,3 @@ export function getLoginUrl(env) {
     return process.env.PUBLIC_APP_URL;
   return "/";
 }
-
-// CommonJS fallback
-try {
-  // @ts-ignore
-  if (typeof module !== "undefined" && module.exports)
-    module.exports.getLoginUrl = getLoginUrl;
-} catch (e) {
-  // ignore
-}
